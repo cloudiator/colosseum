@@ -1,0 +1,19 @@
+@javascript = {
+
+}
+
+@manage("Clouds",javascript) {
+    <li class="active"><a href="@routes.CloudController.index">Cloud</a></li>
+} {
+    <div ng-app="executionware">
+        <div ng-controller="CloudListCtrl">
+            <form role="form" novalidate="novalidate" class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputName">Name</label>
+                    <input class="form-control" type="text" id="inputName" placeholder="Name" ng-model="cloud.name"/>
+                </div>
+                <a ng-click="newCloud()" class="btn btn-default">Submit</a>
+            </form>
+        </div>
+    </div>
+}

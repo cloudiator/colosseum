@@ -1,0 +1,25 @@
+@(title: String, javascript: Html = Html(""))(breadcrumb: Html)(content: Html)(sidebar: Html)
+
+@import tags._
+
+@row = {
+	<div class="col-lg-2 sidebar">
+		<ul class="nav nav-sidebar">
+		@sidebar
+		</ul>
+	</div>
+	<div class="main">
+		<div class="page-header">
+			<h1>@title</h1>
+		</div>
+		@status()
+		@content
+	</div>
+}
+
+@body(title,javascript) {
+	@breadcrumb
+} {
+	@row
+}
+

@@ -1,0 +1,26 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET           /                    @controllers.SiteController.index()
+GET           /manage              @controllers.SiteController.manage()
+GET           /help                @controllers.SiteController.help()
+
+#Auth
+GET           /login               @controllers.SiteController.login()
+POST          /login               @controllers.SiteController.authenticate()
+GET           /logout              @controllers.SiteController.logout()
+
+#Cloud
+GET           /cloud/index         @controllers.CloudController.index()
+GET           /cloud/create        @controllers.CloudController.form()
+
+GET           /cloud               @controllers.CloudController.list()
+GET           /cloud/:id           @controllers.CloudController.get(id: Long)
+PUT           /cloud               @controllers.CloudController.create()
+POST          /cloud/:id           @controllers.CloudController.update(id: Long)
+DELETE        /cloud/:id           @controllers.CloudController.delete(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET           /assets/*file        controllers.Assets.at(path="/public", file)

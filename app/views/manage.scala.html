@@ -1,0 +1,18 @@
+@(title: String, javascript: Html = Html(""))(breadcrumb: Html)(content: Html)
+
+@managementBreadcrumb = {
+	<li><a href="@routes.SiteController.manage">Management</a></li>
+	@breadcrumb
+}
+
+@sidebar = {
+	<li><a href="@routes.CloudController.index()">Clouds</a></li>
+}
+
+@rowWithSidebar(title,javascript) {
+	@managementBreadcrumb
+} {
+	@content
+} {
+	@sidebar
+}

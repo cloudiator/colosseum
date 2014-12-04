@@ -62,7 +62,7 @@ public class PasswordTest {
 	/**
 	 * The hash method should fail if password and salt are null.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=NullPointerException.class)
 	public void testHashNullPasswordAndSalt() {
 		Password.getInstance().hash(null, null);
 	}
@@ -70,7 +70,7 @@ public class PasswordTest {
 	/**
 	 * The hash method should fail if the password is null.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=NullPointerException.class)
 	public void testHashNullPassword() {
 		Password.getInstance().hash(null, "hghejshgkesdwas".getBytes());
 	}
@@ -78,7 +78,7 @@ public class PasswordTest {
 	/**
 	 * The hash method should fail if the salt is null.
 	 */
-	@Test(expected=IllegalArgumentException.class)
+	@Test(expected=NullPointerException.class)
 	public void testHashNullSalt() {
 		Password.getInstance().hash("hfwahfiwhafiowa".toCharArray(), null);
 	}

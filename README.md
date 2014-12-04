@@ -5,7 +5,7 @@ Installation (dev)
 =====================================
 
 Dependencies:
-	- play-framework 2.3.2
+	- play-framework 2.3.6
 	- a hibernate compatible database (the following sections will use mysql)
 	- cloudify (see section cloudify)
 	
@@ -29,18 +29,6 @@ application.secret="A_VERY_SECRET_KEY"
 # ~~~~~
 db.default.driver=org.mariadb.jdbc.Driver
 db.default.url="mysql://dbUser:dbPassword@localhost/dbName"
-
-# Cloudify
-# ~~~~~
-#
-# Cloudify Path
-cloudify.path = "/opt/gigaspaces-cloudify-2.7.0-ga"
-# 
-# Cloudify Temp
-cloudify.temp = "/tmp"
-#
-# Safe Files
-cloudify.safe = true
 ```
 5. Switch to the root of your clone and run
 ```
@@ -60,13 +48,6 @@ bin/executionware -Dconfig.file=/path/to/your/config.conf
 ```
 5. Frontend should be available at localhost:9000
 
-Hint: A current snapshot of the executionware is available at: http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/snapshots/executionware/
-
-Cloudify
-=====================================
-
-An adopted cloudify version is available at: http://eladron.e-technik.uni-ulm.de/cloudify/
-
 Usage
 =====================================
 
@@ -81,7 +62,7 @@ Contact
 =====================================
 
 Daniel Baur (University of Ulm)
-daniel.baur@uni-ulm.de
+daniel.baur(at)uni-ulm.de
 
 
 	

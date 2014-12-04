@@ -34,13 +34,6 @@ jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
-mappings in Universal <++= (packageBin in Compile) map { jar =>
-  val scriptsDir = new java.io.File("resources/upload")
-  scriptsDir.listFiles.toSeq.map { f =>
-    f -> ("resources/upload/" + f.getName)
-  }
-}
-
 publishTo := {
   val nexus = "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/"
   if (version.value.trim.endsWith("SNAPSHOT")) 

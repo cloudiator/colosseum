@@ -1,4 +1,4 @@
-package dtos.generic;
+package dtos.generic.impl;
 
 import play.data.validation.ValidationError;
 
@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A Dto for named entities.
  */
-public abstract class NamedDto implements ValidatableDto {
+public abstract class NamedDto extends AbstractValidatableDto {
 
     public String name;
 
@@ -28,13 +28,10 @@ public abstract class NamedDto implements ValidatableDto {
     }
 
     @Override
-    public List<ValidationError> validate() {
+    public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
         if (name == null || name.length() == 0) {
             errors.add(new ValidationError("name", "No name was given."));
-        }
-        if (errors.isEmpty()) {
-            return null;
         }
         return errors;
     }

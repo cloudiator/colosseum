@@ -2,7 +2,7 @@ package controllers.generic;
 
 import controllers.Secured;
 import dtos.convert.api.ModelDtoConversionService;
-import dtos.generic.Dto;
+import dtos.generic.api.Dto;
 import models.generic.Model;
 import models.service.impl.generic.ModelService;
 import play.data.Form;

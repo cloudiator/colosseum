@@ -1,14 +1,14 @@
 import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
-import com.typesafe.config._
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 name := "executionware"
 
-val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
-val buildNumber = conf.getString("build.number")
+//val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
+// val buildNumber = conf.getString("build.number")
 
-version := "b" + buildNumber + "-1.0-SNAPSHOT"
+//version := "b" + buildNumber + "-1.0-SNAPSHOT"
+version := "1.0-SNAPSHOT"
 
 resolvers += "eladron-snapshots" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/snapshots"
 
@@ -27,7 +27,7 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9"
-)     
+)
 
 TwirlKeys.templateImports += "dtos._"
 
@@ -37,12 +37,12 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
 publishTo := {
   val nexus = "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/"
-  if (version.value.trim.endsWith("SNAPSHOT")) 
-    Some("snapshots" at nexus + "snapshots") 
+  if (version.value.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "snapshots")
   else
-    Some("releases"  at nexus + "releases")
+    Some("releases" at nexus + "releases")
 }
- 
+
 credentials += Credentials(Path.userHome / ".m2" / ".credentials")
 
 ApiDocSettings.apiDocTask

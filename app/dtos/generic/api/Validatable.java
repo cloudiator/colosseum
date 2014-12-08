@@ -1,7 +1,8 @@
-package dtos.generic;
+package dtos.generic.api;
 
 import play.data.validation.ValidationError;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -16,6 +17,7 @@ public interface Validatable {
      *
      * @return null if no errors are present, otherwise a list of validation errors.
      */
+    @Nullable
     public List<ValidationError> validate();
 
 }

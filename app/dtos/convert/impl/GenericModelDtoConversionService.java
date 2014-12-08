@@ -5,7 +5,7 @@ import com.google.common.collect.Table;
 import com.google.inject.Singleton;
 import dtos.convert.api.ModelDtoConversionServiceWithRegistry;
 import dtos.convert.converters.api.ModelDtoConverter;
-import dtos.generic.Dto;
+import dtos.generic.api.Dto;
 import models.generic.Model;
 import play.Logger;
 

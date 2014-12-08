@@ -3,7 +3,7 @@ package dtos.convert.api;
 import com.google.inject.ImplementedBy;
 import dtos.convert.converters.api.ModelDtoConverter;
 import dtos.convert.impl.DefaultModelDtoConversionService;
-import dtos.generic.Dto;
+import dtos.generic.api.Dto;
 import models.generic.Model;
 
 /**

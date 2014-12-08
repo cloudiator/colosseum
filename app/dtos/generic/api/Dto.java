@@ -1,4 +1,4 @@
-package dtos.generic;
+package dtos.generic.api;
 
 /**
  * Interface for data transfer objects.

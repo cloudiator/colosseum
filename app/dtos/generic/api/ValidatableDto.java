@@ -1,4 +1,4 @@
-package dtos.generic;
+package dtos.generic.api;
 
 /**
  * Created by bwpc on 08.12.2014.

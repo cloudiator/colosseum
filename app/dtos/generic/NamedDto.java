@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A Dto for named entities.
  */
-public abstract class NamedDto implements Dto {
+public abstract class NamedDto implements ValidatableDto {
 
     public String name;
 
@@ -27,14 +27,7 @@ public abstract class NamedDto implements Dto {
         this.name = name;
     }
 
-    /**
-     * Validates the dto.
-     * <p>
-     * Checks if the name is null or empty.
-     *
-     * @return if validation passes null is returned, otherwise
-     * a list of validation errors.
-     */
+    @Override
     public List<ValidationError> validate() {
         List<ValidationError> errors = new ArrayList<>();
         if (name == null || name.length() == 0) {

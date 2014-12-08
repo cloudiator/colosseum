@@ -96,7 +96,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      */
     @Transactional(readOnly = true)
     public Result list() {
-        return ok(Json.toJson(this.conversionService.toDtos(this.loadEntities(), dtoType)));
+        return ok(Json.toJson(this.conversionService.toDtos(this.loadEntities(), this.dtoType)));
     }
 
     /**
@@ -121,7 +121,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
             return notFound();
         }
 
-        return ok(Json.toJson(this.conversionService.toDto(entity, dtoType)));
+        return ok(Json.toJson(this.conversionService.toDto(entity, this.dtoType)));
     }
 
     /**

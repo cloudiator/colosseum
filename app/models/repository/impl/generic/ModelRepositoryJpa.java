@@ -33,7 +33,6 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
     @Override
     public T findById(Long id) {
         checkNotNull(id);
-        checkArgument(id > 0, "id must be > 0");
         return em().find(type, id);
     }
 

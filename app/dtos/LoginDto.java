@@ -2,7 +2,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import models.service.impl.FrontendUserService;
+import models.service.api.FrontendUserServiceInterface;
 import play.Logger;
 
 /**
@@ -10,9 +10,9 @@ import play.Logger;
  */
 public class LoginDto {
 
-    public static class FrontendUserServiceReference {
+    public static class References {
         @Inject
-        public static Provider<FrontendUserService> frontendUserService;
+        public static Provider<FrontendUserServiceInterface> frontendUserService;
     }
 
     public String email;
@@ -21,7 +21,7 @@ public class LoginDto {
 
     public String validate() {
         try {
-            if (FrontendUserServiceReference.frontendUserService.get().authenticate(email, password) == null) {
+            if (References.frontendUserService.get().authenticate(email, password) == null) {
                 return "Invalid user or password";
             }
         } catch (Exception e) {

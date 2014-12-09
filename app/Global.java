@@ -18,7 +18,7 @@
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dtos.FormModule;
+import dtos.config.FormModule;
 import dtos.convert.config.BaseConverterModule;
 import play.Application;
 import play.GlobalSettings;

@@ -5,7 +5,6 @@ import dtos.convert.api.ModelDtoConversionService;
 import dtos.generic.api.Dto;
 import models.generic.Model;
 import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.generic.ModelService;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -49,7 +48,6 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      * if not.
      */
     protected T loadEntity(final Long id) {
-        checkNotNull(id);
         return modelService.getById(id);
     }
 
@@ -61,6 +59,17 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      */
     protected List<T> loadEntities() {
         return modelService.getAll();
+    }
+
+    /**
+     * Helper for generating the not found message.
+     *
+     * @param id the id that was not found.
+     * @return An result containing a error message depicting that the given id was
+     * not found (404 status code).
+     */
+    protected Result notFound(final Long id) {
+        return notFound("Could not find entity of type " + this.type.getSimpleName() + " with id " + id);
     }
 
     /**
@@ -119,7 +128,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
         final T entity = this.loadEntity(id);
 
         if (entity == null) {
-            return notFound();
+            return this.notFound(id);
         }
 
         return ok(Json.toJson(this.conversionService.toDto(entity, this.dtoType)));
@@ -182,7 +191,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
         T entity = this.loadEntity(id);
 
         if (entity == null) {
-            return notFound();
+            return this.notFound(id);
         }
 
         final Form<S> filledForm = form.bindFromRequest();
@@ -215,7 +224,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
         T entity = this.loadEntity(id);
 
         if (entity == null) {
-            return notFound();
+            return this.notFound(id);
         }
 
         this.modelService.delete(entity);

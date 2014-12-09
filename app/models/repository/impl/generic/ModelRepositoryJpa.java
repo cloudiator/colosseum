@@ -9,6 +9,9 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import static com.google.inject.internal.util.$Preconditions.checkArgument;
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 31.10.14.
  */
@@ -29,6 +32,8 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
 
     @Override
     public T findById(Long id) {
+        checkNotNull(id);
+        checkArgument(id > 0, "id must be > 0");
         return em().find(type, id);
     }
 
@@ -38,6 +43,7 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
 
     @Override
     public void save(final T t) {
+        checkNotNull(t);
         if(t.getId() == null) {
             this.persist(t);
         } else {
@@ -63,6 +69,7 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
 
     @Override
     public void delete(final T t) {
+        checkNotNull(t);
         em().remove(t);
     }
 

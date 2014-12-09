@@ -4,6 +4,7 @@ import controllers.Secured;
 import dtos.convert.api.ModelDtoConversionService;
 import dtos.generic.api.Dto;
 import models.generic.Model;
+import models.service.api.generic.ModelServiceInterface;
 import models.service.impl.generic.ModelService;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -32,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Security.Authenticated(Secured.class)
 public abstract class GenericApiController<T extends Model, S extends Dto> extends Controller {
 
-    private final ModelService<T> modelService;
+    private final ModelServiceInterface<T> modelService;
     private final ModelDtoConversionService conversionService;
     private final Class<T> type;
     private final Class<S> dtoType;
@@ -68,7 +69,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      * @param modelService      the model service for retrieving the models.
      * @param conversionService the conversion service for converting models and dtos.
      */
-    protected GenericApiController(ModelService<T> modelService, ModelDtoConversionService conversionService) {
+    protected GenericApiController(ModelServiceInterface<T> modelService, ModelDtoConversionService conversionService) {
 
         Type t = getClass().getGenericSuperclass();
         ParameterizedType pt = (ParameterizedType) t;

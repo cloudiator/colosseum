@@ -32,10 +32,10 @@ public class CloudConverter implements ModelDtoConverter<Cloud, CloudDto> {
     }
 
     @Override
-    public Cloud toModel(CloudDto cloudDto, Cloud cloud) {
+    public Cloud toModel(CloudDto cloudDto, Cloud model) {
         checkNotNull(cloudDto);
-        checkNotNull(cloud);
-        return setDto(cloud, cloudDto);
+        checkNotNull(model);
+        return setDto(model, cloudDto);
     }
 
     @Override

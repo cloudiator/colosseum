@@ -4,6 +4,7 @@ import models.generic.Model;
 import models.repository.api.generic.ModelRepository;
 import models.service.api.generic.ModelServiceInterface;
 
+import javax.annotation.Nullable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,7 @@ public abstract class ModelService<T extends Model> implements ModelServiceInter
     }
 
     @Override
+    @Nullable
     public T getById(Long id) {
         return modelRepository.findById(id);
     }

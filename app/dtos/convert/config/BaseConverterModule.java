@@ -1,8 +1,10 @@
-package dtos.convert.converters.impl;
+package dtos.convert.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import dtos.convert.converters.api.ModelDtoConverter;
+import dtos.convert.converters.impl.CloudConverter;
+import dtos.convert.converters.impl.VirtualMachineConverter;
 
 /**
  * Base converter module.
@@ -15,6 +17,7 @@ public class BaseConverterModule extends AbstractModule {
     protected void configure() {
         Multibinder<ModelDtoConverter> converterBinder = Multibinder.newSetBinder(binder(), ModelDtoConverter.class);
         converterBinder.addBinding().to(CloudConverter.class);
+        converterBinder.addBinding().to(VirtualMachineConverter.class);
     }
 
 }

@@ -19,7 +19,7 @@
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import dtos.FormModule;
-import dtos.convert.converters.impl.BaseConverterModule;
+import dtos.convert.config.BaseConverterModule;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;

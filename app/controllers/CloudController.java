@@ -23,6 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CloudDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Cloud;
+import models.service.api.CloudServiceInterface;
 import models.service.impl.CloudService;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -42,7 +43,7 @@ public class CloudController extends GenericApiController<Cloud, CloudDto> {
      * @param conversionService Model <-> DTO conversion service.
      */
     @Inject
-    protected CloudController(CloudService cloudService, ModelDtoConversionService conversionService) {
+    protected CloudController(CloudServiceInterface cloudService, ModelDtoConversionService conversionService) {
         super(cloudService, conversionService);
     }
 

@@ -36,6 +36,13 @@ PUT           /cloudImage                @controllers.CloudImageController.creat
 POST          /cloudImage/:id            @controllers.CloudImageController.update(id: Long)
 DELETE        /cloudImage/:id            @controllers.CloudImageController.delete(id: Long)
 
+#CloudLocation
+GET           /cloudLocation             @controllers.CloudLocationController.list()
+GET           /cloudLocation/:id         @controllers.CloudLocationController.get(id: Long)
+PUT           /cloudLocation             @controllers.CloudLocationController.create()
+POST          /cloudLocation/:id         @controllers.CloudLocationController.update(id: Long)
+DELETE        /cloudLocation/:id         @controllers.CloudLocationController.delete(id: Long)
+
 #VirtualMachine
 
 GET           /virtualMachine            @controllers.VirtualMachineController.list()

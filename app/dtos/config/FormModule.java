@@ -1,10 +1,7 @@
 package dtos.config;
 
 import com.google.inject.AbstractModule;
-import dtos.CloudHardwareDto;
-import dtos.CloudImageDto;
-import dtos.LoginDto;
-import dtos.VirtualMachineDto;
+import dtos.*;
 
 /**
  * Created by daniel on 26.11.14.
@@ -17,5 +14,6 @@ public class FormModule extends AbstractModule {
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(CloudHardwareDto.References.class);
         requestStaticInjection(CloudImageDto.References.class);
+        requestStaticInjection(CloudLocationDto.References.class);
     }
 }

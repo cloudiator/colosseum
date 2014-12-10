@@ -23,6 +23,8 @@ import javax.persistence.ManyToOne;
 
 import models.generic.Model;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * Represents the relation between a cloud and a generic location, by specifing
  * the cloud-dependant uuid.
@@ -38,13 +40,13 @@ public class CloudLocation extends Model {
 	/**
 	 * The cloud where this location is available.
 	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Cloud cloud;
 
 	/**
 	 * The location.
 	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Location location;
 
 	/**
@@ -64,6 +66,7 @@ public class CloudLocation extends Model {
 	}
 
 	public void setCloud(Cloud cloud) {
+		checkNotNull(cloud);
 		this.cloud = cloud;
 	}
 
@@ -72,6 +75,7 @@ public class CloudLocation extends Model {
 	}
 
 	public void setLocation(Location location) {
+		checkNotNull(location);
 		this.location = location;
 	}
 
@@ -80,6 +84,7 @@ public class CloudLocation extends Model {
 	}
 
 	public void setUuid(String uuid) {
+		checkNotNull(uuid);
 		this.uuid = uuid;
 	}
 }

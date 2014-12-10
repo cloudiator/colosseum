@@ -3,11 +3,9 @@ package dtos.convert.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import dtos.convert.converters.api.ModelDtoConverter;
-import dtos.convert.converters.impl.CloudConverter;
-import dtos.convert.converters.impl.CloudHardwareConverter;
-import dtos.convert.converters.impl.CloudImageConverter;
-import dtos.convert.converters.impl.VirtualMachineConverter;
+import dtos.convert.converters.impl.*;
 import models.CloudImage;
+import models.CloudLocation;
 
 /**
  * Base converter module.
@@ -23,6 +21,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(VirtualMachineConverter.class);
         converterBinder.addBinding().to(CloudHardwareConverter.class);
         converterBinder.addBinding().to(CloudImageConverter.class);
+        converterBinder.addBinding().to(CloudLocationConverter.class);
     }
 
 }

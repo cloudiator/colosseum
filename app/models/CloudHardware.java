@@ -47,13 +47,13 @@ public class CloudHardware extends Model {
     /**
      * The cloud where this hardware is available.
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Cloud cloud;
 
     /**
      * The hardware.
      */
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Hardware hardware;
 
     /**

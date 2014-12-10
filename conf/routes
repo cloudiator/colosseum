@@ -29,6 +29,13 @@ PUT           /cloudHardware             @controllers.CloudHardwareController.cr
 POST          /cloudHardware/:id         @controllers.CloudHardwareController.update(id: Long)
 DELETE        /cloudHardwre/:id          @controllers.CloudHardwareController.delete(id: Long)
 
+#CloudImage
+GET           /cloudImage                @controllers.CloudImageController.list()
+GET           /cloudImage/:id            @controllers.CloudImageController.get(id: Long)
+PUT           /cloudImage                @controllers.CloudImageController.create()
+POST          /cloudImage/:id            @controllers.CloudImageController.update(id: Long)
+DELETE        /cloudImage/:id            @controllers.CloudImageController.delete(id: Long)
+
 #VirtualMachine
 
 GET           /virtualMachine            @controllers.VirtualMachineController.list()

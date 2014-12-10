@@ -21,7 +21,11 @@ package models;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import com.google.common.base.Preconditions;
 import models.generic.Model;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic image, by specifing the
@@ -44,13 +48,13 @@ public class CloudImage extends Model {
 	/**
 	 * The cloud where this image is available.
 	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Cloud cloud;
 
 	/**
 	 * The image.
 	 */
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Image image;
 
 	/**
@@ -63,6 +67,7 @@ public class CloudImage extends Model {
     }
 
     public void setCloud(Cloud cloud) {
+        checkNotNull(cloud);
         this.cloud = cloud;
     }
 
@@ -71,6 +76,7 @@ public class CloudImage extends Model {
     }
 
     public void setImage(Image image) {
+        checkNotNull(image);
         this.image = image;
     }
 
@@ -79,6 +85,8 @@ public class CloudImage extends Model {
     }
 
     public void setUuid(String uuid) {
+        checkNotNull(uuid);
+        checkArgument(!uuid.isEmpty(), "Empty String for uuid provided");
         this.uuid = uuid;
     }
 }

@@ -33,7 +33,7 @@ public class CloudHardwareDto extends AbstractValidatableDto {
 
 
     public CloudHardwareDto() {
-        super();
+
     }
 
     public CloudHardwareDto(Long cloud, Long hardware, String uuid) {

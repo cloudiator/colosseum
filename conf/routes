@@ -22,6 +22,13 @@ PUT           /cloud                     @controllers.CloudController.create()
 POST          /cloud/:id                 @controllers.CloudController.update(id: Long)
 DELETE        /cloud/:id                 @controllers.CloudController.delete(id: Long)
 
+#CloudHardware
+GET           /cloudHardware             @controllers.CloudHardwareController.list()
+GET           /cloudHardware/:id         @controllers.CloudHardwareController.get(id: Long)
+PUT           /cloudHardware             @controllers.CloudHardwareController.create()
+POST          /cloudHardware/:id         @controllers.CloudHardwareController.update(id: Long)
+DELETE        /cloudHardwre/:id          @controllers.CloudHardwareController.delete(id: Long)
+
 #VirtualMachine
 
 GET           /virtualMachine            @controllers.VirtualMachineController.list()

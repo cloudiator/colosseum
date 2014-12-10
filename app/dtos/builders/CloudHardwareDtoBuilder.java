@@ -22,7 +22,7 @@ public class CloudHardwareDtoBuilder {
         return this;
     }
 
-    public CloudHardwareDto createCloudHardwareDto() {
+    public CloudHardwareDto build() {
         return new CloudHardwareDto(cloud, hardware, uuid);
     }
 }

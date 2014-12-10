@@ -14,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel seybold on 09.12.2014.
  */
 public class VirtualMachineConverter implements ModelDtoConverter<VirtualMachine, VirtualMachineDto> {
 

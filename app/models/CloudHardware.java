@@ -23,6 +23,9 @@ import models.generic.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Represents the relation between a cloud and a generic hardware, by specifing
  * the cloud-dependant uuid.
@@ -63,6 +66,7 @@ public class CloudHardware extends Model {
     }
 
     public void setCloud(Cloud cloud) {
+        checkNotNull(cloud);
         this.cloud = cloud;
     }
 
@@ -71,6 +75,7 @@ public class CloudHardware extends Model {
     }
 
     public void setHardware(Hardware hardware) {
+        checkNotNull(hardware);
         this.hardware = hardware;
     }
 
@@ -79,6 +84,8 @@ public class CloudHardware extends Model {
     }
 
     public void setUuid(String uuid) {
+        checkNotNull(uuid);
+        checkArgument(!uuid.isEmpty(), "Empty String for uuid provided");
         this.uuid = uuid;
     }
 }

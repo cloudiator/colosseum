@@ -2,6 +2,7 @@ package dtos.config;
 
 import com.google.inject.AbstractModule;
 import dtos.*;
+import models.Image;
 
 /**
  * Created by daniel on 26.11.14.
@@ -15,5 +16,6 @@ public class FormModule extends AbstractModule {
         requestStaticInjection(CloudHardwareDto.References.class);
         requestStaticInjection(CloudImageDto.References.class);
         requestStaticInjection(CloudLocationDto.References.class);
+        requestStaticInjection(ImageDto.References.class);
     }
 }

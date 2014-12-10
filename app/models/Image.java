@@ -25,6 +25,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * The model class image.
  * <p/>
@@ -40,7 +42,7 @@ public class Image extends NamedModel {
      */
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private OperatingSystem operatingSystem;
 
     /**
@@ -64,6 +66,7 @@ public class Image extends NamedModel {
     }
 
     public void setOperatingSystem(OperatingSystem operatingSystem) {
+        checkNotNull(operatingSystem);
         this.operatingSystem = operatingSystem;
     }
 
@@ -72,6 +75,7 @@ public class Image extends NamedModel {
     }
 
     public void setCloudImages(List<CloudImage> cloudImages) {
+        checkNotNull(cloudImages);
         this.cloudImages = cloudImages;
     }
 }

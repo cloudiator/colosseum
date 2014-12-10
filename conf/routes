@@ -44,11 +44,18 @@ POST          /cloudLocation/:id         @controllers.CloudLocationController.up
 DELETE        /cloudLocation/:id         @controllers.CloudLocationController.delete(id: Long)
 
 #Hardware
-GET           /hardware             @controllers.HardwareController.list()
-GET           /hardware/:id         @controllers.HardwareController.get(id: Long)
-PUT           /hardware             @controllers.HardwareController.create()
-POST          /hardware/:id         @controllers.HardwareController.update(id: Long)
-DELETE        /hardware/:id         @controllers.HardwareController.delete(id: Long)
+GET           /hardware                  @controllers.HardwareController.list()
+GET           /hardware/:id              @controllers.HardwareController.get(id: Long)
+PUT           /hardware                  @controllers.HardwareController.create()
+POST          /hardware/:id              @controllers.HardwareController.update(id: Long)
+DELETE        /hardware/:id              @controllers.HardwareController.delete(id: Long)
+
+#Image
+GET           /image                     @controllers.ImageController.list()
+GET           /image/:id                 @controllers.ImageController.get(id: Long)
+PUT           /image                     @controllers.ImageController.create()
+POST          /image/:id                 @controllers.ImageController.update(id: Long)
+DELETE        /image/:id                 @controllers.ImageController.delete(id: Long)
 
 #VirtualMachine
 

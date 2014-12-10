@@ -2,6 +2,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.CloudLocationDto;
+import dtos.builders.CloudLocationDtoBuilder;
 import dtos.convert.converters.api.ModelDtoConverter;
 import models.Cloud;
 import models.CloudLocation;
@@ -53,11 +54,18 @@ public class CloudLocationConverter implements ModelDtoConverter<CloudLocation, 
 
     @Override
     public CloudLocation toModel(CloudLocationDto dto, CloudLocation model) {
-        return null;
+        checkNotNull(dto);
+        checkNotNull(model);
+        return this.setDto(model, dto);
     }
 
     @Override
     public CloudLocationDto toDto(CloudLocation model) {
-        return null;
+        checkNotNull(model);
+        return new CloudLocationDtoBuilder()
+                .uuid(model.getUuid())
+                .cloud(model.getCloud().getId())
+                .location(model.getLocation().getId())
+                .build();
     }
 }

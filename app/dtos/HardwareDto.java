@@ -1,6 +1,12 @@
 package dtos;
 
-public class HardwareDto {
+import dtos.generic.impl.AbstractValidatableDto;
+import play.data.validation.ValidationError;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class HardwareDto extends AbstractValidatableDto {
 
     public Integer numberOfCpu;
     public Long mbOfRam;
@@ -14,5 +20,25 @@ public class HardwareDto {
         this.numberOfCpu = numberOfCpu;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;
+    }
+
+    @Override
+    public List<ValidationError> validateNotNull() {
+        List<ValidationError> errors = new ArrayList<>();
+
+        if(this.numberOfCpu <= 0){
+            errors.add(new ValidationError("hardware", "NumberOfCpu must be greater 0"));
+        }
+
+        if(this.mbOfRam <= 0){
+            errors.add(new ValidationError("hardware", "MbOfRam must be greater 0"));
+        }
+
+        if(this.mbOfRam <= 0){
+            errors.add(new ValidationError("hardware", "LocalDiskSpace must be greater 0"));
+        }
+
+        return  errors;
+
     }
 }

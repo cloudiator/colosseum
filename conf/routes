@@ -43,6 +43,13 @@ PUT           /cloudLocation             @controllers.CloudLocationController.cr
 POST          /cloudLocation/:id         @controllers.CloudLocationController.update(id: Long)
 DELETE        /cloudLocation/:id         @controllers.CloudLocationController.delete(id: Long)
 
+#Hardware
+GET           /hardware             @controllers.HardwareController.list()
+GET           /hardware/:id         @controllers.HardwareController.get(id: Long)
+PUT           /hardware             @controllers.HardwareController.create()
+POST          /hardware/:id         @controllers.HardwareController.update(id: Long)
+DELETE        /hardware/:id         @controllers.HardwareController.delete(id: Long)
+
 #VirtualMachine
 
 GET           /virtualMachine            @controllers.VirtualMachineController.list()

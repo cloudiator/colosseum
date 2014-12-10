@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * The model class hardware.
  * <p>
@@ -73,6 +75,7 @@ public class Hardware extends Model {
     }
 
     public void setNumberOfCpu(Integer numberOfCpu) {
+        checkNotNull(numberOfCpu);
         this.numberOfCpu = numberOfCpu;
     }
 
@@ -81,6 +84,7 @@ public class Hardware extends Model {
     }
 
     public void setMbOfRam(Long mbOfRam) {
+        checkNotNull(mbOfRam);
         this.mbOfRam = mbOfRam;
     }
 
@@ -89,6 +93,7 @@ public class Hardware extends Model {
     }
 
     public void setLocalDiskSpace(Long localDiskSpace) {
+        checkNotNull(localDiskSpace);
         this.localDiskSpace = localDiskSpace;
     }
 
@@ -97,6 +102,7 @@ public class Hardware extends Model {
     }
 
     public void setCloudHardware(List<CloudHardware> cloudHardware) {
+        checkNotNull(cloudHardware);
         this.cloudHardware = cloudHardware;
     }
 }

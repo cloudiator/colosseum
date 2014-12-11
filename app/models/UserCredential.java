@@ -5,6 +5,8 @@ import models.generic.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 31.10.14.
  */
@@ -16,13 +18,22 @@ public class UserCredential extends Model {
      */
     private static final long serialVersionUID = 1L;
 
-    @ManyToOne
+    /**
+     * The associated CloudApi
+     */
+    @ManyToOne(optional = false)
     private CloudApi cloudApi;
 
-    @ManyToOne
+    /**
+     * The associated Credentials
+     */
+    @ManyToOne(optional = false)
     private Credential credential;
 
-    @ManyToOne
+    /**
+     * The associated FrontendUser
+     */
+    @ManyToOne(optional = false)
     private FrontendUser frontendUser;
 
     public CloudApi getCloudApi() {
@@ -30,6 +41,7 @@ public class UserCredential extends Model {
     }
 
     public void setCloudApi(CloudApi cloudApi) {
+        checkNotNull(cloudApi);
         this.cloudApi = cloudApi;
     }
 
@@ -38,6 +50,7 @@ public class UserCredential extends Model {
     }
 
     public void setCredential(Credential credential) {
+        checkNotNull(credential);
         this.credential = credential;
     }
 
@@ -46,6 +59,7 @@ public class UserCredential extends Model {
     }
 
     public void setFrontendUser(FrontendUser frontendUser) {
+        checkNotNull(frontendUser);
         this.frontendUser = frontendUser;
     }
 }

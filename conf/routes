@@ -85,6 +85,13 @@ PUT           /frontendUser              @controllers.FrontendUserController.cre
 POST          /frontendUser/:id          @controllers.FrontendUserController.update(id: Long)
 DELETE        /frontendUser/:id          @controllers.FrontendUserController.delete(id: Long)
 
+#FrontendUser
+GET           /userCredential              @controllers.UserCredentialController.list()
+GET           /userCredential/:id          @controllers.UserCredentialController.get(id: Long)
+PUT           /userCredential              @controllers.UserCredentialController.create()
+POST          /userCredential/:id          @controllers.UserCredentialController.update(id: Long)
+DELETE        /userCredential/:id          @controllers.UserCredentialController.delete(id: Long)
+
 
 #VirtualMachine
 

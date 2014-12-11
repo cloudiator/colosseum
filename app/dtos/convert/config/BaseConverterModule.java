@@ -27,6 +27,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CredentialConverter.class);
         converterBinder.addBinding().to(CloudApiConverter.class);
         converterBinder.addBinding().to(ApiConverter.class);
+        converterBinder.addBinding().to(FrontendUserConverter.class);
     }
 
 }

@@ -72,11 +72,18 @@ POST          /credential/:id            @controllers.CredentialController.updat
 DELETE        /credential/:id            @controllers.CredentialController.delete(id: Long)
 
 #Api
-GET           /api                @controllers.ApiController.list()
-GET           /api/:id            @controllers.ApiController.get(id: Long)
-PUT           /api                @controllers.ApiController.create()
-POST          /api/:id            @controllers.ApiController.update(id: Long)
-DELETE        /api/:id            @controllers.ApiController.delete(id: Long)
+GET           /api                       @controllers.ApiController.list()
+GET           /api/:id                   @controllers.ApiController.get(id: Long)
+PUT           /api                       @controllers.ApiController.create()
+POST          /api/:id                   @controllers.ApiController.update(id: Long)
+DELETE        /api/:id                   @controllers.ApiController.delete(id: Long)
+
+#FrontendUser
+GET           /frontendUser              @controllers.FrontendUserController.list()
+GET           /frontendUser/:id          @controllers.FrontendUserController.get(id: Long)
+PUT           /frontendUser              @controllers.FrontendUserController.create()
+POST          /frontendUser/:id          @controllers.FrontendUserController.update(id: Long)
+DELETE        /frontendUser/:id          @controllers.FrontendUserController.delete(id: Long)
 
 
 #VirtualMachine

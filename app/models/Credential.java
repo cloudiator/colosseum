@@ -22,6 +22,8 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 @Entity
 public class Credential extends Model {
 
@@ -51,6 +53,7 @@ public class Credential extends Model {
     }
 
     public void setUser(String user) {
+        checkNotNull(user);
         this.user = user;
     }
 
@@ -59,6 +62,7 @@ public class Credential extends Model {
     }
 
     public void setSecret(String secret) {
+        checkNotNull(secret);
         this.secret = secret;
     }
 }

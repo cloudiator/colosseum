@@ -24,6 +24,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CloudLocationConverter.class);
         converterBinder.addBinding().to(HardwareConverter.class);
         converterBinder.addBinding().to(ImageConverter.class);
+        converterBinder.addBinding().to(CredentialConverter.class);
     }
 
 }

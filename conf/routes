@@ -57,6 +57,14 @@ PUT           /image                     @controllers.ImageController.create()
 POST          /image/:id                 @controllers.ImageController.update(id: Long)
 DELETE        /image/:id                 @controllers.ImageController.delete(id: Long)
 
+#Credential
+GET           /credential                     @controllers.CredentialController.list()
+GET           /credential/:id                 @controllers.CredentialController.get(id: Long)
+PUT           /credential                     @controllers.CredentialController.create()
+POST          /credential/:id                 @controllers.CredentialController.update(id: Long)
+DELETE        /credential/:id                 @controllers.CredentialController.delete(id: Long)
+
+
 #VirtualMachine
 
 GET           /virtualMachine            @controllers.VirtualMachineController.list()

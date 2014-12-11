@@ -10,4 +10,20 @@ import javax.persistence.Entity;
 @Entity
 public class Api extends NamedModel {
 
+    /**
+     * Empty constructor. Needed by hibernate.
+     */
+    public Api(){
+
+    }
+
+    public Api(String name){
+        super(name);
+    }
+
+    /**
+     * Serial Version.
+     */
+    private static final long serialVersionUID = 1L;
+
 }

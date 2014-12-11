@@ -43,6 +43,13 @@ PUT           /cloudLocation             @controllers.CloudLocationController.cr
 POST          /cloudLocation/:id         @controllers.CloudLocationController.update(id: Long)
 DELETE        /cloudLocation/:id         @controllers.CloudLocationController.delete(id: Long)
 
+#CloudApi
+GET           /cloudApi                  @controllers.CloudApiController.list()
+GET           /cloudApi/:id              @controllers.CloudApiController.get(id: Long)
+PUT           /cloudApi                  @controllers.CloudApiController.create()
+POST          /cloudApi/:id              @controllers.CloudApiController.update(id: Long)
+DELETE        /cloudApi/:id              @controllers.CloudApiController.delete(id: Long)
+
 #Hardware
 GET           /hardware                  @controllers.HardwareController.list()
 GET           /hardware/:id              @controllers.HardwareController.get(id: Long)
@@ -58,11 +65,18 @@ POST          /image/:id                 @controllers.ImageController.update(id:
 DELETE        /image/:id                 @controllers.ImageController.delete(id: Long)
 
 #Credential
-GET           /credential                     @controllers.CredentialController.list()
-GET           /credential/:id                 @controllers.CredentialController.get(id: Long)
-PUT           /credential                     @controllers.CredentialController.create()
-POST          /credential/:id                 @controllers.CredentialController.update(id: Long)
-DELETE        /credential/:id                 @controllers.CredentialController.delete(id: Long)
+GET           /credential                @controllers.CredentialController.list()
+GET           /credential/:id            @controllers.CredentialController.get(id: Long)
+PUT           /credential                @controllers.CredentialController.create()
+POST          /credential/:id            @controllers.CredentialController.update(id: Long)
+DELETE        /credential/:id            @controllers.CredentialController.delete(id: Long)
+
+#Api
+GET           /api                @controllers.ApiController.list()
+GET           /api/:id            @controllers.ApiController.get(id: Long)
+PUT           /api                @controllers.ApiController.create()
+POST          /api/:id            @controllers.ApiController.update(id: Long)
+DELETE        /api/:id            @controllers.ApiController.delete(id: Long)
 
 
 #VirtualMachine

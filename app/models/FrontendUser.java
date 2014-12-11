@@ -25,6 +25,8 @@ import org.apache.commons.codec.binary.Base64;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * The class representing a user of the system.
  *
@@ -120,6 +122,7 @@ public class FrontendUser extends Model {
     }
 
     public void setFirstName(String firstName) {
+        checkNotNull(firstName);
         this.firstName = firstName;
     }
 
@@ -128,6 +131,7 @@ public class FrontendUser extends Model {
     }
 
     public void setLastName(String lastName) {
+        checkNotNull(lastName);
         this.lastName = lastName;
     }
 
@@ -136,6 +140,7 @@ public class FrontendUser extends Model {
     }
 
     public void setSalt(String salt) {
+        checkNotNull(salt);
         this.salt = salt;
     }
 
@@ -144,6 +149,7 @@ public class FrontendUser extends Model {
     }
 
     public void setMail(String mail) {
+        checkNotNull(mail);
         this.mail = mail;
     }
 
@@ -152,6 +158,7 @@ public class FrontendUser extends Model {
     }
 
     public void setPassword(String password) {
+        checkNotNull(password);
         this.password = password;
     }
 }

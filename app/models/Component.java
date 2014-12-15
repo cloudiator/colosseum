@@ -10,7 +10,7 @@ import java.util.List;
  * Created by daniel on 12.12.14.
  */
 @Entity
-public class Component extends NamedModel{
+public abstract class Component extends NamedModel{
 
     @OneToMany(mappedBy = "component")
     private List<ApplicationComponent> applicationComponents;

@@ -6,6 +6,7 @@ import dtos.convert.converters.api.ModelDtoConverter;
 import dtos.convert.converters.impl.*;
 import models.CloudImage;
 import models.CloudLocation;
+import models.LifecycleComponent;
 
 /**
  * Base converter module.
@@ -30,6 +31,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(FrontendUserConverter.class);
         converterBinder.addBinding().to(UserCredentialConverter.class);
         converterBinder.addBinding().to(ApplicationConverter.class);
+        converterBinder.addBinding().to(LifecycleComponentConverter.class);
     }
 
 }

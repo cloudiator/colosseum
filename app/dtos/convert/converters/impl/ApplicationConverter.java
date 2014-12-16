@@ -26,7 +26,7 @@ public class ApplicationConverter implements ModelDtoConverter<Application, Appl
     @Override
     public Application toModel(ApplicationDto dto) {
         checkNotNull(dto);
-        return setDto(new Application(), dto);
+        return this.setDto(new Application(), dto);
     }
 
 
@@ -35,7 +35,7 @@ public class ApplicationConverter implements ModelDtoConverter<Application, Appl
     public Application toModel(ApplicationDto dto, Application model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return setDto(model, dto);
+        return this.setDto(model, dto);
     }
 
     @Override

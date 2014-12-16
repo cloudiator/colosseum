@@ -13,11 +13,11 @@ POST          /login                     @controllers.SiteController.authenticat
 GET           /logout                    @controllers.SiteController.logout()
 
 #Application
-GET           /application             @controllers.ApplicationController.list()
-GET           /application/:id         @controllers.ApplicationController.get(id: Long)
-PUT           /application             @controllers.ApplicationController.create()
-POST          /application/:id         @controllers.ApplicationController.update(id: Long)
-DELETE        /application/:id          @controllers.ApplicationController.delete(id: Long)
+GET           /application               @controllers.ApplicationController.list()
+GET           /application/:id           @controllers.ApplicationController.get(id: Long)
+PUT           /application               @controllers.ApplicationController.create()
+POST          /application/:id           @controllers.ApplicationController.update(id: Long)
+DELETE        /application/:id           @controllers.ApplicationController.delete(id: Long)
 
 
 #Cloud
@@ -102,12 +102,18 @@ DELETE        /userCredential/:id        @controllers.UserCredentialController.d
 
 
 #VirtualMachine
-
 GET           /virtualMachine            @controllers.VirtualMachineController.list()
 GET           /virtualMachine/:id        @controllers.VirtualMachineController.get(id: Long)
 PUT           /virtualMachine            @controllers.VirtualMachineController.create()
 POST          /virtualMachine/:id        @controllers.VirtualMachineController.update(id: Long)
 DELETE        /virtualMachine/:id        @controllers.VirtualMachineController.delete(id: Long)
+
+#VirtualMachine
+GET           /lifecycleComponent        @controllers.LifecycleComponentController.list()
+GET           /lifecycleComponent/:id    @controllers.LifecycleComponentController.get(id: Long)
+PUT           /lifecycleComponent        @controllers.LifecycleComponentController.create()
+POST          /lifecycleComponent/:id    @controllers.LifecycleComponentController.update(id: Long)
+DELETE        /lifecycleComponent/:id    @controllers.LifecycleComponentController.delete(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path

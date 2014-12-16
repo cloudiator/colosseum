@@ -12,6 +12,14 @@ GET           /login                     @controllers.SiteController.login()
 POST          /login                     @controllers.SiteController.authenticate()
 GET           /logout                    @controllers.SiteController.logout()
 
+#Application
+GET           /application             @controllers.ApplicationController.list()
+GET           /application/:id         @controllers.ApplicationController.get(id: Long)
+PUT           /application             @controllers.ApplicationController.create()
+POST          /application/:id         @controllers.ApplicationController.update(id: Long)
+DELETE        /application/:id          @controllers.ApplicationController.delete(id: Long)
+
+
 #Cloud
 GET           /cloud/index               @controllers.CloudController.index()
 GET           /cloud/create              @controllers.CloudController.form()
@@ -86,11 +94,11 @@ POST          /frontendUser/:id          @controllers.FrontendUserController.upd
 DELETE        /frontendUser/:id          @controllers.FrontendUserController.delete(id: Long)
 
 #FrontendUser
-GET           /userCredential              @controllers.UserCredentialController.list()
-GET           /userCredential/:id          @controllers.UserCredentialController.get(id: Long)
-PUT           /userCredential              @controllers.UserCredentialController.create()
-POST          /userCredential/:id          @controllers.UserCredentialController.update(id: Long)
-DELETE        /userCredential/:id          @controllers.UserCredentialController.delete(id: Long)
+GET           /userCredential            @controllers.UserCredentialController.list()
+GET           /userCredential/:id        @controllers.UserCredentialController.get(id: Long)
+PUT           /userCredential            @controllers.UserCredentialController.create()
+POST          /userCredential/:id        @controllers.UserCredentialController.update(id: Long)
+DELETE        /userCredential/:id        @controllers.UserCredentialController.delete(id: Long)
 
 
 #VirtualMachine

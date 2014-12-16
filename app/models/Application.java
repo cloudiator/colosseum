@@ -15,6 +15,14 @@ public class Application extends NamedModel {
     @OneToMany(mappedBy = "application")
     private List<ApplicationComponent> applicationComponents;
 
+    public Application(){
+
+    }
+
+    public Application(String name){
+        super(name);
+    }
+
     public List<ApplicationComponent> getApplicationComponents() {
         return applicationComponents;
     }

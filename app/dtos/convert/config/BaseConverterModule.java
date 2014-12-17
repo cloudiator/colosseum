@@ -33,6 +33,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(ApplicationConverter.class);
         converterBinder.addBinding().to(LifecycleComponentConverter.class);
         converterBinder.addBinding().to(ApplicationComponentConverter.class);
+        converterBinder.addBinding().to(InstanceConverter.class);
     }
 
 }

@@ -5,6 +5,8 @@ import models.generic.Model;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.12.14.
  */
@@ -22,6 +24,7 @@ public class Instance extends Model {
     }
 
     public void setApplicationComponent(ApplicationComponent applicationComponent) {
+        checkNotNull(applicationComponent);
         this.applicationComponent = applicationComponent;
     }
 
@@ -30,6 +33,7 @@ public class Instance extends Model {
     }
 
     public void setVirtualMachine(VirtualMachine virtualMachine) {
+        checkNotNull(virtualMachine);
         this.virtualMachine = virtualMachine;
     }
 }

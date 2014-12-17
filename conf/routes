@@ -3,125 +3,132 @@
 # ~~~~
 
 # Home page
-GET           /                              @controllers.SiteController.index()
-GET           /manage                        @controllers.SiteController.manage()
-GET           /help                          @controllers.SiteController.help()
+GET           /                                @controllers.SiteController.index()
+GET           /manage                          @controllers.SiteController.manage()
+GET           /help                            @controllers.SiteController.help()
 
 #Auth
-GET           /login                         @controllers.SiteController.login()
-POST          /login                         @controllers.SiteController.authenticate()
-GET           /logout                        @controllers.SiteController.logout()
+GET           /login                           @controllers.SiteController.login()
+POST          /login                           @controllers.SiteController.authenticate()
+GET           /logout                          @controllers.SiteController.logout()
 
 #Application
-GET           /application                   @controllers.ApplicationController.list()
-GET           /application/:id               @controllers.ApplicationController.get(id: Long)
-PUT           /application                   @controllers.ApplicationController.create()
-POST          /application/:id               @controllers.ApplicationController.update(id: Long)
-DELETE        /application/:id               @controllers.ApplicationController.delete(id: Long)
+GET           /application                     @controllers.ApplicationController.list()
+GET           /application/:id                 @controllers.ApplicationController.get(id: Long)
+PUT           /application                     @controllers.ApplicationController.create()
+POST          /application/:id                 @controllers.ApplicationController.update(id: Long)
+DELETE        /application/:id                 @controllers.ApplicationController.delete(id: Long)
 
 #ApplicationComponent
-GET           /applicationComponent          @controllers.ApplicationComponentController.list()
-GET           /applicationComponent/:id      @controllers.ApplicationComponentController.get(id: Long)
-PUT           /applicationComponent          @controllers.ApplicationComponentController.create()
-POST          /applicationComponent/:id      @controllers.ApplicationComponentController.update(id: Long)
-DELETE        /applicationComponent/:id      @controllers.ApplicationComponentController.delete(id: Long)
+GET           /applicationComponent            @controllers.ApplicationComponentController.list()
+GET           /applicationComponent/:id        @controllers.ApplicationComponentController.get(id: Long)
+PUT           /applicationComponent            @controllers.ApplicationComponentController.create()
+POST          /applicationComponent/:id        @controllers.ApplicationComponentController.update(id: Long)
+DELETE        /applicationComponent/:id        @controllers.ApplicationComponentController.delete(id: Long)
 
 
 #Cloud
-GET           /cloud/index                   @controllers.CloudController.index()
-GET           /cloud/create                  @controllers.CloudController.form()
+GET           /cloud/index                     @controllers.CloudController.index()
+GET           /cloud/create                    @controllers.CloudController.form()
 
-GET           /cloud                         @controllers.CloudController.list()
-GET           /cloud/:id                     @controllers.CloudController.get(id: Long)
-PUT           /cloud                         @controllers.CloudController.create()
-POST          /cloud/:id                     @controllers.CloudController.update(id: Long)
-DELETE        /cloud/:id                     @controllers.CloudController.delete(id: Long)
+GET           /cloud                           @controllers.CloudController.list()
+GET           /cloud/:id                       @controllers.CloudController.get(id: Long)
+PUT           /cloud                           @controllers.CloudController.create()
+POST          /cloud/:id                       @controllers.CloudController.update(id: Long)
+DELETE        /cloud/:id                       @controllers.CloudController.delete(id: Long)
 
 #CloudHardware
-GET           /cloudHardware                 @controllers.CloudHardwareController.list()
-GET           /cloudHardware/:id             @controllers.CloudHardwareController.get(id: Long)
-PUT           /cloudHardware                 @controllers.CloudHardwareController.create()
-POST          /cloudHardware/:id             @controllers.CloudHardwareController.update(id: Long)
-DELETE        /cloudHardwre/:id              @controllers.CloudHardwareController.delete(id: Long)
+GET           /cloudHardware                   @controllers.CloudHardwareController.list()
+GET           /cloudHardware/:id               @controllers.CloudHardwareController.get(id: Long)
+PUT           /cloudHardware                   @controllers.CloudHardwareController.create()
+POST          /cloudHardware/:id               @controllers.CloudHardwareController.update(id: Long)
+DELETE        /cloudHardwre/:id                @controllers.CloudHardwareController.delete(id: Long)
 
 #CloudImage
-GET           /cloudImage                    @controllers.CloudImageController.list()
-GET           /cloudImage/:id                @controllers.CloudImageController.get(id: Long)
-PUT           /cloudImage                    @controllers.CloudImageController.create()
-POST          /cloudImage/:id                @controllers.CloudImageController.update(id: Long)
-DELETE        /cloudImage/:id                @controllers.CloudImageController.delete(id: Long)
+GET           /cloudImage                      @controllers.CloudImageController.list()
+GET           /cloudImage/:id                  @controllers.CloudImageController.get(id: Long)
+PUT           /cloudImage                      @controllers.CloudImageController.create()
+POST          /cloudImage/:id                  @controllers.CloudImageController.update(id: Long)
+DELETE        /cloudImage/:id                  @controllers.CloudImageController.delete(id: Long)
 
 #CloudLocation
-GET           /cloudLocation                 @controllers.CloudLocationController.list()
-GET           /cloudLocation/:id             @controllers.CloudLocationController.get(id: Long)
-PUT           /cloudLocation                 @controllers.CloudLocationController.create()
-POST          /cloudLocation/:id             @controllers.CloudLocationController.update(id: Long)
-DELETE        /cloudLocation/:id             @controllers.CloudLocationController.delete(id: Long)
+GET           /cloudLocation                   @controllers.CloudLocationController.list()
+GET           /cloudLocation/:id               @controllers.CloudLocationController.get(id: Long)
+PUT           /cloudLocation                   @controllers.CloudLocationController.create()
+POST          /cloudLocation/:id               @controllers.CloudLocationController.update(id: Long)
+DELETE        /cloudLocation/:id               @controllers.CloudLocationController.delete(id: Long)
 
 #CloudApi
-GET           /cloudApi                      @controllers.CloudApiController.list()
-GET           /cloudApi/:id                  @controllers.CloudApiController.get(id: Long)
-PUT           /cloudApi                      @controllers.CloudApiController.create()
-POST          /cloudApi/:id                  @controllers.CloudApiController.update(id: Long)
-DELETE        /cloudApi/:id                  @controllers.CloudApiController.delete(id: Long)
+GET           /cloudApi                        @controllers.CloudApiController.list()
+GET           /cloudApi/:id                    @controllers.CloudApiController.get(id: Long)
+PUT           /cloudApi                        @controllers.CloudApiController.create()
+POST          /cloudApi/:id                    @controllers.CloudApiController.update(id: Long)
+DELETE        /cloudApi/:id                    @controllers.CloudApiController.delete(id: Long)
 
 #Hardware
-GET           /hardware                      @controllers.HardwareController.list()
-GET           /hardware/:id                  @controllers.HardwareController.get(id: Long)
-PUT           /hardware                      @controllers.HardwareController.create()
-POST          /hardware/:id                  @controllers.HardwareController.update(id: Long)
-DELETE        /hardware/:id                  @controllers.HardwareController.delete(id: Long)
+GET           /hardware                        @controllers.HardwareController.list()
+GET           /hardware/:id                    @controllers.HardwareController.get(id: Long)
+PUT           /hardware                        @controllers.HardwareController.create()
+POST          /hardware/:id                    @controllers.HardwareController.update(id: Long)
+DELETE        /hardware/:id                    @controllers.HardwareController.delete(id: Long)
 
 #Image
-GET           /image                         @controllers.ImageController.list()
-GET           /image/:id                     @controllers.ImageController.get(id: Long)
-PUT           /image                         @controllers.ImageController.create()
-POST          /image/:id                     @controllers.ImageController.update(id: Long)
-DELETE        /image/:id                     @controllers.ImageController.delete(id: Long)
+GET           /image                           @controllers.ImageController.list()
+GET           /image/:id                       @controllers.ImageController.get(id: Long)
+PUT           /image                           @controllers.ImageController.create()
+POST          /image/:id                       @controllers.ImageController.update(id: Long)
+DELETE        /image/:id                       @controllers.ImageController.delete(id: Long)
 
 #Credential
-GET           /credential                    @controllers.CredentialController.list()
-GET           /credential/:id                @controllers.CredentialController.get(id: Long)
-PUT           /credential                    @controllers.CredentialController.create()
-POST          /credential/:id                @controllers.CredentialController.update(id: Long)
-DELETE        /credential/:id                @controllers.CredentialController.delete(id: Long)
+GET           /credential                      @controllers.CredentialController.list()
+GET           /credential/:id                  @controllers.CredentialController.get(id: Long)
+PUT           /credential                      @controllers.CredentialController.create()
+POST          /credential/:id                  @controllers.CredentialController.update(id: Long)
+DELETE        /credential/:id                  @controllers.CredentialController.delete(id: Long)
 
 #Api
-GET           /api                           @controllers.ApiController.list()
-GET           /api/:id                       @controllers.ApiController.get(id: Long)
-PUT           /api                           @controllers.ApiController.create()
-POST          /api/:id                       @controllers.ApiController.update(id: Long)
-DELETE        /api/:id                       @controllers.ApiController.delete(id: Long)
+GET           /api                             @controllers.ApiController.list()
+GET           /api/:id                         @controllers.ApiController.get(id: Long)
+PUT           /api                             @controllers.ApiController.create()
+POST          /api/:id                         @controllers.ApiController.update(id: Long)
+DELETE        /api/:id                         @controllers.ApiController.delete(id: Long)
 
 #FrontendUser
-GET           /frontendUser                  @controllers.FrontendUserController.list()
-GET           /frontendUser/:id              @controllers.FrontendUserController.get(id: Long)
-PUT           /frontendUser                  @controllers.FrontendUserController.create()
-POST          /frontendUser/:id              @controllers.FrontendUserController.update(id: Long)
-DELETE        /frontendUser/:id              @controllers.FrontendUserController.delete(id: Long)
+GET           /frontendUser                    @controllers.FrontendUserController.list()
+GET           /frontendUser/:id                @controllers.FrontendUserController.get(id: Long)
+PUT           /frontendUser                    @controllers.FrontendUserController.create()
+POST          /frontendUser/:id                @controllers.FrontendUserController.update(id: Long)
+DELETE        /frontendUser/:id                @controllers.FrontendUserController.delete(id: Long)
 
 #FrontendUser
-GET           /userCredential                @controllers.UserCredentialController.list()
-GET           /userCredential/:id            @controllers.UserCredentialController.get(id: Long)
-PUT           /userCredential                @controllers.UserCredentialController.create()
-POST          /userCredential/:id            @controllers.UserCredentialController.update(id: Long)
-DELETE        /userCredential/:id            @controllers.UserCredentialController.delete(id: Long)
+GET           /userCredential                  @controllers.UserCredentialController.list()
+GET           /userCredential/:id              @controllers.UserCredentialController.get(id: Long)
+PUT           /userCredential                  @controllers.UserCredentialController.create()
+POST          /userCredential/:id              @controllers.UserCredentialController.update(id: Long)
+DELETE        /userCredential/:id              @controllers.UserCredentialController.delete(id: Long)
 
 
 #VirtualMachine
-GET           /virtualMachine                @controllers.VirtualMachineController.list()
-GET           /virtualMachine/:id            @controllers.VirtualMachineController.get(id: Long)
-PUT           /virtualMachine                @controllers.VirtualMachineController.create()
-POST          /virtualMachine/:id            @controllers.VirtualMachineController.update(id: Long)
-DELETE        /virtualMachine/:id            @controllers.VirtualMachineController.delete(id: Long)
+GET           /virtualMachine                  @controllers.VirtualMachineController.list()
+GET           /virtualMachine/:id              @controllers.VirtualMachineController.get(id: Long)
+PUT           /virtualMachine                  @controllers.VirtualMachineController.create()
+POST          /virtualMachine/:id              @controllers.VirtualMachineController.update(id: Long)
+DELETE        /virtualMachine/:id              @controllers.VirtualMachineController.delete(id: Long)
 
-#VirtualMachine
-GET           /lifecycleComponent            @controllers.LifecycleComponentController.list()
-GET           /lifecycleComponent/:id        @controllers.LifecycleComponentController.get(id: Long)
-PUT           /lifecycleComponent            @controllers.LifecycleComponentController.create()
-POST          /lifecycleComponent/:id        @controllers.LifecycleComponentController.update(id: Long)
-DELETE        /lifecycleComponent/:id        @controllers.LifecycleComponentController.delete(id: Long)
+#LifecycleComponent
+GET           /lifecycleComponent              @controllers.LifecycleComponentController.list()
+GET           /lifecycleComponent/:id          @controllers.LifecycleComponentController.get(id: Long)
+PUT           /lifecycleComponent              @controllers.LifecycleComponentController.create()
+POST          /lifecycleComponent/:id          @controllers.LifecycleComponentController.update(id: Long)
+DELETE        /lifecycleComponent/:id          @controllers.LifecycleComponentController.delete(id: Long)
+
+#Instance
+GET           /instance                        @controllers.InstanceController.list()
+GET           /instance/:id                    @controllers.InstanceController.get(id: Long)
+PUT           /instance                        @controllers.InstanceController.create()
+POST          /instance/:id                    @controllers.InstanceController.update(id: Long)
+DELETE        /instance/:id                    @controllers.InstanceController.delete(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                  controllers.Assets.at(path="/public", file)
+GET           /assets/*file                    controllers.Assets.at(path="/public", file)

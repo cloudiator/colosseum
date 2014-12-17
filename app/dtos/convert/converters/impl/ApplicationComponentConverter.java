@@ -56,14 +56,14 @@ public class ApplicationComponentConverter implements ModelDtoConverter<Applicat
     @Override
     public ApplicationComponent toModel(ApplicationComponentDto dto) {
         checkNotNull(dto);
-        return setDto(new ApplicationComponent(), dto);
+        return this.setDto(new ApplicationComponent(), dto);
     }
 
     @Override
     public ApplicationComponent toModel(ApplicationComponentDto dto, ApplicationComponent model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return setDto(model, dto);
+        return this.setDto(model, dto);
     }
 
     @Override

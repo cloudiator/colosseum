@@ -1,9 +1,13 @@
 package models;
 
+import models.Application;
+import models.Component;
 import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.12.14.
@@ -11,10 +15,10 @@ import javax.persistence.ManyToOne;
 @Entity
 public class ApplicationComponent extends Model {
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Application application;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Component component;
 
     public Application getApplication() {
@@ -22,6 +26,7 @@ public class ApplicationComponent extends Model {
     }
 
     public void setApplication(Application application) {
+        checkNotNull(application);
         this.application = application;
     }
 
@@ -30,6 +35,7 @@ public class ApplicationComponent extends Model {
     }
 
     public void setComponent(Component component) {
+        checkNotNull(component);
         this.component = component;
     }
 }

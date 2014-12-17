@@ -19,5 +19,6 @@ public class FormModule extends AbstractModule {
         requestStaticInjection(ImageDto.References.class);
         requestStaticInjection(CloudApiDto.References.class);
         requestStaticInjection(UserCredentialDto.References.class);
+        requestStaticInjection(ApplicationComponentDto.References.class);
     }
 }

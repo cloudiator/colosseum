@@ -19,7 +19,7 @@ public class LifecycleComponentDto extends NamedDto {
     public LifecycleComponentDto(){
 
     }
-    
+
     public LifecycleComponentDto(String name, String download, String install, String start, String stop){
         super(name);
         this.download = download;

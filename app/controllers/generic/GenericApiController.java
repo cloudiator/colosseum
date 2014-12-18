@@ -3,6 +3,7 @@ package controllers.generic;
 import controllers.Secured;
 import dtos.convert.api.ModelDtoConversionService;
 import dtos.generic.api.Dto;
+import dtos.generic.impl.Links;
 import models.generic.Model;
 import models.service.api.generic.ModelServiceInterface;
 import play.data.Form;
@@ -15,7 +16,9 @@ import play.mvc.Security;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,7 +41,6 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
     private final Class<S> dtoType;
     private final Form<S> form;
 
-
     /**
      * Loads the model identified by the given id from the
      * database.
@@ -59,6 +61,21 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      */
     protected List<T> loadEntities() {
         return modelService.getAll();
+    }
+
+    /**
+     * The route for use in the self link.
+     *
+     * @return a string depicting the self route.
+     */
+    protected abstract String getSelfRoute(final Long id);
+
+    private Map<Long, String> getSelfRoutes(List<T> models) {
+        Map<Long, String> map = new HashMap<>(models.size());
+        for (T model : models) {
+            map.put(model.getId(), this.getSelfRoute(model.getId()));
+        }
+        return map;
     }
 
     /**
@@ -105,8 +122,9 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      * @return A json representation of all entities.
      */
     @Transactional(readOnly = true)
+    @BodyParser.Of(BodyParser.Empty.class)
     public Result list() {
-        return ok(Json.toJson(this.conversionService.toDtos(this.loadEntities(), this.dtoType)));
+        return ok(Json.toJson(this.conversionService.toDtos(this.loadEntities(), this.dtoType, Links.fromIdsAndSelfLinks(this.getSelfRoutes(this.loadEntities())))));
     }
 
     /**
@@ -124,6 +142,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      * entity does not exist.
      */
     @Transactional(readOnly = true)
+    @BodyParser.Of(BodyParser.Empty.class)
     public Result get(final Long id) {
         final T entity = this.loadEntity(id);
 
@@ -131,7 +150,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
             return this.notFound(id);
         }
 
-        return ok(Json.toJson(this.conversionService.toDto(entity, this.dtoType)));
+        return ok(Json.toJson(this.conversionService.toDto(entity, this.dtoType, Links.fromSelfLink(this.getSelfRoute(id)))));
     }
 
     /**
@@ -220,6 +239,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
      * could not be found.
      */
     @Transactional
+    @BodyParser.Of(BodyParser.Empty.class)
     public Result delete(final Long id) {
         T entity = this.loadEntity(id);
 

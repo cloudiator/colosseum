@@ -10,7 +10,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class FrontendUserConverter implements ModelDtoConverter<FrontendUser, FrontendUserDto> {
+public class FrontendUserConverter extends BaseConverter<FrontendUser, FrontendUserDto> {
 
     /**
      * Sets the dto to the frontendUser model.

@@ -21,4 +21,9 @@ public class VirtualMachineController extends GenericApiController<VirtualMachin
     protected VirtualMachineController(VirtualMachineServiceInterface virtualMachineService, ModelDtoConversionService conversionService) {
         super(virtualMachineService, conversionService);
     }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
+    }
 }

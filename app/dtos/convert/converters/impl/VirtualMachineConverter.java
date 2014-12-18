@@ -3,7 +3,6 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.VirtualMachineDto;
 import dtos.builders.VirtualMachineDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.*;
 import models.service.impl.CloudHardwareFlavorService;
 import models.service.impl.CloudImageService;
@@ -16,7 +15,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel seybold on 09.12.2014.
  */
-public class VirtualMachineConverter implements ModelDtoConverter<VirtualMachine, VirtualMachineDto> {
+public class VirtualMachineConverter extends BaseConverter<VirtualMachine, VirtualMachineDto> {
 
     private final CloudService cloudService;
     private final CloudLocationService cloudLocationService;

@@ -10,7 +10,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 10.12.2014.
  */
-public class HardwareConverter implements ModelDtoConverter<Hardware, HardwareDto> {
+public class HardwareConverter extends BaseConverter<Hardware, HardwareDto> {
 
     /**
      * Sets the dto to the hardware model.

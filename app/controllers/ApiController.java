@@ -21,4 +21,9 @@ public class ApiController extends GenericApiController<Api, ApiDto> {
     protected ApiController(ApiServiceInterface apiService, ModelDtoConversionService conversionService) {
         super(apiService, conversionService);
     }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.ApiController.get(id).absoluteURL(request());
+    }
 }

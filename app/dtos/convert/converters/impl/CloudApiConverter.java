@@ -16,7 +16,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class CloudApiConverter implements ModelDtoConverter<CloudApi, CloudApiDto> {
+public class CloudApiConverter extends BaseConverter<CloudApi, CloudApiDto> {
 
     private final ApiService apiService;
     private final CloudService cloudService;

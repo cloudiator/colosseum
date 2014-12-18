@@ -6,7 +6,6 @@ import dtos.UserCredentialDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.UserCredential;
 import models.service.api.UserCredentialServiceInterface;
-import models.service.api.generic.ModelServiceInterface;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -21,5 +20,11 @@ public class UserCredentialController extends GenericApiController<UserCredentia
     @Inject
     protected UserCredentialController(UserCredentialServiceInterface userCredentialService, ModelDtoConversionService conversionService) {
         super(userCredentialService, conversionService);
+    }
+
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.UserCredentialController.get(id).absoluteURL(request());
     }
 }

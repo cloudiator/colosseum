@@ -16,6 +16,7 @@ public abstract class NamedDto extends AbstractValidatableDto {
      * Default constructor, need for Play Forms API.
      */
     public NamedDto() {
+        super();
     }
 
     /**

@@ -16,7 +16,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 09.12.2014.
  */
-public class CloudHardwareConverter implements ModelDtoConverter<CloudHardware, CloudHardwareDto> {
+public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHardwareDto> {
 
     private final CloudService cloudService;
     private final HardwareService hardwareService;

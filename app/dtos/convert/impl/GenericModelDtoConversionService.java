@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import dtos.convert.api.ModelDtoConversionServiceWithRegistry;
 import dtos.convert.converters.api.ModelDtoConverter;
 import dtos.generic.api.Dto;
+import dtos.generic.impl.Link;
 import models.generic.Model;
 import play.Logger;
 
@@ -13,6 +14,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -42,29 +45,47 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
     public <T extends Model, S extends Dto> void addConverter(ModelDtoConverter<T, S> modelDtoConverter) {
         checkNotNull(modelDtoConverter);
 
-        Type[] t = modelDtoConverter.getClass().getGenericInterfaces();
-        ParameterizedType pt = (ParameterizedType) t[0];
 
-        //noinspection unchecked
-        final Class<T> modelClass = (Class) pt.getActualTypeArguments()[0];
-        //noinspection unchecked
-        final Class<S> dtoClass = (Class) pt.getActualTypeArguments()[1];
+        try {
+            Type t = modelDtoConverter.getClass().getGenericSuperclass();
+            ParameterizedType pt = (ParameterizedType) t;
 
-        this.addConverter(modelClass, dtoClass, modelDtoConverter);
+            //noinspection unchecked
+            final Class<T> modelClass = (Class) pt.getActualTypeArguments()[0];
+            //noinspection unchecked
+            final Class<S> dtoClass = (Class) pt.getActualTypeArguments()[1];
+
+            this.addConverter(modelClass, dtoClass, modelDtoConverter);
+        } catch (Throwable t) {
+            throw new IllegalArgumentException("Could not resolve generic type of modelDtoConverter", t);
+        }
+
     }
 
     @Override
     public <T extends Model, S extends Dto> T toModel(final S dto, final Class<T> modelClass) {
-        checkNotNull(dto, modelClass);
+        checkNotNull(dto);
+        checkNotNull(modelClass);
         //noinspection unchecked
         return (T) this.converters.get(modelClass, dto.getClass()).toModel(dto);
     }
 
     @Override
     public <T extends Model, S extends Dto> S toDto(final T model, final Class<S> dtoClass) {
-        checkNotNull(model, dtoClass);
+        checkNotNull(model);
+        checkNotNull(dtoClass);
         //noinspection unchecked
         return (S) this.converters.get(model.getClass(), dtoClass).toDto(model);
+    }
+
+    @Override
+    public <T extends Model, S extends Dto> S toDto(T model, Class<S> dtoClass, Set<Link> links) {
+        checkNotNull(model);
+        checkNotNull(dtoClass);
+        checkNotNull(links);
+
+        //noinspection unchecked
+        return (S) this.converters.get(model.getClass(), dtoClass).toDto(model, links);
     }
 
     @Override
@@ -98,6 +119,23 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
         return dtos;
     }
 
+    @Override
+    public <T extends Model, S extends Dto> List<S> toDtos(List<T> models, Class<S> dtoClass, Map<Long, Set<Link>> links) {
+        checkNotNull(models);
+        checkNotNull(dtoClass);
+        checkNotNull(links);
+
+        List<S> dtos = new ArrayList<>(models.size());
+        for (T model : models) {
+            if (links.containsKey(model.getId()) && links.get(model.getId()) != null) {
+                dtos.add(this.toDto(model, dtoClass, links.get(model.getId())));
+            } else {
+                dtos.add(this.toDto(model, dtoClass));
+            }
+        }
+        return dtos;
+    }
+
     /**
      * A storage for the registered converters.
      */
@@ -110,13 +148,12 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
 
         /**
          * Returns a stored converter.
-         *
+         * <p>
          * Always returns a converter. If no converter is found
          * a Null-pointer exception is thrown.
          *
          * @param modelClass the model class for the converter.
-         * @param dtoClass the dto class for the converter.
-         *
+         * @param dtoClass   the dto class for the converter.
          * @return the converter.
          */
         public ModelDtoConverter get(final Class<? extends Model> modelClass, final Class<? extends Dto> dtoClass) {
@@ -125,13 +162,13 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
 
         /**
          * Adds a new converter to the converter storage.
-         *
+         * <p>
          * Note: adding a new converter for a tuple of modelClass and
          * dtoClass that already exists, will overwrite the currently
          * stored converter.
          *
-         * @param modelClass the model class.
-         * @param dtoClass the dto class.
+         * @param modelClass        the model class.
+         * @param dtoClass          the dto class.
          * @param modelDtoConverter the converter which should added.
          */
         public void add(final Class<? extends Model> modelClass, final Class<? extends Dto> dtoClass, final ModelDtoConverter modelDtoConverter) {

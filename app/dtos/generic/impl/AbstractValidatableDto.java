@@ -11,7 +11,11 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel on 08.12.14.
  */
-public abstract class AbstractValidatableDto implements ValidatableDto {
+public abstract class AbstractValidatableDto extends DtoImpl implements ValidatableDto {
+
+    public AbstractValidatableDto() {
+        super();
+    }
 
     @Nullable
     @Override

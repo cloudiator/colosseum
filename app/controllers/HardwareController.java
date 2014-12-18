@@ -14,11 +14,16 @@ public class HardwareController extends GenericApiController<Hardware, HardwareD
     /**
      * Constructs a GenericApiController.
      *
-     * @param hardwareService      the model service for retrieving the models.
+     * @param hardwareService   the model service for retrieving the models.
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
     protected HardwareController(HardwareServiceInterface hardwareService, ModelDtoConversionService conversionService) {
         super(hardwareService, conversionService);
+    }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.HardwareController.get(id).absoluteURL(request());
     }
 }

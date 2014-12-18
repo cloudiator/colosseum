@@ -22,4 +22,9 @@ public class CloudApiController extends GenericApiController<CloudApi, CloudApiD
     protected CloudApiController(CloudApiServiceInterface cloudApiService, ModelDtoConversionService conversionService) {
         super(cloudApiService, conversionService);
     }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.CloudApiController.get(id).absoluteURL(request());
+    }
 }

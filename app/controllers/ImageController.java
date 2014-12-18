@@ -21,4 +21,9 @@ public class ImageController extends GenericApiController<Image, ImageDto> {
     protected ImageController(ImageServiceInterface imageService, ModelDtoConversionService conversionService) {
         super(imageService, conversionService);
     }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.ImageController.get(id).absoluteURL(request());
+    }
 }

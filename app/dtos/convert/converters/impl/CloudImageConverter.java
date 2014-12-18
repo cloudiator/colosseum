@@ -16,7 +16,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 10.12.2014.
  */
-public class CloudImageConverter implements ModelDtoConverter<CloudImage, CloudImageDto> {
+public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto> {
 
     private final CloudService cloudService;
     private final ImageService imageService;

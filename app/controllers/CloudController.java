@@ -24,7 +24,6 @@ import dtos.CloudDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Cloud;
 import models.service.api.CloudServiceInterface;
-import models.service.impl.CloudService;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -53,5 +52,10 @@ public class CloudController extends GenericApiController<Cloud, CloudDto> {
 
     public Result form() {
         return ok(views.html.cloud.form.render());
+    }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.CloudController.get(id).absoluteURL(request());
     }
 }

@@ -14,11 +14,16 @@ public class CloudHardwareController extends GenericApiController<CloudHardware,
     /**
      * Constructs a GenericApiController.
      *
-     * @param cloudHardwareFlavorService    the model service for retrieving the models.
-     * @param conversionService             the conversion service for converting models and dtos.
+     * @param cloudHardwareFlavorService the model service for retrieving the models.
+     * @param conversionService          the conversion service for converting models and dtos.
      */
     @Inject
     protected CloudHardwareController(CloudHardwareFlavorServiceInterface cloudHardwareFlavorService, ModelDtoConversionService conversionService) {
         super(cloudHardwareFlavorService, conversionService);
+    }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.CloudHardwareController.get(id).absoluteURL(request());
     }
 }

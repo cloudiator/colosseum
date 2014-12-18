@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Converter implementation for the Cloud model and the CloudDto DTO.
  */
 @Singleton
-public class CloudConverter implements ModelDtoConverter<Cloud, CloudDto> {
+public class CloudConverter extends BaseConverter<Cloud, CloudDto> {
 
     /**
      * Sets the dto to the cloud model.

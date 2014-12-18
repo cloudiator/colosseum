@@ -18,7 +18,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class UserCredentialConverter implements ModelDtoConverter<UserCredential, UserCredentialDto> {
+public class UserCredentialConverter extends BaseConverter<UserCredential, UserCredentialDto> {
 
     private final CloudApiService cloudApiService;
     private final CredentialService credentialService;

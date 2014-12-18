@@ -1,10 +1,14 @@
 package dtos.generic.api;
 
+import dtos.generic.impl.Link;
+
+import java.util.Set;
+
 /**
  * Interface for data transfer objects.
  */
 public interface Dto {
-    /**
-     * Intentionally left empty.
-     */
+
+    public Set<Link> getLinks();
+
 }

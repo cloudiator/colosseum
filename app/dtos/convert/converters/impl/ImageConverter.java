@@ -13,7 +13,7 @@ import static com.google.inject.internal.util.$Preconditions.checkState;
 /**
  * Created by daniel seybold on 10.12.2014.
  */
-public class ImageConverter implements ModelDtoConverter<Image, ImageDto> {
+public class ImageConverter extends BaseConverter<Image, ImageDto> {
 
     private final OperatingSystemService operatingSystemService;
 

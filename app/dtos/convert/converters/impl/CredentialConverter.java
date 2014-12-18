@@ -9,7 +9,7 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class CredentialConverter implements ModelDtoConverter<Credential, CredentialDto> {
+public class CredentialConverter extends BaseConverter<Credential, CredentialDto> {
 
     /**
      * Sets the dto to the hardware model.

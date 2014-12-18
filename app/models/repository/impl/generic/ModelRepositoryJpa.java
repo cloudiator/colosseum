@@ -9,8 +9,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.List;
 
-import static com.google.inject.internal.util.$Preconditions.checkArgument;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 31.10.14.
@@ -43,7 +42,7 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
     @Override
     public void save(final T t) {
         checkNotNull(t);
-        if(t.getId() == null) {
+        if (t.getId() == null) {
             this.persist(t);
         } else {
             this.update(t);
@@ -60,8 +59,7 @@ public abstract class ModelRepositoryJpa<T extends Model> implements models.repo
         em().flush();
     }
 
-    protected T refresh(final T t)
-    {
+    protected T refresh(final T t) {
         em().refresh(t);
         return t;
     }

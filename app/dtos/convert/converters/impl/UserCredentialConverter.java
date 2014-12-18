@@ -3,7 +3,6 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.UserCredentialDto;
 import dtos.builders.UserCredentialDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
@@ -12,8 +11,8 @@ import models.service.impl.CloudApiService;
 import models.service.impl.CredentialService;
 import models.service.impl.FrontendUserService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -25,7 +24,7 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
     private final FrontendUserService frontendUserService;
 
     @Inject
-    UserCredentialConverter(CloudApiService cloudApiService, CredentialService credentialService, FrontendUserService frontendUserService){
+    UserCredentialConverter(CloudApiService cloudApiService, CredentialService credentialService, FrontendUserService frontendUserService) {
 
         checkNotNull(cloudApiService);
         checkNotNull(credentialService);
@@ -44,7 +43,7 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
      * @param userCredentialDto the dto to be set.
      * @return the merged hardware object.
      */
-    protected UserCredential setDto(UserCredential userCredential, UserCredentialDto userCredentialDto){
+    protected UserCredential setDto(UserCredential userCredential, UserCredentialDto userCredentialDto) {
 
         CloudApi cloudApi = cloudApiService.getById(userCredentialDto.cloudApi);
         checkState(cloudApi != null, "Could not retrieve cloudApi for id: " + userCredentialDto.cloudApi);
@@ -71,7 +70,7 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
     public UserCredential toModel(UserCredentialDto dto, UserCredential model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model,dto);
+        return this.setDto(model, dto);
     }
 
     @Override

@@ -1,15 +1,15 @@
 package dtos.convert.converters.impl;
 
 import dtos.ApplicationDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Application;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class ApplicationConverter implements ModelDtoConverter<Application, ApplicationDto> {
+public class ApplicationConverter extends BaseConverter<Application, ApplicationDto> {
 
     /**
      * Sets the dto to the application model.
@@ -28,7 +28,6 @@ public class ApplicationConverter implements ModelDtoConverter<Application, Appl
         checkNotNull(dto);
         return this.setDto(new Application(), dto);
     }
-
 
 
     @Override

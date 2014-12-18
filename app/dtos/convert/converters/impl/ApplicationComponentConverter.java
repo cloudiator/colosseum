@@ -2,27 +2,25 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.ApplicationComponentDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Application;
 import models.ApplicationComponent;
 import models.Component;
 import models.service.impl.ApplicationService;
 import models.service.impl.ComponentService;
-import scala.App;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
-import static com.google.inject.internal.util.$Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel seybold on 17.12.2014.
  */
-public class ApplicationComponentConverter implements ModelDtoConverter<ApplicationComponent, ApplicationComponentDto> {
+public class ApplicationComponentConverter extends BaseConverter<ApplicationComponent, ApplicationComponentDto> {
 
     private final ApplicationService applicationService;
     private final ComponentService componentService;
 
     @Inject
-    ApplicationComponentConverter(ApplicationService applicationService, ComponentService componentService){
+    ApplicationComponentConverter(ApplicationService applicationService, ComponentService componentService) {
 
         checkNotNull(applicationService);
         checkNotNull(componentService);
@@ -39,10 +37,10 @@ public class ApplicationComponentConverter implements ModelDtoConverter<Applicat
      * @param applicationComponentDto the dto to be set.
      * @return the merged applicationComponent object.
      */
-    protected ApplicationComponent setDto(ApplicationComponent applicationComponent, ApplicationComponentDto applicationComponentDto){
+    protected ApplicationComponent setDto(ApplicationComponent applicationComponent, ApplicationComponentDto applicationComponentDto) {
 
         Application application = applicationService.getById(applicationComponentDto.application);
-        checkState(application != null,"Could not retrieve application for id: " + applicationComponentDto.application);
+        checkState(application != null, "Could not retrieve application for id: " + applicationComponentDto.application);
         applicationComponent.setApplication(application);
 
         Component component = componentService.getById(applicationComponentDto.component);

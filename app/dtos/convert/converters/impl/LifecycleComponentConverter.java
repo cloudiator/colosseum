@@ -2,17 +2,17 @@ package dtos.convert.converters.impl;
 
 import dtos.LifecycleComponentDto;
 import dtos.builders.LifecycleComponentDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.LifecycleComponent;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class LifecycleComponentConverter implements ModelDtoConverter<LifecycleComponent, LifecycleComponentDto> {
+public class LifecycleComponentConverter extends BaseConverter<LifecycleComponent, LifecycleComponentDto> {
 
-    protected LifecycleComponent setDto(LifecycleComponent lifecycleComponent, LifecycleComponentDto lifecycleComponentDto){
+    protected LifecycleComponent setDto(LifecycleComponent lifecycleComponent, LifecycleComponentDto lifecycleComponentDto) {
 
         lifecycleComponent.setName(lifecycleComponentDto.name);
         lifecycleComponent.setDownload(lifecycleComponentDto.download);

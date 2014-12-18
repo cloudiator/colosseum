@@ -1,13 +1,11 @@
 package models;
 
-import models.Application;
-import models.Component;
 import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.12.14.

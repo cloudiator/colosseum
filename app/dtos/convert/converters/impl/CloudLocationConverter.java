@@ -3,15 +3,14 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudLocationDto;
 import dtos.builders.CloudLocationDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Cloud;
 import models.CloudLocation;
 import models.Location;
 import models.service.impl.CloudService;
 import models.service.impl.LocationService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -22,7 +21,7 @@ public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLo
     private final LocationService locationService;
 
     @Inject
-    CloudLocationConverter(CloudService cloudService, LocationService locationService){
+    CloudLocationConverter(CloudService cloudService, LocationService locationService) {
 
         checkNotNull(cloudService);
         checkNotNull(locationService);
@@ -32,7 +31,7 @@ public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLo
 
     }
 
-    protected CloudLocation setDto(CloudLocation cloudLocation, CloudLocationDto cloudLocationDto){
+    protected CloudLocation setDto(CloudLocation cloudLocation, CloudLocationDto cloudLocationDto) {
         cloudLocation.setUuid(cloudLocationDto.uuid);
 
         Cloud cloud = cloudService.getById(cloudLocationDto.cloud);

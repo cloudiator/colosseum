@@ -1,10 +1,9 @@
 package dtos.convert.converters.impl;
 
 import dtos.ApiDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Api;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -18,7 +17,7 @@ public class ApiConverter extends BaseConverter<Api, ApiDto> {
      * @param apiDto the dto to be set.
      * @return the merged cloud object.
      */
-    protected Api setDto(Api api, ApiDto apiDto){
+    protected Api setDto(Api api, ApiDto apiDto) {
         api.setName(apiDto.name);
         return api;
     }

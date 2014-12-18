@@ -3,15 +3,14 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudApiDto;
 import dtos.builders.CloudApiDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Api;
 import models.Cloud;
 import models.CloudApi;
 import models.service.impl.ApiService;
 import models.service.impl.CloudService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -22,7 +21,7 @@ public class CloudApiConverter extends BaseConverter<CloudApi, CloudApiDto> {
     private final CloudService cloudService;
 
     @Inject
-    CloudApiConverter(ApiService apiService, CloudService cloudService){
+    CloudApiConverter(ApiService apiService, CloudService cloudService) {
 
         checkNotNull(apiService);
         checkNotNull(cloudService);
@@ -32,7 +31,7 @@ public class CloudApiConverter extends BaseConverter<CloudApi, CloudApiDto> {
 
     }
 
-    protected CloudApi setDto(CloudApi cloudApi, CloudApiDto cloudApiDto){
+    protected CloudApi setDto(CloudApi cloudApi, CloudApiDto cloudApiDto) {
         cloudApi.setEndpoint(cloudApiDto.endpoint);
 
         Api api = apiService.getById(cloudApiDto.api);

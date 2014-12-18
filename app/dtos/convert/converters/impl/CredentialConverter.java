@@ -1,10 +1,9 @@
 package dtos.convert.converters.impl;
 
 import dtos.CredentialDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Credential;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -18,7 +17,7 @@ public class CredentialConverter extends BaseConverter<Credential, CredentialDto
      * @param credentialDto the dto to be set.
      * @return the merged credential object.
      */
-    protected Credential setDto(Credential credential, CredentialDto credentialDto){
+    protected Credential setDto(Credential credential, CredentialDto credentialDto) {
         credential.setUser(credentialDto.user);
         credential.setSecret(credentialDto.secret);
 

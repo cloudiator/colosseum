@@ -2,13 +2,12 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.ImageDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Image;
 import models.OperatingSystem;
 import models.service.impl.OperatingSystemService;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
-import static com.google.inject.internal.util.$Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -18,7 +17,7 @@ public class ImageConverter extends BaseConverter<Image, ImageDto> {
     private final OperatingSystemService operatingSystemService;
 
     @Inject
-    ImageConverter(OperatingSystemService operatingSystemService){
+    ImageConverter(OperatingSystemService operatingSystemService) {
 
         checkNotNull(operatingSystemService);
 
@@ -26,11 +25,11 @@ public class ImageConverter extends BaseConverter<Image, ImageDto> {
 
     }
 
-    protected Image setDto(Image image, ImageDto imageDto){
+    protected Image setDto(Image image, ImageDto imageDto) {
         image.setName(imageDto.name);
 
         OperatingSystem operatingSystem = operatingSystemService.getById(imageDto.operatingSystem);
-        checkState( operatingSystem != null, "Could not retrieve operating system for id: " + imageDto.operatingSystem);
+        checkState(operatingSystem != null, "Could not retrieve operating system for id: " + imageDto.operatingSystem);
         image.setOperatingSystem(operatingSystem);
 
         return image;

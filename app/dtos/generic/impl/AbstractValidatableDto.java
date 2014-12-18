@@ -6,7 +6,7 @@ import play.data.validation.ValidationError;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 08.12.14.

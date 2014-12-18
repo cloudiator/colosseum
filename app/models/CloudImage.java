@@ -18,14 +18,13 @@
 
 package models;
 
+import models.generic.Model;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import com.google.common.base.Preconditions;
-import models.generic.Model;
-
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic image, by specifing the
@@ -41,26 +40,26 @@ public class CloudImage extends Model {
     }
 
     /**
-	 * Serial version.
-	 */
-	private static final long serialVersionUID = 1L;
+     * Serial version.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * The cloud where this image is available.
-	 */
-	@ManyToOne(optional = false)
-	private Cloud cloud;
+    /**
+     * The cloud where this image is available.
+     */
+    @ManyToOne(optional = false)
+    private Cloud cloud;
 
-	/**
-	 * The image.
-	 */
-	@ManyToOne(optional = false)
-	private Image image;
+    /**
+     * The image.
+     */
+    @ManyToOne(optional = false)
+    private Image image;
 
-	/**
-	 * The cloud-dependant unique identifier.
-	 */
-	private String uuid;
+    /**
+     * The cloud-dependant unique identifier.
+     */
+    private String uuid;
 
     public Cloud getCloud() {
         return cloud;

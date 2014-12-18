@@ -18,12 +18,13 @@
 
 package models;
 
+import models.generic.Model;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
-import models.generic.Model;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic location, by specifing
@@ -32,59 +33,59 @@ import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 @Entity
 public class CloudLocation extends Model {
 
-	/**
-	 * Serial version.
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * Serial version.
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * The cloud where this location is available.
-	 */
-	@ManyToOne(optional = false)
-	private Cloud cloud;
+    /**
+     * The cloud where this location is available.
+     */
+    @ManyToOne(optional = false)
+    private Cloud cloud;
 
-	/**
-	 * The location.
-	 */
-	@ManyToOne(optional = false)
-	private Location location;
+    /**
+     * The location.
+     */
+    @ManyToOne(optional = false)
+    private Location location;
 
-	/**
-	 * The cloud-dependent unique identifier.
-	 */
-	private String uuid;
+    /**
+     * The cloud-dependent unique identifier.
+     */
+    private String uuid;
 
-	/**
-	 * Empty constructor needed for hibernate.
-	 */
-	public CloudLocation() {
+    /**
+     * Empty constructor needed for hibernate.
+     */
+    public CloudLocation() {
 
-	}
+    }
 
-	public Cloud getCloud() {
-		return cloud;
-	}
+    public Cloud getCloud() {
+        return cloud;
+    }
 
-	public void setCloud(Cloud cloud) {
-		checkNotNull(cloud);
-		this.cloud = cloud;
-	}
+    public void setCloud(Cloud cloud) {
+        checkNotNull(cloud);
+        this.cloud = cloud;
+    }
 
-	public Location getLocation() {
-		return location;
-	}
+    public Location getLocation() {
+        return location;
+    }
 
-	public void setLocation(Location location) {
-		checkNotNull(location);
-		this.location = location;
-	}
+    public void setLocation(Location location) {
+        checkNotNull(location);
+        this.location = location;
+    }
 
-	public String getUuid() {
-		return uuid;
-	}
+    public String getUuid() {
+        return uuid;
+    }
 
-	public void setUuid(String uuid) {
-		checkNotNull(uuid);
-		this.uuid = uuid;
-	}
+    public void setUuid(String uuid) {
+        checkNotNull(uuid);
+        this.uuid = uuid;
+    }
 }

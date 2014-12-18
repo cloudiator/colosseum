@@ -14,11 +14,16 @@ public class InstanceController extends GenericApiController<Instance, InstanceD
     /**
      * Constructs a GenericApiController.
      *
-     * @param instanceService      the model service for retrieving the models.
+     * @param instanceService   the model service for retrieving the models.
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
     protected InstanceController(InstanceServiceInterface instanceService, ModelDtoConversionService conversionService) {
         super(instanceService, conversionService);
+    }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.InstanceController.get(id).absoluteURL(request());
     }
 }

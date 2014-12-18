@@ -2,26 +2,25 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.InstanceDto;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.ApplicationComponent;
 import models.Instance;
 import models.VirtualMachine;
 import models.service.impl.ApplicationComponentService;
 import models.service.impl.VirtualMachineService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 17.12.2014.
  */
-public class InstanceConverter implements ModelDtoConverter<Instance, InstanceDto> {
+public class InstanceConverter extends BaseConverter<Instance, InstanceDto> {
 
     private final ApplicationComponentService applicationComponentService;
     private final VirtualMachineService virtualMachineService;
 
     @Inject
-    InstanceConverter(ApplicationComponentService applicationComponentService, VirtualMachineService virtualMachineService){
+    InstanceConverter(ApplicationComponentService applicationComponentService, VirtualMachineService virtualMachineService) {
         checkNotNull(applicationComponentService);
         checkNotNull(virtualMachineService);
 
@@ -36,7 +35,7 @@ public class InstanceConverter implements ModelDtoConverter<Instance, InstanceDt
      * @param instanceDto the dto to be set.
      * @return the merged instance object.
      */
-    protected Instance setDto(Instance instance, InstanceDto instanceDto){
+    protected Instance setDto(Instance instance, InstanceDto instanceDto) {
 
         ApplicationComponent applicationComponent = applicationComponentService.getById(instanceDto.applicationComponent);
         checkState(applicationComponent != null, "Could not retrieve applicationComponent for id: " + instanceDto.applicationComponent);
@@ -46,7 +45,7 @@ public class InstanceConverter implements ModelDtoConverter<Instance, InstanceDt
         checkState(virtualMachine != null, "Could not retrieve virtualMachine for id: " + instanceDto.virtualMachine);
         instance.setVirtualMachine(virtualMachine);
 
-        return  instance;
+        return instance;
     }
 
     @Override

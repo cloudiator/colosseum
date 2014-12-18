@@ -3,15 +3,14 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudHardwareDto;
 import dtos.builders.CloudHardwareDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Cloud;
 import models.CloudHardware;
 import models.Hardware;
 import models.service.impl.CloudService;
 import models.service.impl.HardwareService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 09.12.2014.
@@ -22,7 +21,7 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
     private final HardwareService hardwareService;
 
     @Inject
-    CloudHardwareConverter(CloudService cloudService, HardwareService hardwareService){
+    CloudHardwareConverter(CloudService cloudService, HardwareService hardwareService) {
 
         checkNotNull(cloudService);
         checkNotNull(hardwareService);
@@ -32,7 +31,7 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
         this.hardwareService = hardwareService;
     }
 
-    protected CloudHardware setDto(CloudHardware cloudHardware, CloudHardwareDto cloudHardwareDto){
+    protected CloudHardware setDto(CloudHardware cloudHardware, CloudHardwareDto cloudHardwareDto) {
         cloudHardware.setUuid(cloudHardwareDto.uuid);
 
         Cloud cloud = cloudService.getById(cloudHardwareDto.cloud);
@@ -43,7 +42,7 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
         checkState(hardware != null, "Could not retrieve hardware for id: " + cloudHardwareDto.hardware);
         cloudHardware.setHardware(hardware);
 
-        return  cloudHardware;
+        return cloudHardware;
     }
 
     @Override

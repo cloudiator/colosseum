@@ -2,10 +2,10 @@ package dtos.convert.converters.impl;
 
 import dtos.HardwareDto;
 import dtos.builders.HardwareDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Hardware;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -19,7 +19,7 @@ public class HardwareConverter extends BaseConverter<Hardware, HardwareDto> {
      * @param hardwareDto the dto to be set.
      * @return the merged hardware object.
      */
-    protected Hardware setDto(Hardware hardware, HardwareDto hardwareDto){
+    protected Hardware setDto(Hardware hardware, HardwareDto hardwareDto) {
         hardware.setNumberOfCpu(hardwareDto.numberOfCpu);
         hardware.setMbOfRam(hardwareDto.mbOfRam);
         hardware.setLocalDiskSpace(hardwareDto.localDiskSpace);

@@ -25,11 +25,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The model class image.
- * <p/>
+ * <p>
  * Stores information about the cloud images available in a cloud.
  *
  * @author Daniel Baur

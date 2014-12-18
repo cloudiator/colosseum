@@ -3,15 +3,14 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudImageDto;
 import dtos.builders.CloudImageDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.Cloud;
 import models.CloudImage;
 import models.Image;
 import models.service.impl.CloudService;
 import models.service.impl.ImageService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -22,7 +21,7 @@ public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto
     private final ImageService imageService;
 
     @Inject
-    CloudImageConverter(CloudService cloudService, ImageService imageService){
+    CloudImageConverter(CloudService cloudService, ImageService imageService) {
 
         checkNotNull(cloudService);
         checkNotNull(imageService);
@@ -31,7 +30,7 @@ public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto
         this.imageService = imageService;
     }
 
-    protected CloudImage setDto(CloudImage cloudImage, CloudImageDto cloudImageDto){
+    protected CloudImage setDto(CloudImage cloudImage, CloudImageDto cloudImageDto) {
         cloudImage.setUuid(cloudImageDto.uuid);
 
         Cloud cloud = cloudService.getById(cloudImageDto.cloud);

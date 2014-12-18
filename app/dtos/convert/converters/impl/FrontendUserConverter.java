@@ -2,10 +2,10 @@ package dtos.convert.converters.impl;
 
 import dtos.FrontendUserDto;
 import dtos.builders.FrontendUserDtoBuilder;
-import dtos.convert.converters.api.ModelDtoConverter;
 import models.FrontendUser;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -19,7 +19,7 @@ public class FrontendUserConverter extends BaseConverter<FrontendUser, FrontendU
      * @param frontendUserDto the dto to be set.
      * @return the merged hardware object.
      */
-    protected FrontendUser setDto(FrontendUser frontendUser, FrontendUserDto frontendUserDto){
+    protected FrontendUser setDto(FrontendUser frontendUser, FrontendUserDto frontendUserDto) {
         frontendUser.setFirstName(frontendUserDto.firstName);
         frontendUser.setLastName(frontendUserDto.lastName);
         frontendUser.setMail(frontendUserDto.mail);

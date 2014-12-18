@@ -14,11 +14,16 @@ public class ApplicationComponentController extends GenericApiController<Applica
     /**
      * Constructs a GenericApiController.
      *
-     * @param applicationComponentService      the model service for retrieving the models.
-     * @param conversionService the conversion service for converting models and dtos.
+     * @param applicationComponentService the model service for retrieving the models.
+     * @param conversionService           the conversion service for converting models and dtos.
      */
     @Inject
     protected ApplicationComponentController(ApplicationComponentServiceInterface applicationComponentService, ModelDtoConversionService conversionService) {
         super(applicationComponentService, conversionService);
+    }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.ApplicationComponentController.get(id).absoluteURL(request());
     }
 }

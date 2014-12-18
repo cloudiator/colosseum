@@ -25,7 +25,7 @@ import org.apache.commons.codec.binary.Base64;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * The class representing a user of the system.

@@ -22,7 +22,7 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity
 public class Credential extends Model {

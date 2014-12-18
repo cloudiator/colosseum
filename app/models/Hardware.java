@@ -24,7 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-import static com.google.inject.internal.util.$Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 /**
  * The model class hardware.
@@ -78,6 +79,7 @@ public class Hardware extends Model {
         checkNotNull(numberOfCpu);
         this.numberOfCpu = numberOfCpu;
     }
+
 
     public Long getMbOfRam() {
         return mbOfRam;

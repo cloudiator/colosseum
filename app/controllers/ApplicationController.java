@@ -24,4 +24,9 @@ public class ApplicationController extends GenericApiController<Application, App
     protected ApplicationController(ApplicationServiceInterface applicationService, ModelDtoConversionService conversionService) {
         super(applicationService, conversionService);
     }
+
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.ApplicationController.get(id).absoluteURL(request());
+    }
 }

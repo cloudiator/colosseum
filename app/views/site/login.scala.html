@@ -5,22 +5,22 @@
 @main("Login") {
 
     <div class="container">
-    
+
     @status()
-    
+
     @if(loginForm.hasGlobalErrors) {
     <p>
         @loginForm.globalError.message
     </p>
 	}
-    @helper.form(routes.SiteController.authenticate(), 'class -> "form-signin") {
+    @helper.form(routes.SecurityController.authenticate(), 'class -> "form-signin") {
     	<h2 class="form-signin-heading">Please sign in</h2>
     	@helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Display Name")
     	@helper.inputPassword(loginForm("password"), 'class -> "form-control", '_label -> "Password")
-    	
+
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        
+
     }
     </div> <!-- /container -->
-    
+
 }

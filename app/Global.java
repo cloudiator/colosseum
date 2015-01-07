@@ -18,8 +18,8 @@
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dtos.config.FormModule;
 import dtos.convert.config.BaseConverterModule;
+import models.service.config.ServiceInjection;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
@@ -54,7 +54,7 @@ public class Global extends GlobalSettings {
         super.onStart(app);
 
         //create guice injector
-        this.injector = Guice.createInjector(new FormModule(), new BaseConverterModule());
+        this.injector = Guice.createInjector(new ServiceInjection(), new BaseConverterModule());
 
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);

@@ -1,16 +1,18 @@
-package dtos.config;
+package models.service.config;
 
 import com.google.inject.AbstractModule;
+import controllers.security.SecuredToken;
 import dtos.*;
-import models.Image;
 
 /**
  * Created by daniel on 26.11.14.
  */
-public class FormModule extends AbstractModule {
+public class ServiceInjection extends AbstractModule {
 
     @Override
     protected void configure() {
+
+        //static injection into dto objects
         requestStaticInjection(LoginDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(CloudHardwareDto.References.class);
@@ -21,5 +23,8 @@ public class FormModule extends AbstractModule {
         requestStaticInjection(UserCredentialDto.References.class);
         requestStaticInjection(ApplicationComponentDto.References.class);
         requestStaticInjection(InstanceDto.References.class);
+
+        //static injection into security tokens
+        requestStaticInjection(SecuredToken.References.class);
     }
 }

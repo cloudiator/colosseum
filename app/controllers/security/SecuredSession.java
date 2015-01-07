@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package controllers;
+package controllers.security;
 
 import play.mvc.Http.Context;
 import play.mvc.Result;
@@ -29,7 +29,7 @@ import play.mvc.Security;
  *
  * @author Daniel Baur.
  */
-public class Secured extends Security.Authenticator {
+public class SecuredSession extends Security.Authenticator {
 
     @Override
     public String getUsername(Context context) {
@@ -38,6 +38,6 @@ public class Secured extends Security.Authenticator {
 
     @Override
     public Result onUnauthorized(Context context) {
-        return redirect(routes.SiteController.login());
+        return unauthorized();
     }
 }

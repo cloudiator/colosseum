@@ -24,14 +24,15 @@ import play.Logger;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import java.math.BigInteger;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Utility class for passwords.
@@ -62,12 +63,20 @@ public class Password {
      * key length for pbkdef2
      */
     private static final int desiredKeyLenght = 512;
+    /**
+     *
+     */
+    private static final int tokenLenght = 128;
 
     /**
      * Constructor.
      */
     private Password() {
-        this.random = new SecureRandom();
+        try {
+            this.random = SecureRandom.getInstance("SHA1PRNG", "SUN");
+        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     /**
@@ -93,6 +102,15 @@ public class Password {
         byte[] salt = new byte[saltLenght];
         random.nextBytes(salt);
         return salt;
+    }
+
+    /**
+     * Generates a token.
+     *
+     * @return the generated token.
+     */
+    public String generateToken() {
+        return new BigInteger(1024, random).toString(32);
     }
 
     /**
@@ -131,7 +149,7 @@ public class Password {
         checkNotNull(plain);
         checkArgument(plain.length != 0, "Plain must not be empty.");
         checkNotNull(database);
-        checkArgument(database.length != 0,"Database must not be empty.");
+        checkArgument(database.length != 0, "Database must not be empty.");
         checkNotNull(salt);
         checkArgument(salt.length != 0, "Salt must not be empty.");
 

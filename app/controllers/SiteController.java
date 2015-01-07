@@ -18,65 +18,34 @@
 
 package controllers;
 
-import dtos.LoginDto;
-import play.data.Form;
-import play.db.jpa.Transactional;
+import controllers.security.SecuredSessionOrToken;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
-import java.io.IOException;
-
 /**
  * Site controller.
- *
+ * <p>
  * Provides basic actions for the side like login, logout and the main index page.
  *
  * @author Daniel Baur
  */
+@Security.Authenticated(SecuredSessionOrToken.class)
 public class SiteController extends Controller {
-
-    private final static Form<LoginDto> loginForm = Form.form(LoginDto.class);
 
     public SiteController() {
 
     }
 
-    @Security.Authenticated(Secured.class)
     public Result index() {
         return ok(views.html.site.index.render());
     }
 
-    public Result login() {
-        return ok(views.html.site.login.render(loginForm));
-    }
-
-    @Transactional(readOnly = true)
-    public Result authenticate() {
-        Form<LoginDto> filledForm = loginForm.bindFromRequest();
-        if (filledForm.hasErrors()) {
-            return badRequest(views.html.site.login.render(filledForm));
-        } else {
-            session().clear();
-            session("email", filledForm.get().email);
-            return redirect(routes.SiteController.index());
-        }
-    }
-
-    public Result logout() {
-        session().clear();
-        flash("success", "You have been successfully logged out.");
-        return redirect(routes.SiteController.login());
-    }
-
-    @Security.Authenticated(Secured.class)
     public Result manage() {
-        session().remove("menuitemActive");
         return ok(views.html.site.management.render());
     }
 
     public Result help() {
-        session().remove("menuitemActive");
         return ok(views.html.site.help.render());
     }
 }

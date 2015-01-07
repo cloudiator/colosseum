@@ -8,14 +8,13 @@ GET           /manage                              @controllers.SiteController.m
 GET           /help                                @controllers.SiteController.help()
 
 #Auth for browser
-GET           /login                               @controllers.SiteController.login()
-POST          /login                               @controllers.SiteController.authenticate()
-GET           /logout                              @controllers.SiteController.logout()
+GET           /login                               @controllers.SecurityController.login()
+POST          /login                               @controllers.SecurityController.authenticate()
+GET           /logout                              @controllers.SecurityController.logout()
 
 #Auth for api
-GET           /api/login                           @controllers.SiteController.login()
-POST          /api/login                           @controllers.SiteController.authenticate()
-GET           /api/logout                          @controllers.SiteController.logout()
+POST          /api/login                           @controllers.SecurityController.authenticateApi()
+GET           /api/logout                          @controllers.SecurityController.logout()
 
 #Application
 GET           /api/application                     @controllers.ApplicationController.list()

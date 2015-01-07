@@ -24,6 +24,8 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -43,16 +45,19 @@ public class FrontendUser extends Model {
     /**
      * First name of the user.
      */
+    @Column(nullable = false)
     private String firstName;
 
     /**
      * Last name of the user.
      */
+    @Column(nullable = false)
     private String lastName;
 
     /**
      * The salt used for the users password.
      */
+    @Column(nullable = false)
     private String salt;
 
     /**
@@ -64,7 +69,11 @@ public class FrontendUser extends Model {
     /**
      * The salted and hashed password of the user.
      */
+    @Column(nullable = false)
     private String password;
+    
+    @OneToMany(mappedBy = "frontendUser")
+    private List<ApiAccessToken> tokens;
 
     /**
      * Empty constructor. Needed by hibernate.

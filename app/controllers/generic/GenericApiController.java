@@ -1,6 +1,6 @@
 package controllers.generic;
 
-import controllers.Secured;
+import controllers.security.SecuredSession;
 import dtos.convert.api.ModelDtoConversionService;
 import dtos.generic.api.Dto;
 import dtos.generic.impl.Links;
@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * @param <S> The type of the DTO the controller uses.
  * @author Daniel Baur
  */
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredSession.class)
 public abstract class GenericApiController<T extends Model, S extends Dto> extends Controller {
 
     private final ModelServiceInterface<T> modelService;

@@ -20,6 +20,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import controllers.generic.GenericApiController;
+import controllers.security.SecuredSession;
 import dtos.CloudDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Cloud;
@@ -32,7 +33,7 @@ import play.mvc.Security;
  *
  * @author Daniel Baur
  */
-@Security.Authenticated(Secured.class)
+@Security.Authenticated(SecuredSession.class)
 public class CloudController extends GenericApiController<Cloud, CloudDto> {
 
     /**

@@ -32,7 +32,7 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
     }
 
     protected CloudHardware setDto(CloudHardware cloudHardware, CloudHardwareDto cloudHardwareDto) {
-        cloudHardware.setUuid(cloudHardwareDto.uuid);
+        cloudHardware.setCloudUuid(cloudHardwareDto.cloudUuid);
 
         Cloud cloud = cloudService.getById(cloudHardwareDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudHardwareDto.cloud);
@@ -62,7 +62,7 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
     public CloudHardwareDto toDto(CloudHardware model) {
         checkNotNull(model);
         return new CloudHardwareDtoBuilder()
-                .uuid(model.getUuid())
+                .cloudUuid(model.getCloudUuid())
                 .cloud(model.getCloud().getId())
                 .hardware(model.getHardware().getId())
                 .build();

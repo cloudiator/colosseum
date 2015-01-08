@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic hardware, by specifing
- * the cloud-dependant uuid.
+ * the cloud-dependant cloudUuid.
  */
 @Entity
 public class CloudHardware extends Model {
@@ -59,7 +59,7 @@ public class CloudHardware extends Model {
     /**
      * The cloud-dependant unique identifier.
      */
-    private String uuid;
+    private String cloudUuid;
 
     public Cloud getCloud() {
         return cloud;
@@ -79,13 +79,13 @@ public class CloudHardware extends Model {
         this.hardware = hardware;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setCloudUuid(String uuid) {
         checkNotNull(uuid);
-        checkArgument(!uuid.isEmpty(), "Empty String for uuid provided");
-        this.uuid = uuid;
+        checkArgument(!uuid.isEmpty(), "Empty String for cloudUuid provided");
+        this.cloudUuid = uuid;
     }
 }

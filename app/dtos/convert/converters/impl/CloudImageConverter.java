@@ -31,7 +31,7 @@ public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto
     }
 
     protected CloudImage setDto(CloudImage cloudImage, CloudImageDto cloudImageDto) {
-        cloudImage.setUuid(cloudImageDto.uuid);
+        cloudImage.setCloudUuid(cloudImageDto.cloudUuid);
 
         Cloud cloud = cloudService.getById(cloudImageDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudImageDto.cloud);
@@ -62,7 +62,7 @@ public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto
     public CloudImageDto toDto(CloudImage model) {
         checkNotNull(model);
         return new CloudImageDtoBuilder()
-                .uuid(model.getUuid())
+                .cloudUuid(model.getCloudUuid())
                 .cloud(model.getCloud().getId())
                 .image(model.getImage().getId())
                 .build();

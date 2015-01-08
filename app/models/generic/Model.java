@@ -13,7 +13,7 @@ import java.io.Serializable;
  * each model class.
  */
 @MappedSuperclass
-public abstract class Model implements Serializable {
+public abstract class Model extends Resource implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic location, by specifing
- * the cloud-dependant uuid.
+ * the cloud-dependant cloudUuid.
  */
 @Entity
 public class CloudLocation extends Model {
@@ -53,7 +53,7 @@ public class CloudLocation extends Model {
     /**
      * The cloud-dependent unique identifier.
      */
-    private String uuid;
+    private String cloudUuid;
 
     /**
      * Empty constructor needed for hibernate.
@@ -80,12 +80,12 @@ public class CloudLocation extends Model {
         this.location = location;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setUuid(String uuid) {
+    public void setCloudUuid(String uuid) {
         checkNotNull(uuid);
-        this.uuid = uuid;
+        this.cloudUuid = uuid;
     }
 }

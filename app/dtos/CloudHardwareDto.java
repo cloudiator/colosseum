@@ -29,17 +29,17 @@ public class CloudHardwareDto extends AbstractValidatableDto {
 
     public Long hardware;
 
-    public String uuid;
+    public String cloudUuid;
 
 
     public CloudHardwareDto() {
 
     }
 
-    public CloudHardwareDto(Long cloud, Long hardware, String uuid) {
+    public CloudHardwareDto(Long cloud, Long hardware, String cloudUuid) {
         this.cloud = cloud;
         this.hardware = hardware;
-        this.uuid = uuid;
+        this.cloudUuid = cloudUuid;
     }
 
     @Override

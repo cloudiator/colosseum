@@ -5,7 +5,7 @@ import dtos.CloudLocationDto;
 public class CloudLocationDtoBuilder {
     private Long cloud;
     private Long location;
-    private String uuid;
+    private String cloudUuid;
 
     public CloudLocationDtoBuilder cloud(Long cloud) {
         this.cloud = cloud;
@@ -17,12 +17,12 @@ public class CloudLocationDtoBuilder {
         return this;
     }
 
-    public CloudLocationDtoBuilder uuid(String uuid) {
-        this.uuid = uuid;
+    public CloudLocationDtoBuilder cloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
         return this;
     }
 
     public CloudLocationDto build() {
-        return new CloudLocationDto(cloud, location, uuid);
+        return new CloudLocationDto(cloud, location, cloudUuid);
     }
 }

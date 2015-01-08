@@ -5,7 +5,7 @@ import dtos.CloudImageDto;
 public class CloudImageDtoBuilder {
     private Long cloud;
     private Long image;
-    private String uuid;
+    private String cloudUuid;
 
     public CloudImageDtoBuilder cloud(Long cloud) {
         this.cloud = cloud;
@@ -17,12 +17,12 @@ public class CloudImageDtoBuilder {
         return this;
     }
 
-    public CloudImageDtoBuilder uuid(String uuid) {
-        this.uuid = uuid;
+    public CloudImageDtoBuilder cloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
         return this;
     }
 
     public CloudImageDto build() {
-        return new CloudImageDto(cloud, image, uuid);
+        return new CloudImageDto(cloud, image, cloudUuid);
     }
 }

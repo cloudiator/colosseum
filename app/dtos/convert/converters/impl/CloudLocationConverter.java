@@ -32,7 +32,7 @@ public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLo
     }
 
     protected CloudLocation setDto(CloudLocation cloudLocation, CloudLocationDto cloudLocationDto) {
-        cloudLocation.setUuid(cloudLocationDto.uuid);
+        cloudLocation.setCloudUuid(cloudLocationDto.cloudUuid);
 
         Cloud cloud = cloudService.getById(cloudLocationDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudLocationDto.cloud);
@@ -62,7 +62,7 @@ public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLo
     public CloudLocationDto toDto(CloudLocation model) {
         checkNotNull(model);
         return new CloudLocationDtoBuilder()
-                .uuid(model.getUuid())
+                .cloudUuid(model.getCloudUuid())
                 .cloud(model.getCloud().getId())
                 .location(model.getLocation().getId())
                 .build();

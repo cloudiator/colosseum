@@ -26,16 +26,16 @@ public class CloudImageDto extends AbstractValidatableDto {
 
     public Long cloud;
     public Long image;
-    public String uuid;
+    public String cloudUuid;
 
     public CloudImageDto() {
 
     }
 
-    public CloudImageDto(Long cloud, Long image, String uuid) {
+    public CloudImageDto(Long cloud, Long image, String cloudUuid) {
         this.cloud = cloud;
         this.image = image;
-        this.uuid = uuid;
+        this.cloudUuid = cloudUuid;
     }
 
     @Override

@@ -28,7 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Represents the relation between a cloud and a generic image, by specifing the
- * cloud-dependant uuid.
+ * cloud-dependant cloudUuid.
  */
 @Entity
 public class CloudImage extends Model {
@@ -59,7 +59,7 @@ public class CloudImage extends Model {
     /**
      * The cloud-dependant unique identifier.
      */
-    private String uuid;
+    private String cloudUuid;
 
     public Cloud getCloud() {
         return cloud;
@@ -79,13 +79,13 @@ public class CloudImage extends Model {
         this.image = image;
     }
 
-    public String getUuid() {
-        return uuid;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setUuid(String uuid) {
-        checkNotNull(uuid);
-        checkArgument(!uuid.isEmpty(), "Empty String for uuid provided");
-        this.uuid = uuid;
+    public void setCloudUuid(String cloudUuid) {
+        checkNotNull(cloudUuid);
+        checkArgument(!cloudUuid.isEmpty(), "Empty String for cloudUuid provided");
+        this.cloudUuid = cloudUuid;
     }
 }

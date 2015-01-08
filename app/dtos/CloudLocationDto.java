@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CloudLocationDto extends AbstractValidatableDto {
 
-    public static class References{
+    public static class References {
 
         @Inject
         public static Provider<CloudServiceInterface> cloudService;
@@ -25,16 +25,16 @@ public class CloudLocationDto extends AbstractValidatableDto {
 
     public Long cloud;
     public Long location;
-    public String uuid;
+    public String cloudUuid;
 
     public CloudLocationDto() {
 
     }
 
-    public CloudLocationDto(Long cloud, Long location, String uuid) {
+    public CloudLocationDto(Long cloud, Long location, String cloudUuid) {
         this.cloud = cloud;
         this.location = location;
-        this.uuid = uuid;
+        this.cloudUuid = cloudUuid;
     }
 
     @Override

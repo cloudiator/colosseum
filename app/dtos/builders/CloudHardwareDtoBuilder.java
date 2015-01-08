@@ -5,7 +5,7 @@ import dtos.CloudHardwareDto;
 public class CloudHardwareDtoBuilder {
     private Long cloud;
     private Long hardware;
-    private String uuid;
+    private String cloudUuid;
 
     public CloudHardwareDtoBuilder cloud(Long cloud) {
         this.cloud = cloud;
@@ -17,12 +17,12 @@ public class CloudHardwareDtoBuilder {
         return this;
     }
 
-    public CloudHardwareDtoBuilder uuid(String uuid) {
-        this.uuid = uuid;
+    public CloudHardwareDtoBuilder cloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
         return this;
     }
 
     public CloudHardwareDto build() {
-        return new CloudHardwareDto(cloud, hardware, uuid);
+        return new CloudHardwareDto(cloud, hardware, cloudUuid);
     }
 }

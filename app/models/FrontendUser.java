@@ -71,7 +71,7 @@ public class FrontendUser extends Model {
      */
     @Column(nullable = false)
     private String password;
-    
+
     @OneToMany(mappedBy = "frontendUser")
     private List<ApiAccessToken> tokens;
 
@@ -169,5 +169,9 @@ public class FrontendUser extends Model {
     public void setPassword(String password) {
         checkNotNull(password);
         this.password = password;
+    }
+
+    public String getName() {
+        return String.format("%s %s", firstName, lastName);
     }
 }

@@ -1,8 +1,8 @@
+@(frontendUser: FrontendUser)
+    @javascript = {}
 
-@javascript = {}
+    @row("Welcome to PaaSage Executionware", javascript) {
 
-@row("Welcome to PaaSage Executionware",javascript) {
-
-} {
-
-}
+    } {
+        Hello @frontendUser.getName
+    }

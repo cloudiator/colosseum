@@ -133,6 +133,20 @@ PUT           /api/instance                        @controllers.InstanceControll
 POST          /api/instance/:id                    @controllers.InstanceController.update(id: Long)
 DELETE        /api/instance/:id                    @controllers.InstanceController.delete(id: Long)
 
+#Communication
+GET           /api/communication                   @controllers.CommunicationController.list()
+GET           /api/communication/:id               @controllers.CommunicationController.get(id: Long)
+PUT           /api/communication                   @controllers.CommunicationController.create()
+POST          /api/communication/:id               @controllers.CommunicationController.update(id: Long)
+DELETE        /api/communication/:id               @controllers.CommunicationController.delete(id: Long)
+
+#Communication Channel
+GET           /api/communicationChannel            @controllers.CommunicationChannelController.list()
+GET           /api/communicationChannel/:id        @controllers.CommunicationChannelController.get(id: Long)
+PUT           /api/communicationChannel            @controllers.CommunicationChannelController.create()
+POST          /api/communicationChannel/:id        @controllers.CommunicationChannelController.update(id: Long)
+DELETE        /api/communicationChannel/:id        @controllers.CommunicationChannelController.delete(id: Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                        controllers.Assets.at(path="/public", file)

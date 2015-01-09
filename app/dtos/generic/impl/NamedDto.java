@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * A Dto for named entities.
  */
-public abstract class NamedDto extends AbstractValidatableDto {
+public abstract class NamedDto extends ValidatableDto {
 
     public String name;
 

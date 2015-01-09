@@ -1,13 +1,13 @@
 package dtos;
 
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrontendUserDto extends AbstractValidatableDto {
+public class FrontendUserDto extends ValidatableDto {
 
     public String firstName;
     public String lastName;

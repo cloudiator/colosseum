@@ -2,7 +2,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
 import models.Hardware;
 import models.service.api.CloudServiceInterface;
@@ -12,7 +12,7 @@ import play.data.validation.ValidationError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CloudHardwareDto extends AbstractValidatableDto {
+public class CloudHardwareDto extends ValidatableDto {
 
     public static class References{
 

@@ -2,7 +2,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class UserCredentialDto extends AbstractValidatableDto {
+public class UserCredentialDto extends ValidatableDto {
 
     public static class References {
         @Inject

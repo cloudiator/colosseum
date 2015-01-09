@@ -1,12 +1,12 @@
 package dtos;
 
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CredentialDto extends AbstractValidatableDto {
+public class CredentialDto extends ValidatableDto {
 
     public String user;
     public String secret;

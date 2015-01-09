@@ -34,6 +34,8 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(LifecycleComponentConverter.class);
         converterBinder.addBinding().to(ApplicationComponentConverter.class);
         converterBinder.addBinding().to(InstanceConverter.class);
+        converterBinder.addBinding().to(CommunicationConverter.class);
+        converterBinder.addBinding().to(CommunicationChannelConverter.class);
     }
 
 }

@@ -2,7 +2,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import models.ApplicationComponent;
 import models.VirtualMachine;
 import models.service.api.ApplicationComponentServiceInterface;
@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * Created by daniel seybold on 17.12.2014.
  */
-public class InstanceDto extends AbstractValidatableDto {
+public class InstanceDto extends ValidatableDto {
 
     public static class References{
 

@@ -1,12 +1,12 @@
 package dtos;
 
-import dtos.generic.impl.AbstractValidatableDto;
+import dtos.generic.impl.ValidatableDto;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HardwareDto extends AbstractValidatableDto {
+public class HardwareDto extends ValidatableDto {
 
     public Integer numberOfCpu;
     public Long mbOfRam;

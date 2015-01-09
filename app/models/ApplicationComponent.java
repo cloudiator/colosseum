@@ -4,6 +4,8 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -18,6 +20,11 @@ public class ApplicationComponent extends Model {
 
     @ManyToOne(optional = false)
     private Component component;
+
+    @OneToMany(mappedBy = "provider")
+    private List<Communication> providedCommunications;
+    @OneToMany(mappedBy = "consumer")
+    private List<Communication> consumedCommunications;
 
     public Application getApplication() {
         return application;

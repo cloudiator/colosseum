@@ -43,4 +43,9 @@ public abstract class Resource {
     public int hashCode() {
         return this.getUuid().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return String.format("Resource{uuid='%s'}", uuid);
+    }
 }

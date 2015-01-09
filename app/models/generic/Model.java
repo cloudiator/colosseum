@@ -25,14 +25,6 @@ public abstract class Model extends Resource implements Serializable {
     public Model() {
     }
 
-    @Override
-    public String toString() {
-        if (id == null) {
-            return super.toString();
-        }
-        return String.valueOf(id);
-    }
-
     /**
      * Getter for the id.
      *
@@ -49,5 +41,10 @@ public abstract class Model extends Resource implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("Model{id=%d}", id);
     }
 }

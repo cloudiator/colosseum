@@ -14,7 +14,7 @@ Dependencies:
 ```
 git@github.com:dbaur/execWareFrontend.git
 ```
-4. Create a configuration file which will hold your database configuration, e.g. dev.conf
+4. Create a configuration file like below which will hold your database configuration, e.g. dev.conf.
 ```
 include 'application.conf'
 
@@ -56,6 +56,11 @@ A default user is available:
 
 username: john.doe@example.com
 password: admin
+
+Documentation
+=====================================
+
+Wiki: https://github.com/dbaur/execWareFrontend/wiki
 
 Contact
 =====================================

@@ -5,9 +5,8 @@ Installation (dev)
 =====================================
 
 Dependencies:
-	- play-framework 2.3.6
+	- play-framework 2.3.7
 	- a hibernate compatible database (the following sections will use mysql)
-	- cloudify (see section cloudify)
 	
 1. Install the play framework as described under http://www.playframework.com/documentation/2.3.x/Installing.
 2. Install mysql and setup a database and a user for the application.
@@ -41,7 +40,7 @@ Installation and Building (prod)
 
 1. Follow steps 1-4 of the Installation guide above.
 2. Run "activator clean dist" to build the project.
-3. Unzip the dist file at target/universal/executionware-1.0-SNAPSHOT.zip
+3. Unzip the dist file at target/universal/executionware-{version}.zip
 4. Run the application
 ```
 bin/executionware -Dconfig.file=/path/to/your/config.conf

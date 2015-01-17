@@ -16,7 +16,7 @@ git@github.com:dbaur/execWareFrontend.git
 ```
 4. Create a configuration file like below which will hold your database configuration, e.g. dev.conf.
 ```
-include 'application.conf'
+include "application.conf"
 
 # Secret key
 # ~~~~~

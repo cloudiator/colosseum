@@ -7,6 +7,7 @@ Installation (dev)
 Dependencies:
 	- play-framework 2.3.7
 	- a hibernate compatible database (the following sections will use mysql)
+	- JDK 8
 	
 1. Install the play framework as described under http://www.playframework.com/documentation/2.3.x/Installing.
 2. Install mysql and setup a database and a user for the application.

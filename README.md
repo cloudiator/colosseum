@@ -51,7 +51,7 @@ bin/executionware -Dconfig.file=/path/to/your/config.conf
 Usage
 =====================================
 
-If you access the frontend at http://localhost:9000 you will be asked to provide a password.
+If you access the frontend at http://localhost:9000/login you will be asked to provide a password.
 
 A default user is available:
 

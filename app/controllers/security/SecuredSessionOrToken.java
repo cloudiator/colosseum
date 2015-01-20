@@ -16,11 +16,19 @@ public class SecuredSessionOrToken extends SecuredToken {
         securedToken = new SecuredToken();
     }
 
+    protected String authorizedSession(Http.Context context) {
+        return this.securedSession.getUsername(context);
+    }
+
+    protected String authorizedToken(Http.Context context) {
+        return this.securedToken.getUsername(context);
+    }
+
     @Override
     public String getUsername(Http.Context context) {
 
-        String tokenUserName = this.securedToken.getUsername(context);
-        String sessionUserName = this.securedSession.getUsername(context);
+        String tokenUserName = authorizedToken(context);
+        String sessionUserName = authorizedSession(context);
 
         if (tokenUserName != null) {
             return tokenUserName;
@@ -34,6 +42,6 @@ public class SecuredSessionOrToken extends SecuredToken {
 
     @Override
     public Result onUnauthorized(Http.Context context) {
-        return unauthorized();
+        return unauthorized("Unauthorized: Login at /login");
     }
 }

@@ -28,6 +28,8 @@ import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import javax.persistence.EntityManager;
+
 /**
  * Created by daniel on 19.12.14.
  */
@@ -62,26 +64,39 @@ public class SecuredToken extends Security.Authenticator {
             return null;
         }
 
+        //remember the entity manager
+        //workaround for https://github.com/playframework/playframework/pull/3388
+        final EntityManager em = JPA.em();
         final FrontendUser frontendUser;
         try {
             frontendUser = JPA.withTransaction(() -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
+        //workaround continue. Bind the old one.
+        JPA.bindForCurrentThread(em);
 
         if (frontendUser == null) {
             return null;
         }
 
+        //remember the entity manager
+        //workaround for https://github.com/playframework/playframework/pull/3388
+        final EntityManager em1 = JPA.em();
+        final String mail;
         try {
             if (JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get().isValid(token, frontendUser))) {
-                return frontendUser.getMail();
+                mail = frontendUser.getMail();
+            } else {
+                mail = null;
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
+        //workaround continue. Bind the old one.
+        JPA.bindForCurrentThread(em1);
 
-        return null;
+        return mail;
     }
 
     @Override

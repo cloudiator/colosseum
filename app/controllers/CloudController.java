@@ -20,20 +20,17 @@ package controllers;
 
 import com.google.inject.Inject;
 import controllers.generic.GenericApiController;
-import controllers.security.SecuredSession;
 import dtos.CloudDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Cloud;
 import models.service.api.CloudServiceInterface;
 import play.mvc.Result;
-import play.mvc.Security;
 
 /**
  * Implementation of the GenericApiController for the Cloud model class.
  *
  * @author Daniel Baur
  */
-@Security.Authenticated(SecuredSession.class)
 public class CloudController extends GenericApiController<Cloud, CloudDto> {
 
     /**

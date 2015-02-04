@@ -25,7 +25,7 @@ object ApiDocSettings {
   val javaClasspath = classpath.map(_.data).mkString(":")
   val javaPackages = "controllers:models:tests:components:forms"
 
-  val cmd = <x>javadoc -linksource -sourcepath {javaSources} -d {javaApiTarget} -subpackages {javaPackages} -classpath {javaClasspath}</x>
+  val cmd = <x>javadoc -Xdoclint:none -linksource -sourcepath {javaSources} -d {javaApiTarget} -subpackages {javaPackages} -classpath {javaClasspath}</x>
   //println("Executing: "+cmd.text)
   cmd ! s.log
 

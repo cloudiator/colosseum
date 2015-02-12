@@ -24,8 +24,8 @@ import dtos.builders.CloudHardwareDtoBuilder;
 import models.Cloud;
 import models.CloudHardware;
 import models.Hardware;
-import models.service.impl.CloudService;
-import models.service.impl.HardwareService;
+import models.service.impl.CloudServiceImpl;
+import models.service.impl.HardwareServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,28 +35,28 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHardwareDto> {
 
-    private final CloudService cloudService;
-    private final HardwareService hardwareService;
+    private final CloudServiceImpl cloudServiceImpl;
+    private final HardwareServiceImpl hardwareServiceImpl;
 
     @Inject
-    CloudHardwareConverter(CloudService cloudService, HardwareService hardwareService) {
+    CloudHardwareConverter(CloudServiceImpl cloudServiceImpl, HardwareServiceImpl hardwareServiceImpl) {
 
-        checkNotNull(cloudService);
-        checkNotNull(hardwareService);
+        checkNotNull(cloudServiceImpl);
+        checkNotNull(hardwareServiceImpl);
 
 
-        this.cloudService = cloudService;
-        this.hardwareService = hardwareService;
+        this.cloudServiceImpl = cloudServiceImpl;
+        this.hardwareServiceImpl = hardwareServiceImpl;
     }
 
     protected CloudHardware setDto(CloudHardware cloudHardware, CloudHardwareDto cloudHardwareDto) {
         cloudHardware.setCloudUuid(cloudHardwareDto.cloudUuid);
 
-        Cloud cloud = cloudService.getById(cloudHardwareDto.cloud);
+        Cloud cloud = cloudServiceImpl.getById(cloudHardwareDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudHardwareDto.cloud);
         cloudHardware.setCloud(cloud);
 
-        Hardware hardware = hardwareService.getById(cloudHardwareDto.hardware);
+        Hardware hardware = hardwareServiceImpl.getById(cloudHardwareDto.hardware);
         checkState(hardware != null, "Could not retrieve hardware for id: " + cloudHardwareDto.hardware);
         cloudHardware.setHardware(hardware);
 

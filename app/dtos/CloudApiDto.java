@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Api;
 import models.Cloud;
-import models.service.api.ApiServiceInterface;
-import models.service.api.CloudServiceInterface;
+import models.service.api.ApiService;
+import models.service.api.CloudService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -39,10 +39,10 @@ public class CloudApiDto extends ValidatableDto {
     public static class References{
 
         @Inject
-        public static Provider<ApiServiceInterface> apiService;
+        public static Provider<ApiService> apiService;
 
         @Inject
-        public static Provider<CloudServiceInterface> cloudService;
+        public static Provider<CloudService> cloudService;
     }
 
     public Long api;

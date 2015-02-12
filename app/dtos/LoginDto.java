@@ -20,7 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import models.service.api.FrontendUserServiceInterface;
+import models.service.api.FrontendUserService;
 import play.Logger;
 
 /**
@@ -30,7 +30,7 @@ public class LoginDto {
 
     public static class References {
         @Inject
-        public static Provider<FrontendUserServiceInterface> frontendUserService;
+        public static Provider<FrontendUserService> frontendUserService;
     }
 
     public String email;

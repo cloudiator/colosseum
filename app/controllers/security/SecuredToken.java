@@ -21,8 +21,8 @@ package controllers.security;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import models.FrontendUser;
-import models.service.api.ApiAccessTokenServiceInterface;
-import models.service.api.FrontendUserServiceInterface;
+import models.service.api.ApiAccessTokenService;
+import models.service.api.FrontendUserService;
 import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -39,10 +39,10 @@ public class SecuredToken extends Security.Authenticator {
     public static class References {
 
         @Inject
-        public static Provider<ApiAccessTokenServiceInterface> apiAccessTokenServiceProvider;
+        public static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
 
         @Inject
-        public static Provider<FrontendUserServiceInterface> frontendUserServiceInterfaceProvider;
+        public static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
     }
 
     @Override

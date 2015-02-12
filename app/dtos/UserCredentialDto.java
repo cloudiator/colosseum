@@ -24,9 +24,9 @@ import dtos.generic.impl.ValidatableDto;
 import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
-import models.service.api.CloudApiServiceInterface;
-import models.service.api.CredentialServiceInterface;
-import models.service.api.FrontendUserServiceInterface;
+import models.service.api.CloudApiService;
+import models.service.api.CredentialService;
+import models.service.api.FrontendUserService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -39,13 +39,13 @@ public class UserCredentialDto extends ValidatableDto {
 
     public static class References {
         @Inject
-        public static Provider<CloudApiServiceInterface> cloudApiService;
+        public static Provider<CloudApiService> cloudApiService;
 
         @Inject
-        public static Provider<CredentialServiceInterface> credentialService;
+        public static Provider<CredentialService> credentialService;
 
         @Inject
-        public static Provider<FrontendUserServiceInterface> frontendUserService;
+        public static Provider<FrontendUserService> frontendUserService;
     }
 
 

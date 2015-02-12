@@ -23,8 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CloudApiDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.CloudApi;
-import models.service.api.CloudApiServiceInterface;
-import models.service.api.generic.ModelServiceInterface;
+import models.service.api.CloudApiService;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -37,7 +36,7 @@ public class CloudApiController extends GenericApiController<CloudApi, CloudApiD
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected CloudApiController(CloudApiServiceInterface cloudApiService, ModelDtoConversionService conversionService) {
+    protected CloudApiController(CloudApiService cloudApiService, ModelDtoConversionService conversionService) {
         super(cloudApiService, conversionService);
     }
 

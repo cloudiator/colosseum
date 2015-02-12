@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 import dtos.VirtualMachineDto;
 import dtos.builders.VirtualMachineDtoBuilder;
 import models.*;
-import models.service.impl.CloudHardwareFlavorService;
-import models.service.impl.CloudImageService;
-import models.service.impl.CloudLocationService;
-import models.service.impl.CloudService;
+import models.service.impl.CloudHardwareFlavorServiceImpl;
+import models.service.impl.CloudImageServiceImpl;
+import models.service.impl.CloudLocationServiceImpl;
+import models.service.impl.CloudServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,41 +35,41 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class VirtualMachineConverter extends BaseConverter<VirtualMachine, VirtualMachineDto> {
 
-    private final CloudService cloudService;
-    private final CloudLocationService cloudLocationService;
-    private final CloudHardwareFlavorService cloudHardwareFlavorService;
-    private final CloudImageService cloudImageService;
+    private final CloudServiceImpl cloudServiceImpl;
+    private final CloudLocationServiceImpl cloudLocationServiceImpl;
+    private final CloudHardwareFlavorServiceImpl cloudHardwareFlavorServiceImpl;
+    private final CloudImageServiceImpl cloudImageServiceImpl;
 
     @Inject
-    public VirtualMachineConverter(CloudService cloudService, CloudLocationService cloudLocationService, CloudHardwareFlavorService cloudHardwareFlavorService, CloudImageService cloudImageService) {
+    public VirtualMachineConverter(CloudServiceImpl cloudServiceImpl, CloudLocationServiceImpl cloudLocationServiceImpl, CloudHardwareFlavorServiceImpl cloudHardwareFlavorServiceImpl, CloudImageServiceImpl cloudImageServiceImpl) {
 
-        checkNotNull(cloudService);
-        checkNotNull(cloudLocationService);
-        checkNotNull(cloudHardwareFlavorService);
-        checkNotNull(cloudImageService);
+        checkNotNull(cloudServiceImpl);
+        checkNotNull(cloudLocationServiceImpl);
+        checkNotNull(cloudHardwareFlavorServiceImpl);
+        checkNotNull(cloudImageServiceImpl);
 
-        this.cloudService = cloudService;
-        this.cloudLocationService = cloudLocationService;
-        this.cloudHardwareFlavorService = cloudHardwareFlavorService;
-        this.cloudImageService = cloudImageService;
+        this.cloudServiceImpl = cloudServiceImpl;
+        this.cloudLocationServiceImpl = cloudLocationServiceImpl;
+        this.cloudHardwareFlavorServiceImpl = cloudHardwareFlavorServiceImpl;
+        this.cloudImageServiceImpl = cloudImageServiceImpl;
     }
 
     protected VirtualMachine setDto(VirtualMachine virtualMachine, VirtualMachineDto virtualMachineDto) {
         virtualMachine.setName(virtualMachineDto.name);
 
-        Cloud cloud = cloudService.getById(virtualMachineDto.cloud);
+        Cloud cloud = cloudServiceImpl.getById(virtualMachineDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + virtualMachineDto.cloud);
         virtualMachine.setCloud(cloud);
 
-        CloudLocation cloudLocation = cloudLocationService.getById(virtualMachineDto.cloudLocation);
+        CloudLocation cloudLocation = cloudLocationServiceImpl.getById(virtualMachineDto.cloudLocation);
         checkState(cloudLocation != null, "Could not retrieve cloudLocation for id: " + virtualMachineDto.cloudLocation);
         virtualMachine.setCloudLocation(cloudLocation);
 
-        CloudHardware cloudHardware = cloudHardwareFlavorService.getById(virtualMachineDto.cloudHardware);
+        CloudHardware cloudHardware = cloudHardwareFlavorServiceImpl.getById(virtualMachineDto.cloudHardware);
         checkState(cloudHardware != null, "Could not retrieve cloudHardware for id: " + virtualMachineDto.cloudHardware);
         virtualMachine.setCloudHardware(cloudHardware);
 
-        CloudImage cloudImage = cloudImageService.getById(virtualMachineDto.cloudImage);
+        CloudImage cloudImage = cloudImageServiceImpl.getById(virtualMachineDto.cloudImage);
         checkState(cloudImage != null, "Could not retrieve cloudImage for id: " + virtualMachineDto.cloudImage);
         virtualMachine.setCloudImage(cloudImage);
 

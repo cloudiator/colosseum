@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CloudImageDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.CloudImage;
-import models.service.api.CloudImageServiceInterface;
+import models.service.api.CloudImageService;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -36,7 +36,7 @@ public class CloudImageController extends GenericApiController<CloudImage, Cloud
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected CloudImageController(CloudImageServiceInterface cloudImageService, ModelDtoConversionService conversionService) {
+    protected CloudImageController(CloudImageService cloudImageService, ModelDtoConversionService conversionService) {
         super(cloudImageService, conversionService);
     }
 

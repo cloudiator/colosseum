@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Hardware;
-import models.service.api.HardwareServiceInterface;
+import models.service.api.HardwareService;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -36,7 +36,7 @@ public class HardwareController extends GenericApiController<Hardware, HardwareD
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected HardwareController(HardwareServiceInterface hardwareService, ModelDtoConversionService conversionService) {
+    protected HardwareController(HardwareService hardwareService, ModelDtoConversionService conversionService) {
         super(hardwareService, conversionService);
     }
 

@@ -25,9 +25,9 @@ import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
 import models.UserCredential;
-import models.service.impl.CloudApiService;
-import models.service.impl.CredentialService;
-import models.service.impl.FrontendUserService;
+import models.service.impl.CloudApiServiceImpl;
+import models.service.impl.CredentialServiceImpl;
+import models.service.impl.FrontendUserServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -37,20 +37,20 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class UserCredentialConverter extends BaseConverter<UserCredential, UserCredentialDto> {
 
-    private final CloudApiService cloudApiService;
-    private final CredentialService credentialService;
-    private final FrontendUserService frontendUserService;
+    private final CloudApiServiceImpl cloudApiServiceImpl;
+    private final CredentialServiceImpl credentialServiceImpl;
+    private final FrontendUserServiceImpl frontendUserServiceImpl;
 
     @Inject
-    UserCredentialConverter(CloudApiService cloudApiService, CredentialService credentialService, FrontendUserService frontendUserService) {
+    UserCredentialConverter(CloudApiServiceImpl cloudApiServiceImpl, CredentialServiceImpl credentialServiceImpl, FrontendUserServiceImpl frontendUserServiceImpl) {
 
-        checkNotNull(cloudApiService);
-        checkNotNull(credentialService);
-        checkNotNull(frontendUserService);
+        checkNotNull(cloudApiServiceImpl);
+        checkNotNull(credentialServiceImpl);
+        checkNotNull(frontendUserServiceImpl);
 
-        this.cloudApiService = cloudApiService;
-        this.credentialService = credentialService;
-        this.frontendUserService = frontendUserService;
+        this.cloudApiServiceImpl = cloudApiServiceImpl;
+        this.credentialServiceImpl = credentialServiceImpl;
+        this.frontendUserServiceImpl = frontendUserServiceImpl;
     }
 
 
@@ -63,15 +63,15 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
      */
     protected UserCredential setDto(UserCredential userCredential, UserCredentialDto userCredentialDto) {
 
-        CloudApi cloudApi = cloudApiService.getById(userCredentialDto.cloudApi);
+        CloudApi cloudApi = cloudApiServiceImpl.getById(userCredentialDto.cloudApi);
         checkState(cloudApi != null, "Could not retrieve cloudApi for id: " + userCredentialDto.cloudApi);
         userCredential.setCloudApi(cloudApi);
 
-        Credential credential = credentialService.getById(userCredentialDto.credential);
+        Credential credential = credentialServiceImpl.getById(userCredentialDto.credential);
         checkState(credential != null, "Could not retrieve credential for id: " + userCredentialDto.credential);
         userCredential.setCredential(credential);
 
-        FrontendUser frontendUser = frontendUserService.getById(userCredentialDto.frontendUser);
+        FrontendUser frontendUser = frontendUserServiceImpl.getById(userCredentialDto.frontendUser);
         checkState(frontendUser != null, "Could not retrieve frontendUser for id: " + userCredentialDto.frontendUser);
         userCredential.setFrontendUser(frontendUser);
 

@@ -14,6 +14,8 @@ resolvers += "eladron-snapshots" at "http://eladron.e-technik.uni-ulm.de:8081/ne
 
 resolvers += "eladron-releases" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/releases"
 
+resolvers += "sberan-github" at "https://raw.github.com/sberan/mvn-repo/master/releases"
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),

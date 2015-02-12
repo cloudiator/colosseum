@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.VirtualMachineDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.VirtualMachine;
-import models.service.api.VirtualMachineServiceInterface;
+import models.service.api.VirtualMachineService;
 
 /**
  * Created by bwpc on 09.12.2014.
@@ -36,7 +36,7 @@ public class VirtualMachineController extends GenericApiController<VirtualMachin
      * @param conversionService     the conversion service for converting models and dtos.
      */
     @Inject
-    protected VirtualMachineController(VirtualMachineServiceInterface virtualMachineService, ModelDtoConversionService conversionService) {
+    protected VirtualMachineController(VirtualMachineService virtualMachineService, ModelDtoConversionService conversionService) {
         super(virtualMachineService, conversionService);
     }
 

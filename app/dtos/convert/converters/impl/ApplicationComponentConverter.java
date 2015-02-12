@@ -23,8 +23,8 @@ import dtos.ApplicationComponentDto;
 import models.Application;
 import models.ApplicationComponent;
 import models.Component;
-import models.service.impl.ApplicationService;
-import models.service.impl.ComponentService;
+import models.service.impl.ApplicationServiceImpl;
+import models.service.impl.ComponentServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -34,17 +34,17 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class ApplicationComponentConverter extends BaseConverter<ApplicationComponent, ApplicationComponentDto> {
 
-    private final ApplicationService applicationService;
-    private final ComponentService componentService;
+    private final ApplicationServiceImpl applicationServiceImpl;
+    private final ComponentServiceImpl componentServiceImpl;
 
     @Inject
-    ApplicationComponentConverter(ApplicationService applicationService, ComponentService componentService) {
+    ApplicationComponentConverter(ApplicationServiceImpl applicationServiceImpl, ComponentServiceImpl componentServiceImpl) {
 
-        checkNotNull(applicationService);
-        checkNotNull(componentService);
+        checkNotNull(applicationServiceImpl);
+        checkNotNull(componentServiceImpl);
 
-        this.applicationService = applicationService;
-        this.componentService = componentService;
+        this.applicationServiceImpl = applicationServiceImpl;
+        this.componentServiceImpl = componentServiceImpl;
 
     }
 
@@ -57,11 +57,11 @@ public class ApplicationComponentConverter extends BaseConverter<ApplicationComp
      */
     protected ApplicationComponent setDto(ApplicationComponent applicationComponent, ApplicationComponentDto applicationComponentDto) {
 
-        Application application = applicationService.getById(applicationComponentDto.application);
+        Application application = applicationServiceImpl.getById(applicationComponentDto.application);
         checkState(application != null, "Could not retrieve application for id: " + applicationComponentDto.application);
         applicationComponent.setApplication(application);
 
-        Component component = componentService.getById(applicationComponentDto.component);
+        Component component = componentServiceImpl.getById(applicationComponentDto.component);
         checkState(component != null, "Could not retrieve component for id: " + applicationComponentDto.component);
         applicationComponent.setComponent(component);
 

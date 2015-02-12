@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.FrontendUserDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.FrontendUser;
-import models.service.api.FrontendUserServiceInterface;
+import models.service.api.FrontendUserService;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -36,7 +36,7 @@ public class FrontendUserController extends GenericApiController<FrontendUser, F
      * @param conversionService   the conversion service for converting models and dtos.
      */
     @Inject
-    protected FrontendUserController(FrontendUserServiceInterface frontendUserService, ModelDtoConversionService conversionService) {
+    protected FrontendUserController(FrontendUserService frontendUserService, ModelDtoConversionService conversionService) {
         super(frontendUserService, conversionService);
     }
 

@@ -42,6 +42,7 @@ public class Image extends NamedModel {
      */
     private static final long serialVersionUID = 1L;
 
+
     @ManyToOne(optional = false)
     private OperatingSystem operatingSystem;
 
@@ -51,14 +52,13 @@ public class Image extends NamedModel {
     @OneToMany(mappedBy = "image")
     private List<CloudImage> cloudImages;
 
+    @OneToMany(mappedBy = "image")
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
     /**
      * Empty constructor used by hibernate.
      */
     public Image() {
-    }
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
     }
 
     public OperatingSystem getOperatingSystem() {
@@ -78,4 +78,14 @@ public class Image extends NamedModel {
         checkNotNull(cloudImages);
         this.cloudImages = cloudImages;
     }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    
 }

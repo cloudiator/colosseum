@@ -24,8 +24,8 @@ import dtos.builders.CloudImageDtoBuilder;
 import models.Cloud;
 import models.CloudImage;
 import models.Image;
-import models.service.impl.CloudService;
-import models.service.impl.ImageService;
+import models.service.impl.CloudServiceImpl;
+import models.service.impl.ImageServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,27 +35,27 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto> {
 
-    private final CloudService cloudService;
-    private final ImageService imageService;
+    private final CloudServiceImpl cloudServiceImpl;
+    private final ImageServiceImpl imageServiceImpl;
 
     @Inject
-    CloudImageConverter(CloudService cloudService, ImageService imageService) {
+    CloudImageConverter(CloudServiceImpl cloudServiceImpl, ImageServiceImpl imageServiceImpl) {
 
-        checkNotNull(cloudService);
-        checkNotNull(imageService);
+        checkNotNull(cloudServiceImpl);
+        checkNotNull(imageServiceImpl);
 
-        this.cloudService = cloudService;
-        this.imageService = imageService;
+        this.cloudServiceImpl = cloudServiceImpl;
+        this.imageServiceImpl = imageServiceImpl;
     }
 
     protected CloudImage setDto(CloudImage cloudImage, CloudImageDto cloudImageDto) {
         cloudImage.setCloudUuid(cloudImageDto.cloudUuid);
 
-        Cloud cloud = cloudService.getById(cloudImageDto.cloud);
+        Cloud cloud = cloudServiceImpl.getById(cloudImageDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudImageDto.cloud);
         cloudImage.setCloud(cloud);
 
-        Image image = imageService.getById(cloudImageDto.image);
+        Image image = imageServiceImpl.getById(cloudImageDto.image);
         checkState(image != null, "Could not retrieve image for id: " + cloudImageDto.image);
         cloudImage.setImage(image);
 

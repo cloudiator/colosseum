@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.ImageDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Image;
-import models.service.api.ImageServiceInterface;
+import models.service.api.ImageService;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -36,7 +36,7 @@ public class ImageController extends GenericApiController<Image, ImageDto> {
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected ImageController(ImageServiceInterface imageService, ModelDtoConversionService conversionService) {
+    protected ImageController(ImageService imageService, ModelDtoConversionService conversionService) {
         super(imageService, conversionService);
     }
 

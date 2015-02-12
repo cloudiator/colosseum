@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CredentialDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Credential;
-import models.service.api.CredentialServiceInterface;
+import models.service.api.CredentialService;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -36,7 +36,7 @@ public class CredentialController extends GenericApiController<Credential, Crede
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected CredentialController(CredentialServiceInterface credentialService, ModelDtoConversionService conversionService) {
+    protected CredentialController(CredentialService credentialService, ModelDtoConversionService conversionService) {
         super(credentialService, conversionService);
     }
 

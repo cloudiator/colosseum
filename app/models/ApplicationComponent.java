@@ -44,6 +44,10 @@ public class ApplicationComponent extends Model {
     @OneToMany(mappedBy = "consumer")
     private List<Communication> consumedCommunications;
 
+    @ManyToOne(optional = false)
+    private VirtualMachineTemplate virtualMachineTemplate;
+
+
     public Application getApplication() {
         return application;
     }

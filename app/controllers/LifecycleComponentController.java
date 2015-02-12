@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.LifecycleComponentDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.LifecycleComponent;
-import models.service.api.LifecycleComponentServiceInterface;
+import models.service.api.LifecycleComponentService;
 
 /**
  * Created by daniel seybold on 16.12.2014.
@@ -36,7 +36,7 @@ public class LifecycleComponentController extends GenericApiController<Lifecycle
      * @param conversionService         the conversion service for converting models and dtos.
      */
     @Inject
-    protected LifecycleComponentController(LifecycleComponentServiceInterface lifecycleComponentService, ModelDtoConversionService conversionService) {
+    protected LifecycleComponentController(LifecycleComponentService lifecycleComponentService, ModelDtoConversionService conversionService) {
         super(lifecycleComponentService, conversionService);
     }
 

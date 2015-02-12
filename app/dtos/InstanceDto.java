@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.ApplicationComponent;
 import models.VirtualMachine;
-import models.service.api.ApplicationComponentServiceInterface;
-import models.service.api.VirtualMachineServiceInterface;
+import models.service.api.ApplicationComponentService;
+import models.service.api.VirtualMachineService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -38,10 +38,10 @@ public class InstanceDto extends ValidatableDto {
     public static class References{
 
         @Inject
-        public static Provider<ApplicationComponentServiceInterface> applicationComponentService;
+        public static Provider<ApplicationComponentService> applicationComponentService;
 
         @Inject
-        public static Provider<VirtualMachineServiceInterface> virtualMachineService;
+        public static Provider<VirtualMachineService> virtualMachineService;
     }
 
     public Long applicationComponent;

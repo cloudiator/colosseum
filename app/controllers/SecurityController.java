@@ -23,8 +23,10 @@ import com.google.inject.Inject;
 import components.security.Password;
 import dtos.LoginDto;
 import models.ApiAccessToken;
-import models.service.impl.ApiAccessTokenService;
-import models.service.impl.FrontendUserService;
+import models.service.api.ApiAccessTokenService;
+import models.service.api.FrontendUserService;
+import models.service.impl.ApiAccessTokenServiceImpl;
+import models.service.impl.FrontendUserServiceImpl;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -46,7 +48,7 @@ public class SecurityController extends Controller {
     }
 
     @Inject
-    public SecurityController(FrontendUserService frontendUserService, ApiAccessTokenService apiAccessTokenService) {
+    public SecurityController(FrontendUserServiceImpl frontendUserService, ApiAccessTokenServiceImpl apiAccessTokenService) {
         this.frontendUserService = frontendUserService;
         this.apiAccessTokenService = apiAccessTokenService;
     }

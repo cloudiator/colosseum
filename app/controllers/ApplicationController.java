@@ -23,8 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.ApplicationDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.Application;
-import models.service.api.ApplicationServiceInterface;
-import models.service.api.generic.ModelServiceInterface;
+import models.service.api.ApplicationService;
 
 /**
  * Created by daniel seybold on 16.12.2014.
@@ -39,7 +38,7 @@ public class ApplicationController extends GenericApiController<Application, App
      * @param conversionService the conversion service for converting models and dtos.
      */
     @Inject
-    protected ApplicationController(ApplicationServiceInterface applicationService, ModelDtoConversionService conversionService) {
+    protected ApplicationController(ApplicationService applicationService, ModelDtoConversionService conversionService) {
         super(applicationService, conversionService);
     }
 

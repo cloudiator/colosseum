@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import dtos.CommunicationDto;
 import models.ApplicationComponent;
 import models.Communication;
-import models.service.api.ApplicationComponentServiceInterface;
+import models.service.api.ApplicationComponentService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -32,10 +32,10 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CommunicationConverter extends BaseConverter<Communication, CommunicationDto> {
 
-    private final ApplicationComponentServiceInterface applicationComponentService;
+    private final ApplicationComponentService applicationComponentService;
 
     @Inject
-    public CommunicationConverter(ApplicationComponentServiceInterface applicationComponentService) {
+    public CommunicationConverter(ApplicationComponentService applicationComponentService) {
         this.applicationComponentService = applicationComponentService;
     }
 

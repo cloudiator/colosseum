@@ -23,8 +23,8 @@ import dtos.InstanceDto;
 import models.ApplicationComponent;
 import models.Instance;
 import models.VirtualMachine;
-import models.service.impl.ApplicationComponentService;
-import models.service.impl.VirtualMachineService;
+import models.service.impl.ApplicationComponentServiceImpl;
+import models.service.impl.VirtualMachineServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -34,16 +34,16 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class InstanceConverter extends BaseConverter<Instance, InstanceDto> {
 
-    private final ApplicationComponentService applicationComponentService;
-    private final VirtualMachineService virtualMachineService;
+    private final ApplicationComponentServiceImpl applicationComponentServiceImpl;
+    private final VirtualMachineServiceImpl virtualMachineServiceImpl;
 
     @Inject
-    InstanceConverter(ApplicationComponentService applicationComponentService, VirtualMachineService virtualMachineService) {
-        checkNotNull(applicationComponentService);
-        checkNotNull(virtualMachineService);
+    InstanceConverter(ApplicationComponentServiceImpl applicationComponentServiceImpl, VirtualMachineServiceImpl virtualMachineServiceImpl) {
+        checkNotNull(applicationComponentServiceImpl);
+        checkNotNull(virtualMachineServiceImpl);
 
-        this.applicationComponentService = applicationComponentService;
-        this.virtualMachineService = virtualMachineService;
+        this.applicationComponentServiceImpl = applicationComponentServiceImpl;
+        this.virtualMachineServiceImpl = virtualMachineServiceImpl;
     }
 
     /**
@@ -55,11 +55,11 @@ public class InstanceConverter extends BaseConverter<Instance, InstanceDto> {
      */
     protected Instance setDto(Instance instance, InstanceDto instanceDto) {
 
-        ApplicationComponent applicationComponent = applicationComponentService.getById(instanceDto.applicationComponent);
+        ApplicationComponent applicationComponent = applicationComponentServiceImpl.getById(instanceDto.applicationComponent);
         checkState(applicationComponent != null, "Could not retrieve applicationComponent for id: " + instanceDto.applicationComponent);
         instance.setApplicationComponent(applicationComponent);
 
-        VirtualMachine virtualMachine = virtualMachineService.getById(instanceDto.virtualMachine);
+        VirtualMachine virtualMachine = virtualMachineServiceImpl.getById(instanceDto.virtualMachine);
         checkState(virtualMachine != null, "Could not retrieve virtualMachine for id: " + instanceDto.virtualMachine);
         instance.setVirtualMachine(virtualMachine);
 

@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
 import models.Image;
-import models.service.api.CloudServiceInterface;
-import models.service.api.ImageServiceInterface;
+import models.service.api.CloudService;
+import models.service.api.ImageService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -36,10 +36,10 @@ public class CloudImageDto extends ValidatableDto {
     public static class References{
 
         @Inject
-        public static Provider<CloudServiceInterface> cloudService;
+        public static Provider<CloudService> cloudService;
 
         @Inject
-        public static Provider<ImageServiceInterface> imageService;
+        public static Provider<ImageService> imageService;
     }
 
     public Long cloud;

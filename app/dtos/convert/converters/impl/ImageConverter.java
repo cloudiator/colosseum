@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import dtos.ImageDto;
 import models.Image;
 import models.OperatingSystem;
-import models.service.impl.OperatingSystemService;
+import models.service.impl.OperatingSystemServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -32,21 +32,21 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class ImageConverter extends BaseConverter<Image, ImageDto> {
 
-    private final OperatingSystemService operatingSystemService;
+    private final OperatingSystemServiceImpl operatingSystemServiceImpl;
 
     @Inject
-    ImageConverter(OperatingSystemService operatingSystemService) {
+    ImageConverter(OperatingSystemServiceImpl operatingSystemServiceImpl) {
 
-        checkNotNull(operatingSystemService);
+        checkNotNull(operatingSystemServiceImpl);
 
-        this.operatingSystemService = operatingSystemService;
+        this.operatingSystemServiceImpl = operatingSystemServiceImpl;
 
     }
 
     protected Image setDto(Image image, ImageDto imageDto) {
         image.setName(imageDto.name);
 
-        OperatingSystem operatingSystem = operatingSystemService.getById(imageDto.operatingSystem);
+        OperatingSystem operatingSystem = operatingSystemServiceImpl.getById(imageDto.operatingSystem);
         checkState(operatingSystem != null, "Could not retrieve operating system for id: " + imageDto.operatingSystem);
         image.setOperatingSystem(operatingSystem);
 

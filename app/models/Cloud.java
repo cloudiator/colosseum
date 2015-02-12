@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * The model class Cloud.
- * <p/>
+ * <p>
  * Represents a specific cloud like amazon ec2, flexiant etc.
  *
  * @author Daniel Baur
@@ -71,7 +71,11 @@ public class Cloud extends NamedModel {
      * The concrete hardware flavors available in this cloud.
      */
     @OneToMany(mappedBy = "cloud")
-    private List<CloudHardware> cloudHardwares;
+    private List<CloudHardware> cloudHardware;
+
+    @OneToMany(mappedBy = "cloud")
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
 
     public List<CloudApi> getCloudApis() {
         return cloudApis;
@@ -97,11 +101,19 @@ public class Cloud extends NamedModel {
         this.cloudLocations = cloudLocations;
     }
 
-    public List<CloudHardware> getCloudHardwares() {
-        return cloudHardwares;
+    public List<CloudHardware> getCloudHardware() {
+        return cloudHardware;
     }
 
-    public void setCloudHardwares(List<CloudHardware> cloudHardwares) {
-        this.cloudHardwares = cloudHardwares;
+    public void setCloudHardware(List<CloudHardware> cloudHardware) {
+        this.cloudHardware = cloudHardware;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

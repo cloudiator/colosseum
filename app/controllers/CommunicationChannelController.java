@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CommunicationChannelDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.CommunicationChannel;
-import models.service.api.CommunicationChannelServiceInterface;
+import models.service.api.CommunicationChannelService;
 
 /**
  * Created by daniel on 09.01.15.
@@ -31,7 +31,7 @@ import models.service.api.CommunicationChannelServiceInterface;
 public class CommunicationChannelController extends GenericApiController<CommunicationChannel, CommunicationChannelDto> {
 
     @Inject
-    protected CommunicationChannelController(CommunicationChannelServiceInterface communicationChannelService, ModelDtoConversionService conversionService) {
+    protected CommunicationChannelController(CommunicationChannelService communicationChannelService, ModelDtoConversionService conversionService) {
         super(communicationChannelService, conversionService);
     }
 

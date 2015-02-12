@@ -24,8 +24,8 @@ import dtos.builders.CloudApiDtoBuilder;
 import models.Api;
 import models.Cloud;
 import models.CloudApi;
-import models.service.impl.ApiService;
-import models.service.impl.CloudService;
+import models.service.impl.ApiServiceImpl;
+import models.service.impl.CloudServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,28 +35,28 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CloudApiConverter extends BaseConverter<CloudApi, CloudApiDto> {
 
-    private final ApiService apiService;
-    private final CloudService cloudService;
+    private final ApiServiceImpl apiServiceImpl;
+    private final CloudServiceImpl cloudServiceImpl;
 
     @Inject
-    CloudApiConverter(ApiService apiService, CloudService cloudService) {
+    CloudApiConverter(ApiServiceImpl apiServiceImpl, CloudServiceImpl cloudServiceImpl) {
 
-        checkNotNull(apiService);
-        checkNotNull(cloudService);
+        checkNotNull(apiServiceImpl);
+        checkNotNull(cloudServiceImpl);
 
-        this.apiService = apiService;
-        this.cloudService = cloudService;
+        this.apiServiceImpl = apiServiceImpl;
+        this.cloudServiceImpl = cloudServiceImpl;
 
     }
 
     protected CloudApi setDto(CloudApi cloudApi, CloudApiDto cloudApiDto) {
         cloudApi.setEndpoint(cloudApiDto.endpoint);
 
-        Api api = apiService.getById(cloudApiDto.api);
+        Api api = apiServiceImpl.getById(cloudApiDto.api);
         checkState(api != null, "Could not retrieve api for id: " + cloudApiDto.api);
         cloudApi.setApi(api);
 
-        Cloud cloud = cloudService.getById(cloudApiDto.cloud);
+        Cloud cloud = cloudServiceImpl.getById(cloudApiDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudApiDto.cloud);
         cloudApi.setCloud(cloud);
 

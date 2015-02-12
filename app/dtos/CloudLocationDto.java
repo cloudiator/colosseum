@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
 import models.Location;
-import models.service.api.CloudServiceInterface;
-import models.service.impl.LocationService;
+import models.service.api.CloudService;
+import models.service.api.LocationService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class CloudLocationDto extends ValidatableDto {
     public static class References {
 
         @Inject
-        public static Provider<CloudServiceInterface> cloudService;
+        public static Provider<CloudService> cloudService;
 
         @Inject
         public static Provider<LocationService> locationService;

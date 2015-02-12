@@ -23,8 +23,8 @@ import dtos.CommunicationChannelDto;
 import models.Communication;
 import models.CommunicationChannel;
 import models.Instance;
-import models.service.api.CommunicationServiceInterface;
-import models.service.api.InstanceServiceInterface;
+import models.service.api.CommunicationService;
+import models.service.api.InstanceService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -34,11 +34,11 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CommunicationChannelConverter extends BaseConverter<CommunicationChannel, CommunicationChannelDto> {
 
-    private final CommunicationServiceInterface communicationService;
-    private final InstanceServiceInterface instanceService;
+    private final CommunicationService communicationService;
+    private final InstanceService instanceService;
 
     @Inject
-    public CommunicationChannelConverter(CommunicationServiceInterface communicationService, InstanceServiceInterface instanceService) {
+    public CommunicationChannelConverter(CommunicationService communicationService, InstanceService instanceService) {
         this.communicationService = communicationService;
         this.instanceService = instanceService;
     }

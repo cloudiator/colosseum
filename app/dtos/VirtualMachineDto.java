@@ -25,10 +25,10 @@ import models.Cloud;
 import models.CloudHardware;
 import models.CloudImage;
 import models.CloudLocation;
-import models.service.api.CloudHardwareFlavorServiceInterface;
-import models.service.api.CloudImageServiceInterface;
+import models.service.api.CloudHardwareFlavorService;
+import models.service.api.CloudImageService;
 import models.service.api.CloudLocationServiceInterface;
-import models.service.api.CloudServiceInterface;
+import models.service.api.CloudService;
 import play.data.validation.ValidationError;
 
 import java.util.List;
@@ -40,11 +40,11 @@ public class VirtualMachineDto extends NamedDto {
 
     public static class References {
         @Inject
-        public static Provider<CloudServiceInterface> cloudService;
+        public static Provider<CloudService> cloudService;
         @Inject
-        public static Provider<CloudImageServiceInterface> cloudImageService;
+        public static Provider<CloudImageService> cloudImageService;
         @Inject
-        public static Provider<CloudHardwareFlavorServiceInterface> cloudHardwareFlavorService;
+        public static Provider<CloudHardwareFlavorService> cloudHardwareFlavorService;
         @Inject
         public static Provider<CloudLocationServiceInterface> cloudLocationService;
     }

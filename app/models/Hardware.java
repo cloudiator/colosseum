@@ -65,6 +65,9 @@ public class Hardware extends Model {
     @OneToMany(mappedBy = "hardware")
     private List<CloudHardware> cloudHardware;
 
+    @OneToMany(mappedBy = "hardware")
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
     /**
      * Empty constructor needed by hibernate.
      */
@@ -106,5 +109,13 @@ public class Hardware extends Model {
     public void setCloudHardware(List<CloudHardware> cloudHardware) {
         checkNotNull(cloudHardware);
         this.cloudHardware = cloudHardware;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

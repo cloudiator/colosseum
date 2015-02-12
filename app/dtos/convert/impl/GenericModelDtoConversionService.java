@@ -52,7 +52,7 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
 
     @Override
     public <T extends Model, S extends Dto> void addConverter(final Class<T> modelClass, final Class<S> dtoClass, final ModelDtoConverter<T, S> modelDtoConverter) {
-        Logger.debug(String.format("Registered new converter for dto: %s and model %s: %s", modelClass.getName(), dtoClass.getName(), modelDtoConverter.getClass().getName()));
+        Logger.debug(String.format("Registered new converter for model: %s and dto %s: %s", modelClass.getName(), dtoClass.getName(), modelDtoConverter.getClass().getName()));
         checkNotNull(modelClass);
         checkNotNull(dtoClass);
         checkNotNull(modelDtoConverter);

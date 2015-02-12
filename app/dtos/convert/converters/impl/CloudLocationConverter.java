@@ -24,8 +24,8 @@ import dtos.builders.CloudLocationDtoBuilder;
 import models.Cloud;
 import models.CloudLocation;
 import models.Location;
-import models.service.impl.CloudService;
-import models.service.impl.LocationService;
+import models.service.impl.CloudServiceImpl;
+import models.service.impl.LocationServiceImpl;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,28 +35,28 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLocationDto> {
 
-    private final CloudService cloudService;
-    private final LocationService locationService;
+    private final CloudServiceImpl cloudServiceImpl;
+    private final LocationServiceImpl locationServiceImpl;
 
     @Inject
-    CloudLocationConverter(CloudService cloudService, LocationService locationService) {
+    CloudLocationConverter(CloudServiceImpl cloudServiceImpl, LocationServiceImpl locationServiceImpl) {
 
-        checkNotNull(cloudService);
-        checkNotNull(locationService);
+        checkNotNull(cloudServiceImpl);
+        checkNotNull(locationServiceImpl);
 
-        this.cloudService = cloudService;
-        this.locationService = locationService;
+        this.cloudServiceImpl = cloudServiceImpl;
+        this.locationServiceImpl = locationServiceImpl;
 
     }
 
     protected CloudLocation setDto(CloudLocation cloudLocation, CloudLocationDto cloudLocationDto) {
         cloudLocation.setCloudUuid(cloudLocationDto.cloudUuid);
 
-        Cloud cloud = cloudService.getById(cloudLocationDto.cloud);
+        Cloud cloud = cloudServiceImpl.getById(cloudLocationDto.cloud);
         checkState(cloud != null, "Could not retrieve cloud for id: " + cloudLocationDto.cloud);
         cloudLocation.setCloud(cloud);
 
-        Location location = locationService.getById(cloudLocationDto.cloud);
+        Location location = locationServiceImpl.getById(cloudLocationDto.cloud);
         checkState(location != null, "Could not retrieve location for id: " + cloudLocationDto.location);
         cloudLocation.setLocation(location);
 

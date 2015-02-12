@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CloudHardwareDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.CloudHardware;
-import models.service.api.CloudHardwareFlavorServiceInterface;
+import models.service.api.CloudHardwareFlavorService;
 
 /**
  * Created by daniel seybold on 09.12.2014.
@@ -36,7 +36,7 @@ public class CloudHardwareController extends GenericApiController<CloudHardware,
      * @param conversionService          the conversion service for converting models and dtos.
      */
     @Inject
-    protected CloudHardwareController(CloudHardwareFlavorServiceInterface cloudHardwareFlavorService, ModelDtoConversionService conversionService) {
+    protected CloudHardwareController(CloudHardwareFlavorService cloudHardwareFlavorService, ModelDtoConversionService conversionService) {
         super(cloudHardwareFlavorService, conversionService);
     }
 

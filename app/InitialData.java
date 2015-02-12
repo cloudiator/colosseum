@@ -18,7 +18,8 @@
 
 import com.google.inject.Inject;
 import models.FrontendUser;
-import models.service.impl.FrontendUserService;
+import models.service.api.FrontendUserService;
+import models.service.impl.FrontendUserServiceImpl;
 
 /**
  * Created by daniel on 25.11.14.
@@ -28,7 +29,7 @@ public class InitialData {
     private final FrontendUserService frontendUserService;
 
     @Inject
-    public InitialData(FrontendUserService frontendUserService) {
+    public InitialData(FrontendUserServiceImpl frontendUserService) {
         this.frontendUserService = frontendUserService;
     }
 
@@ -38,6 +39,4 @@ public class InitialData {
             frontendUserService.save(frontendUser);
         }
     }
-
-
 }

@@ -44,6 +44,9 @@ public class Location extends NamedModel {
     @OneToMany(mappedBy = "location")
     private List<CloudLocation> cloudLocations;
 
+    @OneToMany(mappedBy = "location")
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
     @ManyToOne
     private Location parent;
 
@@ -101,5 +104,13 @@ public class Location extends NamedModel {
 
     public void setLocationScope(LocationScope locationScope) {
         this.locationScope = locationScope;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

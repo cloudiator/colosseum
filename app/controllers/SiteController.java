@@ -20,7 +20,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import controllers.security.SecuredSessionOrToken;
-import models.service.api.FrontendUserServiceInterface;
+import models.service.api.FrontendUserService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -36,10 +36,10 @@ import play.mvc.Security;
 @Security.Authenticated(SecuredSessionOrToken.class)
 public class SiteController extends Controller {
 
-    private final FrontendUserServiceInterface frontendUserService;
+    private final FrontendUserService frontendUserService;
 
     @Inject
-    public SiteController(final FrontendUserServiceInterface frontendUserService) {
+    public SiteController(final FrontendUserService frontendUserService) {
         this.frontendUserService = frontendUserService;
     }
 

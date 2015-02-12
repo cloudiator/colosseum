@@ -21,7 +21,7 @@ package dtos;
 import com.google.inject.Inject;
 import dtos.generic.impl.NamedDto;
 import models.OperatingSystem;
-import models.service.api.OperatingSystemServiceInterface;
+import models.service.api.OperatingSystemService;
 
 import com.google.inject.Provider;
 import play.data.validation.ValidationError;
@@ -33,7 +33,7 @@ public class ImageDto extends NamedDto {
     public static class References{
 
         @Inject
-        public static Provider<OperatingSystemServiceInterface> operatingSystemService;
+        public static Provider<OperatingSystemService> operatingSystemService;
 
     }
 

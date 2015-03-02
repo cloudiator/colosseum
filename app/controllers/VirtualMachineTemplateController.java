@@ -24,7 +24,6 @@ import dtos.VirtualMachineTemplateDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.VirtualMachineTemplate;
 import models.service.api.VirtualMachineTemplateService;
-import models.service.api.generic.ModelServiceInterface;
 
 /**
  * Created by daniel on 12.02.15.
@@ -34,8 +33,8 @@ public class VirtualMachineTemplateController extends GenericApiController<Virtu
     /**
      * Constructs a GenericApiController.
      *
-     * @param virtualMachineTemplateService      the model service for retrieving the models.
-     * @param conversionService the conversion service for converting models and dtos.
+     * @param virtualMachineTemplateService the model service for retrieving the models.
+     * @param conversionService             the conversion service for converting models and dtos.
      */
     @Inject
     protected VirtualMachineTemplateController(VirtualMachineTemplateService virtualMachineTemplateService, ModelDtoConversionService conversionService) {

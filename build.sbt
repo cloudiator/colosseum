@@ -2,19 +2,18 @@ import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-name := "executionware"
+name := "executionware-frontend"
+
 
 //val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
 // val buildNumber = conf.getString("build.number")
 
 //version := "b" + buildNumber + "-1.0-SNAPSHOT"
-version := "1.0-SNAPSHOT"
+version := "1.2-SNAPSHOT"
 
 resolvers += "eladron-snapshots" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/snapshots"
 
 resolvers += "eladron-releases" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/releases"
-
-resolvers += "sberan-github" at "https://raw.github.com/sberan/mvn-repo/master/releases"
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -28,7 +27,8 @@ libraryDependencies ++= Seq(
   "com.google.inject.extensions" % "guice-multibindings" % "3.0",
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
-  "com.google.code.findbugs" % "jsr305" % "1.3.9"
+  "com.google.code.findbugs" % "jsr305" % "1.3.9",
+  "de.uniulm.omi.executionware" % "executionware" % "1.2-SNAPSHOT"
 )
 
 TwirlKeys.templateImports += "dtos._"

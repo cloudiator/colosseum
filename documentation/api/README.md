@@ -7,4 +7,4 @@
 Entity                | URL
 --------------------- | -------------
 [API](entities/Api.md)| /api/api
-[Application](entities.Application.md) | /api/application
+[Application](entities/Application.md) | /api/application

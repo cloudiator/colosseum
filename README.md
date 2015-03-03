@@ -61,7 +61,7 @@ password: admin
 Documentation
 =====================================
 
-Wiki: https://github.com/dbaur/execWareFrontend/wiki
+[Documentation can be found here](documentation/README.md)
 
 Contact
 =====================================

@@ -1,4 +1,4 @@
-﻿# Api Actions
+﻿# API Actions
 ***
 
 ## Description

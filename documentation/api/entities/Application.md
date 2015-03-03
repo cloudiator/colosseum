@@ -2,6 +2,8 @@
 ***
 
 ## Description
+The application entity represents a single application within the system. An application 
+***
 
 ## GET /api/application
 

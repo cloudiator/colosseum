@@ -4,7 +4,8 @@
 [Authentication](general/Authentication.md)
 ***
 ## Entities
-Entity                | URL
---------------------- | -------------
-[API](entities/Api.md)| /api/api
-[Application](entities/Application.md) | /api/application
+Entity                                 | URL
+--------------------------------------------------------- | ---------------------------
+[API](entities/Api.md)                                    | /api/api
+[Application](entities/Application.md)                    | /api/application
+[VirtualMachineTemplate](entities/VirtualMachineTemplate) | /api/virtualMachineTemplate

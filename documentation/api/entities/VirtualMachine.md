@@ -1,14 +1,16 @@
-# VirtualMachine Actions
+﻿# VirtualMachine Actions
 ***
-
+## Description
+The virtual machine entity represents a specific virtual machine.
+***
 ## GET /api/virtualMachine
+**Description** Lists all virtual machines available in the system.
 
 **Request Parameters** None
 
-**Request** This operation does not require a request body.
+**Response** A list of all virtual machine entities stored in the database.
 
-**Response** A list of all virtualMachine entities stored in the database.
-
+**Response Example**
 ```
 [  
    {  
@@ -18,7 +20,7 @@
             "rel":"self"
          }
       ],
-      "name":"Scalarm",
+      "name":"scalarm_vm_1",
       "cloud":1,
       "cloudImage":1,
       "cloudHardware":1,
@@ -31,7 +33,7 @@
             "rel":"self"
          }
       ],
-      "name":"Hyperflow",
+      "name":"scalarm_vm_2",
       "cloud":1,
       "cloudImage":1,
       "cloudHardware":1,
@@ -43,8 +45,10 @@
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
-
+***
 ## GET /api/virtualMachine/{virtualMachine_id}
+
+**Description** Shows the virtual machine entity identified by the given {virtualMachine_id}.
 
 **Request Parameters**
 
@@ -52,10 +56,9 @@ Parameter             | Description
 -------------         | -------------
 virtualMachine_id     | The id of the virtualMachine.
 
-**Request** This operation does not require a request body.
-
 **Response** Shows the selected virtualMachine entity.
 
+**Response Example**
 ```
 {  
    "links":[  
@@ -64,27 +67,34 @@ virtualMachine_id     | The id of the virtualMachine.
          "rel":"self"
       }
    ],
-   "name":"Scalarm",
+   "name":"scalarm_vm_1",
    "cloud":1,
    "cloudImage":1,
    "cloudHardware":1,
    "cloudLocation":1
 }
 ```
-
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/virtualMachine
+## POST /api/virtualMachine
+
+**Description** Creates a virtual machine and returns it.
 
 **Request Parameters** none
 
-**Request** The virtualMachine attributes name, cloud, cloudImage, cloudHardware and cloudLocation.
+Parameter     | Description
+------------- | ----------------------------------------------------------
+cloud         | The cloud the virtual machine will be started in.
+cloudImage    | The cloud image that will be used to start the machine.
+cloudLocation | The cloud location that will be used to start the machine.
+cloudHardware | The cloud hardware that will be used to start the machine.
 
+**Request Example**
 ```
 {  
-   "name":"Scalarm",
+   "name":"scalarm_vm_1",
    "cloud":1,
    "cloudImage":1,
    "cloudHardware":1,
@@ -92,22 +102,30 @@ virtualMachine_id     | The id of the virtualMachine.
 }
 ```
 
-**Response** No data.
+**Response** Returns the create virtual machine. See /api/virtualMachine/{virtualMachine_id}
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/virtualMachine/{virtualMachine_id}
+## PUT /api/virtualMachine/{virtualMachine_id}
 
-**Request Parameters** 
+**Description**
+Updates the virtual machine with the information provided in the request.
+
+**Request Parameters**
 
 Parameter            | Description
--------------        | -------------
-virtualMachine_id    | The id of the virtualMachine to update.
+-------------------- | -------------
+virtualMachine_id    | The id of the virtual machine to be updated.
+cloud                | The cloud the virtual machine will be started in.
+cloudImage           | The cloud image that will be used to start the machine.
+cloudLocation        | The cloud location that will be used to start the machine.
+cloudHardware        | The cloud hardware that will be used to start the machine.
 
 **Request** The virtualMachine attributes name, cloud, cloudImage, cloudHardware and cloudLocation.
 
+**Request Example**
 ```
 {  
    "name":"Scalarm",
@@ -128,11 +146,9 @@ virtualMachine_id    | The id of the virtualMachine to update.
 
 **Request Parameters** 
 
-Parameter           | Description
+Parameter          s | Description
 -------------       | -------------
 virtualMachine_id   | The id of the virtualMachine to delete.
-
-**Request** None.
 
 **Response** No data.
 

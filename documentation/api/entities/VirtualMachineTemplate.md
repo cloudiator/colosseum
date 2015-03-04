@@ -12,11 +12,9 @@ The VirtualMachineTemplate represents a template for creating virtual machines. 
 
 **Request Parameters** None
 
-**Request Body** This operation does not require a request body.
-
 **Response** A list of all virtual machine template entities stored in the database.
 
-**Response Body Example**
+**Response Example**
 ```
 [
    {
@@ -29,7 +27,7 @@ The VirtualMachineTemplate represents a template for creating virtual machines. 
       "cloud":1
       "cloudImage":1
       "cloudLocation":2
-      "cloudHardware":3s
+      "cloudHardware":3
    }
 ]
 ```
@@ -47,9 +45,7 @@ Parameter     | Description
 ------------- | -------------
 vmt_id        | The id of the virtual machine template.
 
-**Request Body** This operation does not require a request body.
-
-**Response Body Example** Shows the selected virtual machine template entity.
+**Response Example** Shows the selected virtual machine template entity.
 
 ```
 {
@@ -74,7 +70,7 @@ vmt_id        | The id of the virtual machine template.
 
 **Description** Creates a new virtual machine template entity. The new entity will be returned.
 
-**Request Parameters**
+**Request Parameters** None
 
 Parameter     | Description
 ------------- | ----------------------------------------------------------
@@ -83,7 +79,7 @@ cloudImage    | The cloud image that will be used to start the machine.
 cloudLocation | The cloud location that will be used to start the machine.
 cloudHardware | The cloud hardware that will be used to start the machine.
 
-**Request Body Example**
+**Request Example**
 ```
 {
   "cloud":1
@@ -103,15 +99,15 @@ cloudHardware | The cloud hardware that will be used to start the machine.
 **Description** Updates the virtual machine template identified by the given id.
 
 **Request Parameters** 
-
 Parameter     | Description
-------------- | ----------------------------------------------------------
+------------- | -------------
+vmt_id        | The id of the virtual machine template.
 cloud         | The cloud the virtual machine will be started in.
 cloudImage    | The cloud image that will be used to start the machine.
 cloudLocation | The cloud location that will be used to start the machine.
 cloudHardware | The cloud hardware that will be used to start the machine.
 
-**Request Body Example**
+**Request Example**
 ```
 {
   "cloud":1

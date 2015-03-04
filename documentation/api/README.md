@@ -5,7 +5,7 @@
 ***
 ## Entities
 Entity                                 | URL
---------------------------------------------------------- | ---------------------------
-[API](entities/Api.md)                                    | /api/api
-[Application](entities/Application.md)                    | /api/application
-[VirtualMachineTemplate](entities/VirtualMachineTemplate) | /api/virtualMachineTemplate
+------------------------------------------------------------ | ---------------------------
+[API](entities/Api.md)                                       | /api/api
+[Application](entities/Application.md)                       | /api/application
+[VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/virtualMachineTemplate

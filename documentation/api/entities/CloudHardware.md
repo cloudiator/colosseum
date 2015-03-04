@@ -137,10 +137,10 @@ Updates the CloudHardware entity identified by the given id.
 
 Parameter           | Description
 -------------       | -------------
-cloudHardware_id    | The id of the cloudHardware to update.
+cloudHardware_id    | The id of the CloudHardware to update.
 cloud               | The cloud associated with the CloudHardware.
 hardware            | The hardware associated with the CloudHardware.
-cloudUuid           | The UUID of the cloudHardware.
+cloudUuid           | The UUID of the CloudHardware.
 
 ###Request Example
 

@@ -83,6 +83,7 @@ Shows the selected virtualMachine entity.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
+***
 ## POST /api/virtualMachine
 
 ###Description
@@ -116,6 +117,7 @@ Returns the create virtual machine. See /api/virtualMachine/{virtualMachine_id}
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
+***
 ## PUT /api/virtualMachine/{virtualMachine_id}
 
 ###Description
@@ -150,6 +152,7 @@ The updated virtual machine. See GET /api/virtualMachine/{virtualMachine_id}
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
 ## DELETE /api/virtualMachine/{virtualMachine_id}
 
 ###Request Parameters
@@ -158,10 +161,10 @@ Parameter           | Description
 ------------------- | ---------------------------------------
 virtualMachine_id   | The id of the virtualMachine to delete.
 
-##Response
+### Response
 No data.
 
-##Response Codes
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

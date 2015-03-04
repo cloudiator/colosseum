@@ -1,14 +1,20 @@
-# LifecycleComponent Actions
+﻿# LifecycleComponent Actions
 ***
-
+## Description
+The lifecycle component entity is a component using lifecycle shell scripts to execute the lifecycle actions.
+***
 ## GET /api/lifecycleComponent
 
-**Request Parameters** None
+### Description
+Returns a list of all registered lifecycle components.
 
-**Request** This operation does not require a request body.
+### Request Parameters
+None.
 
-**Response** A list of all lifecycleComponent entities stored in the database.
+### Response
+A list of all lifecycleComponent entities stored in the database.
 
+### Response Example
 ```
 [  
    {  
@@ -31,7 +37,7 @@
             "rel":"self"
          }
       ],
-      "name":"Loadbalancer",
+      "name":"apacheLB",
       "download":"wget www.loadbalancer.com",
       "install":"install.sh",
       "start":"start.sh",
@@ -39,23 +45,24 @@
    }
 ]
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
 ## GET /api/lifecycleComponent/{lifecycleComponent_id}
 
-**Request Parameters**
+### Request Parameters
 
 Parameter             | Description
 -------------         | -------------
 lifecycleComponent_id | The id of the lifecycleComponent.
 
-**Request** This operation does not require a request body.
+### Response
+Shows the selected lifecycleComponent entity.
 
-**Response** Shows the selected lifecycleComponent entity.
-
+### Response Example
 ```
 {  
    "links":[  
@@ -75,12 +82,24 @@ lifecycleComponent_id | The id of the lifecycleComponent.
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
+***
+## POST /api/lifecycleComponent
 
-## PUT /api/lifecycleComponent
+### Description
 
-**Request Parameters** none
+Creates a new lifecycle component and returns it.
 
-**Request** The lifecycleComponent attributes name, donwload, install, start and stop.
+### Request Parameters
+
+Parameter | Description
+--------- | ------------------------------------
+name      | The name for the lifeycle component.
+download  | The action for the download lifecycle step.
+install   | The action for the install lifecycle step.
+start     | The action for the start lifecycle step.
+stop      | The action for the stop lifecycle step.
+
+### Request Example
 
 ```
 {  
@@ -92,22 +111,37 @@ lifecycleComponent_id | The id of the lifecycleComponent.
 }
 ```
 
-**Response** No data.
+### Response
+
+The create lifecycle component. See GET /api/lifecycleComponent/{lifecycleComponent_id}
+
+### Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/lifecycleComponent/{lifecycleComponent_id}
+***
+## PUT /api/lifecycleComponent/{lifecycleComponent_id}
 
-**Request Parameters** 
+### Description
+Updates the lifecycle component located at the given id with the data from the request.
 
-Parameter                | Description
--------------            | -------------
-lifecycleComponent_id    | The id of the lifecycleComponent to update.
+### Request Parameters
 
-**Request** The lifecycleComponent attributes name, donwload, install, start and stop.
+Parameter             | Description
+--------------------- | ---------------------------------------------
+lifecycleComponent_id | The id of the lifecycleComponent to update.
+name                  | The name for the lifeycle component.
+download              | The action for the download lifecycle step.
+install               | The action for the install lifecycle step.
+start                 | The action for the start lifecycle step.
+stop                  | The action for the stop lifecycle step.
 
+### Request Example
+```
+PUT /api/lifecycleComponent/1
+```
 ```
 {  
    "name":"MySQLDatabase",
@@ -117,25 +151,34 @@ lifecycleComponent_id    | The id of the lifecycleComponent to update.
    "stop":"stop.sh"
 }
 ```
+### Response
 
-**Response** No data.
+The updated lifecycle component entity, see GET /api/lifecycleComponent/{lifecycleComponent_id}.
+
+### Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
 ## DELETE /api/lifecycleComponent/{lifecycleComponent_id}
 
-**Request Parameters** 
+### Description
+
+Deletes the lifecycleComponent residing at the given identified.
+
+### Request Parameters
 
 Parameter               | Description
 -------------           | -------------
 lifecycleComponent_id   | The id of the lifecycleComponent to delete.
 
-**Request** None.
+### Response
 
-**Response** No data.
+No data.
 
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

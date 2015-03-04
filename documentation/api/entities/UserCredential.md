@@ -1,14 +1,18 @@
-# UserCredential Actions
+﻿# UserCredential Actions
 ***
-
+## Description
+User credentials connects the credential information of the user with a cloud api, meaning
+that those credentials will be used to authenticate the user at the given api.
+***
 ## GET /api/userCredential
 
-**Request Parameters** None
+###Request Parameters
+None.
 
-**Request** This operation does not require a request body.
+### Response
+A list of all userCredential entities stored in the database.
 
-**Response** A list of all userCredential entities stored in the database.
-
+### Response Example
 ```
 [  
    {  
@@ -35,23 +39,26 @@
    }
 ]
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
 ## GET /api/userCredential/{userCredential_id}
 
-**Request Parameters**
+### Description
+Retrieves the details of the user credential entity identified with the given id.
+
+### Request Parameters
 
 Parameter             | Description
 -------------         | -------------
 userCredential_id     | The id of the userCredential.
 
-**Request** This operation does not require a request body.
+### Response
+Shows the selected userCredential entity.
 
-**Response** Shows the selected userCredential entity.
-
+### Response Example
 ```
 {  
    "links":[  
@@ -65,17 +72,25 @@ userCredential_id     | The id of the userCredential.
    "frontendUser":1
 }
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/userCredential
+## POST /api/userCredential
 
-**Request Parameters** none
+### Description
+Creates a new user credential entity and returns it.
 
-**Request** The userCredential attributes cloudApi, credential and frontendUser.
+### Request Parameters
 
+Parameter    | Description
+------------ | --------------------------------
+cloudApi     | The id of the api entity.
+credential   | The id of the credential entity.
+frontendUser | The id of the frontend user.
+
+### Request Example
 ```
 {  
    "cloudApi":1,
@@ -83,23 +98,32 @@ userCredential_id     | The id of the userCredential.
    "frontendUser":1
 }   
 ```
+### Response
+The created entity. See /api/userCredential/{userCredential_id}
 
-**Response** No data.
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/userCredential/{userCredential_id}
+## PUT /api/userCredential/{userCredential_id}
 
-**Request Parameters** 
+### Description
+Updates the user credential entity located at the given id.
 
-Parameter            | Description
--------------        | -------------
-userCredential_id    | The id of the userCredential to update.
+### Request Parameters
 
-**Request** The userCredential attributes cloudApi, credential and frontendUser.
+Parameter         | Description
+----------------- | ----------------------------------------
+userCredential_id | The id of the userCredential to update.
+cloudApi          | The id of the api entity.
+credential        | The id of the credential entity.
+frontendUser      | The id of the frontend user.
 
+### Request Example
+```
+PUT /api/userCredential/1
+```
 ```
 {  
    "cloudApi":1,
@@ -108,8 +132,10 @@ userCredential_id    | The id of the userCredential to update.
 }
 ```
 
-**Response** No data.
+### Response
+The updated entity. See /api/userCredential/{userCredential_id]
 
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
@@ -122,9 +148,10 @@ Parameter           | Description
 -------------       | -------------
 userCredential_id   | The id of the userCredential to delete.
 
-**Request** None.
+### Response** 
+No data.
 
-**Response** No data.
+### Response Codes 
 
 **Normal Response Code** 200
 

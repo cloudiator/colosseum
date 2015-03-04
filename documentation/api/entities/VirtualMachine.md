@@ -4,13 +4,16 @@
 The virtual machine entity represents a specific virtual machine.
 ***
 ## GET /api/virtualMachine
-**Description** Lists all virtual machines available in the system.
+###Description
+Lists all virtual machines available in the system.
 
-**Request Parameters** None
+###Request Parameters
+None
 
-**Response** A list of all virtual machine entities stored in the database.
+###Response
+A list of all virtual machine entities stored in the database.
 
-**Response Example**
+###Response Example
 ```
 [  
    {  
@@ -41,24 +44,25 @@ The virtual machine entity represents a specific virtual machine.
    }
 ]
 ```
-
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 ***
 ## GET /api/virtualMachine/{virtualMachine_id}
 
-**Description** Shows the virtual machine entity identified by the given {virtualMachine_id}.
+###Description
+Shows the virtual machine entity identified by the given {virtualMachine_id}.
 
-**Request Parameters**
-
+###Request Parameters
 Parameter             | Description
 -------------         | -------------
 virtualMachine_id     | The id of the virtualMachine.
 
-**Response** Shows the selected virtualMachine entity.
+###Response
+Shows the selected virtualMachine entity.
 
-**Response Example**
+###Response Example
 ```
 {  
    "links":[  
@@ -74,15 +78,17 @@ virtualMachine_id     | The id of the virtualMachine.
    "cloudLocation":1
 }
 ```
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
 ## POST /api/virtualMachine
 
-**Description** Creates a virtual machine and returns it.
+###Description
+Creates a virtual machine and returns it.
 
-**Request Parameters** none
+###Request Parameters
 
 Parameter     | Description
 ------------- | ----------------------------------------------------------
@@ -91,7 +97,7 @@ cloudImage    | The cloud image that will be used to start the machine.
 cloudLocation | The cloud location that will be used to start the machine.
 cloudHardware | The cloud hardware that will be used to start the machine.
 
-**Request Example**
+###Request Example
 ```
 {  
    "name":"scalarm_vm_1",
@@ -102,19 +108,20 @@ cloudHardware | The cloud hardware that will be used to start the machine.
 }
 ```
 
-**Response** Returns the create virtual machine. See /api/virtualMachine/{virtualMachine_id}
+###Response
+Returns the create virtual machine. See /api/virtualMachine/{virtualMachine_id}
 
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
 ## PUT /api/virtualMachine/{virtualMachine_id}
 
-**Description**
+###Description
 Updates the virtual machine with the information provided in the request.
 
-**Request Parameters**
-
+###Request Parameters
 Parameter            | Description
 -------------------- | -------------
 virtualMachine_id    | The id of the virtual machine to be updated.
@@ -123,9 +130,10 @@ cloudImage           | The cloud image that will be used to start the machine.
 cloudLocation        | The cloud location that will be used to start the machine.
 cloudHardware        | The cloud hardware that will be used to start the machine.
 
-**Request** The virtualMachine attributes name, cloud, cloudImage, cloudHardware and cloudLocation.
-
-**Request Example**
+###Request Example
+```
+PUT /api/virtualMachine/1
+```
 ```
 {  
    "name":"Scalarm",
@@ -135,8 +143,8 @@ cloudHardware        | The cloud hardware that will be used to start the machine
    "cloudLocation":1
 }
 ```
-
-**Response** No data.
+###Response
+The updated virtual machine. See GET /api/virtualMachine/{virtualMachine_id}
 
 **Normal Response Code** 200
 
@@ -144,14 +152,16 @@ cloudHardware        | The cloud hardware that will be used to start the machine
 
 ## DELETE /api/virtualMachine/{virtualMachine_id}
 
-**Request Parameters** 
+###Request Parameters
 
-Parameter          s | Description
--------------       | -------------
+Parameter           | Description
+------------------- | ---------------------------------------
 virtualMachine_id   | The id of the virtualMachine to delete.
 
-**Response** No data.
+##Response
+No data.
 
+##Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

@@ -22,6 +22,8 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -56,6 +58,9 @@ public class CloudHardware extends Model {
     @ManyToOne(optional = false)
     private Hardware hardware;
 
+    @OneToMany(mappedBy = "cloudHardware")
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
     /**
      * The cloud-dependant unique identifier.
      */
@@ -87,5 +92,13 @@ public class CloudHardware extends Model {
         checkNotNull(uuid);
         checkArgument(!uuid.isEmpty(), "Empty String for cloudUuid provided");
         this.cloudUuid = uuid;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

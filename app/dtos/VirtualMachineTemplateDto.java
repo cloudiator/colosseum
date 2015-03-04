@@ -29,18 +29,18 @@ import java.util.List;
 public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public long cloud;
-    public long image;
-    public long location;
-    public long hardware;
+    public long cloudImage;
+    public long cloudLocation;
+    public long cloudHardware;
 
     public VirtualMachineTemplateDto() {
     }
 
-    public VirtualMachineTemplateDto(long cloud, long image, long location, long hardware) {
+    public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation, long cloudHardware) {
         this.cloud = cloud;
-        this.image = image;
-        this.location = location;
-        this.hardware = hardware;
+        this.cloudImage = cloudImage;
+        this.cloudLocation = cloudLocation;
+        this.cloudHardware = cloudHardware;
     }
 
     @Override

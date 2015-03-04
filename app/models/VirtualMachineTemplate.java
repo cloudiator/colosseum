@@ -38,13 +38,13 @@ public class VirtualMachineTemplate extends Model {
     private Cloud cloud;
 
     @ManyToOne(optional = false)
-    private Image image;
+    private CloudImage cloudImage;
 
     @ManyToOne(optional = false)
-    private Location location;
+    private CloudLocation cloudLocation;
 
     @ManyToOne(optional = false)
-    private Hardware hardware;
+    private CloudHardware cloudHardware;
 
     /**
      * Empty constructor for hibernate.
@@ -52,11 +52,11 @@ public class VirtualMachineTemplate extends Model {
     public VirtualMachineTemplate() {
     }
 
-    public VirtualMachineTemplate(Cloud cloud, Image image, Location location, Hardware hardware) {
+    public VirtualMachineTemplate(Cloud cloud, CloudImage cloudImage, CloudLocation cloudLocation, CloudHardware cloudHardware) {
         this.cloud = cloud;
-        this.image = image;
-        this.location = location;
-        this.hardware = hardware;
+        this.cloudImage = cloudImage;
+        this.cloudLocation = cloudLocation;
+        this.cloudHardware = cloudHardware;
     }
 
     public List<ApplicationComponent> getApplicationComponents() {
@@ -67,28 +67,28 @@ public class VirtualMachineTemplate extends Model {
         this.applicationComponents = applicationComponents;
     }
 
-    public Image getImage() {
-        return image;
+    public CloudImage getCloudImage() {
+        return cloudImage;
     }
 
-    public void setImage(Image image) {
-        this.image = image;
+    public void setCloudImage(CloudImage cloudImage) {
+        this.cloudImage = cloudImage;
     }
 
-    public Location getLocation() {
-        return location;
+    public CloudLocation getCloudLocation() {
+        return cloudLocation;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setCloudLocation(CloudLocation cloudLocation) {
+        this.cloudLocation = cloudLocation;
     }
 
-    public Hardware getHardware() {
-        return hardware;
+    public CloudHardware getCloudHardware() {
+        return cloudHardware;
     }
 
-    public void setHardware(Hardware hardware) {
-        this.hardware = hardware;
+    public void setCloudHardware(CloudHardware cloudHardware) {
+        this.cloudHardware = cloudHardware;
     }
 
     public Cloud getCloud() {

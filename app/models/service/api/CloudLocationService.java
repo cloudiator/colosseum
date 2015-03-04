@@ -27,5 +27,5 @@ import models.service.impl.CloudLocationServiceImpl;
  * Created by bwpc on 09.12.2014.
  */
 @ImplementedBy(CloudLocationServiceImpl.class)
-public interface CloudLocationServiceInterface extends ModelServiceInterface<CloudLocation> {
+public interface CloudLocationService extends ModelServiceInterface<CloudLocation> {
 }

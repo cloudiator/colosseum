@@ -22,22 +22,22 @@ import com.google.inject.Inject;
 import models.Cloud;
 import models.CloudHardware;
 import models.Hardware;
-import models.repository.api.CloudHardwareFlavorRepository;
-import models.service.api.CloudHardwareFlavorService;
+import models.repository.api.CloudHardwareRepository;
+import models.service.api.CloudHardwareService;
 import models.service.impl.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class CloudHardwareFlavorServiceImpl extends ModelService<CloudHardware> implements CloudHardwareFlavorService {
+public class CloudHardwareServiceImpl extends ModelService<CloudHardware> implements CloudHardwareService {
 
     @Inject
-    public CloudHardwareFlavorServiceImpl(CloudHardwareFlavorRepository cloudHardwareFlavorRepository) {
-        super(cloudHardwareFlavorRepository);
+    public CloudHardwareServiceImpl(CloudHardwareRepository cloudHardwareRepository) {
+        super(cloudHardwareRepository);
     }
 
     @Override
     public CloudHardware getByCloudAndHardwareFlavor(final Cloud cloud, final Hardware hardware) {
-        return ((CloudHardwareFlavorRepository) this.modelRepository).findByCloudAndHardwareFlavor(cloud, hardware);
+        return ((CloudHardwareRepository) this.modelRepository).findByCloudAndHardwareFlavor(cloud, hardware);
     }
 }

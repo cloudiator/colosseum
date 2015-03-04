@@ -21,10 +21,10 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.VirtualMachineTemplateDto;
 import models.*;
+import models.service.api.CloudHardwareService;
+import models.service.api.CloudImageService;
+import models.service.api.CloudLocationService;
 import models.service.api.CloudService;
-import models.service.api.HardwareService;
-import models.service.api.ImageService;
-import models.service.api.LocationService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -34,22 +34,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class VirtualMachineTemplateConverter extends BaseConverter<VirtualMachineTemplate, VirtualMachineTemplateDto> {
 
     private final CloudService cloudService;
-    private final ImageService imageService;
-    private final LocationService locationService;
-    private final HardwareService hardwareService;
+    private final CloudImageService cloudImageService;
+    private final CloudLocationService cloudLocationService;
+    private final CloudHardwareService cloudHardwareService;
 
     @Inject
-    public VirtualMachineTemplateConverter(CloudService cloudService, ImageService imageService, LocationService locationService, HardwareService hardwareService) {
+    public VirtualMachineTemplateConverter(CloudService cloudService, CloudImageService cloudImageService, CloudLocationService cloudLocationService, CloudHardwareService cloudHardwareService) {
 
         checkNotNull(cloudService);
-        checkNotNull(imageService);
-        checkNotNull(locationService);
-        checkNotNull(hardwareService);
+        checkNotNull(cloudImageService);
+        checkNotNull(cloudLocationService);
+        checkNotNull(cloudHardwareService);
 
         this.cloudService = cloudService;
-        this.imageService = imageService;
-        this.locationService = locationService;
-        this.hardwareService = hardwareService;
+        this.cloudImageService = cloudImageService;
+        this.cloudLocationService = cloudLocationService;
+        this.cloudHardwareService = cloudHardwareService;
     }
 
     protected VirtualMachineTemplate setDto(VirtualMachineTemplate model, VirtualMachineTemplateDto dto) {
@@ -57,17 +57,17 @@ public class VirtualMachineTemplateConverter extends BaseConverter<VirtualMachin
         checkNotNull(cloud, "Could not retrieve cloud for id = " + cloud);
         model.setCloud(cloud);
 
-        Image image = imageService.getById(dto.image);
-        checkNotNull(image, "Could not retrieve cloud for id = " + image);
-        model.setImage(image);
+        CloudImage cloudImage = cloudImageService.getById(dto.cloudImage);
+        checkNotNull(cloudImage, "Could not retrieve cloudImage for id = " + cloudImage);
+        model.setCloudImage(cloudImage);
 
-        Location location = locationService.getById(dto.location);
-        checkNotNull(location, "Could not retrieve cloud for id = " + location);
-        model.setLocation(location);
+        CloudLocation cloudLocation = cloudLocationService.getById(dto.cloudLocation);
+        checkNotNull(cloudLocation, "Could not retrieve cloudLocation for id = " + cloudLocation);
+        model.setCloudLocation(cloudLocation);
 
-        Hardware hardware = hardwareService.getById(dto.hardware);
-        checkNotNull(hardware, "Could not retrieve hardware for id = " + hardware);
-        model.setHardware(hardware);
+        CloudHardware cloudHardware = cloudHardwareService.getById(dto.cloudHardware);
+        checkNotNull(cloudHardware, "Could not retrieve cloudHardware for id = " + cloudHardware);
+        model.setCloudHardware(cloudHardware);
 
         return model;
     }

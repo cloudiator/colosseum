@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import dtos.VirtualMachineDto;
 import dtos.builders.VirtualMachineDtoBuilder;
 import models.*;
-import models.service.impl.CloudHardwareFlavorServiceImpl;
+import models.service.impl.CloudHardwareServiceImpl;
 import models.service.impl.CloudImageServiceImpl;
 import models.service.impl.CloudLocationServiceImpl;
 import models.service.impl.CloudServiceImpl;
@@ -37,11 +37,11 @@ public class VirtualMachineConverter extends BaseConverter<VirtualMachine, Virtu
 
     private final CloudServiceImpl cloudServiceImpl;
     private final CloudLocationServiceImpl cloudLocationServiceImpl;
-    private final CloudHardwareFlavorServiceImpl cloudHardwareFlavorServiceImpl;
+    private final CloudHardwareServiceImpl cloudHardwareFlavorServiceImpl;
     private final CloudImageServiceImpl cloudImageServiceImpl;
 
     @Inject
-    public VirtualMachineConverter(CloudServiceImpl cloudServiceImpl, CloudLocationServiceImpl cloudLocationServiceImpl, CloudHardwareFlavorServiceImpl cloudHardwareFlavorServiceImpl, CloudImageServiceImpl cloudImageServiceImpl) {
+    public VirtualMachineConverter(CloudServiceImpl cloudServiceImpl, CloudLocationServiceImpl cloudLocationServiceImpl, CloudHardwareServiceImpl cloudHardwareFlavorServiceImpl, CloudImageServiceImpl cloudImageServiceImpl) {
 
         checkNotNull(cloudServiceImpl);
         checkNotNull(cloudLocationServiceImpl);

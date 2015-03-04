@@ -25,9 +25,9 @@ import models.Cloud;
 import models.CloudHardware;
 import models.CloudImage;
 import models.CloudLocation;
-import models.service.api.CloudHardwareFlavorService;
+import models.service.api.CloudHardwareService;
 import models.service.api.CloudImageService;
-import models.service.api.CloudLocationServiceInterface;
+import models.service.api.CloudLocationService;
 import models.service.api.CloudService;
 import play.data.validation.ValidationError;
 
@@ -44,9 +44,9 @@ public class VirtualMachineDto extends NamedDto {
         @Inject
         public static Provider<CloudImageService> cloudImageService;
         @Inject
-        public static Provider<CloudHardwareFlavorService> cloudHardwareFlavorService;
+        public static Provider<CloudHardwareService> cloudHardwareFlavorService;
         @Inject
-        public static Provider<CloudLocationServiceInterface> cloudLocationService;
+        public static Provider<CloudLocationService> cloudLocationService;
     }
 
     public Long cloud;

@@ -21,13 +21,13 @@ package models.service.impl;
 import com.google.inject.Inject;
 import models.CloudLocation;
 import models.repository.api.CloudLocationRepository;
-import models.service.api.CloudLocationServiceInterface;
+import models.service.api.CloudLocationService;
 import models.service.impl.generic.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class CloudLocationServiceImpl extends ModelService<CloudLocation> implements CloudLocationServiceInterface {
+public class CloudLocationServiceImpl extends ModelService<CloudLocation> implements CloudLocationService {
 
     @Inject
     public CloudLocationServiceImpl(CloudLocationRepository cloudLocationRepository) {

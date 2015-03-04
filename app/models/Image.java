@@ -52,8 +52,7 @@ public class Image extends NamedModel {
     @OneToMany(mappedBy = "image")
     private List<CloudImage> cloudImages;
 
-    @OneToMany(mappedBy = "image")
-    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
 
     /**
      * Empty constructor used by hibernate.
@@ -78,14 +77,4 @@ public class Image extends NamedModel {
         checkNotNull(cloudImages);
         this.cloudImages = cloudImages;
     }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
-    
 }

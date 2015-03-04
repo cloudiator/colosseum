@@ -16,21 +16,22 @@
  * under the License.
  */
 
-package models.repository.api;
+package models.service.api;
 
 import com.google.inject.ImplementedBy;
 import models.Cloud;
 import models.CloudHardware;
 import models.Hardware;
-import models.repository.api.generic.ModelRepository;
-import models.repository.impl.CloudHardwareFlavorRepositoryJpa;
+import models.service.api.generic.ModelServiceInterface;
+import models.service.impl.CloudHardwareServiceImpl;
 
 /**
- * Created by daniel on 31.10.14.
+ * Created by daniel on 03.11.14.
  */
-@ImplementedBy(CloudHardwareFlavorRepositoryJpa.class)
-public interface CloudHardwareFlavorRepository extends ModelRepository<CloudHardware> {
+@ImplementedBy(CloudHardwareServiceImpl.class)
+public interface CloudHardwareService extends ModelServiceInterface<CloudHardware>{
 
-    public CloudHardware findByCloudAndHardwareFlavor(Cloud cloud, Hardware hardware);
+    public CloudHardware getByCloudAndHardwareFlavor(Cloud cloud, Hardware hardware);
+
 
 }

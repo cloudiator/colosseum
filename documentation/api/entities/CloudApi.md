@@ -3,7 +3,7 @@
 
 ##Description
 
-The CloudAPI entity represents a specific endpoint which is associated
+The CloudAPI entity represents a specific api endpoint which is associated
 with a cloud and an API.
 
 ## GET /api/cloudApi

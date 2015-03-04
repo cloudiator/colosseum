@@ -3,7 +3,7 @@
 
 ## Description
 
-An applicationComponent represents an entity which is associated with an application 
+An ApplicationComponent represents an entity which is associated with an application 
 and a component.
 ***
 
@@ -83,7 +83,7 @@ Shows the selected ApplicationComponent entity.
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
-
+***
 ## POST /api/applicationComponent
 
 ###Description
@@ -93,8 +93,8 @@ Creates a new ApplicationComponent entity. The new entity will be returned.
 
 Parameter                | Description
 -------------            | -------------
-application           | The id of the associated application.
-component             | The id of the associated component.
+application              | The associated application.
+component                | The associated component.
 
 ###Request Example
 
@@ -125,8 +125,8 @@ Updates the ApplicationComponent entity identified by the given id.
 Parameter                | Description
 -------------            | -------------
 applicationComponent_id  | The id of the applicationComponent to update.
-application              | The id of the application.
-component                | The id of the component.
+application              | The associated application.
+component                | The associated component.
 
 
 ###Request Example

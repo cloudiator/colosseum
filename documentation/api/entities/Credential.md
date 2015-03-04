@@ -1,13 +1,26 @@
 # Credential Actions
 ***
 
+###Description
+
+The Credential entity represents an User of the system which is identified by user and secret.
+
+***
+
 ## GET /api/credential
 
-**Request Parameters** None
+###Description
 
-**Request** This operation does not require a request body.
+Returns a list of Credential entities supported by the system.
 
-**Response** A list of all credential entities stored in the database.
+###Request Parameters
+None
+
+###Response
+
+A list of all Credential entities stored in the database.
+
+###Response Example
 
 ```
 [  
@@ -34,21 +47,31 @@
 ]
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/credential/{credential_id}
 
-**Request Parameters**
+####Description
+
+Returns the Credential entity identified by the given {credential_id}.
+
+###Request Parameters
 
 Parameter      | Description
 -------------  | -------------
 credential_id  | The id of the credential.
 
-**Request** This operation does not require a request body.
+###Response
 
-**Response** Shows the selected credential entity.
+The Credential entity identified by the given id.
+
+###Response Example
 
 ```
 {  
@@ -63,15 +86,29 @@ credential_id  | The id of the credential.
 }
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/credential
 
-**Request Parameters** none
+***
 
-**Request** The credential attributes user and secret.
+## POST /api/credential
+
+###Description
+
+Creates a new Credential entity. The new entity will be returned.
+
+###Request Parameters
+
+Parameter      | Description
+-------------  | -------------
+user           | The username.
+secret         | The password.
+
+###Request Example
 
 ```
 {  
@@ -80,21 +117,35 @@ credential_id  | The id of the credential.
 }
 ```
 
-**Response** No data.
+###Response
+
+The created entity. See GET /api/credential/{credential_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/credential/{credential_id}
+***
 
-**Request Parameters** 
+## PUT /api/credential/{credential_id}
+
+###Description
+
+Updates the Credential entity identified by the given id.
+
+###Request Parameters 
 
 Parameter      | Description
 -------------  | -------------
 credential_id  | The id of the credential to update.
+user           | The username.
+secret         | The password.
 
-**Request** The credential attributes user and secret.
+###Request Example
+
+PUT /api/credential/1
 
 ```
 {  
@@ -103,23 +154,35 @@ credential_id  | The id of the credential to update.
 }
 ```
 
-**Response** No data.
+###Response
+
+The updated entity. See GET /api/credential/{credential_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/credential/{credential_id}
 
-**Request Parameters** 
+###Description
+
+Deletes the Credential entity identified by the given {credential_id}.
+
+###Request Parameters
 
 Parameter      | Description
 -------------  | -------------
 credential_id  | The id of the credential to delete.
 
-**Request** None.
 
-**Response** No data.
+###Response
+No data.
+
+###Response Codes
 
 **Normal Response Code** 200
 

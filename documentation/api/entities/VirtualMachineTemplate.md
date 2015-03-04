@@ -8,13 +8,16 @@ The VirtualMachineTemplate represents a template for creating virtual machines. 
 
 ## GET /api/virtualMachineTemplate
 
-**Description** Returns a list of virtual machine templates supported by the system.
+###Description
+Returns a list of virtual machine templates supported by the system.
 
-**Request Parameters** None
+###Request Parameters
+None
 
-**Response** A list of all virtual machine template entities stored in the database.
+###Response
+A list of all virtual machine template entities stored in the database.
 
-**Response Example**
+###Response Example
 ```
 [
    {
@@ -37,16 +40,19 @@ The VirtualMachineTemplate represents a template for creating virtual machines. 
 ***
 ## GET /api/virtualMachineTemplate/{vmt_id}
 
-**Description** Returns the virtual machine template identified by the given {vmt_id}.
+###Description
+Returns the virtual machine template identified by the given {vmt_id}.
 
-**Request Parameters**
+###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
 vmt_id        | The id of the virtual machine template.
 
-**Response Example** Shows the selected virtual machine template entity.
+###Response
+Shows the selected virtual machine template entity.
 
+###Response Example
 ```
 {
   "links":[
@@ -61,16 +67,17 @@ vmt_id        | The id of the virtual machine template.
   "cloudHardware":3s
 }
 ```
-
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 ***
 ## POST /api/virtualMachineTemplate
 
-**Description** Creates a new virtual machine template entity. The new entity will be returned.
+###Description
+Creates a new virtual machine template entity. The new entity will be returned.
 
-**Request Parameters** None
+###Request Parameters**
 
 Parameter     | Description
 ------------- | ----------------------------------------------------------
@@ -79,7 +86,7 @@ cloudImage    | The cloud image that will be used to start the machine.
 cloudLocation | The cloud location that will be used to start the machine.
 cloudHardware | The cloud hardware that will be used to start the machine.
 
-**Request Example**
+###Request Example
 ```
 {
   "cloud":1
@@ -88,17 +95,21 @@ cloudHardware | The cloud hardware that will be used to start the machine.
   "cloudHardware":3
 }
 ```
-**Response** The created entity. See GET /api/virtualMachineTemplate/{vmt_id}
+###Response
+The created entity. See GET /api/virtualMachineTemplate/{vmt_id}
 
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 ***
 ## PUT /api/virtualMachineTemplate/{vmt_id}
 
-**Description** Updates the virtual machine template identified by the given id.
+###Description
+Updates the virtual machine template identified by the given id.
 
-**Request Parameters** 
+###Request Parameters
+
 Parameter     | Description
 ------------- | -------------
 vmt_id        | The id of the virtual machine template.
@@ -107,7 +118,10 @@ cloudImage    | The cloud image that will be used to start the machine.
 cloudLocation | The cloud location that will be used to start the machine.
 cloudHardware | The cloud hardware that will be used to start the machine.
 
-**Request Example**
+###Request Example
+```
+PUT /api/virtualMachineTemplate/1
+```
 ```
 {
   "cloud":1
@@ -116,7 +130,10 @@ cloudHardware | The cloud hardware that will be used to start the machine.
   "cloudHardware":1
 }
 ```
-**Response** The updated entity. See GET /api/virtualMachineTemplate/{vmt_id}
+###Response
+The updated entity. See GET /api/virtualMachineTemplate/{vmt_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
@@ -124,16 +141,19 @@ cloudHardware | The cloud hardware that will be used to start the machine.
 ***
 ## DELETE /api/virtualMachineTemplate/{vmt_id}
 
-**Description** Deletes the virtual machine template identified by the given {vmt_id}.
+###Description
+Deletes the virtual machine template identified by the given {vmt_id}.
 
-**Request Parameters** 
+###Request Parameters
 
 Parameter     | Description
 ------------- | -----------------------------------------------------
 vmt_id        | The id of the virtual machine template to be deleted.
 
-**Response** No data.
+###Response
+No data.
 
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

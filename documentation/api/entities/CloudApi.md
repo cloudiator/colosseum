@@ -1,13 +1,24 @@
 # CloudApi Actions
 ***
 
+##Description
+
+The CloudAPI entity represents a specific endpoint which is associated
+with a cloud and an API.
+
 ## GET /api/cloudApi
 
-**Request Parameters** None
+###Description
 
-**Request** This operation does not require a request body.
+Returns a list of CloudAPI entities supported by the system.
 
-**Response** A list of all cloudApi entities stored in the database.
+###Request Parameters
+None
+
+###Response
+A list of all CloudApi entities stored in the database.
+
+###Response Example
 
 ```
 [  
@@ -35,21 +46,32 @@
    }
 ]
 ```
+
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/cloudApi/{cloudApi_id}
 
-**Request Parameters**
+###Description
+
+Returns the CloudApi entity identified by the given {cloudApi_id}.
+
+###Request Parameters
 
 Parameter      | Description
 -------------  | -------------
 cloudApi_id    | The id of the cloudApi.
 
-**Request** This operation does not require a request body.
+###Response
+The CloudApi entity identified by the given id.
 
-**Response** Shows the selected cloudApi entity.
+###Response Example
+
 ```
 {  
    "links":[  
@@ -63,15 +85,31 @@ cloudApi_id    | The id of the cloudApi.
    "endpoint":"https://neutron-host:9696"
 }
 ```
+
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/cloudApi
+***
 
-**Request Parameters** none
+## POST /api/cloudApi
 
-**Request** The cloudApi attributes api, cloud and endpoint.
+###Description
+
+Creates a new CloudApi entity. The new entity will be returned.
+
+###Request Parameters
+
+Parameter      | Description
+-------------  | -------------
+api            | The API associated with the CloudApi.
+cloud          | The cloud associated with the CloudApi.
+endpoint       | The endpoint url of the CloudApi.
+
+###Request Example
+
 ```
 {  
    "api":1,
@@ -79,21 +117,38 @@ cloudApi_id    | The id of the cloudApi.
    "endpoint":"https://neutron-host:8774"
 }
 ```
-**Response** No data.
+
+###Response
+
+The created entity. See GET /api/cloudApi/{cloudApi_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/cloudApi/{cloudApi_id}
+***
 
-**Request Parameters** 
+## PUT /api/cloudApi/{cloudApi_id}
+
+###Description
+
+Updates the CloudApi entity identified by the given id.
+
+###Request Parameters 
 
 Parameter      | Description
 -------------  | -------------
 cloudApi_id    | The id of the cloudApi to update.
+api            | The API associated with the CloudApi.
+cloud          | The cloud associated with the CloudApi.
+endpoint       | The endpoint url of the CloudApi.
 
-**Request** The cloudApi attributes api, cloud and endpoint.
+###Request Example
+
+PUT /api/cloudApi/1
+
 ```
 {  
    "api":1,
@@ -101,23 +156,36 @@ cloudApi_id    | The id of the cloudApi to update.
    "endpoint":"https://neutron-host:8774"
 }
 ```
-**Response** No data.
+
+###Response
+
+The updated entity. See GET /api/cloudApi/{cloudApi_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/cloudApi/{cloudApi_id}
 
-**Request Parameters** 
+###Description
+
+Deletes the CloudApi entity identified by the given {cloudApi_id}.
+
+###Request Parameters 
 
 Parameter     | Description
 ------------- | -------------
 cloudApi_id   | The id of the cloudApi to delete.
 
-**Request** None.
 
-**Response** No data.
+###Response
+No data.
+
+###Response Codes
 
 **Normal Response Code** 200
 

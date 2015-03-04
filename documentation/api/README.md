@@ -10,6 +10,7 @@ Entity                                 | URL
 [Application](entities/Application.md)                       | /api/application
 [ApplicationComponent](entities/ApplicationComponent.md)     | /api/applicationComponent
 [Cloud](entities/Cloud.md)                                   | /api/cloud
+[CloudApi](entities/CloudApi.md)                             | /api/cloudApi
 [Instance](entities/Instance.md)                             | /api/instance
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [UserCredential](entities/UserCredential.md)                 | /api/userCredential

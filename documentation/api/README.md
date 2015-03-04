@@ -12,7 +12,8 @@ Entity                                 | URL
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudApi](entities/CloudApi.md)                             | /api/cloudApi
 [CloudHardware](entities/CloudHardware.md)                   | /api/cloudHardware
-[CloudImage](entities/CloudImage.md)                   | /api/cloudImage
+[CloudImage](entities/CloudImage.md)                         | /api/cloudImage
+[CloudLocation](entities/CloudLocation.md)                   | /api/cloudLocation
 [Instance](entities/Instance.md)                             | /api/instance
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [UserCredential](entities/UserCredential.md)                 | /api/userCredential

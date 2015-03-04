@@ -1,13 +1,26 @@
 # CloudLocation Actions
 ***
 
+##Description
+
+The CloudLocation entity represents a specific location which is associated with a cloud and a location.
+
+***
 ## GET /api/cloudLocation
 
-**Request Parameters** None
+###Description
 
-**Request** This operation does not require a request body.
+Returns a list of CloudLocations entities supported by the system.
 
-**Response** A list of all cloudLocation entities stored in the database.
+###Request Parameters
+None
+
+###Response
+
+A list of all CloudLocation entities stored in the database.
+
+###Response Example
+
 
 ```
 [  
@@ -36,21 +49,31 @@
 ]
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/cloudLocation/{cloudLocation_id}
 
-**Request Parameters**
+###Description
+
+Returns the CloudLocation entity identified by the given {cloudLocation_id}.
+
+###Request Parameters
 
 Parameter        | Description
 -------------    | -------------
 cloudLocation_id    | The id of the cloudLocation.
 
-**Request** This operation does not require a request body.
+###Response
 
-**Response** Shows the selected cloudLocation entity.
+The CloudLocation entity identified by the given id.
+
+###Response Example
 
 ```
 {  
@@ -66,15 +89,29 @@ cloudLocation_id    | The id of the cloudLocation.
 }
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/cloudLocation
+***
 
-**Request Parameters** none
+## POST /api/cloudLocation
 
-**Request** The cloudLocation attributes cloud, location and uuid.
+###Description
+
+Creates a new CloudLocation entity. The new entity will be returned.
+
+###Request Parameters
+
+Parameter        | Description
+-------------    | -------------
+cloud            | The cloud associated with the CloudLocation.
+location         | The location associated with the CloudLocation.
+cloudUuid        | The UUID of the CloudLocation.
+
+###Request Example
 
 ```
 {  
@@ -84,21 +121,34 @@ cloudLocation_id    | The id of the cloudLocation.
 }
 ```
 
-**Response** No data.
+###Response
+
+The created entity. See GET /api/cloudLocation/{cloudLocation_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/cloudLocation/{cloudLocation_id}
+***
 
-**Request Parameters** 
+## PUT /api/cloudLocation/{cloudLocation_id}
+
+###Description
+
+Updates the CloudLocation entity identified by the given id.
+
+###Request Parameters
 
 Parameter           | Description
 -------------       | -------------
 cloudLocation_id    | The id of the cloudLocation to update.
+cloud               | The cloud associated with the CloudLocation.
+location            | The location associated with the CloudLocation.
+cloudUuid           | The UUID of the CloudLocation.
 
-**Request** The cloudLocation attributes cloud, location and uuid.
+###Request Example 
 
 ```
 {  
@@ -108,23 +158,35 @@ cloudLocation_id    | The id of the cloudLocation to update.
 }
 ```
 
-**Response** No data.
+###Response
+
+The updated entity. See GET /api/cloudLocation/{cloudLocation_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/cloudLocation/{cloudLocation_id}
 
-**Request Parameters** 
+###Description
+
+Deletes the CloudLocation entity identified by the given {cloudLocation_id}.
+
+###Request Parameters
 
 Parameter          | Description
 -------------      | -------------
 cloudLocation_id   | The id of the cloudLocation to delete.
 
-**Request** None.
 
-**Response** No data.
+###Response
+No data.
+
+###Response Codes
 
 **Normal Response Code** 200
 

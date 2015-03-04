@@ -1,14 +1,21 @@
-# Instance Actions
+﻿# Instance Actions
 ***
+## Description
 
+Represents an instance of a application component on a virtual machine. Adding a instance connects the application component to the virtual machine, meaning that the component represented by the application component gets install on the virtual machine.
+***
 ## GET /api/instance
 
-**Request Parameters** None
+### Description
+Get a list of all instances currently registered.
 
-**Request** This operation does not require a request body.
+### Request Parameters
+None
 
-**Response** A list of all instance entities stored in the database.
+### Response
+A list of all instance entities stored in the database.
 
+### Response Example
 ```
 [  
    {  
@@ -33,23 +40,28 @@
    }
 ]
 ```
+### Response Error Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
+***
 
 ## GET /api/instance/{instance_id}
 
-**Request Parameters**
+### Description
+Returns the details of the instance entity.
+
+### Request Parameters
 
 Parameter      | Description
 -------------  | -------------
 instance_id    | The id of the instance.
 
-**Request** This operation does not require a request body.
+### Response
+Shows the selected instance entity.
 
-**Response** Shows the selected instance entity.
-
+### Response Example
 ```
 {  
    "links":[  
@@ -63,16 +75,26 @@ instance_id    | The id of the instance.
 }
 ```
 
+### Response Error Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
+***
+## POST /api/instance
 
-## PUT /api/instance
+### Description
 
-**Request Parameters** none
+Creates a new instance entity and returns it.
 
-**Request** The instance attributes applicationComponent and virtualMachine.
+### Request Parameters**
 
+Parameter            | Description
+-------------------- | -------------------------------------
+applicationComponent | The id of the application component.
+virtualMachine       | The id of the virtual machine.
+
+
+### Request Example
 ```
 {  
    "applicationComponent":1,
@@ -80,22 +102,35 @@ instance_id    | The id of the instance.
 }    
 ```
 
-**Response** No data.
+### Reponse
+
+The created instance entity. See /api/instance/{instance_id}
+
+### Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/instance/{instance_id}
+***
+## PUT /api/instance/{instance_id}
 
-**Request Parameters** 
+### Description
 
-Parameter      | Description
--------------  | -------------
-instance_id    | The id of the instance to update.
+Updates the application instance residing under the given id.
 
-**Request** The instance attributes applicationComponent and virtualMachine.
+### Request Parameters
 
+Parameter            | Description
+-------------------- | -------------------------------------
+instance_id          | The id of the instance to update.
+applicationComponent | The id of the application component.
+virtualMachine       | The id of the virtual machine.
+
+### Request Example
+```
+PUT /api/instance/1
+```
 ```
 {  
    "applicationComponent":1,
@@ -103,23 +138,31 @@ instance_id    | The id of the instance to update.
 }
 ```
 
-**Response** No data.
+### Response
+The updated entity. See /api/instance/{instance_id}.
+
+### Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
 ## DELETE /api/instance/{instance_id}
 
-**Request Parameters** 
+### Description
+Deletes the instance entity identified by the given id.
+
+### Request Parameters
 
 Parameter     | Description
 ------------- | -------------
 instance_id   | The id of the instance to delete.
 
-**Request** None.
+### Response
+No data.
 
-**Response** No data.
+### Response Codes
 
 **Normal Response Code** 200
 

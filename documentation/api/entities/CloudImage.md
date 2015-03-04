@@ -1,13 +1,26 @@
 # CloudImage Actions
 ***
 
+##Description
+
+The CloudImage entity represents a specific image which is associated with a cloud and an image.
+
+***
+
 ## GET /api/cloudImage
 
-**Request Parameters** None
+###Description
 
-**Request** This operation does not require a request body.
+Returns a list of CloudImages entities supported by the system.
 
-**Response** A list of all cloudImage entities stored in the database.
+###Request Parameters
+None
+
+###Response
+
+A list of all CloudImage entities stored in the database.
+
+###Response Example
 
 ```
 [  
@@ -36,21 +49,32 @@
 ]
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/cloudImage/{cloudImage_id}
 
-**Request Parameters**
+###Description
+
+Returns the CloudImage entity identified by the given {cloudImage_id}.
+
+###Request Parameters
 
 Parameter        | Description
 -------------    | -------------
 cloudImage_id    | The id of the cloudImage.
 
-**Request** This operation does not require a request body.
 
-**Response** Shows the selected cloudImage entity.
+
+###Response
+The CloudImage entity identified by the given id.
+
+###Response Example
 
 ```
 {  
@@ -66,15 +90,29 @@ cloudImage_id    | The id of the cloudImage.
 }
 ```
 
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/cloudImage
+***
 
-**Request Parameters** none
+## POST /api/cloudImage
 
-**Request** The cloudImage attributes cloud, image and uuid.
+###Description
+
+Creates a new CloudImage entity. The new entity will be returned.
+
+###Request Parameters
+
+Parameter        | Description
+-------------    | -------------
+cloud            | The cloud associated with the CloudImage.
+image            | The image associated with the CloudImage.
+cloudUuid        | The UUID of the CloudImage.
+
+###Request Example
 
 ```
 {  
@@ -84,21 +122,36 @@ cloudImage_id    | The id of the cloudImage.
 }   
 ```
 
-**Response** No data.
+###Response
+
+The created entity. See GET /api/cloudImage/{cloudImage_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/cloudImage/{cloudImage_id}
+***
 
-**Request Parameters** 
+## PUT /api/cloudImage/{cloudImage_id}
+
+###Description
+
+Updates the CloudImage entity identified by the given id.
+
+###Request Parameters** 
 
 Parameter        | Description
 -------------    | -------------
 cloudImage_id    | The id of the cloudImage to update.
+cloud            | The cloud associated with the CloudImage.
+image            | The image associated with the CloudImage.
+cloudUuid        | The UUID of the CloudImage.
 
-**Request** The cloudImage attributes cloud, image and uuid.
+###Request Example
+
+PUT /api/cloudImage/1
 
 ```
 {  
@@ -107,24 +160,35 @@ cloudImage_id    | The id of the cloudImage to update.
    "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
 }
 ```
+###Response
 
-**Response** No data.
+The updated entity. See GET /api/cloudImage/{cloudImage_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/cloudImage/{cloudImage_id}
 
-**Request Parameters** 
+###Description
+
+Deletes the CloudImage entity identified by the given {cloudImage_id}.
+
+###Request Parameters 
 
 Parameter       | Description
 -------------   | -------------
 cloudImage_id   | The id of the cloudImage to delete.
 
-**Request** None.
 
-**Response** No data.
+###Response
+No data.
+
+###Response Codes
 
 **Normal Response Code** 200
 

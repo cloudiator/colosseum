@@ -24,7 +24,6 @@ public class FrontendUserDtoBuilder {
     private String firstName;
     private String lastName;
     private String mail;
-    private String password;
     private String repeat;
 
     public FrontendUserDtoBuilder firstName(String firstName) {
@@ -42,17 +41,7 @@ public class FrontendUserDtoBuilder {
         return this;
     }
 
-    public FrontendUserDtoBuilder password(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public FrontendUserDtoBuilder repeat(String repeat) {
-        this.repeat = repeat;
-        return this;
-    }
-
     public FrontendUserDto build() {
-        return new FrontendUserDto(firstName, lastName, mail, password, repeat);
+        return new FrontendUserDto(firstName, lastName, mail);
     }
 }

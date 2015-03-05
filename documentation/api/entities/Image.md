@@ -1,14 +1,17 @@
-# Image Actions
+﻿# Image Actions
 ***
+# Description
+The image entity describes abstract properties of an operating system image.
 
 ## GET /api/image
 
-**Request Parameters** None
+### Request Parameters
+None.
 
-**Request** This operation does not require a request body.
+### Response
+A list of all image entities stored in the database.
 
-**Response** A list of all image entities stored in the database.
-
+### Response Example
 ```
 [  
    {  
@@ -33,23 +36,26 @@
    }
 ]
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
 ## GET /api/image/{image_id}
 
-**Request Parameters**
+### Description
+Returns a single image entity identified by {image_id}.
+
+### Request Parameters
 
 Parameter     | Description
 ------------- | -------------
 image_id      | The id of the image.
 
-**Request** This operation does not require a request body.
+### Response
+The image entity identified by the given id.
 
-**Response** Shows the selected image entity.
-
+### Response Example
 ```
 {  
    "links":[  
@@ -62,40 +68,56 @@ image_id      | The id of the image.
    "operatingSystem":1
 }
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/image
+## POST /api/image
 
-**Request Parameters** none
+### Description
+Creates a new image entity and returns the newly created entity.
 
-**Request** The image attributes name and operatingSystem.
+### Request Parameters
 
+Parameter       | Description
+--------------- | -------------
+name            | The name of the image.
+operatingSystem | The id of the operating system.
+
+### Request Example
 ```
 {  
    "name":"Ubuntu-Cloud-Image",
    "operatingSystem":1
 }    
 ```
+### Response
+The newly created image. See /api/image/{image_id}
 
-**Response** No data.
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/image/{image_id}
+## PUT /api/image/{image_id}
 
-**Request Parameters** 
+### Description
 
-Parameter     | Description
-------------- | -------------
-image_id      | The id of the image to update.
+Updates the image entity identified by the given id with the data of the request.
 
-**Request** The image attributes name and operatingSystem.
+### Request Parameters** 
 
+Parameter       | Description
+--------------- | --------------------------------
+image_id        | The id of the image to update.
+name            | The name of the image.
+operatingSystem | The id of the operating system.
+
+### Request Example
+```
+PUT /api/image/1
+```
 ```
 {  
    "name":"Ubuntu-Cloud-Image",
@@ -103,7 +125,10 @@ image_id      | The id of the image to update.
 }
 ```
 
-**Response** No data.
+### Response
+The updated image entity. See /api/image/{image_id}
+
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -111,15 +136,20 @@ image_id      | The id of the image to update.
 
 ## DELETE /api/image/{image_id}
 
-**Request Parameters** 
+### Description
+
+Deletes the image entity with the given id.
+
+### Request Parameters** 
 
 Parameter     | Description
 ------------- | -------------
 image_id   | The id of the image to delete.
 
-**Request** None.
+### Response
+No data.
 
-**Response** No data.
+### Response Codes
 
 **Normal Response Code** 200
 

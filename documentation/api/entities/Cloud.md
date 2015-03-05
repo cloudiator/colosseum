@@ -1,4 +1,4 @@
-# Cloud Actions
+﻿# Cloud Actions
 ***
 
 ##Description
@@ -125,9 +125,9 @@ cloud_id      | The id of the cloud to update.
 name          | The name of the cloud.
 
 ###Request Example
-
+```
 PUT /api/cloud/1
-
+```
 ```
 {  
    "name":"Flexiant"

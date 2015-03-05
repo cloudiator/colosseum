@@ -30,19 +30,15 @@ public class FrontendUserDto extends ValidatableDto {
     public String firstName;
     public String lastName;
     public String mail;
-    public String password;
-    public String repeat;
 
     public FrontendUserDto() {
 
     }
 
-    public FrontendUserDto(String firstName, String lastName, String mail, String password, String repeat) {
+    public FrontendUserDto(String firstName, String lastName, String mail) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
-        this.password = password;
-        this.repeat = repeat;
     }
 
     @Override
@@ -59,14 +55,6 @@ public class FrontendUserDto extends ValidatableDto {
 
         if(!Constraints.email().isValid(this.mail)){
             errors.add(new ValidationError("frontenduser", "Mail is not valid"));
-        }
-
-        if(this.password.isEmpty()){
-            errors.add(new ValidationError("frontenduser", "Password must not be empty"));
-        }
-
-        if(this.repeat.isEmpty() || !repeat.equals(password)){
-            errors.add(new ValidationError("frontenduser", "Passwords do not match"));
         }
 
         return errors;

@@ -1,4 +1,4 @@
-# ApplicationComponent Actions
+﻿# ApplicationComponent Actions
 ***
 
 ## Description
@@ -9,16 +9,16 @@ and a component.
 
 ## GET /api/applicationComponent
 
-###Description
+### Description
 Returns a list of all application components.
 
-###Request Parameters
+### Request Parameters
 None
 
-###Response
+### Response
 A list of all application component entities stored in the database.
 
-###Response Example
+### Response Example
 ```
 [
    {
@@ -43,7 +43,7 @@ A list of all application component entities stored in the database.
    }
 ]
 ```
-###Response Codes
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -51,20 +51,20 @@ A list of all application component entities stored in the database.
 ***
 ## GET /api/applicationComponent/{applicationComponent_id}
 
-###Description
+### Description
 Returns the ApplicationComponent entity identified by the given {applicationComponent_id}.
 
-###Request Parameters
+### Request Parameters
 
 Parameter                  | Description
 -------------              | -------------
 applicationComponent_id    | The id of the applicationComponent.
 
 
-###Response
+### Response
 Shows the selected ApplicationComponent entity.
 
-###Response Example
+### Response Example
 ```
 {
    "links":[
@@ -78,7 +78,7 @@ Shows the selected ApplicationComponent entity.
 }
 ```
 
-###Response Codes
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -86,28 +86,27 @@ Shows the selected ApplicationComponent entity.
 ***
 ## POST /api/applicationComponent
 
-###Description
+### Description
 Creates a new ApplicationComponent entity. The new entity will be returned.
 
-###Request Parameters
+### Request Parameters
 
 Parameter                | Description
 -------------            | -------------
 application              | The associated application.
 component                | The associated component.
 
-###Request Example
-
-
-    {  
-       "application":1,
-       "component":1
-    }
-
-###Response
+### Request Example
+```
+{  
+   "application":1,
+   "component":1
+}
+```
+### Response
 The created entity. See GET /api/applicationComponent/{applicationComponent_id}
 
-###Response Codes
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -117,10 +116,10 @@ The created entity. See GET /api/applicationComponent/{applicationComponent_id}
 
 ## PUT /api/applicationComponent/{applicationComponent_id}
 
-###Description
+### Description
 Updates the ApplicationComponent entity identified by the given id.
 
-###Request Parameters
+### Request Parameters
 
 Parameter                | Description
 -------------            | -------------
@@ -129,16 +128,17 @@ application              | The associated application.
 component                | The associated component.
 
 
-###Request Example
-
+### Request Example
+```
 PUT /api/applicationComponent/1
-
-    {  
-       "application":1,
-       "component":1
-    }
-
-###Response
+```
+```
+{  
+    "application":1,
+    "component":1
+}
+```
+### Response
 The updated entity. See GET /api/applicationComponent/{applicationComponent_id}
 
 ###Response Codes
@@ -150,16 +150,16 @@ The updated entity. See GET /api/applicationComponent/{applicationComponent_id}
 
 ## DELETE /api/applicationComponent/{applicationComponent_id}
 
-###Description
+### Description
 Deletes the ApplicationComponent entity identified by the given {applicationComponent_id}.
 
-###Request Parameters 
+### Request Parameters 
 
 Parameter               | Description
 -------------           | -------------
 applicationComponent_id | The id of the applicationComponent to delete.
 
-###Response Codes
+### Response Codes
 
 **Normal Response Code** 200
 

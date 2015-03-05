@@ -1,14 +1,23 @@
-# FrontendUser Actions
+﻿# FrontendUser Actions
 ***
+
+## Description
+
+The frontend user entity represents a user of the system.
 
 ## GET /api/frontendUser
 
-**Request Parameters** None
+### Description
 
-**Request** This operation does not require a request body.
+Retrieves all users of the system.
 
-**Response** A list of all frontendUser entities stored in the database.
+### Request Parameters
+None
 
+### Response
+A list of all frontendUser entities stored in the database.
+
+### Response Example
 ```
 [  
    {  
@@ -21,8 +30,6 @@
       "firstName":"John",
       "lastName":"Doe",
       "mail":"john.doe@example.com",
-      "password":"2ru0wc03c02c2c30c2c32ßc23ßncß32c",
-      "repeat":null
    },
    {  
       "links":[  
@@ -34,11 +41,11 @@
       "firstName":"James",
       "lastName":"Smith",
       "mail":"james.smith@example.com",
-      "password":"2ru0wc53c32cfc3vc2ff2ßc%/ßncß32c",
-      "repeat":null
    }
 ]
 ```
+
+### Response codes
 
 **Normal Response Code** 200
 
@@ -46,15 +53,20 @@
 
 ## GET /api/frontendUser/{frontendUser_id}
 
-**Request Parameters**
+### Description
+
+Retrieves the frontend user identified by the given id.
+
+### Request Parameters
 
 Parameter       | Description
 -------------   | -------------
 frontendUser_id | The id of the frontendUser.
 
-**Request** This operation does not require a request body.
+### Response
+Shows the selected frontendUser entity.
 
-**Response** Shows the selected frontendUser entity.
+### Response Example
 
 ```
 {  
@@ -72,53 +84,77 @@ frontendUser_id | The id of the frontendUser.
 }
 ```
 
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/frontendUser
+## POST /api/frontendUser
 
-**Request Parameters** none
+### Description
 
-**Request** The frontendUser attributes firstName, lastName, mail, password and repeat.
+Creates a new frontend user entity.
 
+### Request Parameters
+
+Parameter       | Description
+-------------   | -------------
+firstName       | The first name of the user.
+lastName        | The last name of the user.
+mail            | The mail address of the user.
+
+### Request Example
 ```    
 {  
    "firstName":"John",
    "lastName":"Doe",
    "mail":"john.doe@example.com",
-   "password":"topsecret",
-   "repeat":"topsecret"
 }
 ```
 
-**Response** No data.
+### Response
+
+The created frontend user entity. See /api/frontendUser/{frontendUser_id}.
+
+### Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/frontendUser/{frontendUser_id}
+## PUT /api/frontendUser/{frontendUser_id}
 
-**Request Parameters** 
+### Description
+
+Updates the frontend user identified by the given id with the data from the request. Returns
+the updated entity.
+
+### Request Parameters
 
 Parameter       | Description
 -------------   | -------------
 frontendUser_id | The id of the frontendUser to update.
+firstName       | The first name of the user.
+lastName        | The last name of the user.
+mail            | The mail address of the user.
 
-**Request** The frontendUser attributes firstName, lastName, mail, password and repeat.
-
-```    
+### Request Example
+```
+PUT /api/frontendUser/1
+```
+```
 {  
    "firstName":"John",
    "lastName":"Doe",
    "mail":"john.doe@example.com",
-   "password":"topsecret",
-   "repeat":"topsecret"
 }
 ```
 
-**Response** No data.
+### Response
+
+The updated frontend user entity. See /api/frontendUser/{frontendUser_id}
+
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -126,16 +162,19 @@ frontendUser_id | The id of the frontendUser to update.
 
 ## DELETE /api/frontendUser/{frontendUser_id}
 
-**Request Parameters** 
+### Description
+Deletes the frontend user identified by the given id.
+
+### Request Parameters
 
 Parameter       | Description
 -------------   | -------------
 frontendUser_id | The id of the frontendUser to delete.
 
-**Request** None.
+### Response
+No data.
 
-**Response** No data.
-
+### Response Codes
 **Normal Response Code** 200
 
-**Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
+**Error Response Csode** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

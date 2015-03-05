@@ -1,14 +1,23 @@
-# Hardware Actions
+﻿# Hardware Actions
 ***
+
+## Description
+
+A hardware entity describes abstract hardware properties.
 
 ## GET /api/hardware
 
-**Request Parameters** None
+### Description
 
-**Request** This operation does not require a request body.
+Returns all hardware entities currently stored in the system.
 
-**Response** A list of all hardware entities stored in the database.
+### Request Parameters
+None
 
+### Response
+A list of all hardware entities stored in the database.
+
+### Response Example
 ```
 [  
    {  
@@ -35,23 +44,27 @@
    }
 ]
 ```
-
+### Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
 ## GET /api/hardware/{hardware_id}
 
-**Request Parameters**
+### Description
+
+Returns the hardware entity identified by the given id.
+
+### Request Parameters
 
 Parameter     | Description
 ------------- | -------------
 hardware_id   | The id of the hardware.
 
-**Request** This operation does not require a request body.
+### Response
+Shows the selected hardware entity.
 
-**Response** Shows the selected hardware entity.
-
+### Response Example
 ```
 {  
    "links":[  
@@ -66,16 +79,27 @@ hardware_id   | The id of the hardware.
 }
 ```
 
+### Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
-## PUT /api/hardware
+## POST /api/hardware
 
-**Request Parameters** none
+### Description
 
-**Request** The hardware attributes localDiskSpace, mbOfRam and numberOfCpu.
+Creates a new hardware entity base on the given request data and returns it.
 
+### Request Parameters**
+
+Parameter      | Description
+-------------- | -------------
+numberOfCpu    | The number of CPU cores.
+mbOfRam        | The amount of RAM in MB.
+localDiskSpace | The amount of locally available disk space.
+
+### Request Example
 ```
 {  
    "numberOfCpu":4,
@@ -84,22 +108,34 @@ hardware_id   | The id of the hardware.
 } 
 ```
 
-**Response** No data.
+### Response
+The create entity. See /api/hardware/{hardware_id}
+
+### Response Error Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
-## POST /api/hardware/{hardware_id}
+## PUT /api/hardware/{hardware_id}
 
-**Request Parameters** 
+### Description
 
-Parameter     | Description
-------------- | -------------
-hardware_id   | The id of the hardware to update.
+Updates the hardware entity identified by the given id with the data from the request and returns the updated entity.
 
-**Request** The hardware attributes localDiskSpace, mbOfRam and numberOfCpu.
+### Request Parameters** 
 
+Parameter      | Description
+-------------- | ------------------------------------------
+hardware_id    | The id of the hardware to update.
+numberOfCpu    | The number of CPU cores.
+mbOfRam        | The amount of RAM in MB.
+localDiskSpace | The amount of locally available disk space.
+
+### Request Example
+```
+PUT /api/hardware/1
+```
 ```
 {  
    "numberOfCpu":4,
@@ -108,7 +144,10 @@ hardware_id   | The id of the hardware to update.
 }
 ```
 
-**Response** No data.
+### Response
+The updates entity. See /api/hardare/{hardware_id}.
+
+### Response Codes
 
 **Normal Response Code** 200
 
@@ -116,15 +155,20 @@ hardware_id   | The id of the hardware to update.
 
 ## DELETE /api/hardware/{hardware_id}
 
-**Request Parameters** 
+### Description
+
+Deletes the hardware entity identified by the given id.
+
+### Request Parameters
 
 Parameter     | Description
 ------------- | -------------
 hardware_id   | The id of the hardware to delete.
 
-**Request** None.
+### Response
+No data.
 
-**Response** No data.
+### Response Codes
 
 **Normal Response Code** 200
 

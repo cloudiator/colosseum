@@ -41,7 +41,6 @@ public class FrontendUserConverter extends BaseConverter<FrontendUser, FrontendU
         frontendUser.setFirstName(frontendUserDto.firstName);
         frontendUser.setLastName(frontendUserDto.lastName);
         frontendUser.setMail(frontendUserDto.mail);
-        frontendUser.setPassword(frontendUserDto.password);
 
         return frontendUser;
     }
@@ -66,7 +65,6 @@ public class FrontendUserConverter extends BaseConverter<FrontendUser, FrontendU
                 .firstName(model.getFirstName())
                 .lastName(model.getLastName())
                 .mail(model.getMail())
-                .password(model.getPassword())
                 .build();
     }
 }

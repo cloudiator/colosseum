@@ -65,4 +65,28 @@ public class ApplicationComponent extends Model {
         checkNotNull(component);
         this.component = component;
     }
+
+    public List<Communication> getProvidedCommunications() {
+        return providedCommunications;
+    }
+
+    public void setProvidedCommunications(List<Communication> providedCommunications) {
+        this.providedCommunications = providedCommunications;
+    }
+
+    public List<Communication> getConsumedCommunications() {
+        return consumedCommunications;
+    }
+
+    public void setConsumedCommunications(List<Communication> consumedCommunications) {
+        this.consumedCommunications = consumedCommunications;
+    }
+
+    public VirtualMachineTemplate getVirtualMachineTemplate() {
+        return virtualMachineTemplate;
+    }
+
+    public void setVirtualMachineTemplate(VirtualMachineTemplate virtualMachineTemplate) {
+        this.virtualMachineTemplate = virtualMachineTemplate;
+    }
 }

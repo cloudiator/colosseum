@@ -23,28 +23,32 @@ import dtos.ApplicationComponentDto;
 import models.Application;
 import models.ApplicationComponent;
 import models.Component;
-import models.service.impl.ApplicationServiceImpl;
-import models.service.impl.ComponentServiceImpl;
+import models.VirtualMachineTemplate;
+import models.service.api.ApplicationService;
+import models.service.api.ComponentService;
+import models.service.api.VirtualMachineTemplateService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel seybold on 17.12.2014.
  */
 public class ApplicationComponentConverter extends BaseConverter<ApplicationComponent, ApplicationComponentDto> {
 
-    private final ApplicationServiceImpl applicationServiceImpl;
-    private final ComponentServiceImpl componentServiceImpl;
+    private final ApplicationService applicationService;
+    private final ComponentService componentService;
+    private final VirtualMachineTemplateService virtualMachineTemplateService;
 
     @Inject
-    ApplicationComponentConverter(ApplicationServiceImpl applicationServiceImpl, ComponentServiceImpl componentServiceImpl) {
+    ApplicationComponentConverter(ApplicationService applicationService, ComponentService componentService, VirtualMachineTemplateService virtualMachineTemplateService) {
 
-        checkNotNull(applicationServiceImpl);
-        checkNotNull(componentServiceImpl);
+        checkNotNull(applicationService);
+        checkNotNull(componentService);
+        checkNotNull(virtualMachineTemplateService);
 
-        this.applicationServiceImpl = applicationServiceImpl;
-        this.componentServiceImpl = componentServiceImpl;
+        this.applicationService = applicationService;
+        this.componentService = componentService;
+        this.virtualMachineTemplateService = virtualMachineTemplateService;
 
     }
 
@@ -57,13 +61,17 @@ public class ApplicationComponentConverter extends BaseConverter<ApplicationComp
      */
     protected ApplicationComponent setDto(ApplicationComponent applicationComponent, ApplicationComponentDto applicationComponentDto) {
 
-        Application application = applicationServiceImpl.getById(applicationComponentDto.application);
-        checkState(application != null, "Could not retrieve application for id: " + applicationComponentDto.application);
+        Application application = applicationService.getById(applicationComponentDto.application);
+        checkNotNull(application, "Could not retrieve application for id: " + applicationComponentDto.application);
         applicationComponent.setApplication(application);
 
-        Component component = componentServiceImpl.getById(applicationComponentDto.component);
-        checkState(component != null, "Could not retrieve component for id: " + applicationComponentDto.component);
+        Component component = componentService.getById(applicationComponentDto.component);
+        checkNotNull(component, "Could not retrieve component for id: " + applicationComponentDto.component);
         applicationComponent.setComponent(component);
+
+        VirtualMachineTemplate virtualMachineTemplate = virtualMachineTemplateService.getById(applicationComponentDto.virtualMachineTemplate);
+        checkNotNull(virtualMachineTemplate, "Could not retrieve virtual machine template for id: " + applicationComponentDto.validateNotNull());
+        applicationComponent.setVirtualMachineTemplate(virtualMachineTemplate);
 
         return applicationComponent;
     }
@@ -85,6 +93,6 @@ public class ApplicationComponentConverter extends BaseConverter<ApplicationComp
     @Override
     public ApplicationComponentDto toDto(ApplicationComponent model) {
         checkNotNull(model);
-        return new ApplicationComponentDto(model.getApplication().getId(), model.getComponent().getId());
+        return new ApplicationComponentDto(model.getApplication().getId(), model.getComponent().getId(), model.getVirtualMachineTemplate().getId());
     }
 }

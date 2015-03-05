@@ -30,10 +30,12 @@ public class CommunicationDto extends ValidatableDto {
 
     public Long provider;
     public Long consumer;
+    public Integer port;
 
-    public CommunicationDto(Long provider, Long consumer) {
+    public CommunicationDto(Long provider, Long consumer, Integer port) {
         this.provider = provider;
         this.consumer = consumer;
+        this.port = port;
     }
 
     public CommunicationDto() {

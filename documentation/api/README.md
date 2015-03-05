@@ -24,3 +24,5 @@ Entity                                 | URL
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/virtualMachineTemplate
 
+## Examples
+[Examples](Examples.md)

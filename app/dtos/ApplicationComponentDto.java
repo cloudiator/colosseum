@@ -23,8 +23,11 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Application;
 import models.Component;
+import models.VirtualMachine;
+import models.VirtualMachineTemplate;
 import models.service.api.ApplicationService;
 import models.service.api.ComponentService;
+import models.service.api.VirtualMachineTemplateService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -42,19 +45,25 @@ public class ApplicationComponentDto extends ValidatableDto {
 
         @Inject
         public static Provider<ComponentService> componentService;
+
+        @Inject
+        public static Provider<VirtualMachineTemplateService> virtualMachineTemplateService;
     }
 
     public Long application;
 
     public Long component;
 
+    public Long virtualMachineTemplate;
+
     public ApplicationComponentDto(){
 
     }
 
-    public ApplicationComponentDto(Long application, Long component){
+    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate){
         this.application = application;
         this.component = component;
+        this.virtualMachineTemplate = virtualMachineTemplate;
     }
 
     @Override
@@ -62,7 +71,7 @@ public class ApplicationComponentDto extends ValidatableDto {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate application reference
-        Application application = null;
+        Application application;
         if (this.application == null) {
             errors.add(new ValidationError("application", "The application is required."));
         } else {
@@ -80,6 +89,17 @@ public class ApplicationComponentDto extends ValidatableDto {
             component = References.componentService.get().getById(this.component);
             if (component == null) {
                 errors.add(new ValidationError("component", "The given component is invalid."));
+            }
+        }
+
+        //validate the virtual machine Template
+        VirtualMachineTemplate virtualMachineTemplate;
+        if (this.virtualMachineTemplate == null) {
+            errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
+        } else {
+            virtualMachineTemplate = References.virtualMachineTemplateService.get().getById(this.virtualMachineTemplate);
+            if(virtualMachineTemplate == null) {
+                errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
             }
         }
 

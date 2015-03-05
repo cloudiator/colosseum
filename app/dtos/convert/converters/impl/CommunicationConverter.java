@@ -49,6 +49,7 @@ public class CommunicationConverter extends BaseConverter<Communication, Communi
 
         communication.setConsumer(consumer);
         communication.setProvider(provider);
+        communication.setPort(communicationDto.port);
 
         return communication;
     }
@@ -69,6 +70,6 @@ public class CommunicationConverter extends BaseConverter<Communication, Communi
     @Override
     public CommunicationDto toDto(Communication model) {
         checkNotNull(model);
-        return new CommunicationDto(model.getProvider().getId(), model.getConsumer().getId());
+        return new CommunicationDto(model.getProvider().getId(), model.getConsumer().getId(), model.getPort());
     }
 }

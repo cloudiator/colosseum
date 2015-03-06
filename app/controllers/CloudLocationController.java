@@ -23,7 +23,7 @@ import controllers.generic.GenericApiController;
 import dtos.CloudLocationDto;
 import dtos.convert.api.ModelDtoConversionService;
 import models.CloudLocation;
-import models.service.api.CloudLocationServiceInterface;
+import models.service.api.CloudLocationService;
 
 /**
  * Created by daniel seybold on 10.12.2014.
@@ -36,7 +36,7 @@ public class CloudLocationController extends GenericApiController<CloudLocation,
      * @param conversionService    the conversion service for converting models and dtos.
      */
     @Inject
-    protected CloudLocationController(CloudLocationServiceInterface cloudLocationService, ModelDtoConversionService conversionService) {
+    protected CloudLocationController(CloudLocationService cloudLocationService, ModelDtoConversionService conversionService) {
         super(cloudLocationService, conversionService);
     }
 

@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.UserCredentialDto;
 import dtos.builders.UserCredentialDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
@@ -53,42 +54,23 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
         this.frontendUserServiceImpl = frontendUserServiceImpl;
     }
 
-
-    /**
-     * Sets the dto to the userCredential model.
-     *
-     * @param userCredential    the userCredential model where the dto should be set.
-     * @param userCredentialDto the dto to be set.
-     * @return the merged hardware object.
-     */
-    protected UserCredential setDto(UserCredential userCredential, UserCredentialDto userCredentialDto) {
-
-        CloudApi cloudApi = cloudApiServiceImpl.getById(userCredentialDto.cloudApi);
-        checkState(cloudApi != null, "Could not retrieve cloudApi for id: " + userCredentialDto.cloudApi);
-        userCredential.setCloudApi(cloudApi);
-
-        Credential credential = credentialServiceImpl.getById(userCredentialDto.credential);
-        checkState(credential != null, "Could not retrieve credential for id: " + userCredentialDto.credential);
-        userCredential.setCredential(credential);
-
-        FrontendUser frontendUser = frontendUserServiceImpl.getById(userCredentialDto.frontendUser);
-        checkState(frontendUser != null, "Could not retrieve frontendUser for id: " + userCredentialDto.frontendUser);
-        userCredential.setFrontendUser(frontendUser);
-
-        return userCredential;
-    }
-
-    @Override
-    public UserCredential toModel(UserCredentialDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new UserCredential(), dto);
-    }
-
     @Override
     public UserCredential toModel(UserCredentialDto dto, UserCredential model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        CloudApi cloudApi = cloudApiServiceImpl.getById(dto.getCloudApi());
+        checkState(cloudApi != null, "Could not retrieve cloudApi for id: " + dto.getCloudApi());
+        model.setCloudApi(cloudApi);
+
+        Credential credential = credentialServiceImpl.getById(dto.getCredential());
+        checkState(credential != null, "Could not retrieve credential for id: " + dto.getCredential());
+        model.setCredential(credential);
+
+        FrontendUser frontendUser = frontendUserServiceImpl.getById(dto.getFrontendUser());
+        checkState(frontendUser != null, "Could not retrieve frontendUser for id: " + dto.getFrontendUser());
+        model.setFrontendUser(frontendUser);
+
+        return model;
     }
 
     @Override

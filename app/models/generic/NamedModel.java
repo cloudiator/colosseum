@@ -30,9 +30,9 @@ import javax.persistence.MappedSuperclass;
 public abstract class NamedModel extends Model {
 
     /**
-     * Default constructor for hibernate.
+     * Empty constructor for hibernate.
      */
-    public NamedModel() {
+    protected NamedModel() {
     }
 
     /**

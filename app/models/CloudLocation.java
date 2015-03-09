@@ -61,9 +61,9 @@ public class CloudLocation extends Model {
     private String cloudUuid;
 
     /**
-     * Empty constructor needed for hibernate.
+     * Empty constructor for hibernate.
      */
-    public CloudLocation() {
+    private CloudLocation() {
 
     }
 

@@ -28,9 +28,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Credential extends Model {
 
     /**
-     * Empty constructor for hiberante.
+     * Empty constructor for hibernate.
      */
-    public Credential() {
+    private Credential() {
     }
 
     /**

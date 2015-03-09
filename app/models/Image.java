@@ -55,9 +55,9 @@ public class Image extends NamedModel {
 
 
     /**
-     * Empty constructor used by hibernate.
+     * Empty constructor for hibernate.
      */
-    public Image() {
+    private Image() {
     }
 
     public OperatingSystem getOperatingSystem() {

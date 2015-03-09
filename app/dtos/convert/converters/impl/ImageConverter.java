@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.ImageDto;
+import dtos.convert.impl.BaseConverter;
 import models.Image;
 import models.OperatingSystem;
 import models.service.impl.OperatingSystemServiceImpl;
@@ -43,27 +44,17 @@ public class ImageConverter extends BaseConverter<Image, ImageDto> {
 
     }
 
-    protected Image setDto(Image image, ImageDto imageDto) {
-        image.setName(imageDto.name);
-
-        OperatingSystem operatingSystem = operatingSystemServiceImpl.getById(imageDto.operatingSystem);
-        checkState(operatingSystem != null, "Could not retrieve operating system for id: " + imageDto.operatingSystem);
-        image.setOperatingSystem(operatingSystem);
-
-        return image;
-    }
-
-    @Override
-    public Image toModel(ImageDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new Image(), dto);
-    }
-
     @Override
     public Image toModel(ImageDto dto, Image model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setName(dto.getName());
+
+        OperatingSystem operatingSystem = operatingSystemServiceImpl.getById(dto.getOperatingSystem());
+        checkState(operatingSystem != null, "Could not retrieve operating system for id: " + dto.getOperatingSystem());
+        model.setOperatingSystem(operatingSystem);
+
+        return model;
     }
 
     @Override

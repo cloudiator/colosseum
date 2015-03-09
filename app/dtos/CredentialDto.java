@@ -26,11 +26,27 @@ import java.util.List;
 
 public class CredentialDto extends ValidatableDto {
 
-    public String user;
-    public String secret;
+    protected String user;
+    protected String secret;
 
     public CredentialDto() {
+        super();
+    }
 
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
     }
 
     public CredentialDto(String user, String secret) {

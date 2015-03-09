@@ -66,9 +66,9 @@ public class Hardware extends Model {
     private List<CloudHardware> cloudHardware;
 
     /**
-     * Empty constructor needed by hibernate.
+     * Empty constructor for hibernate.
      */
-    public Hardware() {
+    private Hardware() {
     }
 
     public Integer getNumberOfCpu() {

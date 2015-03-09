@@ -81,14 +81,6 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
     }
 
     @Override
-    public <T extends Model, S extends Dto> T toModel(final S dto, final Class<T> modelClass) {
-        checkNotNull(dto);
-        checkNotNull(modelClass);
-        //noinspection unchecked
-        return (T) this.converters.get(modelClass, dto.getClass()).toModel(dto);
-    }
-
-    @Override
     public <T extends Model, S extends Dto> S toDto(final T model, final Class<S> dtoClass) {
         checkNotNull(model);
         checkNotNull(dtoClass);
@@ -113,17 +105,6 @@ public class GenericModelDtoConversionService implements ModelDtoConversionServi
         checkNotNull(modelClass);
         //noinspection unchecked
         return (T) this.converters.get(modelClass, dto.getClass()).toModel(dto, model);
-    }
-
-    @Override
-    public <T extends Model, S extends Dto> List<T> toModels(final List<S> dtos, final Class<T> modelClass) {
-        checkNotNull(dtos);
-        checkNotNull(modelClass);
-        List<T> models = new ArrayList<>(dtos.size());
-        for (S dto : dtos) {
-            models.add(this.toModel(dto, modelClass));
-        }
-        return models;
     }
 
     @Override

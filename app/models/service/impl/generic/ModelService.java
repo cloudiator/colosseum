@@ -23,9 +23,7 @@ import models.repository.api.generic.ModelRepository;
 import models.service.api.generic.ModelServiceInterface;
 
 import javax.annotation.Nullable;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -60,14 +58,5 @@ public abstract class ModelService<T extends Model> implements ModelServiceInter
     @Override
     public void delete(T entity) {
         this.modelRepository.delete(entity);
-    }
-
-    @Override
-    public Map<String, String> getOptions() {
-        LinkedHashMap<String, String> options = new LinkedHashMap<>();
-        for (T t : this.getAll()) {
-            options.put(t.getId().toString(), t.toString());
-        }
-        return options;
     }
 }

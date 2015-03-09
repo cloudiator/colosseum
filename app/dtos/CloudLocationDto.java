@@ -41,12 +41,36 @@ public class CloudLocationDto extends ValidatableDto {
         public static Provider<LocationService> locationService;
     }
 
-    public Long cloud;
-    public Long location;
-    public String cloudUuid;
+    protected Long cloud;
+    protected Long location;
+    protected String cloudUuid;
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getLocation() {
+        return location;
+    }
+
+    public void setLocation(Long location) {
+        this.location = location;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
 
     public CloudLocationDto() {
-
+        super();
     }
 
     public CloudLocationDto(Long cloud, Long location, String cloudUuid) {

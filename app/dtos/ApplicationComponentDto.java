@@ -50,14 +50,38 @@ public class ApplicationComponentDto extends ValidatableDto {
         public static Provider<VirtualMachineTemplateService> virtualMachineTemplateService;
     }
 
-    public Long application;
+    protected Long application;
 
-    public Long component;
+    protected Long component;
 
-    public Long virtualMachineTemplate;
+    protected Long virtualMachineTemplate;
+
+    public Long getApplication() {
+        return application;
+    }
+
+    public void setApplication(Long application) {
+        this.application = application;
+    }
+
+    public Long getComponent() {
+        return component;
+    }
+
+    public void setComponent(Long component) {
+        this.component = component;
+    }
+
+    public Long getVirtualMachineTemplate() {
+        return virtualMachineTemplate;
+    }
+
+    public void setVirtualMachineTemplate(Long virtualMachineTemplate) {
+        this.virtualMachineTemplate = virtualMachineTemplate;
+    }
 
     public ApplicationComponentDto(){
-
+        super();
     }
 
     public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate){

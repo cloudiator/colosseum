@@ -26,16 +26,16 @@ import dtos.generic.impl.NamedDto;
 public class LifecycleComponentDto extends NamedDto {
 
 
-    public String download;
+    protected String download;
 
-    public String install;
+    protected String install;
 
-    public String start;
+    protected String start;
 
-    public String stop;
+    protected String stop;
 
     public LifecycleComponentDto(){
-
+        super();
     }
 
     public LifecycleComponentDto(String name, String download, String install, String start, String stop){
@@ -46,5 +46,35 @@ public class LifecycleComponentDto extends NamedDto {
         this.stop = stop;
     }
 
+    public String getDownload() {
+        return download;
+    }
 
+    public void setDownload(String download) {
+        this.download = download;
+    }
+
+    public String getInstall() {
+        return install;
+    }
+
+    public void setInstall(String install) {
+        this.install = install;
+    }
+
+    public String getStart() {
+        return start;
+    }
+
+    public void setStart(String start) {
+        this.start = start;
+    }
+
+    public String getStop() {
+        return stop;
+    }
+
+    public void setStop(String stop) {
+        this.stop = stop;
+    }
 }

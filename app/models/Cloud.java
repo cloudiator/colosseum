@@ -37,7 +37,7 @@ public class Cloud extends NamedModel {
     /**
      * Empty constructor. Needed by hibernate.
      */
-    public Cloud() {
+    private Cloud() {
     }
 
     public Cloud(String name) {

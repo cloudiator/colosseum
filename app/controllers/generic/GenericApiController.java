@@ -32,6 +32,8 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -58,6 +60,16 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
     private final Class<T> type;
     private final Class<S> dtoType;
     private final Form<S> form;
+
+    private T getInstance() {
+        try {
+            final Constructor<T> declaredConstructor = this.type.getDeclaredConstructor();
+            declaredConstructor.setAccessible(true);
+            return declaredConstructor.newInstance();
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Loads the model identified by the given id from the
@@ -190,17 +202,18 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
     @BodyParser.Of(BodyParser.Json.class)
     public Result create() {
 
+
         final Form<S> filledForm = form.bindFromRequest();
 
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         }
 
-        final T entity = this.conversionService.toModel(filledForm.get(), this.type);
+        final T entity = this.conversionService.toModel(filledForm.get(), this.getInstance(), this.type);
 
         this.modelService.save(entity);
 
-        return ok();
+        return get(entity.getId());
     }
 
     /**
@@ -239,9 +252,7 @@ public abstract class GenericApiController<T extends Model, S extends Dto> exten
 
         entity = this.conversionService.toModel(filledForm.get(), entity, this.type);
 
-        this.modelService.save(entity);
-
-        return ok();
+        return get(entity.getId());
     }
 
     /**

@@ -44,9 +44,9 @@ public class ApiAccessToken extends Model {
     private FrontendUser frontendUser;
 
     /**
-     * No-arg constructor for hibernate.
+     * Empty constructor for hibernate.
      */
-    protected ApiAccessToken() {
+    private ApiAccessToken() {
     }
 
     public ApiAccessToken(final FrontendUser frontendUser, final String token) {

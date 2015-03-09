@@ -49,20 +49,44 @@ public class UserCredentialDto extends ValidatableDto {
     }
 
 
-    public Long cloudApi;
+    protected Long cloudApi;
 
-    public Long credential;
+    protected Long credential;
 
-    public Long frontendUser;
+    protected Long frontendUser;
 
     public UserCredentialDto(){
-
+        super();
     }
 
     public UserCredentialDto(Long cloudApi, Long credential, Long frontendUser){
 
         this.cloudApi = cloudApi;
         this.credential = credential;
+        this.frontendUser = frontendUser;
+    }
+
+    public Long getCloudApi() {
+        return cloudApi;
+    }
+
+    public void setCloudApi(Long cloudApi) {
+        this.cloudApi = cloudApi;
+    }
+
+    public Long getCredential() {
+        return credential;
+    }
+
+    public void setCredential(Long credential) {
+        this.credential = credential;
+    }
+
+    public Long getFrontendUser() {
+        return frontendUser;
+    }
+
+    public void setFrontendUser(Long frontendUser) {
         this.frontendUser = frontendUser;
     }
 

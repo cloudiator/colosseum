@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.CommunicationChannelDto;
+import dtos.convert.impl.BaseConverter;
 import models.Communication;
 import models.CommunicationChannel;
 import models.Instance;
@@ -43,36 +44,22 @@ public class CommunicationChannelConverter extends BaseConverter<CommunicationCh
         this.instanceService = instanceService;
     }
 
-    protected CommunicationChannel setDto(CommunicationChannel communicationChannel, CommunicationChannelDto communicationChannelDto) {
-
-        final Communication communication = this.communicationService.getById(communicationChannelDto.communication);
-        checkState(communication != null, "Could not retrieve communication for id = " + communicationChannelDto.communication);
-
-        final Instance provider = this.instanceService.getById(communicationChannelDto.provider);
-        checkState(provider != null, "Could not retrieve instance for id = " + communicationChannelDto.provider);
-
-        final Instance consumer = this.instanceService.getById(communicationChannelDto.consumer);
-        checkState(consumer != null, "Could not retrieve instance for id = " + communicationChannelDto.consumer);
-
-        communicationChannel.setCommunication(communication);
-        communicationChannel.setProvider(provider);
-        communicationChannel.setConsumer(consumer);
-
-        return communicationChannel;
-    }
-
-    @Override
-    public CommunicationChannel toModel(CommunicationChannelDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new CommunicationChannel(), dto);
-    }
-
     @Override
     public CommunicationChannel toModel(CommunicationChannelDto dto, CommunicationChannel model) {
-        checkNotNull(dto);
-        checkNotNull(model);
+        final Communication communication = this.communicationService.getById(dto.getCommunication());
+        checkState(communication != null, "Could not retrieve communication for id = " + dto.getCommunication());
 
-        return this.setDto(model, dto);
+        final Instance provider = this.instanceService.getById(dto.getProvider());
+        checkState(provider != null, "Could not retrieve instance for id = " + dto.getProvider());
+
+        final Instance consumer = this.instanceService.getById(dto.getConsumer());
+        checkState(consumer != null, "Could not retrieve instance for id = " + dto.getConsumer());
+
+        model.setCommunication(communication);
+        model.setProvider(provider);
+        model.setConsumer(consumer);
+
+        return model;
     }
 
     @Override

@@ -39,7 +39,7 @@ public abstract class ValidatableDto extends DtoImpl implements dtos.generic.api
     @Override
     public List<ValidationError> validate() {
         List<ValidationError> validationErrors = this.validateNotNull();
-        checkNotNull(validateNotNull());
+        checkNotNull(validationErrors);
         if (validationErrors.isEmpty()) {
             return null;
         }

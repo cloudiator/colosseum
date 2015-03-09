@@ -46,6 +46,12 @@ public class OperatingSystem extends Model {
 
     private String version;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private OperatingSystem() {
+    }
+
     public OperatingSystemArchitecture getOperatingSystemArchitecture() {
         return operatingSystemArchitecture;
     }

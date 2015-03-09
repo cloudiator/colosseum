@@ -32,7 +32,7 @@ public abstract class Resource {
     private final String uuid = UUID.randomUUID().toString();
 
     /**
-     * No-arg constructor for hibernate
+     * Empty constructor for hibernate.
      */
     protected Resource() {
     }

@@ -37,14 +37,22 @@ public class ImageDto extends NamedDto {
 
     }
 
-    public Long operatingSystem;
+    protected Long operatingSystem;
 
     public ImageDto() {
-
+        super();
     }
 
     public ImageDto(String name, Long operatingSystem) {
         super(name);
+        this.operatingSystem = operatingSystem;
+    }
+
+    public Long getOperatingSystem() {
+        return operatingSystem;
+    }
+
+    public void setOperatingSystem(Long operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 

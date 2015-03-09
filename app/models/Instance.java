@@ -45,6 +45,12 @@ public class Instance extends Model {
     @ManyToOne
     private VirtualMachine virtualMachine;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private Instance() {
+    }
+
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
     }

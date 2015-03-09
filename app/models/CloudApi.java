@@ -34,7 +34,7 @@ public class CloudApi extends Model {
     /**
      * Empty constructor for hibernate.
      */
-    public CloudApi() {
+    private CloudApi() {
     }
 
     /**

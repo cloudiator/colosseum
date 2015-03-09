@@ -45,11 +45,11 @@ public class CloudApiDto extends ValidatableDto {
         public static Provider<CloudService> cloudService;
     }
 
-    public Long api;
+    protected Long api;
 
-    public Long cloud;
+    protected Long cloud;
 
-    public String endpoint;
+    protected String endpoint;
 
     public CloudApiDto(){
 
@@ -59,6 +59,30 @@ public class CloudApiDto extends ValidatableDto {
 
         this.api = api;
         this.cloud = cloud;
+        this.endpoint = endpoint;
+    }
+
+    public Long getApi() {
+        return api;
+    }
+
+    public void setApi(Long api) {
+        this.api = api;
+    }
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
         this.endpoint = endpoint;
     }
 

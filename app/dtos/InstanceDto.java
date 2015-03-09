@@ -44,16 +44,32 @@ public class InstanceDto extends ValidatableDto {
         public static Provider<VirtualMachineService> virtualMachineService;
     }
 
-    public Long applicationComponent;
+    protected Long applicationComponent;
 
-    public Long virtualMachine;
+    protected Long virtualMachine;
 
-    public InstanceDto(){
-
+    protected InstanceDto(){
+        super();
     }
 
     public InstanceDto(Long applicationComponent, Long virtualMachine){
         this.applicationComponent = applicationComponent;
+        this.virtualMachine = virtualMachine;
+    }
+
+    public Long getApplicationComponent() {
+        return applicationComponent;
+    }
+
+    public void setApplicationComponent(Long applicationComponent) {
+        this.applicationComponent = applicationComponent;
+    }
+
+    public Long getVirtualMachine() {
+        return virtualMachine;
+    }
+
+    public void setVirtualMachine(Long virtualMachine) {
         this.virtualMachine = virtualMachine;
     }
 

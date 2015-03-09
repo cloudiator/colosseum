@@ -29,6 +29,7 @@ import java.util.List;
 public class CommunicationChannelDto extends ValidatableDto {
 
     public CommunicationChannelDto() {
+        super();
     }
 
     public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
@@ -37,11 +38,35 @@ public class CommunicationChannelDto extends ValidatableDto {
         this.consumer = consumer;
     }
 
-    public Long communication;
+    protected Long communication;
 
-    public Long provider;
+    protected Long provider;
 
-    public Long consumer;
+    protected Long consumer;
+
+    public Long getCommunication() {
+        return communication;
+    }
+
+    public void setCommunication(Long communication) {
+        this.communication = communication;
+    }
+
+    public Long getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Long provider) {
+        this.provider = provider;
+    }
+
+    public Long getConsumer() {
+        return consumer;
+    }
+
+    public void setConsumer(Long consumer) {
+        this.consumer = consumer;
+    }
 
     @Override
     public List<ValidationError> validateNotNull() {

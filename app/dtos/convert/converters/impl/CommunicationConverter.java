@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.CommunicationDto;
+import dtos.convert.impl.BaseConverter;
 import models.ApplicationComponent;
 import models.Communication;
 import models.service.api.ApplicationComponentService;
@@ -39,32 +40,21 @@ public class CommunicationConverter extends BaseConverter<Communication, Communi
         this.applicationComponentService = applicationComponentService;
     }
 
-    protected Communication setDto(Communication communication, CommunicationDto communicationDto) {
-
-        final ApplicationComponent provider = this.applicationComponentService.getById(communicationDto.provider);
-        checkState(provider != null, "Could not find application component with id " + communicationDto.provider);
-
-        final ApplicationComponent consumer = this.applicationComponentService.getById(communicationDto.consumer);
-        checkState(provider != null, "Could not find application component with id " + communicationDto.consumer);
-
-        communication.setConsumer(consumer);
-        communication.setProvider(provider);
-        communication.setPort(communicationDto.port);
-
-        return communication;
-    }
-
-    @Override
-    public Communication toModel(CommunicationDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new Communication(), dto);
-    }
-
     @Override
     public Communication toModel(CommunicationDto dto, Communication model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        final ApplicationComponent provider = this.applicationComponentService.getById(dto.getProvider());
+        checkState(provider != null, "Could not find application component with id " + dto.getProvider());
+
+        final ApplicationComponent consumer = this.applicationComponentService.getById(dto.getConsumer());
+        checkState(provider != null, "Could not find application component with id " + dto.getConsumer());
+
+        model.setConsumer(consumer);
+        model.setProvider(provider);
+        model.setPort(dto.getPort());
+
+        return model;
     }
 
     @Override

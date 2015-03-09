@@ -20,7 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Singleton;
 import dtos.CloudDto;
-import dtos.convert.converters.api.ModelDtoConverter;
+import dtos.convert.impl.BaseConverter;
 import models.Cloud;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,29 +31,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Singleton
 public class CloudConverter extends BaseConverter<Cloud, CloudDto> {
 
-    /**
-     * Sets the dto to the cloud model.
-     *
-     * @param cloud    the cloud model where the dto should be set.
-     * @param cloudDto the dto to be set.
-     * @return the merged cloud object.
-     */
-    protected Cloud setDto(Cloud cloud, CloudDto cloudDto) {
-        cloud.setName(cloudDto.name);
-        return cloud;
-    }
-
-    @Override
-    public Cloud toModel(CloudDto cloudDto) {
-        checkNotNull(cloudDto);
-        return setDto(new Cloud(), cloudDto);
-    }
-
     @Override
     public Cloud toModel(CloudDto cloudDto, Cloud model) {
         checkNotNull(cloudDto);
         checkNotNull(model);
-        return setDto(model, cloudDto);
+        model.setName(cloudDto.getName());
+        return model;
     }
 
     @Override

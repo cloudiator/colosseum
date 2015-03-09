@@ -49,7 +49,7 @@ public class VirtualMachineTemplate extends Model {
     /**
      * Empty constructor for hibernate.
      */
-    public VirtualMachineTemplate() {
+    private VirtualMachineTemplate() {
     }
 
     public VirtualMachineTemplate(Cloud cloud, CloudImage cloudImage, CloudLocation cloudLocation, CloudHardware cloudHardware) {

@@ -33,8 +33,10 @@ public class Application extends NamedModel {
     @OneToMany(mappedBy = "application")
     private List<ApplicationComponent> applicationComponents;
 
-    public Application(){
-
+    /**
+     * Empty constructor for hibernate.
+     */
+    private Application(){
     }
 
     public Application(String name){

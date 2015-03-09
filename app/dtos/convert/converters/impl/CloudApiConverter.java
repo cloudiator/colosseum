@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudApiDto;
 import dtos.builders.CloudApiDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.Api;
 import models.Cloud;
 import models.CloudApi;
@@ -49,31 +50,21 @@ public class CloudApiConverter extends BaseConverter<CloudApi, CloudApiDto> {
 
     }
 
-    protected CloudApi setDto(CloudApi cloudApi, CloudApiDto cloudApiDto) {
-        cloudApi.setEndpoint(cloudApiDto.endpoint);
-
-        Api api = apiServiceImpl.getById(cloudApiDto.api);
-        checkState(api != null, "Could not retrieve api for id: " + cloudApiDto.api);
-        cloudApi.setApi(api);
-
-        Cloud cloud = cloudServiceImpl.getById(cloudApiDto.cloud);
-        checkState(cloud != null, "Could not retrieve cloud for id: " + cloudApiDto.cloud);
-        cloudApi.setCloud(cloud);
-
-        return cloudApi;
-    }
-
-    @Override
-    public CloudApi toModel(CloudApiDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new CloudApi(), dto);
-    }
-
     @Override
     public CloudApi toModel(CloudApiDto dto, CloudApi model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setEndpoint(dto.getEndpoint());
+
+        Api api = apiServiceImpl.getById(dto.getApi());
+        checkState(api != null, "Could not retrieve api for id: " + dto.getApi());
+        model.setApi(api);
+
+        Cloud cloud = cloudServiceImpl.getById(dto.getCloud());
+        checkState(cloud != null, "Could not retrieve cloud for id: " + dto.getCloud());
+        model.setCloud(cloud);
+
+        return model;
     }
 
     @Override

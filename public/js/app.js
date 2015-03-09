@@ -11,15 +11,15 @@ var executionware = angular.module('executionware', [
 executionware.config(['$routeProvider',
     function($routeProvider) {
         $routeProvider.
-            when('/cloud', {
-                templateUrl: 'cloud',
+            when('/api/cloud', {
+                templateUrl: '/api/cloud',
                 controller: 'CloudListCtrl'
             }).
-            when('/cloud/:cloudId', {
-                templateUrl: 'cloud/:phoneId',
+            when('/api/cloud/:cloudId', {
+                templateUrl: '/api/cloud/:phoneId',
                 controller: 'CloudDetailCtrl'
             }).
             otherwise({
-                redirectTo: '/cloud'
+                redirectTo: '/api/cloud'
             });
     }]);

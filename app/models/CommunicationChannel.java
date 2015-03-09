@@ -36,6 +36,12 @@ public class CommunicationChannel extends Model {
     @ManyToOne
     private Instance consumer;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private CommunicationChannel() {
+    }
+
     public Communication getCommunication() {
         return communication;
     }

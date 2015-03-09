@@ -42,9 +42,9 @@ public class Communication extends Model {
     private int port;
 
     /**
-     * No-args constructor for hibernate.
+     * Empty constructor for hibernate.
      */
-    public Communication() {
+    private Communication() {
     }
 
     public ApplicationComponent getProvider() {

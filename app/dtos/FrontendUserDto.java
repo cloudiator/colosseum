@@ -27,12 +27,12 @@ import java.util.List;
 
 public class FrontendUserDto extends ValidatableDto {
 
-    public String firstName;
-    public String lastName;
-    public String mail;
+    protected String firstName;
+    protected String lastName;
+    protected String mail;
 
     public FrontendUserDto() {
-
+        super();
     }
 
     public FrontendUserDto(String firstName, String lastName, String mail) {
@@ -41,19 +41,43 @@ public class FrontendUserDto extends ValidatableDto {
         this.mail = mail;
     }
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
+
     @Override
     public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
-        if(this.firstName.isEmpty()){
+        if (this.firstName.isEmpty()) {
             errors.add(new ValidationError("frontenduser", "Firstname must not be empty"));
         }
 
-        if(this.lastName.isEmpty()){
+        if (this.lastName.isEmpty()) {
             errors.add(new ValidationError("frontenduser", "Lastname must not be empty"));
         }
 
-        if(!Constraints.email().isValid(this.mail)){
+        if (!Constraints.email().isValid(this.mail)) {
             errors.add(new ValidationError("frontenduser", "Mail is not valid"));
         }
 

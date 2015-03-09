@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudImageDto;
 import dtos.builders.CloudImageDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.Cloud;
 import models.CloudImage;
 import models.Image;
@@ -48,32 +49,21 @@ public class CloudImageConverter extends BaseConverter<CloudImage, CloudImageDto
         this.imageServiceImpl = imageServiceImpl;
     }
 
-    protected CloudImage setDto(CloudImage cloudImage, CloudImageDto cloudImageDto) {
-        cloudImage.setCloudUuid(cloudImageDto.cloudUuid);
-
-        Cloud cloud = cloudServiceImpl.getById(cloudImageDto.cloud);
-        checkState(cloud != null, "Could not retrieve cloud for id: " + cloudImageDto.cloud);
-        cloudImage.setCloud(cloud);
-
-        Image image = imageServiceImpl.getById(cloudImageDto.image);
-        checkState(image != null, "Could not retrieve image for id: " + cloudImageDto.image);
-        cloudImage.setImage(image);
-
-        return cloudImage;
-
-    }
-
-    @Override
-    public CloudImage toModel(CloudImageDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new CloudImage(), dto);
-    }
-
     @Override
     public CloudImage toModel(CloudImageDto dto, CloudImage model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setCloudUuid(dto.getCloudUuid());
+
+        Cloud cloud = cloudServiceImpl.getById(dto.getCloud());
+        checkState(cloud != null, "Could not retrieve cloud for id: " + dto.getCloud());
+        model.setCloud(cloud);
+
+        Image image = imageServiceImpl.getById(dto.getImage());
+        checkState(image != null, "Could not retrieve image for id: " + dto.getImage());
+        model.setImage(image);
+
+        return model;
     }
 
     @Override

@@ -49,15 +49,16 @@ public class VirtualMachineDto extends NamedDto {
         public static Provider<CloudLocationService> cloudLocationService;
     }
 
-    public Long cloud;
+    protected Long cloud;
 
-    public Long cloudImage;
+    protected Long cloudImage;
 
-    public Long cloudHardware;
+    protected Long cloudHardware;
 
-    public Long cloudLocation;
+    protected Long cloudLocation;
 
     public VirtualMachineDto() {
+        super();
     }
 
     public VirtualMachineDto(String name, Long cloud, Long cloudImage, Long cloudHardware, Long cloudLocation) {
@@ -65,6 +66,38 @@ public class VirtualMachineDto extends NamedDto {
         this.cloud = cloud;
         this.cloudImage = cloudImage;
         this.cloudHardware = cloudHardware;
+        this.cloudLocation = cloudLocation;
+    }
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getCloudImage() {
+        return cloudImage;
+    }
+
+    public void setCloudImage(Long cloudImage) {
+        this.cloudImage = cloudImage;
+    }
+
+    public Long getCloudHardware() {
+        return cloudHardware;
+    }
+
+    public void setCloudHardware(Long cloudHardware) {
+        this.cloudHardware = cloudHardware;
+    }
+
+    public Long getCloudLocation() {
+        return cloudLocation;
+    }
+
+    public void setCloudLocation(Long cloudLocation) {
         this.cloudLocation = cloudLocation;
     }
 

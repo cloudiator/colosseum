@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudLocationDto;
 import dtos.builders.CloudLocationDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.Cloud;
 import models.CloudLocation;
 import models.Location;
@@ -49,31 +50,21 @@ public class CloudLocationConverter extends BaseConverter<CloudLocation, CloudLo
 
     }
 
-    protected CloudLocation setDto(CloudLocation cloudLocation, CloudLocationDto cloudLocationDto) {
-        cloudLocation.setCloudUuid(cloudLocationDto.cloudUuid);
-
-        Cloud cloud = cloudServiceImpl.getById(cloudLocationDto.cloud);
-        checkState(cloud != null, "Could not retrieve cloud for id: " + cloudLocationDto.cloud);
-        cloudLocation.setCloud(cloud);
-
-        Location location = locationServiceImpl.getById(cloudLocationDto.cloud);
-        checkState(location != null, "Could not retrieve location for id: " + cloudLocationDto.location);
-        cloudLocation.setLocation(location);
-
-        return cloudLocation;
-    }
-
-    @Override
-    public CloudLocation toModel(CloudLocationDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new CloudLocation(), dto);
-    }
-
     @Override
     public CloudLocation toModel(CloudLocationDto dto, CloudLocation model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setCloudUuid(dto.getCloudUuid());
+
+        Cloud cloud = cloudServiceImpl.getById(dto.getCloud());
+        checkState(cloud != null, "Could not retrieve cloud for id: " + dto.getCloud());
+        model.setCloud(cloud);
+
+        Location location = locationServiceImpl.getById(dto.getLocation());
+        checkState(location != null, "Could not retrieve location for id: " + dto.getLocation());
+        model.setLocation(location);
+
+        return model;
     }
 
     @Override

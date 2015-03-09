@@ -59,9 +59,9 @@ public class Location extends NamedModel {
     private LocationScope locationScope;
 
     /**
-     * Empty constructor. Needed for hibernate.
+     * Empty constructor for hibernate.
      */
-    public Location() {
+    private Location() {
 
     }
 

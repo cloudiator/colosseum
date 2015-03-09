@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package dtos.convert.converters.impl;
+package dtos.convert.impl;
 
 import dtos.convert.converters.api.ModelDtoConverter;
 import dtos.generic.api.Dto;

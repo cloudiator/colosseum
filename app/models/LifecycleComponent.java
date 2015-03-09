@@ -36,6 +36,12 @@ public class LifecycleComponent extends Component {
     @Nullable
     private String stop;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private LifecycleComponent() {
+    }
+
     @Nullable
     public String getDownload() {
         return download;

@@ -28,7 +28,15 @@ import java.util.List;
  */
 public abstract class NamedDto extends ValidatableDto {
 
-    public String name;
+    private String name;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return this.name;
+    }
 
     /**
      * Default constructor, need for Play Forms API.
@@ -43,6 +51,7 @@ public abstract class NamedDto extends ValidatableDto {
      * @param name the name of the object.
      */
     public NamedDto(String name) {
+        super();
         this.name = name;
     }
 

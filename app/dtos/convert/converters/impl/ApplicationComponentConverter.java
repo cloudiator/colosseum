@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.ApplicationComponentDto;
+import dtos.convert.impl.BaseConverter;
 import models.Application;
 import models.ApplicationComponent;
 import models.Component;
@@ -52,42 +53,24 @@ public class ApplicationComponentConverter extends BaseConverter<ApplicationComp
 
     }
 
-    /**
-     * Sets the dto to the applicationComponent model.
-     *
-     * @param applicationComponent    the applicationComponent model where the dto should be set.
-     * @param applicationComponentDto the dto to be set.
-     * @return the merged applicationComponent object.
-     */
-    protected ApplicationComponent setDto(ApplicationComponent applicationComponent, ApplicationComponentDto applicationComponentDto) {
-
-        Application application = applicationService.getById(applicationComponentDto.application);
-        checkNotNull(application, "Could not retrieve application for id: " + applicationComponentDto.application);
-        applicationComponent.setApplication(application);
-
-        Component component = componentService.getById(applicationComponentDto.component);
-        checkNotNull(component, "Could not retrieve component for id: " + applicationComponentDto.component);
-        applicationComponent.setComponent(component);
-
-        VirtualMachineTemplate virtualMachineTemplate = virtualMachineTemplateService.getById(applicationComponentDto.virtualMachineTemplate);
-        checkNotNull(virtualMachineTemplate, "Could not retrieve virtual machine template for id: " + applicationComponentDto.validateNotNull());
-        applicationComponent.setVirtualMachineTemplate(virtualMachineTemplate);
-
-        return applicationComponent;
-    }
-
-
-    @Override
-    public ApplicationComponent toModel(ApplicationComponentDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new ApplicationComponent(), dto);
-    }
-
     @Override
     public ApplicationComponent toModel(ApplicationComponentDto dto, ApplicationComponent model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+
+        Application application = applicationService.getById(dto.getApplication());
+        checkNotNull(application, "Could not retrieve application for id: " + dto.getApplication());
+        model.setApplication(application);
+
+        Component component = componentService.getById(dto.getComponent());
+        checkNotNull(component, "Could not retrieve component for id: " + dto.getComponent());
+        model.setComponent(component);
+
+        VirtualMachineTemplate virtualMachineTemplate = virtualMachineTemplateService.getById(dto.getVirtualMachineTemplate());
+        checkNotNull(virtualMachineTemplate, "Could not retrieve virtual machine template for id: " + dto.validateNotNull());
+        model.setVirtualMachineTemplate(virtualMachineTemplate);
+
+        return model;
     }
 
     @Override

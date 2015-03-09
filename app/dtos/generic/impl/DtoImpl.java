@@ -31,7 +31,6 @@ public class DtoImpl implements Dto {
     private final Set<Link> links;
 
     public DtoImpl() {
-        super();
         this.links = new HashSet<>();
     }
 

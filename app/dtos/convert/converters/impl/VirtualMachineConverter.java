@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.VirtualMachineDto;
 import dtos.builders.VirtualMachineDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.*;
 import models.service.impl.CloudHardwareServiceImpl;
 import models.service.impl.CloudImageServiceImpl;
@@ -54,40 +55,29 @@ public class VirtualMachineConverter extends BaseConverter<VirtualMachine, Virtu
         this.cloudImageServiceImpl = cloudImageServiceImpl;
     }
 
-    protected VirtualMachine setDto(VirtualMachine virtualMachine, VirtualMachineDto virtualMachineDto) {
-        virtualMachine.setName(virtualMachineDto.name);
-
-        Cloud cloud = cloudServiceImpl.getById(virtualMachineDto.cloud);
-        checkState(cloud != null, "Could not retrieve cloud for id: " + virtualMachineDto.cloud);
-        virtualMachine.setCloud(cloud);
-
-        CloudLocation cloudLocation = cloudLocationServiceImpl.getById(virtualMachineDto.cloudLocation);
-        checkState(cloudLocation != null, "Could not retrieve cloudLocation for id: " + virtualMachineDto.cloudLocation);
-        virtualMachine.setCloudLocation(cloudLocation);
-
-        CloudHardware cloudHardware = cloudHardwareFlavorServiceImpl.getById(virtualMachineDto.cloudHardware);
-        checkState(cloudHardware != null, "Could not retrieve cloudHardware for id: " + virtualMachineDto.cloudHardware);
-        virtualMachine.setCloudHardware(cloudHardware);
-
-        CloudImage cloudImage = cloudImageServiceImpl.getById(virtualMachineDto.cloudImage);
-        checkState(cloudImage != null, "Could not retrieve cloudImage for id: " + virtualMachineDto.cloudImage);
-        virtualMachine.setCloudImage(cloudImage);
-
-        return virtualMachine;
-
-    }
-
-    @Override
-    public VirtualMachine toModel(VirtualMachineDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new VirtualMachine(), dto);
-    }
-
     @Override
     public VirtualMachine toModel(VirtualMachineDto dto, VirtualMachine model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setName(dto.getName());
+
+        Cloud cloud = cloudServiceImpl.getById(dto.getCloud());
+        checkState(cloud != null, "Could not retrieve cloud for id: " + dto.getCloud());
+        model.setCloud(cloud);
+
+        CloudLocation cloudLocation = cloudLocationServiceImpl.getById(dto.getCloudLocation());
+        checkState(cloudLocation != null, "Could not retrieve cloudLocation for id: " + dto.getCloudLocation());
+        model.setCloudLocation(cloudLocation);
+
+        CloudHardware cloudHardware = cloudHardwareFlavorServiceImpl.getById(dto.getCloudHardware());
+        checkState(cloudHardware != null, "Could not retrieve cloudHardware for id: " + dto.getCloudHardware());
+        model.setCloudHardware(cloudHardware);
+
+        CloudImage cloudImage = cloudImageServiceImpl.getById(dto.getCloudImage());
+        checkState(cloudImage != null, "Could not retrieve cloudImage for id: " + dto.getCloudImage());
+        model.setCloudImage(cloudImage);
+
+        return model;
     }
 
     @Override

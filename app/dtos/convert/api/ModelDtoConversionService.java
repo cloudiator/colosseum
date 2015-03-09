@@ -40,17 +40,6 @@ import java.util.Set;
 public interface ModelDtoConversionService {
 
     /**
-     * Converts the given dto to the expected model class.
-     *
-     * @param dto        the dto which will be converted.
-     * @param modelClass the target model class.
-     * @param <T>        type of the model.
-     * @param <S>        type of the dto.
-     * @return the resulting model of the conversion.
-     */
-    public <T extends Model, S extends Dto> T toModel(S dto, Class<T> modelClass);
-
-    /**
      * Converts the given model to the expected dto class.
      *
      * @param model    the model which will be converted.
@@ -85,17 +74,6 @@ public interface ModelDtoConversionService {
      * @return the resulting model object.
      */
     public <T extends Model, S extends Dto> T toModel(S dto, T model, Class<T> modelClass);
-
-    /**
-     * Helper for converting a list of dtos to a list of models.
-     *
-     * @param dtos       a list of dtos.
-     * @param modelClass the expected model class.
-     * @param <T>        type of the model.
-     * @param <S>        type of the dto.
-     * @return a list of resulting model objects.
-     */
-    public <T extends Model, S extends Dto> List<T> toModels(List<S> dtos, Class<T> modelClass);
 
     /**
      * Helper for converting a list of models to a list of dtos.

@@ -38,9 +38,9 @@ public abstract class Model extends Resource implements Serializable {
     protected Long id;
 
     /**
-     * Default constructor for hibernate.
+     * Empty constructor for hibernate.
      */
-    public Model() {
+    protected Model() {
     }
 
     /**

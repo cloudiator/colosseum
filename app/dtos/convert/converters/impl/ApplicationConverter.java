@@ -19,6 +19,7 @@
 package dtos.convert.converters.impl;
 
 import dtos.ApplicationDto;
+import dtos.convert.impl.BaseConverter;
 import models.Application;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -29,30 +30,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ApplicationConverter extends BaseConverter<Application, ApplicationDto> {
 
-    /**
-     * Sets the dto to the application model.
-     *
-     * @param application    the application model where the dto should be set.
-     * @param applicationDto the dto to be set.
-     * @return the merged application object.
-     */
-    protected Application setDto(Application application, ApplicationDto applicationDto) {
-        application.setName(applicationDto.name);
-        return application;
-    }
-
-    @Override
-    public Application toModel(ApplicationDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new Application(), dto);
-    }
-
-
     @Override
     public Application toModel(ApplicationDto dto, Application model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setName(dto.getName());
+
+        return model;
     }
 
     @Override

@@ -28,9 +28,9 @@ import java.util.List;
  */
 public class CommunicationDto extends ValidatableDto {
 
-    public Long provider;
-    public Long consumer;
-    public Integer port;
+    protected Long provider;
+    protected Long consumer;
+    protected Integer port;
 
     public CommunicationDto(Long provider, Long consumer, Integer port) {
         this.provider = provider;
@@ -38,7 +38,32 @@ public class CommunicationDto extends ValidatableDto {
         this.port = port;
     }
 
+    public Long getProvider() {
+        return provider;
+    }
+
+    public void setProvider(Long provider) {
+        this.provider = provider;
+    }
+
+    public Long getConsumer() {
+        return consumer;
+    }
+
+    public void setConsumer(Long consumer) {
+        this.consumer = consumer;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
+
     public CommunicationDto() {
+        super();
     }
 
     @Override

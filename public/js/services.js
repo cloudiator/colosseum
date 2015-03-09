@@ -2,11 +2,11 @@ var executionwareServices = angular.module('executionwareServices', []);
 
 executionwareServices.factory('Cloud', ['$resource',
     function($resource){
-        return $resource('/cloud/:cloudId', {}, {
+        return $resource('/api/cloud/:cloudId', {}, {
             get: {method:'GET', params:{cloudId:'1'}},
             query: {method:'GET', isArray:true},
-            save: {method:'PUT'},
+            save: {method:'POST'},
             delete: {method:'DELETE', params:{}},
-            update: {method:'POST', params:{}}
+            update: {method:'PUT', params:{}}
         });
     }]);

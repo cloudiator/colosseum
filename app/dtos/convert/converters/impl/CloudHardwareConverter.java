@@ -21,6 +21,7 @@ package dtos.convert.converters.impl;
 import com.google.inject.Inject;
 import dtos.CloudHardwareDto;
 import dtos.builders.CloudHardwareDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.Cloud;
 import models.CloudHardware;
 import models.Hardware;
@@ -49,31 +50,21 @@ public class CloudHardwareConverter extends BaseConverter<CloudHardware, CloudHa
         this.hardwareServiceImpl = hardwareServiceImpl;
     }
 
-    protected CloudHardware setDto(CloudHardware cloudHardware, CloudHardwareDto cloudHardwareDto) {
-        cloudHardware.setCloudUuid(cloudHardwareDto.cloudUuid);
-
-        Cloud cloud = cloudServiceImpl.getById(cloudHardwareDto.cloud);
-        checkState(cloud != null, "Could not retrieve cloud for id: " + cloudHardwareDto.cloud);
-        cloudHardware.setCloud(cloud);
-
-        Hardware hardware = hardwareServiceImpl.getById(cloudHardwareDto.hardware);
-        checkState(hardware != null, "Could not retrieve hardware for id: " + cloudHardwareDto.hardware);
-        cloudHardware.setHardware(hardware);
-
-        return cloudHardware;
-    }
-
-    @Override
-    public CloudHardware toModel(CloudHardwareDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new CloudHardware(), dto);
-    }
-
     @Override
     public CloudHardware toModel(CloudHardwareDto dto, CloudHardware model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setCloudUuid(dto.getCloudUuid());
+
+        Cloud cloud = cloudServiceImpl.getById(dto.getCloud());
+        checkState(cloud != null, "Could not retrieve cloud for id: " + dto.getCloud());
+        model.setCloud(cloud);
+
+        Hardware hardware = hardwareServiceImpl.getById(dto.getHardware());
+        checkState(hardware != null, "Could not retrieve hardware for id: " + dto.getHardware());
+        model.setHardware(hardware);
+
+        return model;
     }
 
     @Override

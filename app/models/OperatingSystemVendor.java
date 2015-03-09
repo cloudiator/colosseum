@@ -43,6 +43,12 @@ public class OperatingSystemVendor extends NamedModel {
     @Enumerated(EnumType.STRING)
     private OperatingSystemVendorType operatingSystemVendorType;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private OperatingSystemVendor() {
+    }
+
     public OperatingSystemVendorType getOperatingSystemVendorType() {
         return operatingSystemVendorType;
     }

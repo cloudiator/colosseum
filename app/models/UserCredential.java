@@ -55,6 +55,12 @@ public class UserCredential extends Model {
     @ManyToOne(optional = false)
     private FrontendUser frontendUser;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private UserCredential() {
+    }
+
     public CloudApi getCloudApi() {
         return cloudApi;
     }

@@ -32,7 +32,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity
 public class VirtualMachine extends NamedModel {
 
-    public VirtualMachine() {
+    /**
+     * Empty constructor for hibernate.
+     */
+    private VirtualMachine() {
     }
 
     @ManyToOne(optional = false)

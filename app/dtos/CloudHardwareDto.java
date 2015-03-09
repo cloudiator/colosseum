@@ -43,15 +43,38 @@ public class CloudHardwareDto extends ValidatableDto {
 
     }
 
-    public Long cloud;
+    protected Long cloud;
 
-    public Long hardware;
+    protected Long hardware;
 
-    public String cloudUuid;
+    protected String cloudUuid;
 
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(Long hardware) {
+        this.hardware = hardware;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
 
     public CloudHardwareDto() {
-
+        super();
     }
 
     public CloudHardwareDto(Long cloud, Long hardware, String cloudUuid) {

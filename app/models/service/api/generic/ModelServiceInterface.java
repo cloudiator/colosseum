@@ -32,10 +32,7 @@ public interface ModelServiceInterface<T extends Model> {
 
     public List<T> getAll();
 
-    public Map<String,String> getOptions();
-
     public void save(T t);
 
     public void delete(T t);
-
 }

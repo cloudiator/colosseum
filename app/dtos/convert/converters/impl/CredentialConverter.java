@@ -19,6 +19,7 @@
 package dtos.convert.converters.impl;
 
 import dtos.CredentialDto;
+import dtos.convert.impl.BaseConverter;
 import models.Credential;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -28,31 +29,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class CredentialConverter extends BaseConverter<Credential, CredentialDto> {
 
-    /**
-     * Sets the dto to the hardware model.
-     *
-     * @param credential    the credential model where the dto should be set.
-     * @param credentialDto the dto to be set.
-     * @return the merged credential object.
-     */
-    protected Credential setDto(Credential credential, CredentialDto credentialDto) {
-        credential.setUser(credentialDto.user);
-        credential.setSecret(credentialDto.secret);
-
-        return credential;
-    }
-
-    @Override
-    public Credential toModel(CredentialDto dto) {
-        checkNotNull(dto);
-        return setDto(new Credential(), dto);
-    }
-
     @Override
     public Credential toModel(CredentialDto dto, Credential model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setUser(dto.getUser());
+        model.setSecret(dto.getSecret());
+
+        return model;
     }
 
     @Override

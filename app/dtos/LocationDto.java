@@ -24,14 +24,38 @@ import java.util.List;
 
 public class LocationDto extends NamedDto {
 
-    public List<Long> locationCodes;
+    protected List<Long> locationCodes;
 
-    public Long parent;
+    protected Long parent;
 
-    public String locationScope;
+    protected String locationScope;
+
+    public List<Long> getLocationCodes() {
+        return locationCodes;
+    }
+
+    public void setLocationCodes(List<Long> locationCodes) {
+        this.locationCodes = locationCodes;
+    }
+
+    public Long getParent() {
+        return parent;
+    }
+
+    public void setParent(Long parent) {
+        this.parent = parent;
+    }
+
+    public String getLocationScope() {
+        return locationScope;
+    }
+
+    public void setLocationScope(String locationScope) {
+        this.locationScope = locationScope;
+    }
 
     public LocationDto() {
-
+        super();
     }
 
     public LocationDto(String name, List<Long> locationCodes, Long parent, String locationScope) {

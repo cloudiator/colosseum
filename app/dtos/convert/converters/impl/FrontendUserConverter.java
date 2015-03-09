@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import dtos.FrontendUserDto;
 import dtos.builders.FrontendUserDtoBuilder;
+import dtos.convert.impl.BaseConverter;
 import models.FrontendUser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,32 +31,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class FrontendUserConverter extends BaseConverter<FrontendUser, FrontendUserDto> {
 
-    /**
-     * Sets the dto to the frontendUser model.
-     *
-     * @param frontendUser    the frontendUser model where the dto should be set.
-     * @param frontendUserDto the dto to be set.
-     * @return the merged hardware object.
-     */
-    protected FrontendUser setDto(FrontendUser frontendUser, FrontendUserDto frontendUserDto) {
-        frontendUser.setFirstName(frontendUserDto.firstName);
-        frontendUser.setLastName(frontendUserDto.lastName);
-        frontendUser.setMail(frontendUserDto.mail);
-
-        return frontendUser;
-    }
-
-    @Override
-    public FrontendUser toModel(FrontendUserDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new FrontendUser(), dto);
-    }
-
     @Override
     public FrontendUser toModel(FrontendUserDto dto, FrontendUser model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        model.setFirstName(dto.getFirstName());
+        model.setLastName(dto.getLastName());
+        model.setMail(dto.getMail());
+
+        return model;
     }
 
     @Override

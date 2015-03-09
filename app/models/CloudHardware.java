@@ -36,9 +36,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class CloudHardware extends Model {
 
     /**
-     * Empty constructor for Hibernate.
+     * Empty constructor for hibernate.
      */
-    public CloudHardware() {
+    private CloudHardware() {
     }
 
     /**

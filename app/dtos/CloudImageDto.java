@@ -42,12 +42,36 @@ public class CloudImageDto extends ValidatableDto {
         public static Provider<ImageService> imageService;
     }
 
-    public Long cloud;
-    public Long image;
-    public String cloudUuid;
+    protected Long cloud;
+    protected Long image;
+    protected String cloudUuid;
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getImage() {
+        return image;
+    }
+
+    public void setImage(Long image) {
+        this.image = image;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
 
     public CloudImageDto() {
-
+        super();
     }
 
     public CloudImageDto(Long cloud, Long image, String cloudUuid) {

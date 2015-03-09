@@ -29,9 +29,9 @@ import javax.persistence.Entity;
 public class Api extends NamedModel {
 
     /**
-     * Empty constructor. Needed by hibernate.
+     * Empty constructor for hibernate.
      */
-    public Api(){
+    private Api(){
 
     }
 

@@ -28,18 +28,51 @@ import java.util.List;
  */
 public class VirtualMachineTemplateDto extends ValidatableDto {
 
-    public long cloud;
-    public long cloudImage;
-    public long cloudLocation;
-    public long cloudHardware;
+    protected long cloud;
+    protected long cloudImage;
+    protected long cloudLocation;
+    protected long cloudHardware;
 
     public VirtualMachineTemplateDto() {
+        super();
     }
 
     public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation, long cloudHardware) {
         this.cloud = cloud;
         this.cloudImage = cloudImage;
         this.cloudLocation = cloudLocation;
+        this.cloudHardware = cloudHardware;
+    }
+
+    public long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(long cloud) {
+        this.cloud = cloud;
+    }
+
+    public long getCloudImage() {
+        return cloudImage;
+    }
+
+    public void setCloudImage(long cloudImage) {
+        this.cloudImage = cloudImage;
+    }
+
+    public long getCloudLocation() {
+        return cloudLocation;
+    }
+
+    public void setCloudLocation(long cloudLocation) {
+        this.cloudLocation = cloudLocation;
+    }
+
+    public long getCloudHardware() {
+        return cloudHardware;
+    }
+
+    public void setCloudHardware(long cloudHardware) {
         this.cloudHardware = cloudHardware;
     }
 

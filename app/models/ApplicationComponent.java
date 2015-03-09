@@ -47,6 +47,11 @@ public class ApplicationComponent extends Model {
     @ManyToOne(optional = false)
     private VirtualMachineTemplate virtualMachineTemplate;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private ApplicationComponent() {
+    }
 
     public Application getApplication() {
         return application;

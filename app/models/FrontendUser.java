@@ -76,9 +76,9 @@ public class FrontendUser extends Model {
     private List<ApiAccessToken> tokens;
 
     /**
-     * Empty constructor. Needed by hibernate.
+     * Empty constructor for hibernate.
      */
-    public FrontendUser() {
+    private FrontendUser() {
     }
 
     /**

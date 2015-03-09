@@ -35,6 +35,12 @@ public class LocationCode extends Model {
 
     private String iso3166Alpha2;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    private LocationCode() {
+    }
+
     public String getIso3166Alpha2() {
         return iso3166Alpha2;
     }

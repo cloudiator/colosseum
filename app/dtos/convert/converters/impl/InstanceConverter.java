@@ -20,6 +20,7 @@ package dtos.convert.converters.impl;
 
 import com.google.inject.Inject;
 import dtos.InstanceDto;
+import dtos.convert.impl.BaseConverter;
 import models.ApplicationComponent;
 import models.Instance;
 import models.VirtualMachine;
@@ -46,37 +47,19 @@ public class InstanceConverter extends BaseConverter<Instance, InstanceDto> {
         this.virtualMachineServiceImpl = virtualMachineServiceImpl;
     }
 
-    /**
-     * Sets the dto to the instance model.
-     *
-     * @param instance    the instance model where the dto should be set.
-     * @param instanceDto the dto to be set.
-     * @return the merged instance object.
-     */
-    protected Instance setDto(Instance instance, InstanceDto instanceDto) {
-
-        ApplicationComponent applicationComponent = applicationComponentServiceImpl.getById(instanceDto.applicationComponent);
-        checkState(applicationComponent != null, "Could not retrieve applicationComponent for id: " + instanceDto.applicationComponent);
-        instance.setApplicationComponent(applicationComponent);
-
-        VirtualMachine virtualMachine = virtualMachineServiceImpl.getById(instanceDto.virtualMachine);
-        checkState(virtualMachine != null, "Could not retrieve virtualMachine for id: " + instanceDto.virtualMachine);
-        instance.setVirtualMachine(virtualMachine);
-
-        return instance;
-    }
-
-    @Override
-    public Instance toModel(InstanceDto dto) {
-        checkNotNull(dto);
-        return this.setDto(new Instance(), dto);
-    }
-
     @Override
     public Instance toModel(InstanceDto dto, Instance model) {
         checkNotNull(dto);
         checkNotNull(model);
-        return this.setDto(model, dto);
+        ApplicationComponent applicationComponent = applicationComponentServiceImpl.getById(dto.getApplicationComponent());
+        checkState(applicationComponent != null, "Could not retrieve applicationComponent for id: " + dto.getApplicationComponent());
+        model.setApplicationComponent(applicationComponent);
+
+        VirtualMachine virtualMachine = virtualMachineServiceImpl.getById(dto.getVirtualMachine());
+        checkState(virtualMachine != null, "Could not retrieve virtualMachine for id: " + dto.getVirtualMachine());
+        model.setVirtualMachine(virtualMachine);
+
+        return model;
     }
 
     @Override

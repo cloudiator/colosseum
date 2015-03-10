@@ -60,7 +60,7 @@ public class SecurityController extends Controller {
             return badRequest(views.html.site.login.render(filledForm));
         } else {
             session().clear();
-            session("email", filledForm.get().email);
+            session("email", filledForm.get().getEmail());
             return redirect(routes.SiteController.index());
         }
     }
@@ -73,7 +73,7 @@ public class SecurityController extends Controller {
             return badRequest(filledForm.errorsAsJson());
         }
         //generate a new token
-        ApiAccessToken apiAccessToken = new ApiAccessToken(this.frontendUserService.getByMail(filledForm.get().email), Password.getInstance().generateToken());
+        ApiAccessToken apiAccessToken = new ApiAccessToken(this.frontendUserService.getByMail(filledForm.get().getEmail()), Password.getInstance().generateToken());
         this.apiAccessTokenService.save(apiAccessToken);
 
         ObjectNode result = Json.newObject();

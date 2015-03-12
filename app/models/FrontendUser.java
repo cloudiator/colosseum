@@ -24,6 +24,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -74,6 +75,9 @@ public class FrontendUser extends Model {
 
     @OneToMany(mappedBy = "frontendUser")
     private List<ApiAccessToken> tokens;
+
+    @ManyToMany
+    private List<FrontendGroup> frontendGroups;
 
     /**
      * Empty constructor for hibernate.
@@ -169,6 +173,22 @@ public class FrontendUser extends Model {
     public void setPassword(String password) {
         checkNotNull(password);
         this.password = password;
+    }
+
+    public List<ApiAccessToken> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<ApiAccessToken> tokens) {
+        this.tokens = tokens;
+    }
+
+    public List<FrontendGroup> getFrontendGroups() {
+        return frontendGroups;
+    }
+
+    public void setFrontendGroups(List<FrontendGroup> frontendGroups) {
+        this.frontendGroups = frontendGroups;
     }
 
     public String getName() {

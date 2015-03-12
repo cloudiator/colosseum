@@ -28,7 +28,7 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "de.uniulm.omi.executionware" % "executionware" % "1.2-SNAPSHOT"
+  "de.uniulm.omi.executionware" % "executionware-service" % "1.2.0-SNAPSHOT"
 )
 
 TwirlKeys.templateImports += "dtos._"

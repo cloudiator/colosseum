@@ -18,14 +18,13 @@
 
 package cloud;
 
-import models.VirtualMachine;
+import de.uniulm.omi.executionware.api.domain.Resource;
 
 /**
- * Created by daniel on 12.02.15.
+ * Created by daniel on 11.03.15.
  */
-public interface CloudService {
+public interface ResourceInCloud extends Resource {
 
-    public
+    public String cloud();
 
-    public VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate);
 }

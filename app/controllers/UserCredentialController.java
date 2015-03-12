@@ -22,13 +22,13 @@ import com.google.inject.Inject;
 import controllers.generic.GenericApiController;
 import dtos.UserCredentialDto;
 import dtos.convert.api.ModelDtoConversionService;
-import models.UserCredential;
+import models.CloudCredential;
 import models.service.api.UserCredentialService;
 
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class UserCredentialController extends GenericApiController<UserCredential, UserCredentialDto> {
+public class UserCredentialController extends GenericApiController<CloudCredential, UserCredentialDto> {
     /**
      * Constructs a GenericApiController.
      *

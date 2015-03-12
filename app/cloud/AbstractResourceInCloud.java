@@ -16,14 +16,35 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import de.uniulm.omi.executionware.api.domain.Resource;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 12.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public abstract class AbstractResourceInCloud<T extends Resource> implements ResourceInCloud {
+
+    protected final Resource resource;
+    protected final String cloud;
+
+    public AbstractResourceInCloud(T resource, String cloud) {
+        this.resource = resource;
+        this.cloud = cloud;
+    }
+
+    @Override
+    public String cloud() {
+        return cloud;
+    }
+
+    @Override
+    public String id() {
+        return resource.id();
+    }
+
+    @Override
+    public String name() {
+        return resource.name();
+    }
 }

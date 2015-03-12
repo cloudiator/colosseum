@@ -18,15 +18,10 @@
 
 package cloud;
 
-import models.VirtualMachine;
+import models.generic.Model;
 
 /**
- * Created by daniel on 12.02.15.
+ * Created by daniel on 11.03.15.
  */
-public class ExecWareCloudService implements CloudService {
-
-    @Override
-    public VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate) {
-        return null;
-    }
+public interface Problem<T extends Model> {
 }

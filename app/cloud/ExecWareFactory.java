@@ -16,14 +16,24 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import de.uniulm.omi.executionware.api.service.ComputeService;
+import de.uniulm.omi.executionware.service.ServiceBuilder;
+import models.Cloud;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 10.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public class ExecWareFactory implements CloudServiceFactory {
+
+    @Override
+    public ComputeService forCloud(Cloud cloud) {
+        return ServiceBuilder
+                .newServiceBuilder("cloudProviderName")
+                .endpoint("endpoint")
+                .credentials("username", "password")
+                .nodeGroup("nodeGroupName")
+                .build();
+    }
 }

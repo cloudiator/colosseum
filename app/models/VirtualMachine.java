@@ -20,9 +20,10 @@ package models;
 
 import models.generic.NamedModel;
 
-import javax.persistence.Column;
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,17 +39,33 @@ public class VirtualMachine extends NamedModel {
     private VirtualMachine() {
     }
 
-    @ManyToOne(optional = false)
+    public VirtualMachine(String name, Cloud cloud, CloudImage cloudImage, CloudHardware cloudHardware, CloudLocation cloudLocation, CloudVirtualMachine cloudVirtualMachine) {
+        super(name);
+        this.cloud = cloud;
+        this.cloudImage = cloudImage;
+        this.cloudHardware = cloudHardware;
+        this.cloudLocation = cloudLocation;
+        this.cloudVirtualMachine = cloudVirtualMachine;
+    }
+
+    @ManyToOne(optional = true)
     private Cloud cloud;
 
-    @ManyToOne(optional = false)
+    @Nullable
+    @ManyToOne(optional = true)
     private CloudImage cloudImage;
 
-    @ManyToOne(optional = false)
+    @Nullable
+    @ManyToOne(optional = true)
     private CloudHardware cloudHardware;
 
-    @ManyToOne(optional = false)
+    @Nullable
+    @ManyToOne(optional = true)
     private CloudLocation cloudLocation;
+
+    @Nullable
+    @OneToOne(mappedBy = "virtualMachine", optional = true)
+    private CloudVirtualMachine cloudVirtualMachine;
 
     public Cloud getCloud() {
         return cloud;
@@ -59,30 +76,39 @@ public class VirtualMachine extends NamedModel {
         this.cloud = cloud;
     }
 
+    @Nullable
     public CloudImage getCloudImage() {
         return cloudImage;
     }
 
-    public void setCloudImage(CloudImage cloudImage) {
-        checkNotNull(cloudImage);
+    public void setCloudImage(@Nullable CloudImage cloudImage) {
         this.cloudImage = cloudImage;
     }
 
+    @Nullable
     public CloudHardware getCloudHardware() {
         return cloudHardware;
     }
 
-    public void setCloudHardware(CloudHardware cloudHardware) {
-        checkNotNull(cloudHardware);
+    public void setCloudHardware(@Nullable CloudHardware cloudHardware) {
         this.cloudHardware = cloudHardware;
     }
 
+    @Nullable
     public CloudLocation getCloudLocation() {
         return cloudLocation;
     }
 
-    public void setCloudLocation(CloudLocation cloudLocation) {
-        checkNotNull(cloudLocation);
+    public void setCloudLocation(@Nullable CloudLocation cloudLocation) {
         this.cloudLocation = cloudLocation;
+    }
+
+    @Nullable
+    public CloudVirtualMachine getCloudVirtualMachine() {
+        return cloudVirtualMachine;
+    }
+
+    public void setCloudVirtualMachine(@Nullable CloudVirtualMachine cloudVirtualMachine) {
+        this.cloudVirtualMachine = cloudVirtualMachine;
     }
 }

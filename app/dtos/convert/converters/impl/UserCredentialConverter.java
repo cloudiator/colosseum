@@ -25,7 +25,7 @@ import dtos.convert.impl.BaseConverter;
 import models.CloudApi;
 import models.Credential;
 import models.FrontendUser;
-import models.UserCredential;
+import models.CloudCredential;
 import models.service.impl.CloudApiServiceImpl;
 import models.service.impl.CredentialServiceImpl;
 import models.service.impl.FrontendUserServiceImpl;
@@ -36,7 +36,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class UserCredentialConverter extends BaseConverter<UserCredential, UserCredentialDto> {
+public class UserCredentialConverter extends BaseConverter<CloudCredential, UserCredentialDto> {
 
     private final CloudApiServiceImpl cloudApiServiceImpl;
     private final CredentialServiceImpl credentialServiceImpl;
@@ -55,7 +55,7 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
     }
 
     @Override
-    public UserCredential toModel(UserCredentialDto dto, UserCredential model) {
+    public CloudCredential toModel(UserCredentialDto dto, CloudCredential model) {
         checkNotNull(dto);
         checkNotNull(model);
         CloudApi cloudApi = cloudApiServiceImpl.getById(dto.getCloudApi());
@@ -74,7 +74,7 @@ public class UserCredentialConverter extends BaseConverter<UserCredential, UserC
     }
 
     @Override
-    public UserCredentialDto toDto(UserCredential model) {
+    public UserCredentialDto toDto(CloudCredential model) {
         checkNotNull(model);
         return new UserCredentialDtoBuilder()
                 .cloudApi(model.getCloudApi().getId())

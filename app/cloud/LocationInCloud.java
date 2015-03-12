@@ -16,14 +16,26 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import de.uniulm.omi.executionware.api.domain.Location;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 12.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public class LocationInCloud extends AbstractResourceInCloud<Location> implements Location {
+
+
+    public LocationInCloud(Location resource, String cloud) {
+        super(resource, cloud);
+    }
+
+    private Location getLocation() {
+        return (Location) this.resource;
+    }
+
+    @Override
+    public boolean isAssignable() {
+        return getLocation().isAssignable();
+    }
 }

@@ -21,6 +21,9 @@ package models.generic;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Superclass for models having a name property.
  * <p>
@@ -41,6 +44,8 @@ public abstract class NamedModel extends Model {
      * @param name the name.
      */
     public NamedModel(String name) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
         this.name = name;
     }
 
@@ -70,6 +75,8 @@ public abstract class NamedModel extends Model {
      * @param name the value of the name property.
      */
     public void setName(String name) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
         this.name = name;
     }
 }

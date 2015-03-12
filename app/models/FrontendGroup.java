@@ -16,14 +16,23 @@
  * under the License.
  */
 
-package models.repository.impl;
+package models;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.generic.NamedModel;
+
+import javax.persistence.CascadeType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import java.util.List;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 12.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public class FrontendGroup extends NamedModel {
+
+    @ManyToMany(mappedBy = "frontendGroups")
+    private List<FrontendUser> frontendUsers;
+
+    @OneToMany(mappedBy = "frontendGroup", cascade = CascadeType.REMOVE)
+    private List<CloudCredential> cloudCredentials;
 }

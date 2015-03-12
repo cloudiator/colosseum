@@ -16,14 +16,17 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.generic.Model;
+
+import java.util.Collection;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 10.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public interface Watcher<T extends Model> {
+
+    public Collection<Problem<T>> getProblems();
+
 }

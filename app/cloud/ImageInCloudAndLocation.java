@@ -16,14 +16,15 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import de.uniulm.omi.executionware.api.domain.Image;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 12.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<Image> implements Image {
+    public ImageInCloudAndLocation(Image resource, String cloud) {
+        super(resource, cloud);
+    }
 }

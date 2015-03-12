@@ -74,9 +74,9 @@ public class VirtualMachineTemplateBuilder {
     }
 
     public VirtualMachineTemplateBuilder virtualMachineTemplateModel(models.VirtualMachineTemplate virtualMachineTemplateModel) {
-        this.image = virtualMachineTemplateModel.getImage();
-        this.location = virtualMachineTemplateModel.getLocation();
-        this.hardware = virtualMachineTemplateModel.getHardware();
+        this.cloudImage = virtualMachineTemplateModel.getCloudImage();
+        this.cloudLocation = virtualMachineTemplateModel.getCloudLocation();
+        this.cloudHardware = virtualMachineTemplateModel.getCloudHardware();
         return this;
     }
 

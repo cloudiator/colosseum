@@ -20,8 +20,7 @@ package models;
 
 import models.generic.NamedModel;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
 /**
@@ -44,45 +43,31 @@ public class Cloud extends NamedModel {
         super(name);
     }
 
-    /**
-     * Serial Version.
-     */
-    private static final long serialVersionUID = 1L;
+    @Column(updatable = false)
+    @OneToOne(mappedBy = "cloud", cascade = CascadeType.REMOVE, optional = false)
+    private CloudApi cloudApi;
 
-    /**
-     * API information about this cloud.
-     */
-    @OneToMany
-    public List<CloudApi> cloudApis;
-
-    /**
-     * The concrete images available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<CloudImage> cloudImages;
 
-    /**
-     * The concrete locations available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<CloudLocation> cloudLocations;
 
-    /**
-     * The concrete hardware flavors available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<CloudHardware> cloudHardware;
 
-    @OneToMany(mappedBy = "cloud")
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
+    private List<CloudVirtualMachine> virtualMachines;
 
-    public List<CloudApi> getCloudApis() {
-        return cloudApis;
+    public CloudApi getCloudApi() {
+        return cloudApi;
     }
 
-    public void setCloudApis(List<CloudApi> cloudApis) {
-        this.cloudApis = cloudApis;
+    public void setCloudApi(CloudApi cloudApi) {
+        this.cloudApi = cloudApi;
     }
 
     public List<CloudImage> getCloudImages() {
@@ -115,5 +100,13 @@ public class Cloud extends NamedModel {
 
     public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    public List<CloudVirtualMachine> getVirtualMachines() {
+        return virtualMachines;
+    }
+
+    public void setVirtualMachines(List<CloudVirtualMachine> virtualMachines) {
+        this.virtualMachines = virtualMachines;
     }
 }

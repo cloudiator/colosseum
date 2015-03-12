@@ -45,8 +45,6 @@ public class VirtualMachineTemplate {
         checkArgument(cloudImage.getCloud().equals(cloudHardware.getCloud()));
         checkArgument(cloudHardware.getCloud().equals(cloudLocation.getCloud()));
 
-        //todo: check if hardware and image are available in the location.
-
         this.cloudImage = cloudImage;
         this.cloudHardware = cloudHardware;
         this.cloudLocation = cloudLocation;
@@ -56,15 +54,17 @@ public class VirtualMachineTemplate {
         return new VirtualMachineTemplateBuilder();
     }
 
-    public CloudImage getCloudImage() {
-        return cloudImage;
+    public String cloudHardware() {
+        return cloudHardware.getUuid();
     }
 
-    public CloudHardware getCloudHardware() {
-        return cloudHardware;
+    public String cloudImage() {
+        return cloudImage.getUuid();
     }
 
-    public CloudLocation getCloudLocation() {
-        return cloudLocation;
+    public String cloudLocation() {
+        return cloudLocation.getUuid();
     }
+
+
 }

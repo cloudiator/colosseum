@@ -1,4 +1,4 @@
-/*
+package models;/*
  * Copyright (c) 2014-2015 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
@@ -16,11 +16,9 @@
  * under the License.
  */
 
-package models;
-
 import models.generic.Model;
 
-import javax.persistence.Entity;
+import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -28,32 +26,34 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 31.10.14.
+ * Created by daniel on 10.03.15.
  */
-@Entity
-public class CloudApi extends Model {
+public class CloudVirtualMachine extends Model {
+
+    @ManyToOne(optional = false)
+    private Cloud cloud;
+
+    @OneToOne(optional = false)
+    private VirtualMachine virtualMachine;
+
+    @Column(updatable = false, nullable = false)
+    private String cloudUuid;
 
     /**
      * Empty constructor for hibernate.
      */
-    private CloudApi() {
+    private CloudVirtualMachine() {
     }
 
-    @ManyToOne(optional = false)
-    private Api api;
+    private CloudVirtualMachine(Cloud cloud, VirtualMachine virtualMachine, String cloudUuid) {
+        checkNotNull(cloud);
+        checkNotNull(virtualMachine);
+        checkNotNull(cloudUuid);
+        checkArgument(!cloudUuid.isEmpty());
 
-    @OneToOne(optional = false)
-    private Cloud cloud;
-
-    private String endpoint;
-
-    public Api getApi() {
-        return api;
-    }
-
-    public void setApi(Api api) {
-        checkNotNull(api);
-        this.api = api;
+        this.cloud = cloud;
+        this.virtualMachine = virtualMachine;
+        this.cloudUuid = cloudUuid;
     }
 
     public Cloud getCloud() {
@@ -65,15 +65,22 @@ public class CloudApi extends Model {
         this.cloud = cloud;
     }
 
-    public String getEndpoint() {
-        return endpoint;
+    public VirtualMachine getVirtualMachine() {
+        return virtualMachine;
     }
 
-    public void setEndpoint(String endpoint) {
-        checkNotNull(endpoint);
-        checkArgument(!endpoint.isEmpty());
-        this.endpoint = endpoint;
+    public void setVirtualMachine(VirtualMachine virtualMachine) {
+        checkNotNull(virtualMachine);
+        this.virtualMachine = virtualMachine;
     }
 
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
 
+    public void setCloudUuid(String cloudUuid) {
+        checkNotNull(cloudUuid);
+        checkArgument(!cloudUuid.isEmpty());
+        this.cloudUuid = cloudUuid;
+    }
 }

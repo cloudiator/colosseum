@@ -16,14 +16,12 @@
  * under the License.
  */
 
-package models.repository.impl;
+package cloud;
 
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.VirtualMachine;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 11.03.15.
  */
-public class UserCredentialRepositoryJpa extends ModelRepositoryJpa<CloudCredential> implements UserCredentialRepository {
+public class VirtualMachineNotInCloud implements Problem<VirtualMachine> {
 }

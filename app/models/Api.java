@@ -22,26 +22,38 @@ import models.generic.NamedModel;
 
 import javax.persistence.Entity;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 31.10.14.
  */
 @Entity
 public class Api extends NamedModel {
 
+    private String internalProviderName;
+
     /**
      * Empty constructor for hibernate.
      */
-    private Api(){
+    private Api() {
 
     }
 
-    public Api(String name){
+    public Api(String name, String internalProviderName) {
         super(name);
+        checkNotNull(internalProviderName);
+        checkArgument(!internalProviderName.isEmpty());
+        this.internalProviderName = internalProviderName;
     }
 
-    /**
-     * Serial Version.
-     */
-    private static final long serialVersionUID = 1L;
+    public String getInternalProviderName() {
+        return internalProviderName;
+    }
 
+    public void setInternalProviderName(String internalProviderName) {
+        checkNotNull(internalProviderName);
+        checkArgument(!internalProviderName.isEmpty());
+        this.internalProviderName = internalProviderName;
+    }
 }

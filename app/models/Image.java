@@ -20,6 +20,7 @@ package models;
 
 import models.generic.NamedModel;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -51,8 +52,6 @@ public class Image extends NamedModel {
      */
     @OneToMany(mappedBy = "image")
     private List<CloudImage> cloudImages;
-
-
 
     /**
      * Empty constructor for hibernate.

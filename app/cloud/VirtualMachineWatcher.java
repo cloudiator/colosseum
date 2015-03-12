@@ -16,19 +16,32 @@
  * under the License.
  */
 
-package models.service.impl;
+package cloud;
 
-import com.google.inject.Inject;
-import models.CloudCredential;
-import models.repository.api.UserCredentialRepository;
-import models.service.api.UserCredentialService;
+import de.uniulm.omi.executionware.api.service.ComputeService;
+import models.VirtualMachine;
 import models.service.impl.generic.ModelService;
 
-/**
- * Created by daniel seybold on 11.12.2014.
- */
-public class UserCredentialServiceImpl extends ModelService<CloudCredential> implements UserCredentialService {
+import java.util.Collection;
+import java.util.LinkedList;
 
-    @Inject
-    public UserCredentialServiceImpl(UserCredentialRepository userCredentialRepository){super(userCredentialRepository);}
+/**
+ * Created by daniel on 11.03.15.
+ */
+public class VirtualMachineWatcher extends AbstractWatcher<VirtualMachine> {
+
+    public VirtualMachineWatcher(ModelService<VirtualMachine> modelService, ComputeService computeService) {
+        super(modelService, computeService);
+    }
+
+    @Override
+    protected Collection<Problem<VirtualMachine>> check(ComputeService computeService, ModelService<VirtualMachine> modelService) {
+        LinkedList<Problem<VirtualMachine>> problems = new LinkedList<>();
+
+        for(VirtualMachine local : modelService.getAll()) {
+
+        }
+
+
+    }
 }

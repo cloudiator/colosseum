@@ -19,7 +19,7 @@
 package models.service.api;
 
 import com.google.inject.ImplementedBy;
-import models.UserCredential;
+import models.CloudCredential;
 import models.service.api.generic.ModelServiceInterface;
 import models.service.impl.UserCredentialServiceImpl;
 
@@ -27,5 +27,5 @@ import models.service.impl.UserCredentialServiceImpl;
  * Created by daniel seybold on 11.12.2014.
  */
 @ImplementedBy(UserCredentialServiceImpl.class)
-public interface UserCredentialService extends ModelServiceInterface<UserCredential> {
+public interface UserCredentialService extends ModelServiceInterface<CloudCredential> {
 }

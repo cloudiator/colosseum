@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Represents the relation between a cloud and a generic image, by specifing the
+ * Represents the relation between a cloud and a generic image, by specifying the
  * cloud-dependant cloudUuid.
  */
 @Entity
@@ -41,29 +41,15 @@ public class CloudImage extends Model {
     private CloudImage() {
     }
 
-    /**
-     * Serial version.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * The cloud where this image is available.
-     */
     @ManyToOne(optional = false)
     private Cloud cloud;
 
-    /**
-     * The image.
-     */
     @ManyToOne(optional = false)
     private Image image;
 
     @OneToMany(mappedBy = "cloudImage")
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
-    /**
-     * The cloud-dependant unique identifier.
-     */
     private String cloudUuid;
 
     public Cloud getCloud() {
@@ -101,4 +87,5 @@ public class CloudImage extends Model {
     public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
     }
+
 }

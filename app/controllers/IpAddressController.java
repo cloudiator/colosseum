@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import controllers.generic.GenericApiController;
 import dtos.IpAddressDto;
 import dtos.convert.api.ModelDtoConversionService;
@@ -29,6 +30,7 @@ import models.service.api.IpAddressService;
  */
 public class IpAddressController extends GenericApiController<IpAddress, IpAddressDto> {
 
+    @Inject
     protected IpAddressController(IpAddressService modelService, ModelDtoConversionService conversionService) {
         super(modelService, conversionService);
     }

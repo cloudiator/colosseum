@@ -16,34 +16,25 @@
  * under the License.
  */
 
-package models;
+package controllers;
 
-import models.generic.NamedModel;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
+import controllers.generic.GenericApiController;
+import dtos.IpAddressDto;
+import dtos.convert.api.ModelDtoConversionService;
+import models.IpAddress;
+import models.service.api.IpAddressService;
 
 /**
- * Created by daniel on 12.12.14.
+ * Created by daniel on 12.03.15.
  */
-@Entity
-public abstract class Component extends NamedModel {
+public class IpAddressController extends GenericApiController<IpAddress, IpAddressDto> {
 
-    /**
-     * Empty constructor for hibernate.
-     */
-    protected Component() {
+    protected IpAddressController(IpAddressService modelService, ModelDtoConversionService conversionService) {
+        super(modelService, conversionService);
     }
 
-    @OneToMany(mappedBy = "component")
-    private List<ApplicationComponent> applicationComponents;
-
-    public List<ApplicationComponent> getApplicationComponents() {
-        return applicationComponents;
-    }
-
-    public void setApplicationComponents(List<ApplicationComponent> applicationComponents) {
-        this.applicationComponents = applicationComponents;
+    @Override
+    protected String getSelfRoute(Long id) {
+        return controllers.routes.IpAddressController.get(id).absoluteURL(request());
     }
 }

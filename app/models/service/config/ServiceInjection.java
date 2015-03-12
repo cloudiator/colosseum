@@ -41,6 +41,7 @@ public class ServiceInjection extends AbstractModule {
         requestStaticInjection(UserCredentialDto.References.class);
         requestStaticInjection(ApplicationComponentDto.References.class);
         requestStaticInjection(InstanceDto.References.class);
+        requestStaticInjection(IpAddressDto.References.class);
 
         //static injection into security tokens
         requestStaticInjection(SecuredToken.References.class);

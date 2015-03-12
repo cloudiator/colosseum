@@ -16,34 +16,14 @@
  * under the License.
  */
 
-package models;
+package models.repository.impl;
 
-import models.generic.NamedModel;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
+import models.IpAddress;
+import models.repository.api.IpAddressRepository;
+import models.repository.impl.generic.ModelRepositoryJpa;
 
 /**
- * Created by daniel on 12.12.14.
+ * Created by daniel seybold on 11.12.2014.
  */
-@Entity
-public abstract class Component extends NamedModel {
-
-    /**
-     * Empty constructor for hibernate.
-     */
-    protected Component() {
-    }
-
-    @OneToMany(mappedBy = "component")
-    private List<ApplicationComponent> applicationComponents;
-
-    public List<ApplicationComponent> getApplicationComponents() {
-        return applicationComponents;
-    }
-
-    public void setApplicationComponents(List<ApplicationComponent> applicationComponents) {
-        this.applicationComponents = applicationComponents;
-    }
+public class IpAddressRepositoryJpa extends ModelRepositoryJpa<IpAddress> implements IpAddressRepository {
 }

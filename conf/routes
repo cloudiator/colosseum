@@ -119,6 +119,13 @@ POST          /api/virtualMachine                    @controllers.VirtualMachine
 PUT           /api/virtualMachine/:id                @controllers.VirtualMachineController.update(id: Long)
 DELETE        /api/virtualMachine/:id                @controllers.VirtualMachineController.delete(id: Long)
 
+#IpAddresses
+GET           /api/ip                                @controllers.IpAddressController.list()
+GET           /api/ip/:id                            @controllers.IpAddressController.get(id: Long)
+POST          /api/ip                                @controllers.IpAddressController.create()
+PUT           /api/ip/:id                            @controllers.IpAddressController.update(id: Long)
+DELETE        /api/ip/:id                            @controllers.IpAddressController.delete(id: Long)
+
 #LifecycleComponent
 GET           /api/lifecycleComponent                @controllers.LifecycleComponentController.list()
 GET           /api/lifecycleComponent/:id            @controllers.LifecycleComponentController.get(id: Long)
@@ -147,7 +154,7 @@ POST          /api/communicationChannel              @controllers.CommunicationC
 PUT           /api/communicationChannel/:id          @controllers.CommunicationChannelController.update(id: Long)
 DELETE        /api/communicationChannel/:id          @controllers.CommunicationChannelController.delete(id: Long)
 
-#VirtualMachineTemplatelate
+#VirtualMachineTemplate
 GET           /api/virtualMachineTemplate            @controllers.VirtualMachineTemplateController.list()
 GET           /api/virtualMachineTemplate/:id        @controllers.VirtualMachineTemplateController.get(id: Long)
 POST          /api/virtualMachineTemplate            @controllers.VirtualMachineTemplateController.create()

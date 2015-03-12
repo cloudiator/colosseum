@@ -55,6 +55,7 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CommunicationConverter.class);
         converterBinder.addBinding().to(CommunicationChannelConverter.class);
         converterBinder.addBinding().to(VirtualMachineTemplateConverter.class);
+        converterBinder.addBinding().to(IpAddressConverter.class);
     }
 
 }

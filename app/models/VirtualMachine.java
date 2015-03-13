@@ -108,7 +108,6 @@ public class VirtualMachine extends NamedModel {
         this.cloudLocation = cloudLocation;
     }
 
-
     public List<IpAddress> getIpAddresses() {
         return ipAddresses;
     }

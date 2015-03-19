@@ -34,8 +34,7 @@ public class LocationInCloud extends AbstractResourceInCloud<Location> implement
         return (Location) this.resource;
     }
 
-    @Override
-    public boolean isAssignable() {
+    @Override public boolean isAssignable() {
         return getLocation().isAssignable();
     }
 }

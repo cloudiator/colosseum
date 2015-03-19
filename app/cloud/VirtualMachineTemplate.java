@@ -18,9 +18,9 @@
 
 package cloud;
 
-import models.CloudHardware;
-import models.CloudImage;
-import models.CloudLocation;
+import models.Hardware;
+import models.Image;
+import models.Location;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -30,25 +30,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class VirtualMachineTemplate {
 
-    private final CloudImage cloudImage;
-    private final CloudHardware cloudHardware;
-    private final CloudLocation cloudLocation;
+    private final Image image;
+    private final Hardware hardware;
+    private final Location location;
 
-    VirtualMachineTemplate(CloudImage cloudImage, CloudHardware cloudHardware, CloudLocation cloudLocation) {
+    VirtualMachineTemplate(Image image, Hardware hardware, Location location) {
 
         // everything needs to be not null.
-        checkNotNull(cloudImage);
-        checkNotNull(cloudHardware);
-        checkNotNull(cloudLocation);
+        checkNotNull(image);
+        checkNotNull(hardware);
+        checkNotNull(location);
 
         // check that all three are located in the same cloud
-        checkArgument(cloudImage.getCloud().equals(cloudHardware.getCloud()));
-        checkArgument(cloudHardware.getCloud().equals(cloudLocation.getCloud()));
+        checkArgument(image.getCloud().equals(hardware.getCloud()));
+        checkArgument(hardware.getCloud().equals(location.getCloud()));
 
         //todo: check if hardware and image are available in the location.
-        this.cloudImage = cloudImage;
-        this.cloudHardware = cloudHardware;
-        this.cloudLocation = cloudLocation;
+        this.image = image;
+        this.hardware = hardware;
+        this.location = location;
     }
 
     public static VirtualMachineTemplateBuilder builder() {
@@ -56,14 +56,14 @@ public class VirtualMachineTemplate {
     }
 
     public String cloudHardware() {
-        return cloudHardware.getUuid();
+        return hardware.getUuid();
     }
 
     public String cloudImage() {
-        return cloudImage.getUuid();
+        return image.getUuid();
     }
 
     public String cloudLocation() {
-        return cloudLocation.getUuid();
+        return location.getUuid();
     }
 }

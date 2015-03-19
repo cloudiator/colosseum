@@ -23,7 +23,8 @@ import de.uniulm.omi.executionware.api.domain.HardwareFlavor;
 /**
  * Created by daniel on 12.03.15.
  */
-public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocation<HardwareFlavor> implements HardwareFlavor {
+public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocation<HardwareFlavor>
+    implements HardwareFlavor {
 
 
     public HardwareInCloudAndLocation(HardwareFlavor resource, String cloud) {
@@ -34,13 +35,11 @@ public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocati
         return (HardwareFlavor) this.resource;
     }
 
-    @Override
-    public int numberOfCores() {
+    @Override public int numberOfCores() {
         return getHardware().numberOfCores();
     }
 
-    @Override
-    public int mbRam() {
+    @Override public int mbRam() {
         return getHardware().mbRam();
     }
 }

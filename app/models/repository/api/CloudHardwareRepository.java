@@ -18,19 +18,14 @@
 
 package models.repository.api;
 
-import com.google.inject.ImplementedBy;
 import models.Cloud;
-import models.CloudHardware;
 import models.Hardware;
+import models.HardwareProperties;
 import models.repository.api.generic.ModelRepository;
-import models.repository.impl.CloudHardwareRepositoryJpa;
 
-/**
- * Created by daniel on 31.10.14.
- */
-@ImplementedBy(CloudHardwareRepositoryJpa.class)
-public interface CloudHardwareRepository extends ModelRepository<CloudHardware> {
+public interface CloudHardwareRepository extends ModelRepository<Hardware> {
 
-    public CloudHardware findByCloudAndHardwareFlavor(Cloud cloud, Hardware hardware);
+    public Hardware findByCloudAndHardwareFlavor(Cloud cloud,
+        HardwareProperties hardwareProperties);
 
 }

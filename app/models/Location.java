@@ -18,45 +18,23 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The model class location.
- * <p>
- * Represents a location of the cloud, e.g. a data center, us-west....
- *
- * @author Daniel Baur
- */
-@Entity
-public class Location extends NamedModel {
+@Entity public class Location extends Model {
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+    private String cloudUuid;
 
-    /**
-     * The cloud locations related to this location (ManyToMany)
-     */
-    @OneToMany(mappedBy = "location")
-    private List<CloudLocation> cloudLocations;
+    @ManyToOne(optional = false) private LocationProperties locationProperties;
 
+    @ManyToOne(optional = false) private Cloud cloud;
 
+    @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    @ManyToOne
-    private Location parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<Location> children;
-
-    @ManyToMany
-    private List<LocationCode> locationCodes;
-
-    @Enumerated(EnumType.STRING)
-    private LocationScope locationScope;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
 
     /**
      * Empty constructor for hibernate.
@@ -65,43 +43,29 @@ public class Location extends NamedModel {
 
     }
 
-    public List<CloudLocation> getCloudLocations() {
-        return cloudLocations;
+    public Location(String cloudUuid, Cloud cloud, LocationProperties locationProperties) {
+        this.cloudUuid = cloudUuid;
+        this.cloud = cloud;
+        this.locationProperties = locationProperties;
     }
 
-    public void setCloudLocations(List<CloudLocation> cloudLocations) {
-        this.cloudLocations = cloudLocations;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public Location getParent() {
-        return parent;
+    public LocationProperties getLocationProperties() {
+        return locationProperties;
     }
 
-    public void setParent(Location parent) {
-        this.parent = parent;
+    public Cloud getCloud() {
+        return cloud;
     }
 
-    public List<Location> getChildren() {
-        return children;
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
     }
 
-    public void setChildren(List<Location> children) {
-        this.children = children;
-    }
-
-    public List<LocationCode> getLocationCodes() {
-        return locationCodes;
-    }
-
-    public void setLocationCodes(List<LocationCode> locationCodes) {
-        this.locationCodes = locationCodes;
-    }
-
-    public LocationScope getLocationScope() {
-        return locationScope;
-    }
-
-    public void setLocationScope(LocationScope locationScope) {
-        this.locationScope = locationScope;
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
     }
 }

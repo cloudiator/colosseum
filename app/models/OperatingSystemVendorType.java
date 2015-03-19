@@ -32,8 +32,7 @@ public enum OperatingSystemVendorType {
         this.text = text;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return text;
     }
 }

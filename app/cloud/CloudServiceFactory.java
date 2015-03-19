@@ -20,12 +20,17 @@ package cloud;
 
 import de.uniulm.omi.executionware.api.service.ComputeService;
 import models.Cloud;
+import models.CloudCredential;
 
 /**
  * Created by daniel on 10.03.15.
  */
 public interface CloudServiceFactory {
 
-    public ComputeService forCloud(Cloud cloud);
+    public ComputeService from(CloudCredential cloudCredential);
+
+    public MultiCloudComputeService from(Cloud cloud);
+
+    public MultiCloudComputeService from();
 
 }

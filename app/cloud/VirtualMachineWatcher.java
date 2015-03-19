@@ -20,7 +20,7 @@ package cloud;
 
 import de.uniulm.omi.executionware.api.service.ComputeService;
 import models.VirtualMachine;
-import models.service.impl.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -30,17 +30,19 @@ import java.util.LinkedList;
  */
 public class VirtualMachineWatcher extends AbstractWatcher<VirtualMachine> {
 
-    public VirtualMachineWatcher(ModelService<VirtualMachine> modelService, ComputeService computeService) {
+    public VirtualMachineWatcher(BaseModelService<VirtualMachine> modelService,
+        ComputeService computeService) {
         super(modelService, computeService);
     }
 
-    @Override
-    protected Collection<Problem<VirtualMachine>> check(ComputeService computeService, ModelService<VirtualMachine> modelService) {
+    @Override protected Collection<Problem<VirtualMachine>> check(ComputeService computeService,
+        BaseModelService<VirtualMachine> modelService) {
         LinkedList<Problem<VirtualMachine>> problems = new LinkedList<>();
 
-        for(VirtualMachine local : modelService.getAll()) {
+        for (VirtualMachine local : modelService.getAll()) {
 
         }
+        return null;
 
 
     }

@@ -20,32 +20,32 @@ package models;
 
 import models.generic.Model;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
-/**
- * Created by daniel on 31.10.14.
- */
-@Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloudApi", "credential", "frontendUser"}))
-public class CloudCredential extends Model {
+//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"frontendGroup_id, cloud_id"}))
+@Entity public class CloudCredential extends Model {
 
-    @Column(updatable = false)
-    @ManyToOne(optional = false)
-    private Cloud cloud;
+    @Column(nullable = false) private String user;
 
-    @Column(updatable = false)
-    @ManyToOne(optional = false)
-    private FrontendGroup frontendGroup;
+    @Column(nullable = false) private String secret;
 
-    @Column(nullable = false)
-    private String user;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    @Column(nullable = false)
-    private String secret;
+    @ManyToOne(optional = false) private FrontendGroup frontendGroup;
+
+    @ManyToMany(mappedBy = "cloudCredentials") private List<Image> images;
+
+    @ManyToMany(mappedBy = "cloudCredentials") private List<Hardware> hardware;
+
+    @ManyToMany(mappedBy = "cloudCredentials") private List<Location> locations;
 
     /**
      * Empty constructor for hibernate.
@@ -68,29 +68,11 @@ public class CloudCredential extends Model {
         this.secret = secret;
     }
 
-    public Cloud getCloud() {
-        return cloud;
-    }
-
-    private void setCloud(Cloud cloud) {
-        this.cloud = cloud;
-    }
-
-    public FrontendGroup getFrontendGroup() {
-        return frontendGroup;
-    }
-
-    private void setFrontendGroup(FrontendGroup frontendGroup) {
-        this.frontendGroup = frontendGroup;
-    }
-
     public String getUser() {
         return user;
     }
 
     public void setUser(String user) {
-        checkNotNull(user);
-        checkArgument(!user.isEmpty());
         this.user = user;
     }
 
@@ -99,8 +81,26 @@ public class CloudCredential extends Model {
     }
 
     public void setSecret(String secret) {
-        checkNotNull(secret);
-        checkArgument(!secret.isEmpty());
         this.secret = secret;
+    }
+
+    public Cloud getCloud() {
+        return cloud;
+    }
+
+    public FrontendGroup getFrontendGroup() {
+        return frontendGroup;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public List<Hardware> getHardware() {
+        return hardware;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
     }
 }

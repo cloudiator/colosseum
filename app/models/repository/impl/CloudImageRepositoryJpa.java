@@ -18,33 +18,40 @@
 
 package models.repository.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import models.Cloud;
-import models.CloudImage;
 import models.Image;
+import models.ImageProperties;
 import models.repository.api.CloudImageRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
 
-import static models.util.JpaResultHelper.*;
+import static models.util.JpaResultHelper.getSingleResultOrNull;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public class CloudImageRepositoryJpa extends ModelRepositoryJpa<CloudImage> implements CloudImageRepository {
+public class CloudImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
+    implements CloudImageRepository {
+
+    @Inject
+    public CloudImageRepositoryJpa(TypeLiteral<Image> type) {
+        super(type);
+    }
 
     /**
      * Searches the concrete image on the given cloud and the image
      *
-     * @param cloud the cloud
-     * @param image the image
+     * @param cloud           the cloud
+     * @param imageProperties the image
      * @return the unique cloud image if any, otherwise null.
      */
-    @Override
-    public CloudImage findByCloudAndImage(final Cloud cloud, final Image image) {
+    @Override public Image findByCloudAndImage(final Cloud cloud,
+        final ImageProperties imageProperties) {
 
-        return (CloudImage) getSingleResultOrNull(em()
-                .createQuery("from Image i where cloud = :cloud and image = :image")
-                .setParameter("cloud", cloud)
-                .setParameter("image", image));
+        return (Image) getSingleResultOrNull(
+            em().createQuery("from Image i where cloud = :cloud and image = :image")
+                .setParameter("cloud", cloud).setParameter("image", imageProperties));
 
     }
 }

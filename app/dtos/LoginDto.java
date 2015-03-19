@@ -28,11 +28,6 @@ import play.Logger;
  */
 public class LoginDto {
 
-    public static class References {
-        @Inject
-        public static Provider<FrontendUserService> frontendUserService;
-    }
-
     protected String email;
     protected String password;
     protected Boolean rememberMe;
@@ -71,5 +66,10 @@ public class LoginDto {
             return "Invalid user or password";
         }
         return null;
+    }
+
+
+    public static class References {
+        @Inject public static Provider<FrontendUserService> frontendUserService;
     }
 }

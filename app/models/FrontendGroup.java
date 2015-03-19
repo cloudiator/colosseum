@@ -21,6 +21,7 @@ package models;
 import models.generic.NamedModel;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
@@ -28,11 +29,22 @@ import java.util.List;
 /**
  * Created by daniel on 12.03.15.
  */
-public class FrontendGroup extends NamedModel {
+@Entity public class FrontendGroup extends NamedModel {
 
-    @ManyToMany(mappedBy = "frontendGroups")
-    private List<FrontendUser> frontendUsers;
+    @ManyToMany private List<FrontendUser> frontendUsers;
 
     @OneToMany(mappedBy = "frontendGroup", cascade = CascadeType.REMOVE)
     private List<CloudCredential> cloudCredentials;
+
+    public List<FrontendUser> getFrontendUsers() {
+        return frontendUsers;
+    }
+
+    public void setFrontendUsers(List<FrontendUser> frontendUsers) {
+        this.frontendUsers = frontendUsers;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
 }

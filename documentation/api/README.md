@@ -19,6 +19,7 @@ Entity                                 | URL
 [Hardware](entities/Hardware.md)                             | /api/hardware
 [Image](entities/Image.md)                                   | /api/image
 [Instance](entities/Instance.md)                             | /api/instance
+[IpAddress](entities/IpAddress.md)                           | /api/ip
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [UserCredential](entities/UserCredential.md)                 | /api/userCredential
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine

@@ -18,18 +18,17 @@
 
 package models.service.api;
 
-import com.google.inject.ImplementedBy;
-import models.*;
-import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.CloudImageServiceImpl;
+import models.Cloud;
+import models.Image;
+import models.ImageProperties;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
-@ImplementedBy(CloudImageServiceImpl.class)
-public interface CloudImageService extends ModelServiceInterface<CloudImage>{
+public interface CloudImageService extends ModelService<Image> {
 
-    public CloudImage getByCloudAndImage(Cloud cloud, Image image);
+    public Image getByCloudAndImage(Cloud cloud, ImageProperties imageProperties);
 
 
 }

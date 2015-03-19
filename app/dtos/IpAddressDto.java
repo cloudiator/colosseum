@@ -22,7 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.IpType;
-import models.service.api.VirtualMachineService;
+import models.VirtualMachine;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -33,10 +34,9 @@ import java.util.List;
  */
 public class IpAddressDto extends ValidatableDto {
 
-    public static class References {
-        @Inject
-        public static Provider<VirtualMachineService> virtualMachineService;
-    }
+    private String ip;
+    private String ipType;
+    private Long virtualMachine;
 
     public IpAddressDto() {
         super();
@@ -47,10 +47,6 @@ public class IpAddressDto extends ValidatableDto {
         this.ipType = ipType;
         this.virtualMachine = virtualMachine;
     }
-
-    private String ip;
-    private String ipType;
-    private Long virtualMachine;
 
     public String getIp() {
         return ip;
@@ -76,15 +72,16 @@ public class IpAddressDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         if (virtualMachine == null) {
-            errors.add(new ValidationError("virtualMachine", "The virtual machine id is mandatory."));
+            errors
+                .add(new ValidationError("virtualMachine", "The virtual machine id is mandatory."));
         } else {
             if (References.virtualMachineService.get().getById(virtualMachine) == null) {
-                errors.add(new ValidationError("virtualMachine", "The virtual machine id is illegal."));
+                errors.add(
+                    new ValidationError("virtualMachine", "The virtual machine id is illegal."));
             }
         }
 
@@ -107,5 +104,10 @@ public class IpAddressDto extends ValidatableDto {
         }
 
         return errors;
+    }
+
+
+    public static class References {
+        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
     }
 }

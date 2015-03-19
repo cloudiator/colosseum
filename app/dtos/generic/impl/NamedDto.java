@@ -30,14 +30,6 @@ public abstract class NamedDto extends ValidatableDto {
 
     private String name;
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
     /**
      * Default constructor, need for Play Forms API.
      */
@@ -55,8 +47,15 @@ public abstract class NamedDto extends ValidatableDto {
         this.name = name;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
         if (name == null || name.length() == 0) {
             errors.add(new ValidationError("name", "No name was given."));

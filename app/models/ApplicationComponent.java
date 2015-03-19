@@ -30,22 +30,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity
-public class ApplicationComponent extends Model {
+@Entity public class ApplicationComponent extends Model {
 
-    @ManyToOne(optional = false)
-    private Application application;
+    @ManyToOne(optional = false) private Application application;
 
-    @ManyToOne(optional = false)
-    private Component component;
+    @ManyToOne(optional = false) private Component component;
 
-    @OneToMany(mappedBy = "provider")
-    private List<Communication> providedCommunications;
-    @OneToMany(mappedBy = "consumer")
-    private List<Communication> consumedCommunications;
+    @OneToMany(mappedBy = "provider") private List<Communication> providedCommunications;
+    @OneToMany(mappedBy = "consumer") private List<Communication> consumedCommunications;
 
-    @ManyToOne(optional = false)
-    private VirtualMachineTemplate virtualMachineTemplate;
+    @ManyToOne(optional = false) private VirtualMachineTemplate virtualMachineTemplate;
 
     /**
      * Empty constructor for hibernate.

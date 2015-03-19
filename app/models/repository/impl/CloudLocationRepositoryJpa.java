@@ -18,12 +18,20 @@
 
 package models.repository.impl;
 
-import models.CloudLocation;
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
+import models.Location;
 import models.repository.api.CloudLocationRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class CloudLocationRepositoryJpa extends ModelRepositoryJpa<CloudLocation> implements CloudLocationRepository {
+public class CloudLocationRepositoryJpa extends BaseModelRepositoryJpa<Location>
+    implements CloudLocationRepository {
+
+    @Inject
+    public CloudLocationRepositoryJpa(TypeLiteral<Location> type) {
+        super(type);
+    }
 }

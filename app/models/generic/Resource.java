@@ -25,11 +25,10 @@ import java.util.UUID;
 /**
  * Created by daniel on 08.01.15.
  */
-@MappedSuperclass
-public abstract class Resource {
+@MappedSuperclass public abstract class Resource {
 
-    @Column(unique = true, nullable = false, updatable = false)
-    private final String uuid = UUID.randomUUID().toString();
+    @Column(unique = true, nullable = false, updatable = false) private final String uuid =
+        UUID.randomUUID().toString();
 
     /**
      * Empty constructor for hibernate.
@@ -41,8 +40,7 @@ public abstract class Resource {
         return uuid;
     }
 
-    @Override
-    public boolean equals(Object o) {
+    @Override public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -57,13 +55,11 @@ public abstract class Resource {
 
     }
 
-    @Override
-    public int hashCode() {
+    @Override public int hashCode() {
         return this.getUuid().hashCode();
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return String.format("Resource{uuid='%s'}", uuid);
     }
 }

@@ -23,8 +23,7 @@ package cloud;
  */
 public class ExecWareModule extends AbstractCloudServiceModule {
 
-    @Override
-    protected CloudServiceFactory getCloudServiceFactory() {
+    @Override protected CloudServiceFactory getCloudServiceFactory() {
         return new ExecWareFactory();
     }
 }

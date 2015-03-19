@@ -27,19 +27,17 @@ import java.util.List;
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity
-public class Application extends NamedModel {
+@Entity public class Application extends NamedModel {
 
-    @OneToMany(mappedBy = "application")
-    private List<ApplicationComponent> applicationComponents;
+    @OneToMany(mappedBy = "application") private List<ApplicationComponent> applicationComponents;
 
     /**
      * Empty constructor for hibernate.
      */
-    private Application(){
+    private Application() {
     }
 
-    public Application(String name){
+    public Application(String name) {
         super(name);
     }
 

@@ -23,11 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Application;
 import models.Component;
-import models.VirtualMachine;
 import models.VirtualMachineTemplate;
-import models.service.api.ApplicationService;
-import models.service.api.ComponentService;
-import models.service.api.VirtualMachineTemplateService;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -38,23 +35,19 @@ import java.util.List;
  */
 public class ApplicationComponentDto extends ValidatableDto {
 
-    public static class References{
+    protected Long application;
+    protected Long component;
+    protected Long virtualMachineTemplate;
 
-        @Inject
-        public static Provider<ApplicationService> applicationService;
-
-        @Inject
-        public static Provider<ComponentService> componentService;
-
-        @Inject
-        public static Provider<VirtualMachineTemplateService> virtualMachineTemplateService;
+    public ApplicationComponentDto() {
+        super();
     }
 
-    protected Long application;
-
-    protected Long component;
-
-    protected Long virtualMachineTemplate;
+    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate) {
+        this.application = application;
+        this.component = component;
+        this.virtualMachineTemplate = virtualMachineTemplate;
+    }
 
     public Long getApplication() {
         return application;
@@ -80,18 +73,7 @@ public class ApplicationComponentDto extends ValidatableDto {
         this.virtualMachineTemplate = virtualMachineTemplate;
     }
 
-    public ApplicationComponentDto(){
-        super();
-    }
-
-    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate){
-        this.application = application;
-        this.component = component;
-        this.virtualMachineTemplate = virtualMachineTemplate;
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate application reference
@@ -119,14 +101,28 @@ public class ApplicationComponentDto extends ValidatableDto {
         //validate the virtual machine Template
         VirtualMachineTemplate virtualMachineTemplate;
         if (this.virtualMachineTemplate == null) {
-            errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
+            errors.add(new ValidationError("virtualMachineTemplate",
+                "The virtual machine template is required."));
         } else {
-            virtualMachineTemplate = References.virtualMachineTemplateService.get().getById(this.virtualMachineTemplate);
-            if(virtualMachineTemplate == null) {
-                errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
+            virtualMachineTemplate =
+                References.virtualMachineTemplateService.get().getById(this.virtualMachineTemplate);
+            if (virtualMachineTemplate == null) {
+                errors.add(new ValidationError("virtualMachineTemplate",
+                    "The virtual machine template is required."));
             }
         }
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Application>> applicationService;
+
+        @Inject public static Provider<BaseModelService<Component>> componentService;
+
+        @Inject public static Provider<BaseModelService<VirtualMachineTemplate>>
+            virtualMachineTemplateService;
     }
 }

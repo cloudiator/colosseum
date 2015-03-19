@@ -29,8 +29,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * <p>
  * Provides setters and getters for the name property.
  */
-@MappedSuperclass
-public abstract class NamedModel extends Model {
+@MappedSuperclass public abstract class NamedModel extends Model {
+
+    @Column(unique = true, nullable = false) protected String name;
 
     /**
      * Empty constructor for hibernate.
@@ -49,11 +50,7 @@ public abstract class NamedModel extends Model {
         this.name = name;
     }
 
-    @Column(unique = true, nullable = false)
-    protected String name;
-
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return name;
     }
 

@@ -30,22 +30,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity
-public class CloudApi extends Model {
+@Entity public class CloudApi extends Model {
+
+    @ManyToOne(optional = false) private Api api;
+    @OneToOne(optional = false) private Cloud cloud;
+    private String endpoint;
 
     /**
      * Empty constructor for hibernate.
      */
     private CloudApi() {
     }
-
-    @ManyToOne(optional = false)
-    private Api api;
-
-    @OneToOne(optional = false)
-    private Cloud cloud;
-
-    private String endpoint;
 
     public Api getApi() {
         return api;

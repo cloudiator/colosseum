@@ -37,7 +37,8 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
         super();
     }
 
-    public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation, long cloudHardware) {
+    public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation,
+        long cloudHardware) {
         this.cloud = cloud;
         this.cloudImage = cloudImage;
         this.cloudLocation = cloudLocation;
@@ -76,8 +77,7 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
         this.cloudHardware = cloudHardware;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         return super.validateNotNull();
     }
 }

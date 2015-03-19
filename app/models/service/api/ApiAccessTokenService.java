@@ -18,17 +18,14 @@
 
 package models.service.api;
 
-import com.google.inject.ImplementedBy;
 import models.ApiAccessToken;
 import models.FrontendUser;
-import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.ApiAccessTokenServiceImpl;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 19.12.14.
  */
-@ImplementedBy(ApiAccessTokenServiceImpl.class)
-public interface ApiAccessTokenService extends ModelServiceInterface<ApiAccessToken> {
+public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
 
     public boolean isValid(String token, FrontendUser frontendUser);
 }

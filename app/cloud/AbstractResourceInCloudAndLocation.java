@@ -24,7 +24,8 @@ import de.uniulm.omi.executionware.core.util.IdScopeByLocations;
 /**
  * Created by daniel on 12.03.15.
  */
-public class AbstractResourceInCloudAndLocation<T extends Resource> extends AbstractResourceInCloud<T> implements ResourceInCloudAndLocation {
+public class AbstractResourceInCloudAndLocation<T extends Resource>
+    extends AbstractResourceInCloud<T> implements ResourceInCloudAndLocation {
 
     private final String location;
 
@@ -33,8 +34,7 @@ public class AbstractResourceInCloudAndLocation<T extends Resource> extends Abst
         this.location = IdScopeByLocations.from(id()).getLocationId();
     }
 
-    @Override
-    public String location() {
+    @Override public String location() {
         return location;
     }
 }

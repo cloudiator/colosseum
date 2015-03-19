@@ -29,15 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 08.12.14.
  */
-public abstract class ValidatableDto extends DtoImpl implements dtos.generic.api.ValidatableDto {
+public abstract class ValidatableDto extends AbstractDto implements dtos.generic.api.ValidatableDto {
 
     public ValidatableDto() {
         super();
     }
 
-    @Nullable
-    @Override
-    public List<ValidationError> validate() {
+    @Nullable @Override public List<ValidationError> validate() {
         List<ValidationError> validationErrors = this.validateNotNull();
         checkNotNull(validationErrors);
         if (validationErrors.isEmpty()) {

@@ -21,19 +21,28 @@ package cloud;
 import de.uniulm.omi.executionware.api.service.ComputeService;
 import de.uniulm.omi.executionware.service.ServiceBuilder;
 import models.Cloud;
+import models.CloudCredential;
 
 /**
  * Created by daniel on 10.03.15.
  */
 public class ExecWareFactory implements CloudServiceFactory {
 
-    @Override
-    public ComputeService forCloud(Cloud cloud) {
-        return ServiceBuilder
-                .newServiceBuilder("cloudProviderName")
-                .endpoint("endpoint")
-                .credentials("username", "password")
-                .nodeGroup("nodeGroupName")
-                .build();
+    private ComputeService createComputeService(String providerName, String endpoint,
+        String username, String password, String nodeGroupName) {
+        return ServiceBuilder.newServiceBuilder("cloudProviderName").endpoint("endpoint")
+            .credentials("username", "password").nodeGroup("nodeGroupName").build();
+    }
+
+    @Override public ComputeService from(CloudCredential cloudCredential) {
+        return null;
+    }
+
+    @Override public MultiCloudComputeService from(Cloud cloud) {
+        return null;
+    }
+
+    @Override public MultiCloudComputeService from() {
+        return null;
     }
 }

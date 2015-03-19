@@ -34,43 +34,28 @@ import javax.annotation.Nullable;
  */
 public interface MultiCloudComputeService extends ComputeService {
 
-    @Nullable
-    @Override
-    ImageInCloudAndLocation getImage(String s);
+    @Nullable @Override ImageInCloudAndLocation getImage(String s);
 
-    @Nullable
-    @Override
-    VirtualMachineInCloudAndLocation getVirtualMachine(String s);
+    @Nullable @Override VirtualMachineInCloudAndLocation getVirtualMachine(String s);
 
-    @Nullable
-    @Override
-    LocationInCloud getLocation(String s);
+    @Nullable @Override LocationInCloud getLocation(String s);
 
-    @Nullable
-    @Override
-    HardwareInCloudAndLocation getHardwareFlavor(String s);
+    @Nullable @Override HardwareInCloudAndLocation getHardwareFlavor(String s);
 
-    @Override
-    Iterable<HardwareFlavor> listHardwareFlavors();
+    @Override Iterable<HardwareFlavor> listHardwareFlavors();
 
-    @Override
-    Iterable<Image> listImages();
+    @Override Iterable<Image> listImages();
 
-    @Override
-    Iterable<Location> listLocations();
+    @Override Iterable<Location> listLocations();
 
-    @Override
-    Iterable<VirtualMachine> listVirtualMachines();
+    @Override Iterable<VirtualMachine> listVirtualMachines();
 
-    @Override
-    void deleteVirtualMachine(String s);
+    @Override void deleteVirtualMachine(String s);
 
-    @Override
-    VirtualMachineInCloudAndLocation createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate);
+    @Override VirtualMachineInCloudAndLocation createVirtualMachine(
+        VirtualMachineTemplate virtualMachineTemplate);
 
-    @Override
-    SshConnection getSshConnection(HostAndPort hostAndPort);
+    @Override SshConnection getSshConnection(HostAndPort hostAndPort);
 
-    @Override
-    Optional<PublicIpService> getPublicIpService();
+    @Override Optional<PublicIpService> getPublicIpService();
 }

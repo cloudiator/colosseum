@@ -23,8 +23,7 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Api;
 import models.Cloud;
-import models.service.api.ApiService;
-import models.service.api.CloudService;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -36,26 +35,15 @@ import java.util.List;
 public class CloudApiDto extends ValidatableDto {
 
 
-    public static class References{
-
-        @Inject
-        public static Provider<ApiService> apiService;
-
-        @Inject
-        public static Provider<CloudService> cloudService;
-    }
-
     protected Long api;
-
     protected Long cloud;
-
     protected String endpoint;
 
-    public CloudApiDto(){
+    public CloudApiDto() {
 
     }
 
-    public CloudApiDto(Long api, Long cloud, String endpoint){
+    public CloudApiDto(Long api, Long cloud, String endpoint) {
 
         this.api = api;
         this.cloud = cloud;
@@ -86,8 +74,7 @@ public class CloudApiDto extends ValidatableDto {
         this.endpoint = endpoint;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate api reference
@@ -114,5 +101,13 @@ public class CloudApiDto extends ValidatableDto {
 
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Api>> apiService;
+
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
     }
 }

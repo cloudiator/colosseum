@@ -38,6 +38,10 @@ public class CommunicationDto extends ValidatableDto {
         this.port = port;
     }
 
+    public CommunicationDto() {
+        super();
+    }
+
     public Long getProvider() {
         return provider;
     }
@@ -62,12 +66,7 @@ public class CommunicationDto extends ValidatableDto {
         this.port = port;
     }
 
-    public CommunicationDto() {
-        super();
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         return super.validateNotNull();
     }
 }

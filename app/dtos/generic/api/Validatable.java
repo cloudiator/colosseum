@@ -35,7 +35,6 @@ public interface Validatable {
      *
      * @return null if no errors are present, otherwise a list of validation errors.
      */
-    @Nullable
-    public List<ValidationError> validate();
+    @Nullable public List<ValidationError> validate();
 
 }

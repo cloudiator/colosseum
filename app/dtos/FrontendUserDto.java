@@ -65,8 +65,7 @@ public class FrontendUserDto extends ValidatableDto {
         this.mail = mail;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         if (this.firstName.isEmpty()) {

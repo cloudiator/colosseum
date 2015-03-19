@@ -28,12 +28,12 @@ import javax.annotation.Nullable;
 public class VirtualMachineTemplateBuilder {
 
     private Cloud cloud;
-    private Hardware hardware;
+    private HardwareProperties hardwareProperties;
+    private LocationProperties locationProperties;
+    private ImageProperties imageProperties;
     private Location location;
     private Image image;
-    private CloudLocation cloudLocation;
-    private CloudImage cloudImage;
-    private CloudHardware cloudHardware;
+    private Hardware hardware;
 
     VirtualMachineTemplateBuilder() {
     }
@@ -43,51 +43,51 @@ public class VirtualMachineTemplateBuilder {
         return this;
     }
 
-    public VirtualMachineTemplateBuilder hardware(Hardware hardware) {
-        this.hardware = hardware;
+    public VirtualMachineTemplateBuilder hardware(HardwareProperties hardwareProperties) {
+        this.hardwareProperties = hardwareProperties;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder location(Location location) {
+    public VirtualMachineTemplateBuilder location(LocationProperties locationProperties) {
+        this.locationProperties = locationProperties;
+        return this;
+    }
+
+    public VirtualMachineTemplateBuilder image(ImageProperties imageProperties) {
+        this.imageProperties = imageProperties;
+        return this;
+    }
+
+    public VirtualMachineTemplateBuilder cloudLocation(Location location) {
         this.location = location;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder image(Image image) {
+    public VirtualMachineTemplateBuilder cloudHardware(Hardware hardware) {
+        this.hardware = hardware;
+        return this;
+    }
+
+    public VirtualMachineTemplateBuilder cloudImage(Image image) {
         this.image = image;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder cloudLocation(CloudLocation cloudLocation) {
-        this.cloudLocation = cloudLocation;
+    public VirtualMachineTemplateBuilder virtualMachineTemplateModel(
+        models.VirtualMachineTemplate virtualMachineTemplateModel) {
+        this.image = virtualMachineTemplateModel.getImage();
+        this.location = virtualMachineTemplateModel.getLocation();
+        this.hardware = virtualMachineTemplateModel.getHardware();
         return this;
     }
 
-    public VirtualMachineTemplateBuilder cloudHardware(CloudHardware cloudHardware) {
-        this.cloudHardware = cloudHardware;
-        return this;
-    }
-
-    public VirtualMachineTemplateBuilder cloudImage(CloudImage cloudImage) {
-        this.cloudImage = cloudImage;
-        return this;
-    }
-
-    public VirtualMachineTemplateBuilder virtualMachineTemplateModel(models.VirtualMachineTemplate virtualMachineTemplateModel) {
-        this.cloudImage = virtualMachineTemplateModel.getCloudImage();
-        this.cloudLocation = virtualMachineTemplateModel.getCloudLocation();
-        this.cloudHardware = virtualMachineTemplateModel.getCloudHardware();
-        return this;
-    }
-
-    @Nullable
-    protected CloudHardware getCloudHardware() {
-        if (cloudHardware != null) {
-            return cloudHardware;
+    @Nullable protected Hardware getHardware() {
+        if (hardware != null) {
+            return hardware;
         }
-        if (cloud != null && hardware != null) {
-            for (CloudHardware searchHardware : cloud.getCloudHardware()) {
-                if (searchHardware.getHardware().equals(hardware)) {
+        if (cloud != null && hardwareProperties != null) {
+            for (Hardware searchHardware : cloud.getHardware()) {
+                if (searchHardware.getHardwareProperties().equals(hardwareProperties)) {
                     return searchHardware;
                 }
             }
@@ -95,14 +95,13 @@ public class VirtualMachineTemplateBuilder {
         return null;
     }
 
-    @Nullable
-    protected CloudImage getCloudImage() {
-        if (cloudImage != null) {
-            return cloudImage;
+    @Nullable protected Image getImage() {
+        if (image != null) {
+            return image;
         }
-        if (cloud != null && image != null) {
-            for (CloudImage searchImage : cloud.getCloudImages()) {
-                if (searchImage.getImage().equals(image)) {
+        if (cloud != null && imageProperties != null) {
+            for (Image searchImage : cloud.getImages()) {
+                if (searchImage.getImageProperties().equals(imageProperties)) {
                     return searchImage;
                 }
             }
@@ -111,14 +110,13 @@ public class VirtualMachineTemplateBuilder {
         return null;
     }
 
-    @Nullable
-    protected CloudLocation getCloudLocation() {
-        if (cloudLocation != null) {
-            return cloudLocation;
+    @Nullable protected Location getLocation() {
+        if (location != null) {
+            return location;
         }
-        if (cloud != null && location != null) {
-            for (CloudLocation searchLocation : cloud.getCloudLocations()) {
-                if (searchLocation.getLocation().equals(location)) {
+        if (cloud != null && locationProperties != null) {
+            for (Location searchLocation : cloud.getLocations()) {
+                if (searchLocation.getLocationProperties().equals(locationProperties)) {
                     return searchLocation;
                 }
             }
@@ -127,7 +125,7 @@ public class VirtualMachineTemplateBuilder {
     }
 
     public VirtualMachineTemplate build() {
-        return new VirtualMachineTemplate(getCloudImage(), getCloudHardware(), getCloudLocation());
+        return new VirtualMachineTemplate(getImage(), getHardware(), getLocation());
     }
 
 

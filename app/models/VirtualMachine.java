@@ -32,8 +32,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity
-public class VirtualMachine extends NamedModel {
+@Entity public class VirtualMachine extends NamedModel {
+
+    @ManyToOne(optional = true) private Cloud cloud;
+    @Nullable @ManyToOne(optional = true) private Image image;
+    @Nullable @ManyToOne(optional = true) private Hardware hardware;
+    @Nullable @ManyToOne(optional = true) private Location location;
+    @OneToMany(mappedBy = "virtualMachine") private List<IpAddress> ipAddresses;
+    @Nullable @OneToOne(mappedBy = "virtualMachine", optional = true) private CloudVirtualMachine
+        cloudVirtualMachine;
 
     /**
      * Empty constructor for hibernate.
@@ -41,36 +48,15 @@ public class VirtualMachine extends NamedModel {
     private VirtualMachine() {
     }
 
-    public VirtualMachine(String name, Cloud cloud, CloudImage cloudImage, CloudHardware cloudHardware, CloudLocation cloudLocation, CloudVirtualMachine cloudVirtualMachine) {
+    public VirtualMachine(String name, Cloud cloud, Image image, Hardware hardware,
+        Location location, CloudVirtualMachine cloudVirtualMachine) {
         super(name);
         this.cloud = cloud;
-        this.cloudImage = cloudImage;
-        this.cloudHardware = cloudHardware;
-        this.cloudLocation = cloudLocation;
+        this.image = image;
+        this.hardware = hardware;
+        this.location = location;
         this.cloudVirtualMachine = cloudVirtualMachine;
     }
-
-    @ManyToOne(optional = true)
-    private Cloud cloud;
-
-    @Nullable
-    @ManyToOne(optional = true)
-    private CloudImage cloudImage;
-
-    @Nullable
-    @ManyToOne(optional = true)
-    private CloudHardware cloudHardware;
-
-    @Nullable
-    @ManyToOne(optional = true)
-    private CloudLocation cloudLocation;
-
-    @OneToMany(mappedBy = "virtualMachine")
-    private List<IpAddress> ipAddresses;
-
-    @Nullable
-    @OneToOne(mappedBy = "virtualMachine", optional = true)
-    private CloudVirtualMachine cloudVirtualMachine;
 
     public Cloud getCloud() {
         return cloud;
@@ -81,31 +67,28 @@ public class VirtualMachine extends NamedModel {
         this.cloud = cloud;
     }
 
-    @Nullable
-    public CloudImage getCloudImage() {
-        return cloudImage;
+    @Nullable public Image getImage() {
+        return image;
     }
 
-    public void setCloudImage(@Nullable CloudImage cloudImage) {
-        this.cloudImage = cloudImage;
+    public void setImage(@Nullable Image image) {
+        this.image = image;
     }
 
-    @Nullable
-    public CloudHardware getCloudHardware() {
-        return cloudHardware;
+    @Nullable public Hardware getHardware() {
+        return hardware;
     }
 
-    public void setCloudHardware(@Nullable CloudHardware cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public void setHardware(@Nullable Hardware hardware) {
+        this.hardware = hardware;
     }
 
-    @Nullable
-    public CloudLocation getCloudLocation() {
-        return cloudLocation;
+    @Nullable public Location getLocation() {
+        return location;
     }
 
-    public void setCloudLocation(@Nullable CloudLocation cloudLocation) {
-        this.cloudLocation = cloudLocation;
+    public void setLocation(@Nullable Location location) {
+        this.location = location;
     }
 
     public List<IpAddress> getIpAddresses() {
@@ -116,8 +99,7 @@ public class VirtualMachine extends NamedModel {
         this.ipAddresses = ipAddresses;
     }
 
-    @Nullable
-    public CloudVirtualMachine getCloudVirtualMachine() {
+    @Nullable public CloudVirtualMachine getCloudVirtualMachine() {
         return cloudVirtualMachine;
     }
 

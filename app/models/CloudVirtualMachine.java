@@ -19,6 +19,7 @@ package models;/*
 import models.generic.Model;
 
 import javax.persistence.Column;
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -28,16 +29,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 10.03.15.
  */
-public class CloudVirtualMachine extends Model {
+@Entity public class CloudVirtualMachine extends Model {
 
-    @ManyToOne(optional = false)
-    private Cloud cloud;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    @OneToOne(optional = false)
-    private VirtualMachine virtualMachine;
+    @OneToOne(optional = false) private VirtualMachine virtualMachine;
 
-    @Column(updatable = false, nullable = false)
-    private String cloudUuid;
+    @Column(updatable = false, nullable = false) private String cloudUuid;
 
     /**
      * Empty constructor for hibernate.

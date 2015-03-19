@@ -23,8 +23,7 @@ import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.ApplicationComponent;
 import models.VirtualMachine;
-import models.service.api.ApplicationComponentService;
-import models.service.api.VirtualMachineService;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -35,24 +34,14 @@ import java.util.List;
  */
 public class InstanceDto extends ValidatableDto {
 
-    public static class References{
-
-        @Inject
-        public static Provider<ApplicationComponentService> applicationComponentService;
-
-        @Inject
-        public static Provider<VirtualMachineService> virtualMachineService;
-    }
-
     protected Long applicationComponent;
-
     protected Long virtualMachine;
 
-    protected InstanceDto(){
+    protected InstanceDto() {
         super();
     }
 
-    public InstanceDto(Long applicationComponent, Long virtualMachine){
+    public InstanceDto(Long applicationComponent, Long virtualMachine) {
         this.applicationComponent = applicationComponent;
         this.virtualMachine = virtualMachine;
     }
@@ -73,18 +62,20 @@ public class InstanceDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate applicationComponent reference
         ApplicationComponent applicationComponent = null;
         if (this.applicationComponent == null) {
-            errors.add(new ValidationError("applicationComponent", "The applicationComponent is required."));
+            errors.add(new ValidationError("applicationComponent",
+                "The applicationComponent is required."));
         } else {
-            applicationComponent = References.applicationComponentService.get().getById(this.applicationComponent);
+            applicationComponent =
+                References.applicationComponentService.get().getById(this.applicationComponent);
             if (applicationComponent == null) {
-                errors.add(new ValidationError("applicationComponent", "The given applicationComponent is invalid."));
+                errors.add(new ValidationError("applicationComponent",
+                    "The given applicationComponent is invalid."));
             }
         }
 
@@ -95,10 +86,20 @@ public class InstanceDto extends ValidatableDto {
         } else {
             virtualMachine = References.virtualMachineService.get().getById(this.virtualMachine);
             if (virtualMachine == null) {
-                errors.add(new ValidationError("virtualMachine", "The given virtualMachine is invalid."));
+                errors.add(
+                    new ValidationError("virtualMachine", "The given virtualMachine is invalid."));
             }
         }
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<ApplicationComponent>>
+            applicationComponentService;
+
+        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
     }
 }

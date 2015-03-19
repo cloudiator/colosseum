@@ -5,7 +5,7 @@
 var executionwareControllers = angular.module('executionwareControllers', []);
 
 executionwareControllers.controller('CloudListCtrl', ['$scope', 'Cloud',
-    function($scope, Cloud) {
+    function ($scope, Cloud) {
 
         $scope.newCloud = function () {
             Cloud.save($scope.cloud)

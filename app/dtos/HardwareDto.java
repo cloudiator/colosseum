@@ -64,8 +64,7 @@ public class HardwareDto extends ValidatableDto {
         this.localDiskSpace = localDiskSpace;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         if (this.numberOfCpu <= 0) {

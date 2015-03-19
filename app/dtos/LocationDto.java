@@ -30,6 +30,17 @@ public class LocationDto extends NamedDto {
 
     protected String locationScope;
 
+    public LocationDto() {
+        super();
+    }
+
+    public LocationDto(String name, List<Long> locationCodes, Long parent, String locationScope) {
+        super(name);
+        this.locationCodes = locationCodes;
+        this.parent = parent;
+        this.locationScope = locationScope;
+    }
+
     public List<Long> getLocationCodes() {
         return locationCodes;
     }
@@ -51,17 +62,6 @@ public class LocationDto extends NamedDto {
     }
 
     public void setLocationScope(String locationScope) {
-        this.locationScope = locationScope;
-    }
-
-    public LocationDto() {
-        super();
-    }
-
-    public LocationDto(String name, List<Long> locationCodes, Long parent, String locationScope) {
-        super(name);
-        this.locationCodes = locationCodes;
-        this.parent = parent;
         this.locationScope = locationScope;
     }
 }

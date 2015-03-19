@@ -27,7 +27,9 @@ import java.util.Set;
 /**
  * Created by daniel on 12.03.15.
  */
-public class VirtualMachineInCloudAndLocation extends AbstractResourceInCloudAndLocation<de.uniulm.omi.executionware.api.domain.VirtualMachine> implements VirtualMachine {
+public class VirtualMachineInCloudAndLocation extends
+    AbstractResourceInCloudAndLocation<de.uniulm.omi.executionware.api.domain.VirtualMachine>
+    implements VirtualMachine {
 
 
     public VirtualMachineInCloudAndLocation(VirtualMachine resource, String cloud) {
@@ -38,18 +40,15 @@ public class VirtualMachineInCloudAndLocation extends AbstractResourceInCloudAnd
         return (VirtualMachine) this.resource;
     }
 
-    @Override
-    public Set<String> publicAddresses() {
+    @Override public Set<String> publicAddresses() {
         return getVirtualMachine().publicAddresses();
     }
 
-    @Override
-    public Set<String> privateAddresses() {
+    @Override public Set<String> privateAddresses() {
         return getVirtualMachine().privateAddresses();
     }
 
-    @Override
-    public Optional<LoginCredential> loginCredential() {
+    @Override public Optional<LoginCredential> loginCredential() {
         return getVirtualMachine().loginCredential();
     }
 }

@@ -29,19 +29,16 @@ import java.util.List;
 /**
  * Created by daniel on 04.11.14.
  */
-@Entity
-public class OperatingSystemVendor extends NamedModel {
+@Entity public class OperatingSystemVendor extends NamedModel {
 
     /**
      * Serial version uid.
      */
     private static final long serialVersionUID = 1L;
 
-    @OneToMany(mappedBy = "operatingSystemVendor")
-    private List<OperatingSystem> operatingSystems;
+    @OneToMany(mappedBy = "operatingSystemVendor") private List<OperatingSystem> operatingSystems;
 
-    @Enumerated(EnumType.STRING)
-    private OperatingSystemVendorType operatingSystemVendorType;
+    @Enumerated(EnumType.STRING) private OperatingSystemVendorType operatingSystemVendorType;
 
     /**
      * Empty constructor for hibernate.

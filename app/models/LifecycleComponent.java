@@ -24,17 +24,12 @@ import javax.persistence.Entity;
 /**
  * Created by daniel on 15.12.14.
  */
-@Entity
-public class LifecycleComponent extends Component {
+@Entity public class LifecycleComponent extends Component {
 
-    @Nullable
-    private String download;
-    @Nullable
-    private String install;
-    @Nullable
-    private String start;
-    @Nullable
-    private String stop;
+    @Nullable private String download;
+    @Nullable private String install;
+    @Nullable private String start;
+    @Nullable private String stop;
 
     /**
      * Empty constructor for hibernate.
@@ -42,8 +37,7 @@ public class LifecycleComponent extends Component {
     private LifecycleComponent() {
     }
 
-    @Nullable
-    public String getDownload() {
+    @Nullable public String getDownload() {
         return download;
     }
 
@@ -51,8 +45,7 @@ public class LifecycleComponent extends Component {
         this.download = download;
     }
 
-    @Nullable
-    public String getInstall() {
+    @Nullable public String getInstall() {
         return install;
     }
 
@@ -60,8 +53,7 @@ public class LifecycleComponent extends Component {
         this.install = install;
     }
 
-    @Nullable
-    public String getStart() {
+    @Nullable public String getStart() {
         return start;
     }
 
@@ -69,8 +61,7 @@ public class LifecycleComponent extends Component {
         this.start = start;
     }
 
-    @Nullable
-    public String getStop() {
+    @Nullable public String getStop() {
         return stop;
     }
 

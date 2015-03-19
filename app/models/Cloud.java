@@ -23,15 +23,17 @@ import models.generic.NamedModel;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The model class Cloud.
- * <p>
- * Represents a specific cloud like amazon ec2, flexiant etc.
- *
- * @author Daniel Baur
- */
-@Entity
-public class Cloud extends NamedModel {
+@Entity public class Cloud extends NamedModel {
+
+    @OneToOne(mappedBy = "cloud", cascade = CascadeType.REMOVE, optional = false) private CloudApi
+        cloudApi;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Image> images;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Location> locations;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudVirtualMachine>
+        virtualMachines;
 
     /**
      * Empty constructor. Needed by hibernate.
@@ -43,70 +45,27 @@ public class Cloud extends NamedModel {
         super(name);
     }
 
-    @Column(updatable = false)
-    @OneToOne(mappedBy = "cloud", cascade = CascadeType.REMOVE, optional = false)
-    private CloudApi cloudApi;
-
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
-    private List<CloudImage> cloudImages;
-
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
-    private List<CloudLocation> cloudLocations;
-
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
-    private List<CloudHardware> cloudHardware;
-
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
-    private List<VirtualMachineTemplate> virtualMachineTemplates;
-
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
-    private List<CloudVirtualMachine> virtualMachines;
-
     public CloudApi getCloudApi() {
         return cloudApi;
     }
 
-    public void setCloudApi(CloudApi cloudApi) {
-        this.cloudApi = cloudApi;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public List<CloudImage> getCloudImages() {
-        return cloudImages;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void setCloudImages(List<CloudImage> cloudImages) {
-        this.cloudImages = cloudImages;
-    }
-
-    public List<CloudLocation> getCloudLocations() {
-        return cloudLocations;
-    }
-
-    public void setCloudLocations(List<CloudLocation> cloudLocations) {
-        this.cloudLocations = cloudLocations;
-    }
-
-    public List<CloudHardware> getCloudHardware() {
-        return cloudHardware;
-    }
-
-    public void setCloudHardware(List<CloudHardware> cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public List<Hardware> getHardware() {
+        return hardware;
     }
 
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
         return virtualMachineTemplates;
     }
 
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
     public List<CloudVirtualMachine> getVirtualMachines() {
         return virtualMachines;
-    }
-
-    public void setVirtualMachines(List<CloudVirtualMachine> virtualMachines) {
-        this.virtualMachines = virtualMachines;
     }
 }

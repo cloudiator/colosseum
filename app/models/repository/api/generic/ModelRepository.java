@@ -28,8 +28,7 @@ import java.util.List;
  */
 public interface ModelRepository<T extends Model> {
 
-    @Nullable
-    public T findById(Long id);
+    @Nullable public T findById(Long id);
 
     //T create(T t);
 

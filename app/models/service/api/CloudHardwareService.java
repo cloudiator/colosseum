@@ -18,20 +18,17 @@
 
 package models.service.api;
 
-import com.google.inject.ImplementedBy;
 import models.Cloud;
-import models.CloudHardware;
 import models.Hardware;
-import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.CloudHardwareServiceImpl;
+import models.HardwareProperties;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
-@ImplementedBy(CloudHardwareServiceImpl.class)
-public interface CloudHardwareService extends ModelServiceInterface<CloudHardware>{
+public interface CloudHardwareService extends ModelService<Hardware> {
 
-    public CloudHardware getByCloudAndHardwareFlavor(Cloud cloud, Hardware hardware);
+    public Hardware getByCloudAndHardwareFlavor(Cloud cloud, HardwareProperties hardwareProperties);
 
 
 }

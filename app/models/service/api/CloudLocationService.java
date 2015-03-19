@@ -18,14 +18,11 @@
 
 package models.service.api;
 
-import com.google.inject.ImplementedBy;
-import models.CloudLocation;
-import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.CloudLocationServiceImpl;
+import models.Location;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-@ImplementedBy(CloudLocationServiceImpl.class)
-public interface CloudLocationService extends ModelServiceInterface<CloudLocation> {
+public interface CloudLocationService extends ModelService<Location> {
 }

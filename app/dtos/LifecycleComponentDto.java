@@ -34,11 +34,12 @@ public class LifecycleComponentDto extends NamedDto {
 
     protected String stop;
 
-    public LifecycleComponentDto(){
+    public LifecycleComponentDto() {
         super();
     }
 
-    public LifecycleComponentDto(String name, String download, String install, String start, String stop){
+    public LifecycleComponentDto(String name, String download, String install, String start,
+        String stop) {
         super(name);
         this.download = download;
         this.install = install;

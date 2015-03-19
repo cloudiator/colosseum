@@ -26,22 +26,18 @@ import java.util.List;
 /**
  * Created by daniel on 04.11.14.
  */
-@Entity
-public class OperatingSystem extends Model {
+@Entity public class OperatingSystem extends Model {
 
     /**
      * Serial version uid.
      */
     private static final long serialVersionUID = 1L;
 
-    @Enumerated(EnumType.STRING)
-    private OperatingSystemArchitecture operatingSystemArchitecture;
+    @Enumerated(EnumType.STRING) private OperatingSystemArchitecture operatingSystemArchitecture;
 
-    @OneToMany(mappedBy = "operatingSystem")
-    private List<Image> images;
+    @OneToMany(mappedBy = "operatingSystem") private List<ImageProperties> imagePropertieses;
 
-    @ManyToOne
-    private OperatingSystemVendor operatingSystemVendor;
+    @ManyToOne private OperatingSystemVendor operatingSystemVendor;
 
 
     private String version;
@@ -56,16 +52,17 @@ public class OperatingSystem extends Model {
         return operatingSystemArchitecture;
     }
 
-    public void setOperatingSystemArchitecture(OperatingSystemArchitecture operatingSystemArchitecture) {
+    public void setOperatingSystemArchitecture(
+        OperatingSystemArchitecture operatingSystemArchitecture) {
         this.operatingSystemArchitecture = operatingSystemArchitecture;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<ImageProperties> getImagePropertieses() {
+        return imagePropertieses;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public void setImagePropertieses(List<ImageProperties> imagePropertieses) {
+        this.imagePropertieses = imagePropertieses;
     }
 
     public String getVersion() {

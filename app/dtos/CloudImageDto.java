@@ -22,9 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
-import models.Image;
-import models.service.api.CloudService;
-import models.service.api.ImageService;
+import models.ImageProperties;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -33,18 +32,19 @@ import java.util.List;
 public class CloudImageDto extends ValidatableDto {
 
 
-    public static class References{
-
-        @Inject
-        public static Provider<CloudService> cloudService;
-
-        @Inject
-        public static Provider<ImageService> imageService;
-    }
-
     protected Long cloud;
     protected Long image;
     protected String cloudUuid;
+
+    public CloudImageDto() {
+        super();
+    }
+
+    public CloudImageDto(Long cloud, Long image, String cloudUuid) {
+        this.cloud = cloud;
+        this.image = image;
+        this.cloudUuid = cloudUuid;
+    }
 
     public Long getCloud() {
         return cloud;
@@ -70,18 +70,7 @@ public class CloudImageDto extends ValidatableDto {
         this.cloudUuid = cloudUuid;
     }
 
-    public CloudImageDto() {
-        super();
-    }
-
-    public CloudImageDto(Long cloud, Long image, String cloudUuid) {
-        this.cloud = cloud;
-        this.image = image;
-        this.cloudUuid = cloudUuid;
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate cloud reference
@@ -96,16 +85,24 @@ public class CloudImageDto extends ValidatableDto {
         }
 
         //validate cloud reference
-        Image image = null;
+        ImageProperties imageProperties = null;
         if (this.image == null) {
             errors.add(new ValidationError("image", "The image is required."));
         } else {
-            image = References.imageService.get().getById(this.image);
-            if (image == null) {
+            imageProperties = References.imagePropertiesService.get().getById(this.image);
+            if (imageProperties == null) {
                 errors.add(new ValidationError("image", "The given image is invalid."));
             }
         }
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+
+        @Inject public static Provider<BaseModelService<ImageProperties>> imagePropertiesService;
     }
 }

@@ -28,8 +28,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity
-public class Api extends NamedModel {
+@Entity public class Api extends NamedModel {
 
     private String internalProviderName;
 

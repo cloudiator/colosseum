@@ -18,40 +18,23 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+@Entity public class Image extends Model {
 
-/**
- * The model class image.
- * <p>
- * Stores information about the cloud images available in a cloud.
- *
- * @author Daniel Baur
- */
-@Entity
-public class Image extends NamedModel {
+    @Column(updatable = false) private String cloudUuid;
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+    @ManyToOne(optional = false) private ImageProperties imageProperties;
 
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    @ManyToOne(optional = false)
-    private OperatingSystem operatingSystem;
+    @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    /**
-     * The cloud images where this image is used (ManyToMany)
-     */
-    @OneToMany(mappedBy = "image")
-    private List<CloudImage> cloudImages;
+    @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
 
     /**
      * Empty constructor for hibernate.
@@ -59,21 +42,21 @@ public class Image extends NamedModel {
     private Image() {
     }
 
-    public OperatingSystem getOperatingSystem() {
-        return operatingSystem;
+    public Image(String cloudUuid, Cloud cloud, ImageProperties imageProperties) {
+        this.cloudUuid = cloudUuid;
+        this.cloud = cloud;
+        this.imageProperties = imageProperties;
     }
 
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
-        checkNotNull(operatingSystem);
-        this.operatingSystem = operatingSystem;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public List<CloudImage> getCloudImages() {
-        return cloudImages;
+    public Cloud getCloud() {
+        return cloud;
     }
 
-    public void setCloudImages(List<CloudImage> cloudImages) {
-        checkNotNull(cloudImages);
-        this.cloudImages = cloudImages;
+    public ImageProperties getImageProperties() {
+        return imageProperties;
     }
 }

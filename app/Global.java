@@ -18,8 +18,9 @@
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dtos.convert.config.BaseConverterModule;
-import models.service.config.ServiceInjection;
+import dtos.conversion.config.BaseConverterModule;
+import models.repository.config.JPAModule;
+import models.service.config.DatabaseServiceModule;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
@@ -54,7 +55,8 @@ public class Global extends GlobalSettings {
         super.onStart(app);
 
         //create guice injector
-        this.injector = Guice.createInjector(new ServiceInjection(), new BaseConverterModule());
+        this.injector = Guice.createInjector(new JPAModule(), new BaseConverterModule(),
+            new DatabaseServiceModule());
 
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
@@ -80,8 +82,7 @@ public class Global extends GlobalSettings {
      * @return An instance of the given class, with injected dependencies.
      * @throws Exception if creating the controller fails.
      */
-    @Override
-    public <A> A getControllerInstance(Class<A> aClass) throws Exception {
+    @Override public <A> A getControllerInstance(Class<A> aClass) throws Exception {
         return injector.getInstance(aClass);
     }
 
@@ -95,26 +96,22 @@ public class Global extends GlobalSettings {
          *
          * If a string is left empty, this formatter makes it null.
          */
-        Formatters.register(String.class,
-                new Formatters.SimpleFormatter<String>() {
+        Formatters.register(String.class, new Formatters.SimpleFormatter<String>() {
 
-                    @Override
-                    public String parse(String text, Locale locale)
-                            throws ParseException {
-                        text = text.trim();
-                        if (text.isEmpty()) {
-                            return null;
-                        }
-                        return text;
-                    }
+            @Override public String parse(String text, Locale locale) throws ParseException {
+                text = text.trim();
+                if (text.isEmpty()) {
+                    return null;
+                }
+                return text;
+            }
 
-                    @Override
-                    public String print(String string, Locale locale) {
-                        if (string == null) {
-                            return "";
-                        }
-                        return string;
-                    }
-                });
+            @Override public String print(String string, Locale locale) {
+                if (string == null) {
+                    return "";
+                }
+                return string;
+            }
+        });
     }
 }

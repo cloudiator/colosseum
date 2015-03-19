@@ -33,18 +33,15 @@ public abstract class AbstractResourceInCloud<T extends Resource> implements Res
         this.cloud = cloud;
     }
 
-    @Override
-    public String cloud() {
+    @Override public String cloud() {
         return cloud;
     }
 
-    @Override
-    public String id() {
+    @Override public String id() {
         return resource.id();
     }
 
-    @Override
-    public String name() {
+    @Override public String name() {
         return resource.name();
     }
 }

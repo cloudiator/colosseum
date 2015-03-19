@@ -27,17 +27,15 @@ import java.util.List;
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity
-public abstract class Component extends NamedModel {
+@Entity public abstract class Component extends NamedModel {
+
+    @OneToMany(mappedBy = "component") private List<ApplicationComponent> applicationComponents;
 
     /**
      * Empty constructor for hibernate.
      */
     protected Component() {
     }
-
-    @OneToMany(mappedBy = "component")
-    private List<ApplicationComponent> applicationComponents;
 
     public List<ApplicationComponent> getApplicationComponents() {
         return applicationComponents;

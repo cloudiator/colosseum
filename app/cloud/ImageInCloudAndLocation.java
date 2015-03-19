@@ -23,7 +23,8 @@ import de.uniulm.omi.executionware.api.domain.Image;
 /**
  * Created by daniel on 12.03.15.
  */
-public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<Image> implements Image {
+public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<Image>
+    implements Image {
     public ImageInCloudAndLocation(Image resource, String cloud) {
         super(resource, cloud);
     }

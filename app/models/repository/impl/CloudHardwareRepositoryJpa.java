@@ -18,33 +18,33 @@
 
 package models.repository.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import models.Cloud;
-import models.CloudHardware;
 import models.Hardware;
+import models.HardwareProperties;
 import models.repository.api.CloudHardwareRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
 
-import static models.util.JpaResultHelper.*;
+import static models.util.JpaResultHelper.getSingleResultOrNull;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public class CloudHardwareRepositoryJpa extends ModelRepositoryJpa<CloudHardware> implements CloudHardwareRepository {
+public class CloudHardwareRepositoryJpa extends BaseModelRepositoryJpa<Hardware>
+    implements CloudHardwareRepository {
 
-    /**
-     * Searches the concrete hardware flavor based on the given cloud and the hardware
-     *
-     * @param cloud          the cloud
-     * @param hardware the hardware flavor
-     * @return the unique cloud hardware if any, otherwise null.
-     */
-    @Override
-    public CloudHardware findByCloudAndHardwareFlavor(final Cloud cloud, final Hardware hardware) {
+    @Inject
+    public CloudHardwareRepositoryJpa(TypeLiteral<Hardware> type) {
+        super(type);
+    }
 
-        return (CloudHardware) getSingleResultOrNull(em()
-                .createQuery("from CloudHardwareFlavor ch where cloud = :cloud and hardwareFlavor = :hardwareFlavor")
-                .setParameter("cloud", cloud)
-                .setParameter("hardwareFlavor", hardware));
+    @Override public Hardware findByCloudAndHardwareFlavor(final Cloud cloud,
+        final HardwareProperties hardwareProperties) {
+
+        return (Hardware) getSingleResultOrNull(em().createQuery(
+            "from CloudHardwareFlavor ch where cloud = :cloud and hardwareFlavor = :hardwareFlavor")
+            .setParameter("cloud", cloud).setParameter("hardwareFlavor", hardwareProperties));
 
     }
 }

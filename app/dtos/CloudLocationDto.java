@@ -22,9 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
-import models.Location;
-import models.service.api.CloudService;
-import models.service.api.LocationService;
+import models.LocationProperties;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -32,18 +31,19 @@ import java.util.List;
 
 public class CloudLocationDto extends ValidatableDto {
 
-    public static class References {
-
-        @Inject
-        public static Provider<CloudService> cloudService;
-
-        @Inject
-        public static Provider<LocationService> locationService;
-    }
-
     protected Long cloud;
     protected Long location;
     protected String cloudUuid;
+
+    public CloudLocationDto() {
+        super();
+    }
+
+    public CloudLocationDto(Long cloud, Long location, String cloudUuid) {
+        this.cloud = cloud;
+        this.location = location;
+        this.cloudUuid = cloudUuid;
+    }
 
     public Long getCloud() {
         return cloud;
@@ -69,18 +69,7 @@ public class CloudLocationDto extends ValidatableDto {
         this.cloudUuid = cloudUuid;
     }
 
-    public CloudLocationDto() {
-        super();
-    }
-
-    public CloudLocationDto(Long cloud, Long location, String cloudUuid) {
-        this.cloud = cloud;
-        this.location = location;
-        this.cloudUuid = cloudUuid;
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate cloud reference
@@ -95,16 +84,24 @@ public class CloudLocationDto extends ValidatableDto {
         }
 
         //validate location reference
-        Location location = null;
+        LocationProperties locationProperties = null;
         if (this.location == null) {
             errors.add(new ValidationError("location", "The location is required."));
         } else {
-            location = References.locationService.get().getById(this.location);
-            if (location == null) {
+            locationProperties = References.locationPropertiesService.get().getById(this.location);
+            if (locationProperties == null) {
                 errors.add(new ValidationError("location", "The given location is invalid."));
             }
         }
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+
+        @Inject public static Provider<BaseModelService<LocationProperties>> locationPropertiesService;
     }
 }

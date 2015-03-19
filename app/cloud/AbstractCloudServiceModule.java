@@ -25,8 +25,7 @@ import com.google.inject.AbstractModule;
  */
 public abstract class AbstractCloudServiceModule extends AbstractModule {
 
-    @Override
-    protected void configure() {
+    @Override protected void configure() {
         bind(CloudServiceFactory.class).toInstance(getCloudServiceFactory());
     }
 

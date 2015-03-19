@@ -25,23 +25,17 @@ import javax.persistence.*;
 /**
  * Created by daniel on 19.12.14.
  */
-@Entity
-public class ApiAccessToken extends Model {
+@Entity public class ApiAccessToken extends Model {
 
     private static final long VALIDITY = 5 * 60 * 1000;
 
-    @Column(nullable = false)
-    private long createdOn;
+    @Column(nullable = false) private long createdOn;
 
-    @Column(nullable = false)
-    private long expiresAt;
+    @Column(nullable = false) private long expiresAt;
 
-    @Lob
-    @Column(nullable = false)
-    private String token;
+    @Lob @Column(nullable = false) private String token;
 
-    @ManyToOne(optional = false)
-    private FrontendUser frontendUser;
+    @ManyToOne(optional = false) private FrontendUser frontendUser;
 
     /**
      * Empty constructor for hibernate.
@@ -54,8 +48,7 @@ public class ApiAccessToken extends Model {
         this.token = token;
     }
 
-    @PrePersist
-    protected void onCreate() {
+    @PrePersist protected void onCreate() {
         long currentTime = System.currentTimeMillis();
         this.createdOn = currentTime;
         this.expiresAt = currentTime + VALIDITY;

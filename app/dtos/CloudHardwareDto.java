@@ -22,9 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.impl.ValidatableDto;
 import models.Cloud;
-import models.Hardware;
-import models.service.api.CloudService;
-import models.service.api.HardwareService;
+import models.HardwareProperties;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
@@ -32,22 +31,19 @@ import java.util.List;
 
 public class CloudHardwareDto extends ValidatableDto {
 
-    public static class References{
+    protected Long cloud;
+    protected Long hardware;
+    protected String cloudUuid;
 
-        @Inject
-        public static Provider<CloudService> cloudService;
-
-        @Inject
-        public static Provider<HardwareService> hardwareService;
-
-
+    public CloudHardwareDto() {
+        super();
     }
 
-    protected Long cloud;
-
-    protected Long hardware;
-
-    protected String cloudUuid;
+    public CloudHardwareDto(Long cloud, Long hardware, String cloudUuid) {
+        this.cloud = cloud;
+        this.hardware = hardware;
+        this.cloudUuid = cloudUuid;
+    }
 
     public Long getCloud() {
         return cloud;
@@ -73,18 +69,7 @@ public class CloudHardwareDto extends ValidatableDto {
         this.cloudUuid = cloudUuid;
     }
 
-    public CloudHardwareDto() {
-        super();
-    }
-
-    public CloudHardwareDto(Long cloud, Long hardware, String cloudUuid) {
-        this.cloud = cloud;
-        this.hardware = hardware;
-        this.cloudUuid = cloudUuid;
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         List<ValidationError> errors = new ArrayList<>();
 
         //validate cloud reference
@@ -99,17 +84,27 @@ public class CloudHardwareDto extends ValidatableDto {
         }
 
         //validate hardware reference
-        Hardware hardware = null;
+        HardwareProperties hardwareProperties = null;
         if (this.hardware == null) {
             errors.add(new ValidationError("hardware", "The hardware is required."));
         } else {
-            hardware = References.hardwareService.get().getById(this.hardware);
-            if (hardware == null) {
+            hardwareProperties = References.hardwarePropertiesService.get().getById(this.hardware);
+            if (hardwareProperties == null) {
                 errors.add(new ValidationError("hardware", "The given hardware is invalid."));
             }
         }
 
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+
+        @Inject public static Provider<BaseModelService<HardwareProperties>> hardwarePropertiesService;
+
+
     }
 }

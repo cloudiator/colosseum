@@ -21,7 +21,7 @@ package cloud;
 import com.google.inject.Inject;
 import de.uniulm.omi.executionware.api.service.ComputeService;
 import models.generic.Model;
-import models.service.impl.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -31,27 +31,25 @@ import java.util.LinkedList;
  */
 public abstract class AbstractWatcher<T extends Model> implements Watcher<T>, Runnable {
 
-    private final ModelService<T> modelService;
+    private final BaseModelService<T> modelService;
     private final ComputeService computeService;
     private final Collection<Problem<T>> detectedProblems;
 
 
-    @Inject
-    public AbstractWatcher(ModelService<T> modelService, ComputeService computeService) {
+    @Inject public AbstractWatcher(BaseModelService<T> modelService, ComputeService computeService) {
         this.modelService = modelService;
         this.computeService = computeService;
         detectedProblems = new LinkedList<>();
     }
 
-    protected abstract Collection<Problem<T>> check(ComputeService computeService, ModelService<T> modelService);
+    protected abstract Collection<Problem<T>> check(ComputeService computeService,
+        BaseModelService<T> modelService);
 
-    @Override
-    public void run() {
+    @Override public void run() {
         detectedProblems.addAll(check(this.computeService, this.modelService));
     }
 
-    @Override
-    public Collection<Problem<T>> getProblems() {
+    @Override public Collection<Problem<T>> getProblems() {
         return this.detectedProblems;
     }
 }

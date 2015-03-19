@@ -25,11 +25,11 @@ import dtos.generic.impl.NamedDto;
  */
 public class ApiDto extends NamedDto {
 
-    public ApiDto(){
+    public ApiDto() {
         super();
     }
 
-    public ApiDto(String name){
+    public ApiDto(String name) {
         super(name);
     }
 }

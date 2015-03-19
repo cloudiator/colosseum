@@ -38,4 +38,21 @@ public class Link {
     public String getRel() {
         return rel.toString();
     }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        Link link = (Link) o;
+
+        return !(href != null ? !href.equals(link.href) : link.href != null) && rel == link.rel;
+    }
+
+    @Override public int hashCode() {
+        int result = href != null ? href.hashCode() : 0;
+        result = 31 * result + (rel != null ? rel.hashCode() : 0);
+        return result;
+    }
 }

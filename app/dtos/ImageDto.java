@@ -19,25 +19,18 @@
 package dtos;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import dtos.generic.impl.NamedDto;
 import models.OperatingSystem;
-import models.service.api.OperatingSystemService;
-
-import com.google.inject.Provider;
+import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
 import java.util.List;
 
 public class ImageDto extends NamedDto {
 
-    public static class References{
-
-        @Inject
-        public static Provider<OperatingSystemService> operatingSystemService;
-
-    }
-
     protected Long operatingSystem;
+
 
     public ImageDto() {
         super();
@@ -56,8 +49,7 @@ public class ImageDto extends NamedDto {
         this.operatingSystem = operatingSystem;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
+    @Override public List<ValidationError> validateNotNull() {
         final List<ValidationError> errors = super.validateNotNull();
 
         //validate cloud reference
@@ -67,10 +59,18 @@ public class ImageDto extends NamedDto {
         } else {
             operatingSystem = References.operatingSystemService.get().getById(this.operatingSystem);
             if (operatingSystem == null) {
-                errors.add(new ValidationError("operatingsystem", "The given operatingsystem is invalid."));
+                errors.add(new ValidationError("operatingsystem",
+                    "The given operatingsystem is invalid."));
             }
         }
 
         return errors;
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
+
     }
 }

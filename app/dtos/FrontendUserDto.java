@@ -18,14 +18,14 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
 import play.data.validation.Constraints;
 import play.data.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FrontendUserDto extends ValidatableDto {
+public class FrontendUserDto extends NeedsValidationDto {
 
     protected String firstName;
     protected String lastName;
@@ -33,6 +33,10 @@ public class FrontendUserDto extends ValidatableDto {
 
     public FrontendUserDto() {
         super();
+    }
+
+    @Override public void validation() {
+
     }
 
     public FrontendUserDto(String firstName, String lastName, String mail) {
@@ -65,21 +69,21 @@ public class FrontendUserDto extends ValidatableDto {
         this.mail = mail;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-
-        if (this.firstName.isEmpty()) {
-            errors.add(new ValidationError("frontenduser", "Firstname must not be empty"));
-        }
-
-        if (this.lastName.isEmpty()) {
-            errors.add(new ValidationError("frontenduser", "Lastname must not be empty"));
-        }
-
-        if (!Constraints.email().isValid(this.mail)) {
-            errors.add(new ValidationError("frontenduser", "Mail is not valid"));
-        }
-
-        return errors;
-    }
+//    @Override public List<ValidationError> validateNotNull() {
+//        List<ValidationError> errors = new ArrayList<>();
+//
+//        if (this.firstName.isEmpty()) {
+//            errors.add(new ValidationError("frontenduser", "Firstname must not be empty"));
+//        }
+//
+//        if (this.lastName.isEmpty()) {
+//            errors.add(new ValidationError("frontenduser", "Lastname must not be empty"));
+//        }
+//
+//        if (!Constraints.email().isValid(this.mail)) {
+//            errors.add(new ValidationError("frontenduser", "Mail is not valid"));
+//        }
+//
+//        return errors;
+//    }
 }

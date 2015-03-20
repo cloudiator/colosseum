@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package dtos;
+package dtos.validation.generic;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

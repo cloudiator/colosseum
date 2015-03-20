@@ -3,18 +3,18 @@
 # ~~~~
 
 # Home page
-GET           /                                      @controllers.SiteController.index()
-GET           /manage                                @controllers.SiteController.manage()
-GET           /help                                  @controllers.SiteController.help()
+GET           /                        @controllers.SiteController.index()
+GET           /manage                  @controllers.SiteController.manage()
+GET           /help                    @controllers.SiteController.help()
 
 #Auth for browser
-GET           /login                                 @controllers.SecurityController.login()
-POST          /login                                 @controllers.SecurityController.authenticate()
-GET           /logout                                @controllers.SecurityController.logout()
+GET           /login                   @controllers.SecurityController.login()
+POST          /login                   @controllers.SecurityController.authenticate()
+GET           /logout                  @controllers.SecurityController.logout()
 
 #Auth for api
-POST          /api/login                             @controllers.SecurityController.authenticateApi()
-GET           /api/logout                            @controllers.SecurityController.logout()
+POST          /api/login               @controllers.SecurityController.authenticateApi()
+GET           /api/logout              @controllers.SecurityController.logout()
 
 #Application
 #GET           /api/application                       @controllers.ApplicationController.list()
@@ -32,14 +32,21 @@ GET           /api/logout                            @controllers.SecurityContro
 
 
 #Cloud
-GET           /api/cloud/index                       @controllers.CloudController.index()
-GET           /api/cloud/create                      @controllers.CloudController.form()
+GET           /api/cloud/index         @controllers.CloudController.index()
+GET           /api/cloud/create        @controllers.CloudController.form()
 
-GET           /api/cloud                             @controllers.CloudController.list()
-GET           /api/cloud/:id                         @controllers.CloudController.get(id: Long)
-POST          /api/cloud                             @controllers.CloudController.post()
-PUT           /api/cloud/:id                         @controllers.CloudController.put(id: Long)
-DELETE        /api/cloud/:id                         @controllers.CloudController.delete(id: Long)
+GET           /api/cloud               @controllers.CloudController.list()
+GET           /api/cloud/:id           @controllers.CloudController.get(id: Long)
+POST          /api/cloud               @controllers.CloudController.post()
+PUT           /api/cloud/:id           @controllers.CloudController.put(id: Long)
+DELETE        /api/cloud/:id           @controllers.CloudController.delete(id: Long)
+
+#Frontend Group
+GET           /api/fg                  @controllers.FrontendGroupController.list()
+GET           /api/fg/:id              @controllers.FrontendGroupController.get(id: Long)
+POST          /api/fg                  @controllers.FrontendGroupController.post()
+PUT           /api/fg/:id              @controllers.FrontendGroupController.put(id: Long)
+DELETE        /api/fg/:id              @controllers.FrontendGroupController.delete(id: Long)
 
 #CloudHardware
 #GET           /api/cloudHardware                     @controllers.CloudHardwareController.list()
@@ -163,4 +170,4 @@ DELETE        /api/cloud/:id                         @controllers.CloudControlle
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                          controllers.Assets.at(path="/public", file)
+GET           /assets/*file            controllers.Assets.at(path="/public", file)

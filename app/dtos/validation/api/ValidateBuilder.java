@@ -16,10 +16,11 @@
  * under the License.
  */
 
-package dtos.generic.api;
+package dtos.validation.api;
 
 /**
- * Interface for data transfer objects.
+ * Created by daniel on 20.03.15.
  */
-public interface Dto {
+public interface ValidateBuilder {
+    public <T> ValidatorBuilder<T> validate(T t);
 }

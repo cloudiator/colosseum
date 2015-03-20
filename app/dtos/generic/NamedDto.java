@@ -16,17 +16,14 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.generic;
 
-import play.data.validation.ValidationError;
-
-import java.util.ArrayList;
-import java.util.List;
+import dtos.validation.NotNullOrEmptyValidator;
 
 /**
  * A Dto for named entities.
  */
-public abstract class NamedDto extends ValidatableDto {
+public abstract class NamedDto extends NeedsValidationDto {
 
     private String name;
 
@@ -55,11 +52,7 @@ public abstract class NamedDto extends ValidatableDto {
         this.name = name;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-        if (name == null || name.length() == 0) {
-            errors.add(new ValidationError("name", "No name was given."));
-        }
-        return errors;
+    @Override public void validation() {
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
     }
 }

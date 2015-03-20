@@ -20,7 +20,8 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
+import dtos.validation.generic.ValidatorHelper;
 import models.IpType;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
@@ -32,7 +33,7 @@ import java.util.List;
 /**
  * Created by daniel on 12.03.15.
  */
-public class IpAddressDto extends ValidatableDto {
+public class IpAddressDto extends NeedsValidationDto {
 
     private String ip;
     private String ipType;
@@ -40,6 +41,10 @@ public class IpAddressDto extends ValidatableDto {
 
     public IpAddressDto() {
         super();
+    }
+
+    @Override public void validation() {
+
     }
 
     public IpAddressDto(String ip, String ipType, Long virtualMachine) {
@@ -72,39 +77,39 @@ public class IpAddressDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-
-        if (virtualMachine == null) {
-            errors
-                .add(new ValidationError("virtualMachine", "The virtual machine id is mandatory."));
-        } else {
-            if (References.virtualMachineService.get().getById(virtualMachine) == null) {
-                errors.add(
-                    new ValidationError("virtualMachine", "The virtual machine id is illegal."));
-            }
-        }
-
-        if (ip == null) {
-            errors.add(new ValidationError("ip", "The ip is mandatory."));
-        } else {
-            if (!ValidatorHelper.isValidIpAddress(ip)) {
-                errors.add(new ValidationError("ip", "The ip is not a valid ip address"));
-            }
-        }
-
-        if (ipType == null) {
-            errors.add(new ValidationError("ipType", "The ip type is mandatory."));
-        } else {
-            try {
-                IpType.valueOf(ipType);
-            } catch (IllegalArgumentException e) {
-                errors.add(new ValidationError("ipType", "The ipType value is illegal."));
-            }
-        }
-
-        return errors;
-    }
+//    @Override public List<ValidationError> validateNotNull() {
+//        List<ValidationError> errors = new ArrayList<>();
+//
+//        if (virtualMachine == null) {
+//            errors
+//                .add(new ValidationError("virtualMachine", "The virtual machine id is mandatory."));
+//        } else {
+//            if (References.virtualMachineService.get().getById(virtualMachine) == null) {
+//                errors.add(
+//                    new ValidationError("virtualMachine", "The virtual machine id is illegal."));
+//            }
+//        }
+//
+//        if (ip == null) {
+//            errors.add(new ValidationError("ip", "The ip is mandatory."));
+//        } else {
+//            if (!ValidatorHelper.isValidIpAddress(ip)) {
+//                errors.add(new ValidationError("ip", "The ip is not a valid ip address"));
+//            }
+//        }
+//
+//        if (ipType == null) {
+//            errors.add(new ValidationError("ipType", "The ip type is mandatory."));
+//        } else {
+//            try {
+//                IpType.valueOf(ipType);
+//            } catch (IllegalArgumentException e) {
+//                errors.add(new ValidationError("ipType", "The ipType value is illegal."));
+//            }
+//        }
+//
+//        return errors;
+//    }
 
 
     public static class References {

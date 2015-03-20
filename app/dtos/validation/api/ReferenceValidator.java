@@ -16,15 +16,17 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.validation.api;
 
-import dtos.generic.api.Dto;
+import dtos.validation.generic.ValidationError;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.Collection;
 
 /**
- * Created by daniel on 18.12.14.
+ * Created by daniel on 20.03.15.
  */
-public abstract class AbstractDto implements Dto {
+public interface ReferenceValidator {
+
+    public Collection<ValidationError> validate() throws ValidationException;
+
 }

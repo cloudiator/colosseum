@@ -63,7 +63,10 @@ public class FieldBindings implements FieldBinding {
     }
 
     @Override public void bindReverse(Object from, Object to) {
-        bind(to, from);
+        build();
+        for (FieldBinding fieldBinding : fieldBindings) {
+            fieldBinding.bindReverse(from, to);
+        }
     }
 }
 

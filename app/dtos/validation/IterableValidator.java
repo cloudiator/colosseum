@@ -16,22 +16,32 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.validation;
+
+import dtos.validation.api.ValidationException;
+import dtos.validation.api.Validator;
+import dtos.validation.generic.ValidationError;
+
+import java.util.Collection;
+import java.util.LinkedList;
 
 /**
- * Created by daniel on 18.12.14.
+ * Created by daniel on 19.03.15.
  */
-public enum Rel {
+public class IterableValidator<T> implements Validator<Iterable<T>> {
 
-    SELF("self");
+    private final Validator<T> validator;
 
-    private final String text;
-
-    private Rel(final String text) {
-        this.text = text;
+    public IterableValidator(Validator<T> validator) {
+        this.validator = validator;
     }
 
-    @Override public String toString() {
-        return text;
+    @Override public Collection<ValidationError> validate(Iterable<T> ts)
+        throws ValidationException {
+        Collection<ValidationError> errors = new LinkedList<>();
+        for (T t : ts) {
+            errors.addAll(validator.validate(t));
+        }
+        return errors;
     }
 }

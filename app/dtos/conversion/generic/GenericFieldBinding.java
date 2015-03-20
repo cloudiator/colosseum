@@ -18,15 +18,8 @@
 
 package dtos.conversion.generic;
 
-import dtos.conversion.api.BindingException;
 import dtos.conversion.api.FieldBinding;
 import dtos.conversion.transformers.Transformer;
-
-import javax.annotation.Nullable;
-import java.lang.reflect.Field;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 16.03.15.
@@ -60,72 +53,5 @@ public class GenericFieldBinding<T, S> implements FieldBinding {
         fromField.setValue(this.transformer.transformReverse(toField.getValue()));
     }
 
-    private static class ReflectionField<U> {
 
-        private final Field field;
-        private final Object o;
-
-        private ReflectionField(String fieldName, Class<U> fieldType, Object o) {
-            checkNotNull(fieldName);
-            checkArgument(!fieldName.isEmpty());
-            checkNotNull(o);
-
-            Field getField = getField(o.getClass(), fieldName);
-            checkNotNull(getField, String
-                .format("Could not find field %s on class of o (%s)", fieldName, o.getClass()));
-            checkArgument(isValidField(getField, fieldType), String
-                .format("Illegal field type %s. Not assignable from %s", fieldType.getName(),
-                    getField.getType().getClass().getName()));
-            getField.setAccessible(true);
-            this.field = getField;
-            this.o = o;
-        }
-
-        public static <P> ReflectionField<P> of(String fieldName, Class<P> fieldType, Object o) {
-            return new ReflectionField<>(fieldName, fieldType, o);
-        }
-
-        public U getValue() {
-            try {
-                //noinspection unchecked
-                return (U) field.get(o);
-            } catch (IllegalAccessException e) {
-                throw new BindingException(String
-                    .format("Could not get value on field %s on object %s having class %s.",
-                        field.getName(), o, o.getClass()), e);
-            } catch (ClassCastException e) {
-                throw new AssertionError(
-                    "Could not cast field value. This should have been avoided in the constructor.",
-                    e);
-            }
-        }
-
-        public void setValue(U value) {
-            try {
-                field.set(o, value);
-            } catch (IllegalAccessException e) {
-                throw new BindingException(String
-                    .format("Could not set value on field %s on object %s having class %s",
-                        field.getName(), o, o.getClass()), e);
-            }
-        }
-
-        @Nullable private Field getField(Class clazz, String fieldToFind) {
-            while (clazz != null) {
-                for (Field field : clazz.getDeclaredFields()) {
-                    if (field.getName().equals(fieldToFind)) {
-                        return field;
-                    }
-                }
-                clazz = clazz.getSuperclass();
-            }
-            return null;
-        }
-
-        private boolean isValidField(Field field, Class<?> fieldType) {
-            return field != null && fieldType.isAssignableFrom(field.getType().getClass());
-        }
-
-
-    }
 }

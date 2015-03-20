@@ -18,7 +18,7 @@
 
 package dtos;
 
-import dtos.generic.impl.NamedDto;
+import dtos.generic.NamedDto;
 
 /**
  * Created by daniel seybold on 16.12.2014.

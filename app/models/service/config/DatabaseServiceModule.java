@@ -20,8 +20,10 @@ package models.service.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import dtos.FrontendGroupDto;
 import dtos.LoginDto;
 import models.Cloud;
+import models.FrontendGroup;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
@@ -43,5 +45,10 @@ public class DatabaseServiceModule extends AbstractModule {
         // Frontend User
         bind(FrontendUserService.class).to(DefaultFrontendUserService.class);
         requestStaticInjection(LoginDto.References.class);
+        // Frontend User Group
+        bind(new TypeLiteral<ModelService<FrontendGroup>>() {
+        }).to(new TypeLiteral<BaseModelService<FrontendGroup>>() {
+        });
+        requestStaticInjection(FrontendGroupDto.References.class);
     }
 }

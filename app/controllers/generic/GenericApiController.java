@@ -22,8 +22,8 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import controllers.security.SecuredSessionOrToken;
 import dtos.conversion.api.ModelDtoConversionService;
-import dtos.generic.api.Dto;
-import dtos.generic.impl.WrapperDto;
+import dtos.api.Dto;
+import dtos.generic.WrapperDto;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
 import play.data.Form;
@@ -275,8 +275,10 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
 
         entity = this.conversionService.toModel(filledForm.get(), entity);
+        this.modelService.save(entity);
 
-        return get(entity.getId());
+
+        return get(id);
     }
 
     /**

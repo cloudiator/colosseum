@@ -20,20 +20,21 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
 import models.Application;
 import models.Component;
 import models.VirtualMachineTemplate;
 import models.service.impl.generic.BaseModelService;
 import play.data.validation.ValidationError;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class ApplicationComponentDto extends ValidatableDto {
+public class ApplicationComponentDto extends NeedsValidationDto {
 
     protected Long application;
     protected Long component;
@@ -41,6 +42,16 @@ public class ApplicationComponentDto extends ValidatableDto {
 
     public ApplicationComponentDto() {
         super();
+    }
+
+    @Override public void validation() {
+        validator(Long.class).validate(this.application).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationService.get()));
+        validator(Long.class).validate(this.component).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.componentService.get()));
+        validator(Long.class).validate(this.virtualMachineTemplate)
+            .withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.virtualMachineTemplateService.get()));
     }
 
     public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate) {
@@ -72,49 +83,6 @@ public class ApplicationComponentDto extends ValidatableDto {
     public void setVirtualMachineTemplate(Long virtualMachineTemplate) {
         this.virtualMachineTemplate = virtualMachineTemplate;
     }
-
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-
-        //validate application reference
-        Application application;
-        if (this.application == null) {
-            errors.add(new ValidationError("application", "The application is required."));
-        } else {
-            application = References.applicationService.get().getById(this.application);
-            if (application == null) {
-                errors.add(new ValidationError("application", "The given application is invalid."));
-            }
-        }
-
-        //validate component reference
-        Component component = null;
-        if (this.component == null) {
-            errors.add(new ValidationError("component", "The component is required."));
-        } else {
-            component = References.componentService.get().getById(this.component);
-            if (component == null) {
-                errors.add(new ValidationError("component", "The given component is invalid."));
-            }
-        }
-
-        //validate the virtual machine Template
-        VirtualMachineTemplate virtualMachineTemplate;
-        if (this.virtualMachineTemplate == null) {
-            errors.add(new ValidationError("virtualMachineTemplate",
-                "The virtual machine template is required."));
-        } else {
-            virtualMachineTemplate =
-                References.virtualMachineTemplateService.get().getById(this.virtualMachineTemplate);
-            if (virtualMachineTemplate == null) {
-                errors.add(new ValidationError("virtualMachineTemplate",
-                    "The virtual machine template is required."));
-            }
-        }
-
-        return errors;
-    }
-
 
     public static class References {
 

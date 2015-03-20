@@ -20,7 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
 import models.Cloud;
 import models.HardwareProperties;
 import models.service.impl.generic.BaseModelService;
@@ -29,7 +29,7 @@ import play.data.validation.ValidationError;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CloudHardwareDto extends ValidatableDto {
+public class CloudHardwareDto extends NeedsValidationDto {
 
     protected Long cloud;
     protected Long hardware;
@@ -37,6 +37,10 @@ public class CloudHardwareDto extends ValidatableDto {
 
     public CloudHardwareDto() {
         super();
+    }
+
+    @Override public void validation() {
+
     }
 
     public CloudHardwareDto(Long cloud, Long hardware, String cloudUuid) {
@@ -69,34 +73,34 @@ public class CloudHardwareDto extends ValidatableDto {
         this.cloudUuid = cloudUuid;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-
-        //validate cloud reference
-        Cloud cloud = null;
-        if (this.cloud == null) {
-            errors.add(new ValidationError("cloud", "The cloud is required."));
-        } else {
-            cloud = References.cloudService.get().getById(this.cloud);
-            if (cloud == null) {
-                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-            }
-        }
-
-        //validate hardware reference
-        HardwareProperties hardwareProperties = null;
-        if (this.hardware == null) {
-            errors.add(new ValidationError("hardware", "The hardware is required."));
-        } else {
-            hardwareProperties = References.hardwarePropertiesService.get().getById(this.hardware);
-            if (hardwareProperties == null) {
-                errors.add(new ValidationError("hardware", "The given hardware is invalid."));
-            }
-        }
-
-
-        return errors;
-    }
+//    @Override public List<ValidationError> validateNotNull() {
+//        List<ValidationError> errors = new ArrayList<>();
+//
+//        //validate cloud reference
+//        Cloud cloud = null;
+//        if (this.cloud == null) {
+//            errors.add(new ValidationError("cloud", "The cloud is required."));
+//        } else {
+//            cloud = References.cloudService.get().getById(this.cloud);
+//            if (cloud == null) {
+//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
+//            }
+//        }
+//
+//        //validate hardware reference
+//        HardwareProperties hardwareProperties = null;
+//        if (this.hardware == null) {
+//            errors.add(new ValidationError("hardware", "The hardware is required."));
+//        } else {
+//            hardwareProperties = References.hardwarePropertiesService.get().getById(this.hardware);
+//            if (hardwareProperties == null) {
+//                errors.add(new ValidationError("hardware", "The given hardware is invalid."));
+//            }
+//        }
+//
+//
+//        return errors;
+//    }
 
 
     public static class References {

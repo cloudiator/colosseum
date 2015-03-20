@@ -18,7 +18,7 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
 import play.data.validation.ValidationError;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by daniel on 09.01.15.
  */
-public class CommunicationDto extends ValidatableDto {
+public class CommunicationDto extends NeedsValidationDto {
 
     protected Long provider;
     protected Long consumer;
@@ -40,6 +40,10 @@ public class CommunicationDto extends ValidatableDto {
 
     public CommunicationDto() {
         super();
+    }
+
+    @Override public void validation() {
+
     }
 
     public Long getProvider() {
@@ -66,7 +70,7 @@ public class CommunicationDto extends ValidatableDto {
         this.port = port;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        return super.validateNotNull();
-    }
+    //@Override public List<ValidationError> validateNotNull() {
+    //    return super.validateNotNull();
+    //}
 }

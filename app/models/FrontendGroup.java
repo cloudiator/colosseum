@@ -40,10 +40,6 @@ import java.util.List;
         return frontendUsers;
     }
 
-    public void setFrontendUsers(List<FrontendUser> frontendUsers) {
-        this.frontendUsers = frontendUsers;
-    }
-
     public List<CloudCredential> getCloudCredentials() {
         return cloudCredentials;
     }

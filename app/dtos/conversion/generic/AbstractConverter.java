@@ -20,7 +20,7 @@ package dtos.conversion.generic;
 
 import dtos.conversion.api.DtoConverter;
 import dtos.conversion.api.FromBindingBuilder;
-import dtos.generic.api.Dto;
+import dtos.api.Dto;
 import models.generic.Model;
 
 import java.lang.reflect.Constructor;
@@ -35,38 +35,49 @@ public abstract class AbstractConverter<T extends Model, S extends Dto>
     private final FieldBindings fieldBindings;
     private final Class<T> tType;
     private final Class<S> sType;
+    private boolean configured = false;
 
     protected AbstractConverter(Class<T> t, Class<S> s) {
         fieldBindings = new FieldBindings();
         tType = t;
         sType = s;
-        this.configure();
     }
 
     protected FromBindingBuilder builder() {
         return fieldBindings.builder();
     }
 
+    private synchronized void configureOnce() {
+        if (!configured) {
+            configure();
+            configured = true;
+        }
+    }
+
     public abstract void configure();
 
     @Override public T toModel(S dto) {
+        configureOnce();
         T model = new TypeBuilder<T>().getInstance(tType);
         this.fieldBindings.bind(dto, model);
         return model;
     }
 
     @Override public T toModel(S dto, T model) {
+        configureOnce();
         this.fieldBindings.bind(dto, model);
         return model;
     }
 
     @Override public S toDto(T model) {
+        configureOnce();
         S dto = new TypeBuilder<S>().getInstance(sType);
         this.fieldBindings.bindReverse(dto, model);
         return dto;
     }
 
     @Override public S toDto(T model, S dto) {
+        configureOnce();
         this.fieldBindings.bindReverse(dto, model);
         return dto;
     }

@@ -16,10 +16,10 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.generic;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import dtos.generic.api.Dto;
+import dtos.api.Dto;
 
 import java.util.Set;
 

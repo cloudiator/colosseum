@@ -21,7 +21,7 @@ package dtos.conversion.transformers;
 /**
  * Created by daniel on 17.03.15.
  */
-public class DefaultTransformer implements Transformer<Object, Object> {
+public class DefaultTransformer implements Transformer {
     @Override public Object transform(Object o) {
         return o;
     }

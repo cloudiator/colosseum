@@ -21,6 +21,7 @@ package models.repository.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import models.Cloud;
+import models.FrontendGroup;
 import models.repository.api.ApiAccessTokenRepository;
 import models.repository.api.FrontendUserRepository;
 import models.repository.api.generic.ModelRepository;
@@ -42,6 +43,10 @@ public class JPAModule extends AbstractModule {
         });
         // Frontend User
         bind(FrontendUserRepository.class).to(FrontendUserRepositoryJpa.class);
+        // Frontend User Group
+        bind(new TypeLiteral<ModelRepository<FrontendGroup>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<FrontendGroup>>() {
+        });
 
     }
 }

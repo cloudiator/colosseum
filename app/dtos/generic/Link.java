@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.generic;
 
 /**
  * Created by daniel on 18.12.14.

@@ -16,11 +16,18 @@
  * under the License.
  */
 
-package dtos.validators;
+package dtos.validation;
+
+import dtos.validation.api.ValidationException;
+import dtos.validation.generic.AbstractValidator;
+import dtos.validation.generic.ValidationError;
 
 /**
  * Created by daniel on 13.03.15.
  */
-public interface Validator<T> {
-    public void validate(T t) throws ValidationException;
+public class NotNullValidator extends AbstractValidator<Object> {
+
+    @Override protected void validation(Object o) throws ValidationException {
+        addError(ValidationError.of("This field is required."));
+    }
 }

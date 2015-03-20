@@ -20,7 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
 import models.Api;
 import models.Cloud;
 import models.service.impl.generic.BaseModelService;
@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class CloudApiDto extends ValidatableDto {
+public class CloudApiDto extends NeedsValidationDto {
 
 
     protected Long api;
@@ -40,6 +40,10 @@ public class CloudApiDto extends ValidatableDto {
     protected String endpoint;
 
     public CloudApiDto() {
+
+    }
+
+    @Override public void validation() {
 
     }
 
@@ -74,34 +78,34 @@ public class CloudApiDto extends ValidatableDto {
         this.endpoint = endpoint;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
-
-        //validate api reference
-        Api api = null;
-        if (this.api == null) {
-            errors.add(new ValidationError("api", "The api is required."));
-        } else {
-            api = References.apiService.get().getById(this.api);
-            if (api == null) {
-                errors.add(new ValidationError("api", "The given api is invalid."));
-            }
-        }
-
-        //validate cloud reference
-        Cloud cloud = null;
-        if (this.cloud == null) {
-            errors.add(new ValidationError("cloud", "The cloud is required."));
-        } else {
-            cloud = References.cloudService.get().getById(this.cloud);
-            if (cloud == null) {
-                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-            }
-        }
-
-
-        return errors;
-    }
+//    @Override public List<ValidationError> validateNotNull() {
+//        List<ValidationError> errors = new ArrayList<>();
+//
+//        //validate api reference
+//        Api api = null;
+//        if (this.api == null) {
+//            errors.add(new ValidationError("api", "The api is required."));
+//        } else {
+//            api = References.apiService.get().getById(this.api);
+//            if (api == null) {
+//                errors.add(new ValidationError("api", "The given api is invalid."));
+//            }
+//        }
+//
+//        //validate cloud reference
+//        Cloud cloud = null;
+//        if (this.cloud == null) {
+//            errors.add(new ValidationError("cloud", "The cloud is required."));
+//        } else {
+//            cloud = References.cloudService.get().getById(this.cloud);
+//            if (cloud == null) {
+//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
+//            }
+//        }
+//
+//
+//        return errors;
+//    }
 
 
     public static class References {

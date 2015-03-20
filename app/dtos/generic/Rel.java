@@ -16,16 +16,22 @@
  * under the License.
  */
 
-package dtos.validators;
+package dtos.generic;
 
 /**
- * Created by daniel on 13.03.15.
+ * Created by daniel on 18.12.14.
  */
-public class RequiredValidator implements Validator<Object> {
+public enum Rel {
 
-    @Override public void validate(Object o) throws ValidationException {
-        if (o == null) {
-            throw new ValidationException("Required.");
-        }
+    SELF("self");
+
+    private final String text;
+
+    private Rel(final String text) {
+        this.text = text;
+    }
+
+    @Override public String toString() {
+        return text;
     }
 }

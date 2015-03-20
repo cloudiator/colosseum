@@ -20,7 +20,7 @@ package dtos.conversion.api;
 
 import com.google.inject.ImplementedBy;
 import dtos.conversion.generic.DefaultModelDtoConversionService;
-import dtos.generic.api.Dto;
+import dtos.api.Dto;
 import models.generic.Model;
 
 import java.util.List;

@@ -18,7 +18,7 @@
 
 package dtos;
 
-import dtos.generic.impl.NamedDto;
+import dtos.generic.NamedDto;
 
 public class CloudDto extends NamedDto {
 

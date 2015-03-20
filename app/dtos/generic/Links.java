@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package dtos.generic.impl;
+package dtos.generic;
 
 import java.util.HashMap;
 import java.util.HashSet;

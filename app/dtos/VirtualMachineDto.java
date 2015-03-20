@@ -20,7 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.NamedDto;
+import dtos.generic.NamedDto;
 import models.Cloud;
 import models.Hardware;
 import models.Image;
@@ -88,71 +88,71 @@ public class VirtualMachineDto extends NamedDto {
         this.cloudLocation = cloudLocation;
     }
 
-    @Override public List<ValidationError> validateNotNull() {
-        final List<ValidationError> errors = super.validateNotNull();
-
-        //validate cloud reference
-        Cloud cloud = null;
-        if (this.cloud == null) {
-            errors.add(new ValidationError("cloud", "The cloud is required."));
-        } else {
-            cloud = References.cloudService.get().getById(this.cloud);
-            if (cloud == null) {
-                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-            }
-        }
-
-        //validate the cloud image
-        if (this.cloudImage == null) {
-            errors.add(new ValidationError("cloudImage", "The cloud image is required."));
-        } else {
-            final Image image = References.cloudImageService.get().getById(this.cloudImage);
-            if (image == null) {
-                errors.add(new ValidationError("cloudImage", "The given cloud image is invalid."));
-            } else {
-                if (!image.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudImage",
-                        "The cloud image does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        //validate the cloud hardware
-        if (this.cloudHardware == null) {
-            errors.add(new ValidationError("cloudHardware", "The cloud hardware is required."));
-        } else {
-            final Hardware hardware =
-                References.cloudHardwareFlavorService.get().getById(this.cloudHardware);
-            if (hardware == null) {
-                errors.add(
-                    new ValidationError("cloudHardware", "The given cloud hardware is invalid"));
-            } else {
-                if (!hardware.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudHardware",
-                        "The cloud hardware does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        //validate the cloud location
-        if (this.cloudLocation == null) {
-            errors.add(new ValidationError("cloudLocation", "The cloud location is required."));
-        } else {
-            final Location location =
-                References.cloudLocationService.get().getById(this.cloudLocation);
-            if (location == null) {
-                errors.add(
-                    new ValidationError("cloudLocation", "The given cloud location is invalid."));
-            } else {
-                if (!location.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudLocation",
-                        "The cloud location does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        return errors;
-    }
+//    @Override public List<ValidationError> validateNotNull() {
+//        final List<ValidationError> errors = super.validateNotNull();
+//
+//        //validate cloud reference
+//        Cloud cloud = null;
+//        if (this.cloud == null) {
+//            errors.add(new ValidationError("cloud", "The cloud is required."));
+//        } else {
+//            cloud = References.cloudService.get().getById(this.cloud);
+//            if (cloud == null) {
+//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
+//            }
+//        }
+//
+//        //validate the cloud image
+//        if (this.cloudImage == null) {
+//            errors.add(new ValidationError("cloudImage", "The cloud image is required."));
+//        } else {
+//            final Image image = References.cloudImageService.get().getById(this.cloudImage);
+//            if (image == null) {
+//                errors.add(new ValidationError("cloudImage", "The given cloud image is invalid."));
+//            } else {
+//                if (!image.getCloud().equals(cloud)) {
+//                    errors.add(new ValidationError("cloudImage",
+//                        "The cloud image does not belong to the specified cloud."));
+//                }
+//            }
+//        }
+//
+//        //validate the cloud hardware
+//        if (this.cloudHardware == null) {
+//            errors.add(new ValidationError("cloudHardware", "The cloud hardware is required."));
+//        } else {
+//            final Hardware hardware =
+//                References.cloudHardwareFlavorService.get().getById(this.cloudHardware);
+//            if (hardware == null) {
+//                errors.add(
+//                    new ValidationError("cloudHardware", "The given cloud hardware is invalid"));
+//            } else {
+//                if (!hardware.getCloud().equals(cloud)) {
+//                    errors.add(new ValidationError("cloudHardware",
+//                        "The cloud hardware does not belong to the specified cloud."));
+//                }
+//            }
+//        }
+//
+//        //validate the cloud location
+//        if (this.cloudLocation == null) {
+//            errors.add(new ValidationError("cloudLocation", "The cloud location is required."));
+//        } else {
+//            final Location location =
+//                References.cloudLocationService.get().getById(this.cloudLocation);
+//            if (location == null) {
+//                errors.add(
+//                    new ValidationError("cloudLocation", "The given cloud location is invalid."));
+//            } else {
+//                if (!location.getCloud().equals(cloud)) {
+//                    errors.add(new ValidationError("cloudLocation",
+//                        "The cloud location does not belong to the specified cloud."));
+//                }
+//            }
+//        }
+//
+//        return errors;
+//    }
 
 
     public static class References {

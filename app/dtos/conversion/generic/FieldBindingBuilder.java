@@ -114,6 +114,11 @@ public class FieldBindingBuilder implements FromBindingBuilder {
             this.transformer = transformer;
         }
 
+        @Override public void withUnsafeTransformation(Transformer transformer) {
+            //noinspection unchecked
+            this.transformer = transformer;
+        }
+
         private FieldBinding build() {
             if (transformer == null) {
                 return new DefaultFieldBinding(fromFieldName, toFieldName);

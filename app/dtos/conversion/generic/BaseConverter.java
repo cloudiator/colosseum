@@ -19,7 +19,7 @@
 package dtos.conversion.generic;
 
 import dtos.conversion.api.DtoConverter;
-import dtos.generic.api.Dto;
+import dtos.api.Dto;
 import models.generic.Model;
 
 /**

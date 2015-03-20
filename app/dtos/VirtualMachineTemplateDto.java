@@ -18,7 +18,7 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.NeedsValidationDto;
 import play.data.validation.ValidationError;
 
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by daniel on 12.02.15.
  */
-public class VirtualMachineTemplateDto extends ValidatableDto {
+public class VirtualMachineTemplateDto extends NeedsValidationDto {
 
     protected long cloud;
     protected long cloudImage;
@@ -35,6 +35,10 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public VirtualMachineTemplateDto() {
         super();
+    }
+
+    @Override public void validation() {
+
     }
 
     public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation,
@@ -75,9 +79,5 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public void setCloudHardware(long cloudHardware) {
         this.cloudHardware = cloudHardware;
-    }
-
-    @Override public List<ValidationError> validateNotNull() {
-        return super.validateNotNull();
     }
 }

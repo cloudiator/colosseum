@@ -18,7 +18,7 @@
 
 package dtos;
 
-import dtos.generic.impl.NamedDto;
+import dtos.generic.NamedDto;
 
 import java.util.List;
 

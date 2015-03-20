@@ -16,25 +16,16 @@
  * under the License.
  */
 
-package dtos.validators;
+package dtos.validation.api;
 
-import models.generic.Model;
-import models.repository.api.generic.ModelRepository;
+
+import dtos.validation.generic.ValidationError;
+
+import java.util.Collection;
 
 /**
  * Created by daniel on 13.03.15.
  */
-public class ModelValidator<T extends Model> implements Validator<Long> {
-
-    private final ModelRepository<T> modelRepository;
-
-    public ModelValidator(ModelRepository<T> modelRepository) {
-        this.modelRepository = modelRepository;
-    }
-
-    @Override public void validate(Long id) throws ValidationException {
-        if (modelRepository.findById(id) == null) {
-            throw new ValidationException("Could not find id " + 1);
-        }
-    }
+public interface Validator<T> {
+    public Collection<ValidationError> validate(T t) throws ValidationException;
 }

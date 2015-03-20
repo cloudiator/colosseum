@@ -16,26 +16,14 @@
  * under the License.
  */
 
-package dtos.conversion.config;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.multibindings.Multibinder;
-import dtos.conversion.FrontendGroupConverter;
-import dtos.conversion.api.DtoConverter;
-import dtos.conversion.CloudConverter;
+package dtos.validation.api;
 
 /**
- * Base converter module.
- * <p>
- * Registers the basic converters.
+ * Created by daniel on 13.03.15.
  */
-public class BaseConverterModule extends AbstractModule {
+public class ValidationException extends Exception {
 
-    @Override protected void configure() {
-        Multibinder<DtoConverter> converterBinder =
-            Multibinder.newSetBinder(binder(), DtoConverter.class);
-        converterBinder.addBinding().to(CloudConverter.class);
-        converterBinder.addBinding().to(FrontendGroupConverter.class);
+    public ValidationException(String message) {
+        super(message);
     }
-
 }

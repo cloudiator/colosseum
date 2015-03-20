@@ -18,6 +18,7 @@
 
 package models.repository.impl.generic;
 
+import com.google.inject.TypeLiteral;
 import models.generic.NamedModel;
 
 import javax.persistence.Query;
@@ -29,6 +30,10 @@ import static models.util.JpaResultHelper.getSingleResultOrNull;
  */
 public class BaseNamedModelRepositoryJpa<T extends NamedModel> extends BaseModelRepositoryJpa<T>
     implements models.repository.api.generic.NamedModelRepository<T> {
+
+    public BaseNamedModelRepositoryJpa(TypeLiteral<T> type) {
+        super(type);
+    }
 
     @Override public T findByName(String name) {
         String queryString = String.format("from %s where name = :name", type.getName());

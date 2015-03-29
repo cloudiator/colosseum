@@ -18,8 +18,9 @@
 
 package cloud;
 
-import de.uniulm.omi.executionware.api.service.ComputeService;
-import de.uniulm.omi.executionware.service.ServiceBuilder;
+
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 import models.Cloud;
 import models.CloudCredential;
 

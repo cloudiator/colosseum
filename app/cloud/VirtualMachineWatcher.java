@@ -18,7 +18,8 @@
 
 package cloud;
 
-import de.uniulm.omi.executionware.api.service.ComputeService;
+
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
 

@@ -19,17 +19,16 @@
 package cloud;
 
 import com.google.common.base.Optional;
-import de.uniulm.omi.executionware.api.domain.LoginCredential;
-import de.uniulm.omi.executionware.api.domain.VirtualMachine;
+import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
+import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 
 import java.util.Set;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class VirtualMachineInCloudAndLocation extends
-    AbstractResourceInCloudAndLocation<de.uniulm.omi.executionware.api.domain.VirtualMachine>
-    implements VirtualMachine {
+public class VirtualMachineInCloudAndLocation
+    extends AbstractResourceInCloudAndLocation<VirtualMachine> implements VirtualMachine {
 
 
     public VirtualMachineInCloudAndLocation(VirtualMachine resource, String cloud) {

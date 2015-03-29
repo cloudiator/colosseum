@@ -25,7 +25,6 @@ import dtos.CloudDto;
 import dtos.conversion.api.ModelDtoConversionService;
 import models.Cloud;
 import models.service.api.generic.ModelService;
-import play.mvc.Result;
 
 /**
  * Implementation of the GenericApiController for the Cloud model class.
@@ -45,14 +44,6 @@ public class CloudController extends GenericApiController<Cloud, CloudDto, Cloud
     @Inject public CloudController(ModelService<Cloud> modelService, TypeLiteral<Cloud> typeLiteral,
         ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
-    }
-
-    public Result index() {
-        return ok(views.html.cloud.index.render());
-    }
-
-    public Result form() {
-        return ok(views.html.cloud.form.render());
     }
 
     @Override protected String getSelfRoute(Long id) {

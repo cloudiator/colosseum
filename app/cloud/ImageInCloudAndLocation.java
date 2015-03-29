@@ -18,7 +18,9 @@
 
 package cloud;
 
-import de.uniulm.omi.executionware.api.domain.Image;
+
+
+import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 
 /**
  * Created by daniel on 12.03.15.

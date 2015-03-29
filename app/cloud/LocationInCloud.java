@@ -18,7 +18,9 @@
 
 package cloud;
 
-import de.uniulm.omi.executionware.api.domain.Location;
+
+
+import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 
 /**
  * Created by daniel on 12.03.15.

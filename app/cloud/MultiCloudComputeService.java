@@ -20,12 +20,11 @@ package cloud;
 
 import com.google.common.base.Optional;
 import com.google.common.net.HostAndPort;
-import de.uniulm.omi.executionware.api.domain.*;
-import de.uniulm.omi.executionware.api.domain.VirtualMachine;
-import de.uniulm.omi.executionware.api.domain.VirtualMachineTemplate;
-import de.uniulm.omi.executionware.api.extensions.PublicIpService;
-import de.uniulm.omi.executionware.api.service.ComputeService;
-import de.uniulm.omi.executionware.api.ssh.SshConnection;
+import de.uniulm.omi.cloudiator.sword.api.domain.*;
+import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
+import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 
 import javax.annotation.Nullable;
 
@@ -52,8 +51,7 @@ public interface MultiCloudComputeService extends ComputeService {
 
     @Override void deleteVirtualMachine(String s);
 
-    @Override VirtualMachineInCloudAndLocation createVirtualMachine(
-        VirtualMachineTemplate virtualMachineTemplate);
+    @Override VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate);
 
     @Override SshConnection getSshConnection(HostAndPort hostAndPort);
 

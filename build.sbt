@@ -2,13 +2,9 @@ import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-name := "executionware-frontend"
+name := "colosseum"
 
-//val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
-// val buildNumber = conf.getString("build.number")
-//version := "b" + buildNumber + "-1.0-SNAPSHOT"
-
-version := "1.2-SNAPSHOT"
+version := "1.2.0-SNAPSHOT"
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -31,15 +27,5 @@ TwirlKeys.templateImports += "dtos._"
 jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
-
-publishTo := {
-  val nexus = "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/"
-  if (version.value.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "snapshots")
-  else
-    Some("releases" at nexus + "releases")
-}
-
-credentials += Credentials(Path.userHome / ".m2" / ".credentials")
 
 ApiDocSettings.apiDocTask

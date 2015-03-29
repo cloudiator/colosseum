@@ -19,7 +19,7 @@
 package cloud;
 
 import com.google.inject.Inject;
-import de.uniulm.omi.executionware.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.generic.Model;
 import models.service.impl.generic.BaseModelService;
 
@@ -36,7 +36,8 @@ public abstract class AbstractWatcher<T extends Model> implements Watcher<T>, Ru
     private final Collection<Problem<T>> detectedProblems;
 
 
-    @Inject public AbstractWatcher(BaseModelService<T> modelService, ComputeService computeService) {
+    @Inject
+    public AbstractWatcher(BaseModelService<T> modelService, ComputeService computeService) {
         this.modelService = modelService;
         this.computeService = computeService;
         detectedProblems = new LinkedList<>();

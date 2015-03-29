@@ -3,50 +3,67 @@
 # ~~~~
 
 # Home page
-GET           /                        @controllers.SiteController.index()
-GET           /manage                  @controllers.SiteController.manage()
-GET           /help                    @controllers.SiteController.help()
+GET           /                                    @controllers.SiteController.index()
+GET           /manage                              @controllers.SiteController.manage()
+GET           /help                                @controllers.SiteController.help()
 
 #Auth for browser
-GET           /login                   @controllers.SecurityController.login()
-POST          /login                   @controllers.SecurityController.authenticate()
-GET           /logout                  @controllers.SecurityController.logout()
+GET           /login                               @controllers.SecurityController.login()
+POST          /login                               @controllers.SecurityController.authenticate()
+GET           /logout                              @controllers.SecurityController.logout()
 
 #Auth for api
-POST          /api/login               @controllers.SecurityController.authenticateApi()
-GET           /api/logout              @controllers.SecurityController.logout()
+POST          /api/login                           @controllers.SecurityController.authenticateApi()
+GET           /api/logout                          @controllers.SecurityController.logout()
+
+#Api
+GET           /api/api                             @controllers.ApiController.list()
+GET           /api/api/:id                         @controllers.ApiController.get(id: Long)
+POST          /api/api                             @controllers.ApiController.post()
+PUT           /api/api/:id                         @controllers.ApiController.put(id: Long)
+DELETE        /api/api/:id                         @controllers.ApiController.delete(id: Long)
 
 #Application
-#GET           /api/application                       @controllers.ApplicationController.list()
-#GET           /api/application/:id                   @controllers.ApplicationController.get(id: Long)
-#POST          /api/application                       @controllers.ApplicationController.create()
-#PUT           /api/application/:id                   @controllers.ApplicationController.update(id: Long)
-#DELETE        /api/application/:id                   @controllers.ApplicationController.delete(id: Long)
+GET           /api/application                     @controllers.ApplicationController.list()
+GET           /api/application/:id                 @controllers.ApplicationController.get(id: Long)
+POST          /api/application                     @controllers.ApplicationController.post()
+PUT           /api/application/:id                 @controllers.ApplicationController.put(id: Long)
+DELETE        /api/application/:id                 @controllers.ApplicationController.delete(id: Long)
 
 #ApplicationComponent
-#GET           /api/applicationComponent              @controllers.ApplicationComponentController.list()
-#GET           /api/applicationComponent/:id          @controllers.ApplicationComponentController.get(id: Long)
-#POST          /api/applicationComponent              @controllers.ApplicationComponentController.create()
-#PUT           /api/applicationComponent/:id          @controllers.ApplicationComponentController.update(id: Long)
-#DELETE        /api/applicationComponent/:id          @controllers.ApplicationComponentController.delete(id: Long)
-
+GET           /api/applicationComponent            @controllers.ApplicationComponentController.list()
+GET           /api/applicationComponent/:id        @controllers.ApplicationComponentController.get(id: Long)
+POST          /api/applicationComponent            @controllers.ApplicationComponentController.post()
+PUT           /api/applicationComponent/:id        @controllers.ApplicationComponentController.put(id: Long)
+DELETE        /api/applicationComponent/:id        @controllers.ApplicationComponentController.delete(id: Long)
 
 #Cloud
-GET           /api/cloud/index         @controllers.CloudController.index()
-GET           /api/cloud/create        @controllers.CloudController.form()
+GET           /api/cloud                           @controllers.CloudController.list()
+GET           /api/cloud/:id                       @controllers.CloudController.get(id: Long)
+POST          /api/cloud                           @controllers.CloudController.post()
+PUT           /api/cloud/:id                       @controllers.CloudController.put(id: Long)
+DELETE        /api/cloud/:id                       @controllers.CloudController.delete(id: Long)
 
-GET           /api/cloud               @controllers.CloudController.list()
-GET           /api/cloud/:id           @controllers.CloudController.get(id: Long)
-POST          /api/cloud               @controllers.CloudController.post()
-PUT           /api/cloud/:id           @controllers.CloudController.put(id: Long)
-DELETE        /api/cloud/:id           @controllers.CloudController.delete(id: Long)
+#CloudCredential
+GET           /api/cloudCredential                 @controllers.CloudCredentialController.list()
+GET           /api/cloudCredential/:id             @controllers.CloudCredentialController.get(id: Long)
+POST          /api/cloudCredential                 @controllers.CloudCredentialController.post()
+PUT           /api/cloudCredential/:id             @controllers.CloudCredentialController.put(id: Long)
+DELETE        /api/cloudCredential/:id             @controllers.CloudCredentialController.delete(id: Long)
+
+#CloudApi
+GET           /api/cloudApi                        @controllers.CloudApiController.list()
+GET           /api/cloudApi/:id                    @controllers.CloudApiController.get(id: Long)
+POST          /api/cloudApi                        @controllers.CloudApiController.post()
+PUT           /api/cloudApi/:id                    @controllers.CloudApiController.put(id: Long)
+DELETE        /api/cloudApi/:id                    @controllers.CloudApiController.delete(id: Long)
 
 #Frontend Group
-GET           /api/fg                  @controllers.FrontendGroupController.list()
-GET           /api/fg/:id              @controllers.FrontendGroupController.get(id: Long)
-POST          /api/fg                  @controllers.FrontendGroupController.post()
-PUT           /api/fg/:id              @controllers.FrontendGroupController.put(id: Long)
-DELETE        /api/fg/:id              @controllers.FrontendGroupController.delete(id: Long)
+GET           /api/fg                              @controllers.FrontendGroupController.list()
+GET           /api/fg/:id                          @controllers.FrontendGroupController.get(id: Long)
+POST          /api/fg                              @controllers.FrontendGroupController.post()
+PUT           /api/fg/:id                          @controllers.FrontendGroupController.put(id: Long)
+DELETE        /api/fg/:id                          @controllers.FrontendGroupController.delete(id: Long)
 
 #CloudHardware
 #GET           /api/cloudHardware                     @controllers.CloudHardwareController.list()
@@ -69,13 +86,6 @@ DELETE        /api/fg/:id              @controllers.FrontendGroupController.dele
 #PUT           /api/cloudLocation/:id                 @controllers.CloudLocationController.update(id: Long)
 #DELETE        /api/cloudLocation/:id                 @controllers.CloudLocationController.delete(id: Long)
 
-#CloudApi
-#GET           /api/cloudApi                          @controllers.CloudApiController.list()
-#GET           /api/cloudApi/:id                      @controllers.CloudApiController.get(id: Long)
-#POST          /api/cloudApi                          @controllers.CloudApiController.create()
-#PUT           /api/cloudApi/:id                      @controllers.CloudApiController.update(id: Long)
-#DELETE        /api/cloudApi/:id                      @controllers.CloudApiController.delete(id: Long)
-
 #Hardware
 #GET           /api/hardware                          @controllers.HardwareController.list()
 #GET           /api/hardware/:id                      @controllers.HardwareController.get(id: Long)
@@ -97,12 +107,7 @@ DELETE        /api/fg/:id              @controllers.FrontendGroupController.dele
 #PUT           /api/credential/:id                    @controllers.CredentialController.update(id: Long)
 #DELETE        /api/credential/:id                    @controllers.CredentialController.delete(id: Long)
 
-#Api
-#GET           /api/api                               @controllers.ApiController.list()
-#GET           /api/api/:id                           @controllers.ApiController.get(id: Long)
-#POST          /api/api                               @controllers.ApiController.create()
-#PUT           /api/api/:id                           @controllers.ApiController.update(id: Long)
-#DELETE        /api/api/:id                           @controllers.ApiController.delete(id: Long)
+
 
 #FrontendUser
 #GET           /api/frontendUser                      @controllers.FrontendUserController.list()
@@ -170,4 +175,4 @@ DELETE        /api/fg/:id              @controllers.FrontendGroupController.dele
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file            controllers.Assets.at(path="/public", file)
+GET           /assets/*file                        controllers.Assets.at(path="/public", file)

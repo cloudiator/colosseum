@@ -4,16 +4,11 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 name := "executionware-frontend"
 
-
 //val conf = ConfigFactory.parseFile(new File("conf/application.conf")).resolve()
 // val buildNumber = conf.getString("build.number")
-
 //version := "b" + buildNumber + "-1.0-SNAPSHOT"
+
 version := "1.2-SNAPSHOT"
-
-resolvers += "eladron-snapshots" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/snapshots"
-
-resolvers += "eladron-releases" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/releases"
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -28,7 +23,7 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "de.uniulm.omi.executionware" % "executionware-service" % "1.2.0-SNAPSHOT"
+  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT"
 )
 
 TwirlKeys.templateImports += "dtos._"

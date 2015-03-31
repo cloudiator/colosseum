@@ -10,12 +10,6 @@ name := "executionware"
 //version := "b" + buildNumber + "-1.0-SNAPSHOT"
 version := "1.0-SNAPSHOT"
 
-resolvers += "eladron-snapshots" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/snapshots"
-
-resolvers += "eladron-releases" at "http://eladron.e-technik.uni-ulm.de:8081/nexus/content/repositories/releases"
-
-resolvers += "sberan-github" at "https://raw.github.com/sberan/mvn-repo/master/releases"
-
 libraryDependencies ++= Seq(
   javaJdbc,
   javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),

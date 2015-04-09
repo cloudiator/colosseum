@@ -20,21 +20,18 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NeedsValidationDto;
+import dtos.generic.ValidatableDto;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullValidator;
 import models.Application;
 import models.Component;
 import models.VirtualMachineTemplate;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
-
-import java.util.List;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class ApplicationComponentDto extends NeedsValidationDto {
+public class ApplicationComponentDto extends ValidatableDto {
 
     protected Long application;
     protected Long component;

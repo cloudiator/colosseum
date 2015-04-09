@@ -20,8 +20,10 @@ package cloud;
 
 import com.google.common.base.Optional;
 import com.google.common.net.HostAndPort;
-import de.uniulm.omi.cloudiator.sword.api.domain.*;
-import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
+import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
+import de.uniulm.omi.cloudiator.sword.api.domain.Image;
+import de.uniulm.omi.cloudiator.sword.api.domain.Location;
+import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
@@ -51,7 +53,8 @@ public interface MultiCloudComputeService extends ComputeService {
 
     @Override void deleteVirtualMachine(String s);
 
-    @Override VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate);
+    @Override VirtualMachine createVirtualMachine(
+        de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate virtualMachineTemplate);
 
     @Override SshConnection getSshConnection(HostAndPort hostAndPort);
 

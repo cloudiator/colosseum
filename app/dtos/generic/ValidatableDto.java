@@ -18,6 +18,8 @@
 
 package dtos.generic;
 
+import dtos.api.Dto;
+import dtos.api.Validatable;
 import dtos.validation.api.ValidationException;
 import dtos.validation.generic.ValidationBuilder;
 import dtos.validation.generic.ValidationHolder;
@@ -26,15 +28,16 @@ import play.data.validation.ValidationError;
 import javax.annotation.Nullable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by daniel on 08.12.14.
  */
-public abstract class NeedsValidationDto implements dtos.api.ValidatableDto {
+public abstract class ValidatableDto implements Dto, Validatable {
 
     private ValidationHolder validationHolder;
 
-    public NeedsValidationDto() {
+    public ValidatableDto() {
         super();
         this.validationHolder = new ValidationHolder();
     }
@@ -50,10 +53,9 @@ public abstract class NeedsValidationDto implements dtos.api.ValidatableDto {
         validation();
         List<ValidationError> errors = new LinkedList<>();
         try {
-            for (dtos.validation.generic.ValidationError validationError : validationHolder
-                .validate()) {
-                errors.add(validationError.toPlayError());
-            }
+            errors.addAll(validationHolder.validate().stream()
+                .map(dtos.validation.generic.ValidationError::toPlayError)
+                .collect(Collectors.toList()));
         } catch (ValidationException e) {
             if (errors.isEmpty()) {
                 throw new RuntimeException(

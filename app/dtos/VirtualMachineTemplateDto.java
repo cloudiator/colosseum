@@ -18,15 +18,12 @@
 
 package dtos;
 
-import dtos.generic.NeedsValidationDto;
-import play.data.validation.ValidationError;
-
-import java.util.List;
+import dtos.generic.ValidatableDto;
 
 /**
  * Created by daniel on 12.02.15.
  */
-public class VirtualMachineTemplateDto extends NeedsValidationDto {
+public class VirtualMachineTemplateDto extends ValidatableDto {
 
     protected long cloud;
     protected long cloudImage;

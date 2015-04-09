@@ -16,10 +16,13 @@
  * under the License.
  */
 
-package dtos.api;
+package models.repository.api;
+
+import models.Location;
+import models.repository.api.generic.ModelRepository;
 
 /**
- * Created by bwpc on 08.12.2014.
+ * Created by bwpc on 09.12.2014.
  */
-public interface ValidatableDto extends Dto, Validatable {
+public interface LocationRepository extends ModelRepository<Location> {
 }

@@ -20,16 +20,12 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NeedsValidationDto;
+import dtos.generic.ValidatableDto;
 import models.Cloud;
 import models.LocationProperties;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class CloudLocationDto extends NeedsValidationDto {
+public class CloudLocationDto extends ValidatableDto {
 
     protected Long cloud;
     protected Long location;

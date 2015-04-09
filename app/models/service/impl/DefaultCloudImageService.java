@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import models.Cloud;
 import models.Image;
 import models.ImageProperties;
-import models.repository.api.CloudImageRepository;
+import models.repository.api.ImageRepository;
 import models.service.api.CloudImageService;
 import models.service.impl.generic.BaseModelService;
 
@@ -31,13 +31,13 @@ import models.service.impl.generic.BaseModelService;
  */
 public class DefaultCloudImageService extends BaseModelService<Image> implements CloudImageService {
 
-    @Inject public DefaultCloudImageService(CloudImageRepository cloudImageRepository) {
-        super(cloudImageRepository);
+    @Inject public DefaultCloudImageService(ImageRepository imageRepository) {
+        super(imageRepository);
     }
 
     @Override
     public Image getByCloudAndImage(final Cloud cloud, final ImageProperties imageProperties) {
-        return ((CloudImageRepository) this.modelRepository)
-            .findByCloudAndImage(cloud, imageProperties);
+        return ((ImageRepository) this.modelRepository)
+            .findByCloudAndImageProperties(cloud, imageProperties);
     }
 }

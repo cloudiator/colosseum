@@ -1,18 +1,17 @@
 package controllers;
 
-import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.CloudCredentialDto;
+import dtos.HardwareDto;
 import dtos.conversion.api.ModelDtoConversionService;
-import models.CloudCredential;
+import models.Hardware;
 import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel on 29.03.15.
+ * Created by daniel on 09.04.15.
  */
-public class CloudCredentialController extends
-    GenericApiController<CloudCredential, CloudCredentialDto, CloudCredentialDto, CloudCredentialDto> {
+public class HardwareController
+    extends GenericApiController<Hardware, HardwareDto, HardwareDto, HardwareDto> {
     /**
      * Constructs a GenericApiController.
      *
@@ -21,12 +20,12 @@ public class CloudCredentialController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public CloudCredentialController(ModelService<CloudCredential> modelService,
-        TypeLiteral<CloudCredential> typeLiteral, ModelDtoConversionService conversionService) {
+    public HardwareController(ModelService<Hardware> modelService,
+        TypeLiteral<Hardware> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.CloudCredentialController.get(id).absoluteURL(request());
+        return controllers.routes.HardwareController.get(id).absoluteURL(request());
     }
 }

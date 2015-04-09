@@ -16,16 +16,15 @@
  * under the License.
  */
 
-package models.repository.api;
+package dtos;
 
-import models.Cloud;
-import models.Hardware;
-import models.HardwareProperties;
-import models.repository.api.generic.ModelRepository;
+import dtos.generic.ValidatableDto;
 
-public interface CloudHardwareRepository extends ModelRepository<Hardware> {
+/**
+ * Created by daniel on 09.04.15.
+ */
+public class GeoLocationDto extends ValidatableDto {
+    @Override public void validation() {
 
-    public Hardware findByCloudAndHardwareFlavor(Cloud cloud,
-        HardwareProperties hardwareProperties);
-
+    }
 }

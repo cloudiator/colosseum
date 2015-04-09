@@ -20,10 +20,14 @@ package models;
 
 import models.generic.Model;
 
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
+
 /**
  * @todo we should probably normalize this table?
  */
-public class GeoLocation extends Model {
+@Entity public class GeoLocation extends Model {
 
     private String region;
 
@@ -36,6 +40,9 @@ public class GeoLocation extends Model {
     private Long locationLatitude;
 
     private Long LocationLongitude;
+
+    @OneToMany(mappedBy = "geoLocation")
+    private List<LocationProperties> locationProperties;
 
     /**
      * No-args constructor used by hibernate.

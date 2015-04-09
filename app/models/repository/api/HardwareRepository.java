@@ -16,15 +16,16 @@
  * under the License.
  */
 
-package dtos;
+package models.repository.api;
 
-import dtos.generic.ValidatableDto;
+import models.Cloud;
+import models.Hardware;
+import models.HardwareProperties;
+import models.repository.api.generic.ModelRepository;
 
-/**
- * Created by daniel on 09.04.15.
- */
-public class LocationDto extends ValidatableDto {
-    @Override public void validation() {
-        
-    }
+public interface HardwareRepository extends ModelRepository<Hardware> {
+
+    public Hardware findByCloudAndHardwareProperties(Cloud cloud,
+        HardwareProperties hardwareProperties);
+
 }

@@ -36,6 +36,8 @@ import java.util.List;
 
     @Column(updatable = false) private boolean isAssignable;
 
+    @Nullable @ManyToOne private GeoLocation geoLocation;
+
     /**
      * Empty constructor for hibernate.
      */
@@ -43,10 +45,11 @@ import java.util.List;
     }
 
     public LocationProperties(@Nullable LocationProperties parent, LocationScope locationScope,
-        boolean isAssignable) {
+        boolean isAssignable, @Nullable GeoLocation geoLocation) {
         this.parent = parent;
         this.locationScope = locationScope;
         this.isAssignable = isAssignable;
+        this.geoLocation = geoLocation;
     }
 
     public List<Location> getLocations() {
@@ -67,5 +70,9 @@ import java.util.List;
 
     public boolean isAssignable() {
         return isAssignable;
+    }
+
+    @Nullable public GeoLocation getGeoLocation() {
+        return geoLocation;
     }
 }

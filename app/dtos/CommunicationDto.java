@@ -18,15 +18,12 @@
 
 package dtos;
 
-import dtos.generic.NeedsValidationDto;
-import play.data.validation.ValidationError;
-
-import java.util.List;
+import dtos.generic.ValidatableDto;
 
 /**
  * Created by daniel on 09.01.15.
  */
-public class CommunicationDto extends NeedsValidationDto {
+public class CommunicationDto extends ValidatableDto {
 
     protected Long provider;
     protected Long consumer;

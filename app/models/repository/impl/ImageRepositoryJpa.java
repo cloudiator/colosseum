@@ -23,7 +23,7 @@ import com.google.inject.TypeLiteral;
 import models.Cloud;
 import models.Image;
 import models.ImageProperties;
-import models.repository.api.CloudImageRepository;
+import models.repository.api.ImageRepository;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
 
 import static models.util.JpaResultHelper.getSingleResultOrNull;
@@ -31,11 +31,11 @@ import static models.util.JpaResultHelper.getSingleResultOrNull;
 /**
  * Created by daniel on 31.10.14.
  */
-public class CloudImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
-    implements CloudImageRepository {
+public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
+    implements ImageRepository {
 
     @Inject
-    public CloudImageRepositoryJpa(TypeLiteral<Image> type) {
+    public ImageRepositoryJpa(TypeLiteral<Image> type) {
         super(type);
     }
 
@@ -46,7 +46,7 @@ public class CloudImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
      * @param imageProperties the image
      * @return the unique cloud image if any, otherwise null.
      */
-    @Override public Image findByCloudAndImage(final Cloud cloud,
+    @Override public Image findByCloudAndImageProperties(final Cloud cloud,
         final ImageProperties imageProperties) {
 
         return (Image) getSingleResultOrNull(

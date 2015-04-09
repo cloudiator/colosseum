@@ -20,7 +20,7 @@ package models.service.impl;
 
 import com.google.inject.Inject;
 import models.Location;
-import models.repository.api.CloudLocationRepository;
+import models.repository.api.LocationRepository;
 import models.service.api.CloudLocationService;
 import models.service.impl.generic.BaseModelService;
 
@@ -30,7 +30,7 @@ import models.service.impl.generic.BaseModelService;
 public class DefaultCloudLocationService extends BaseModelService<Location>
     implements CloudLocationService {
 
-    @Inject public DefaultCloudLocationService(CloudLocationRepository cloudLocationRepository) {
-        super(cloudLocationRepository);
+    @Inject public DefaultCloudLocationService(LocationRepository locationRepository) {
+        super(locationRepository);
     }
 }

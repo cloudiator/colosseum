@@ -23,7 +23,7 @@ import dtos.validation.NotNullOrEmptyValidator;
 /**
  * A Dto for named entities.
  */
-public abstract class NamedDto extends NeedsValidationDto {
+public abstract class NamedDto extends ValidatableDto {
 
     private String name;
 

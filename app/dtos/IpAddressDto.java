@@ -20,20 +20,14 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NeedsValidationDto;
-import dtos.validation.generic.ValidatorHelper;
-import models.IpType;
+import dtos.generic.ValidatableDto;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class IpAddressDto extends NeedsValidationDto {
+public class IpAddressDto extends ValidatableDto {
 
     private String ip;
     private String ipType;

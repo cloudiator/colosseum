@@ -20,47 +20,78 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NamedDto;
-import models.OperatingSystem;
+import dtos.generic.ValidatableDto;
+import models.Cloud;
+import models.ImageProperties;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
 
-import java.util.List;
+public class ImageDto extends ValidatableDto {
 
-public class ImageDto extends NamedDto {
 
-    protected Long operatingSystem;
-
+    protected Long cloud;
+    protected Long image;
+    protected String cloudUuid;
 
     public ImageDto() {
         super();
     }
 
-    public ImageDto(String name, Long operatingSystem) {
-        super(name);
-        this.operatingSystem = operatingSystem;
+    @Override public void validation() {
+
     }
 
-    public Long getOperatingSystem() {
-        return operatingSystem;
+    public ImageDto(Long cloud, Long image, String cloudUuid) {
+        this.cloud = cloud;
+        this.image = image;
+        this.cloudUuid = cloudUuid;
     }
 
-    public void setOperatingSystem(Long operatingSystem) {
-        this.operatingSystem = operatingSystem;
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getImage() {
+        return image;
+    }
+
+    public void setImage(Long image) {
+        this.image = image;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
 //    @Override public List<ValidationError> validateNotNull() {
-//        final List<ValidationError> errors = super.validateNotNull();
+//        List<ValidationError> errors = new ArrayList<>();
 //
 //        //validate cloud reference
-//        OperatingSystem operatingSystem = null;
-//        if (this.operatingSystem == null) {
-//            errors.add(new ValidationError("operatingsystem", "The operatingsystem is required."));
+//        Cloud cloud = null;
+//        if (this.cloud == null) {
+//            errors.add(new ValidationError("cloud", "The cloud is required."));
 //        } else {
-//            operatingSystem = References.operatingSystemService.get().getById(this.operatingSystem);
-//            if (operatingSystem == null) {
-//                errors.add(new ValidationError("operatingsystem",
-//                    "The given operatingsystem is invalid."));
+//            cloud = References.cloudService.get().getById(this.cloud);
+//            if (cloud == null) {
+//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
+//            }
+//        }
+//
+//        //validate cloud reference
+//        ImageProperties imageProperties = null;
+//        if (this.image == null) {
+//            errors.add(new ValidationError("image", "The image is required."));
+//        } else {
+//            imageProperties = References.imagePropertiesService.get().getById(this.image);
+//            if (imageProperties == null) {
+//                errors.add(new ValidationError("image", "The given image is invalid."));
 //            }
 //        }
 //
@@ -70,7 +101,8 @@ public class ImageDto extends NamedDto {
 
     public static class References {
 
-        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
 
+        @Inject public static Provider<BaseModelService<ImageProperties>> imagePropertiesService;
     }
 }

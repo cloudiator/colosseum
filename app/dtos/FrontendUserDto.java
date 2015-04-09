@@ -18,14 +18,9 @@
 
 package dtos;
 
-import dtos.generic.NeedsValidationDto;
-import play.data.validation.Constraints;
-import play.data.validation.ValidationError;
+import dtos.generic.ValidatableDto;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class FrontendUserDto extends NeedsValidationDto {
+public class FrontendUserDto extends ValidatableDto {
 
     protected String firstName;
     protected String lastName;

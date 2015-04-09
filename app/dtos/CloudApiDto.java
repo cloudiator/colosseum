@@ -20,19 +20,15 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NeedsValidationDto;
+import dtos.generic.ValidatableDto;
 import models.Api;
 import models.Cloud;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class CloudApiDto extends NeedsValidationDto {
+public class CloudApiDto extends ValidatableDto {
 
 
     protected Long api;

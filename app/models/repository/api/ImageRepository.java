@@ -16,22 +16,18 @@
  * under the License.
  */
 
-package models.repository.impl;
+package models.repository.api;
 
-import com.google.inject.Inject;
-import com.google.inject.TypeLiteral;
-import models.Location;
-import models.repository.api.CloudLocationRepository;
-import models.repository.impl.generic.BaseModelRepositoryJpa;
+import models.Cloud;
+import models.Image;
+import models.ImageProperties;
+import models.repository.api.generic.ModelRepository;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel on 31.10.14.
  */
-public class CloudLocationRepositoryJpa extends BaseModelRepositoryJpa<Location>
-    implements CloudLocationRepository {
+public interface ImageRepository extends ModelRepository<Image> {
 
-    @Inject
-    public CloudLocationRepositoryJpa(TypeLiteral<Location> type) {
-        super(type);
-    }
+    public Image findByCloudAndImageProperties(Cloud cloud, ImageProperties imageProperties);
+
 }

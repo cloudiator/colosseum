@@ -18,17 +18,18 @@
 
 package dtos;
 
-import dtos.generic.NeedsValidationDto;
-import play.data.validation.ValidationError;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import dtos.generic.ValidatableDto;
+import models.Cloud;
+import models.HardwareProperties;
+import models.service.impl.generic.BaseModelService;
 
-import java.util.ArrayList;
-import java.util.List;
+public class HardwareDto extends ValidatableDto {
 
-public class HardwareDto extends NeedsValidationDto {
-
-    protected Integer numberOfCpu;
-    protected Long mbOfRam;
-    protected Long localDiskSpace;
+    protected Long cloud;
+    protected Long hardware;
+    protected String cloudUuid;
 
     public HardwareDto() {
         super();
@@ -38,52 +39,72 @@ public class HardwareDto extends NeedsValidationDto {
 
     }
 
-    public HardwareDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
-        this.numberOfCpu = numberOfCpu;
-        this.mbOfRam = mbOfRam;
-        this.localDiskSpace = localDiskSpace;
+    public HardwareDto(Long cloud, Long hardware, String cloudUuid) {
+        this.cloud = cloud;
+        this.hardware = hardware;
+        this.cloudUuid = cloudUuid;
     }
 
-    public Integer getNumberOfCpu() {
-        return numberOfCpu;
+    public Long getCloud() {
+        return cloud;
     }
 
-    public void setNumberOfCpu(Integer numberOfCpu) {
-        this.numberOfCpu = numberOfCpu;
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
     }
 
-    public Long getMbOfRam() {
-        return mbOfRam;
+    public Long getHardware() {
+        return hardware;
     }
 
-    public void setMbOfRam(Long mbOfRam) {
-        this.mbOfRam = mbOfRam;
+    public void setHardware(Long hardware) {
+        this.hardware = hardware;
     }
 
-    public Long getLocalDiskSpace() {
-        return localDiskSpace;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setLocalDiskSpace(Long localDiskSpace) {
-        this.localDiskSpace = localDiskSpace;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
 //    @Override public List<ValidationError> validateNotNull() {
 //        List<ValidationError> errors = new ArrayList<>();
 //
-//        if (this.numberOfCpu <= 0) {
-//            errors.add(new ValidationError("hardware", "NumberOfCpu must be greater 0"));
+//        //validate cloud reference
+//        Cloud cloud = null;
+//        if (this.cloud == null) {
+//            errors.add(new ValidationError("cloud", "The cloud is required."));
+//        } else {
+//            cloud = References.cloudService.get().getById(this.cloud);
+//            if (cloud == null) {
+//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
+//            }
 //        }
 //
-//        if (this.mbOfRam <= 0) {
-//            errors.add(new ValidationError("hardware", "MbOfRam must be greater 0"));
+//        //validate hardware reference
+//        HardwareProperties hardwareProperties = null;
+//        if (this.hardware == null) {
+//            errors.add(new ValidationError("hardware", "The hardware is required."));
+//        } else {
+//            hardwareProperties = References.hardwarePropertiesService.get().getById(this.hardware);
+//            if (hardwareProperties == null) {
+//                errors.add(new ValidationError("hardware", "The given hardware is invalid."));
+//            }
 //        }
 //
-//        if (this.mbOfRam <= 0) {
-//            errors.add(new ValidationError("hardware", "LocalDiskSpace must be greater 0"));
-//        }
 //
 //        return errors;
-//
 //    }
+
+
+    public static class References {
+
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+
+        @Inject public static Provider<BaseModelService<HardwareProperties>> hardwarePropertiesService;
+
+
+    }
 }

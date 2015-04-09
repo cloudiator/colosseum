@@ -16,18 +16,15 @@
  * under the License.
  */
 
-package models.repository.api;
+package dtos;
 
-import models.Cloud;
-import models.Image;
-import models.ImageProperties;
-import models.repository.api.generic.ModelRepository;
+import dtos.generic.ValidatableDto;
 
 /**
- * Created by daniel on 31.10.14.
+ * Created by daniel on 09.04.15.
  */
-public interface CloudImageRepository extends ModelRepository<Image> {
+public class CloudVirtualMachineDto extends ValidatableDto {
+    @Override public void validation() {
 
-    public Image findByCloudAndImage(Cloud cloud, ImageProperties imageProperties);
-
+    }
 }

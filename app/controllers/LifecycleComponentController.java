@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.LifecycleComponentDto;
@@ -38,7 +39,7 @@ public class LifecycleComponentController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public LifecycleComponentController(ModelService<LifecycleComponent> modelService,
+    @Inject public LifecycleComponentController(ModelService<LifecycleComponent> modelService,
         TypeLiteral<LifecycleComponent> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.InstanceDto;
@@ -28,7 +29,8 @@ import models.service.api.generic.ModelService;
 /**
  * Created by daniel on 09.04.15.
  */
-public class InstanceController extends GenericApiController<Instance, InstanceDto, InstanceDto, InstanceDto> {
+public class InstanceController
+    extends GenericApiController<Instance, InstanceDto, InstanceDto, InstanceDto> {
     /**
      * Constructs a GenericApiController.
      *
@@ -37,7 +39,7 @@ public class InstanceController extends GenericApiController<Instance, InstanceD
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public InstanceController(ModelService<Instance> modelService,
+    @Inject public InstanceController(ModelService<Instance> modelService,
         TypeLiteral<Instance> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

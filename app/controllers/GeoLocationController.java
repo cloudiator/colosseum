@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.GeoLocationDto;
@@ -38,7 +39,7 @@ public class GeoLocationController
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public GeoLocationController(ModelService<GeoLocation> modelService,
+    @Inject public GeoLocationController(ModelService<GeoLocation> modelService,
         TypeLiteral<GeoLocation> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

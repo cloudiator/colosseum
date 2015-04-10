@@ -18,7 +18,16 @@
 
 package dtos;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
+import models.Cloud;
+import models.Hardware;
+import models.Image;
+import models.Location;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 12.02.15.
@@ -26,24 +35,19 @@ import dtos.generic.ValidatableDto;
 public class VirtualMachineTemplateDto extends ValidatableDto {
 
     protected long cloud;
-    protected long cloudImage;
-    protected long cloudLocation;
-    protected long cloudHardware;
+    protected long image;
+    protected long location;
+    protected long hardware;
 
     public VirtualMachineTemplateDto() {
         super();
     }
 
-    @Override public void validation() {
-
-    }
-
-    public VirtualMachineTemplateDto(long cloud, long cloudImage, long cloudLocation,
-        long cloudHardware) {
+    public VirtualMachineTemplateDto(long cloud, long image, long location, long hardware) {
         this.cloud = cloud;
-        this.cloudImage = cloudImage;
-        this.cloudLocation = cloudLocation;
-        this.cloudHardware = cloudHardware;
+        this.image = image;
+        this.location = location;
+        this.hardware = hardware;
     }
 
     public long getCloud() {
@@ -54,27 +58,50 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public long getCloudImage() {
-        return cloudImage;
+    public long getImage() {
+        return image;
     }
 
-    public void setCloudImage(long cloudImage) {
-        this.cloudImage = cloudImage;
+    public void setImage(long image) {
+        this.image = image;
     }
 
-    public long getCloudLocation() {
-        return cloudLocation;
+    public long getLocation() {
+        return location;
     }
 
-    public void setCloudLocation(long cloudLocation) {
-        this.cloudLocation = cloudLocation;
+    public void setLocation(long location) {
+        this.location = location;
     }
 
-    public long getCloudHardware() {
-        return cloudHardware;
+    public long getHardware() {
+        return hardware;
     }
 
-    public void setCloudHardware(long cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public void setHardware(long hardware) {
+        this.hardware = hardware;
     }
+
+    @Override public void validation() {
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(Long.class).validate(image).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.imageService.get()));
+        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.locationService.get()));
+        validator(Long.class).validate(hardware).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
+    }
+
+    public static class References {
+
+        @Inject public static Provider<ModelService<Cloud>> cloudService;
+
+        @Inject public static Provider<ModelService<Image>> imageService;
+
+        @Inject public static Provider<ModelService<Location>> locationService;
+
+        @Inject public static Provider<ModelService<Hardware>> hardwareService;
+    }
+
 }

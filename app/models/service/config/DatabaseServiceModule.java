@@ -20,10 +20,11 @@ package models.service.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import dtos.ApplicationComponentDto;
+import dtos.CloudApiDto;
 import dtos.FrontendGroupDto;
 import dtos.LoginDto;
-import models.Cloud;
-import models.FrontendGroup;
+import models.*;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
@@ -36,11 +37,49 @@ import models.service.impl.generic.BaseModelService;
  */
 public class DatabaseServiceModule extends AbstractModule {
     @Override protected void configure() {
+        // API
+        bind(new TypeLiteral<ModelService<Api>>() {
+        }).to(new TypeLiteral<BaseModelService<Api>>() {
+        });
         //API Access Token
         bind(ApiAccessTokenService.class).to(DefaultApiAccessTokenService.class);
+        //Application
+        bind(new TypeLiteral<ModelService<Application>>() {
+        }).to(new TypeLiteral<BaseModelService<Application>>() {
+        });
+        // Application Component
+        bind(new TypeLiteral<ModelService<ApplicationComponent>>() {
+        }).to(new TypeLiteral<BaseModelService<ApplicationComponent>>() {
+        });
+        requestStaticInjection(ApplicationComponentDto.References.class);
         // Cloud
         bind(new TypeLiteral<ModelService<Cloud>>() {
         }).to(new TypeLiteral<BaseModelService<Cloud>>() {
+        });
+        // Cloud API
+        bind(new TypeLiteral<ModelService<CloudApi>>() {
+        }).to(new TypeLiteral<BaseModelService<CloudApi>>() {
+        });
+        requestInjection(CloudApiDto.References.class);
+        // Cloud Credential
+        bind(new TypeLiteral<ModelService<CloudCredential>>() {
+        }).to(new TypeLiteral<BaseModelService<CloudCredential>>() {
+        });
+        // Cloud Virtual Machine
+        bind(new TypeLiteral<ModelService<CloudVirtualMachine>>() {
+        }).to(new TypeLiteral<BaseModelService<CloudVirtualMachine>>() {
+        });
+        // Communication
+        bind(new TypeLiteral<ModelService<Communication>>() {
+        }).to(new TypeLiteral<BaseModelService<Communication>>() {
+        });
+        // Communication Channel
+        bind(new TypeLiteral<ModelService<CommunicationChannel>>() {
+        }).to(new TypeLiteral<BaseModelService<CommunicationChannel>>() {
+        });
+        // Component
+        bind(new TypeLiteral<ModelService<Component>>() {
+        }).to(new TypeLiteral<BaseModelService<Component>>() {
         });
         // Frontend User
         bind(FrontendUserService.class).to(DefaultFrontendUserService.class);
@@ -50,5 +89,53 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<FrontendGroup>>() {
         });
         requestStaticInjection(FrontendGroupDto.References.class);
+        //Geo Location
+        bind(new TypeLiteral<ModelService<GeoLocation>>() {
+        }).to(new TypeLiteral<BaseModelService<GeoLocation>>() {
+        });
+        //Hardware
+        bind(new TypeLiteral<ModelService<Hardware>>() {
+        }).to(new TypeLiteral<BaseModelService<Hardware>>() {
+        });
+        //Hardware Properties
+        bind(new TypeLiteral<ModelService<HardwareProperties>>() {
+        }).to(new TypeLiteral<BaseModelService<HardwareProperties>>() {
+        });
+        //Image
+        bind(new TypeLiteral<ModelService<Image>>() {
+        }).to(new TypeLiteral<BaseModelService<Image>>() {
+        });
+        //Image Properties
+        bind(new TypeLiteral<ModelService<ImageProperties>>() {
+        }).to(new TypeLiteral<BaseModelService<ImageProperties>>() {
+        });
+        //Instance
+        bind(new TypeLiteral<ModelService<Instance>>() {
+        }).to(new TypeLiteral<BaseModelService<Instance>>() {
+        });
+        //Ip Address
+        bind(new TypeLiteral<ModelService<IpAddress>>() {
+        }).to(new TypeLiteral<BaseModelService<IpAddress>>() {
+        });
+        //Lifecycle Component
+        bind(new TypeLiteral<ModelService<LifecycleComponent>>() {
+        }).to(new TypeLiteral<BaseModelService<LifecycleComponent>>() {
+        });
+        //Location
+        bind(new TypeLiteral<ModelService<Location>>() {
+        }).to(new TypeLiteral<BaseModelService<Location>>() {
+        });
+        //LocationProperties
+        bind(new TypeLiteral<ModelService<LocationProperties>>() {
+        }).to(new TypeLiteral<BaseModelService<LocationProperties>>() {
+        });
+        //VirtualMachine
+        bind(new TypeLiteral<ModelService<VirtualMachine>>() {
+        }).to(new TypeLiteral<BaseModelService<VirtualMachine>>() {
+        });
+        //VirtualMachineTemplate
+        bind(new TypeLiteral<ModelService<VirtualMachineTemplate>>() {
+        }).to(new TypeLiteral<BaseModelService<VirtualMachineTemplate>>() {
+        });
     }
 }

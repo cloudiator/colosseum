@@ -36,7 +36,7 @@ public class LinkDecoratorDto<T extends Dto> implements Dto{
         this.link = Links.fromSelfLink(selfLink);
     }
 
-    public static <S extends Dto> LinkDecoratorDto<S> of(S dto, String selfLink) {
+    public static <S extends Dto> LinkDecoratorDto<S> decorate(S dto, String selfLink) {
         return new LinkDecoratorDto<>(dto, selfLink);
     }
 

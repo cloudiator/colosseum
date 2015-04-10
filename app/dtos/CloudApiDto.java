@@ -21,9 +21,12 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
 import models.Api;
 import models.Cloud;
-import models.service.impl.generic.BaseModelService;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel seybold on 11.12.2014.
@@ -40,7 +43,11 @@ public class CloudApiDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-
+        validator(Long.class).validate(api).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.apiService.get()));
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(String.class).validate(endpoint).withValidator(new NotNullOrEmptyValidator());
     }
 
     public CloudApiDto(Long api, Long cloud, String endpoint) {
@@ -74,40 +81,10 @@ public class CloudApiDto extends ValidatableDto {
         this.endpoint = endpoint;
     }
 
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        //validate api reference
-//        Api api = null;
-//        if (this.api == null) {
-//            errors.add(new ValidationError("api", "The api is required."));
-//        } else {
-//            api = References.apiService.get().getById(this.api);
-//            if (api == null) {
-//                errors.add(new ValidationError("api", "The given api is invalid."));
-//            }
-//        }
-//
-//        //validate cloud reference
-//        Cloud cloud = null;
-//        if (this.cloud == null) {
-//            errors.add(new ValidationError("cloud", "The cloud is required."));
-//        } else {
-//            cloud = References.cloudService.get().getById(this.cloud);
-//            if (cloud == null) {
-//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-//            }
-//        }
-//
-//
-//        return errors;
-//    }
-
-
     public static class References {
 
-        @Inject public static Provider<BaseModelService<Api>> apiService;
+        @Inject public static Provider<ModelService<Api>> apiService;
 
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject public static Provider<ModelService<Cloud>> cloudService;
     }
 }

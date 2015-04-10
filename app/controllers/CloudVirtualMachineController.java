@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.CloudVirtualMachineDto;
@@ -38,7 +39,7 @@ public class CloudVirtualMachineController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public CloudVirtualMachineController(ModelService<CloudVirtualMachine> modelService,
+    @Inject public CloudVirtualMachineController(ModelService<CloudVirtualMachine> modelService,
         TypeLiteral<CloudVirtualMachine> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

@@ -18,36 +18,33 @@
 
 package dtos;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import dtos.generic.NamedDto;
-
-import java.util.List;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
+import models.GeoLocation;
+import models.LocationProperties;
+import models.LocationScope;
+import models.service.api.generic.ModelService;
 
 public class LocationPropertiesDto extends NamedDto {
 
-    protected List<Long> locationCodes;
-
-    protected Long parent;
-
-    protected String locationScope;
+    private Long parent;
+    private LocationScope locationScope;
+    private Boolean isAssignable;
+    private Long geoLocation;
 
     public LocationPropertiesDto() {
-        super();
     }
 
-    public LocationPropertiesDto(String name, List<Long> locationCodes, Long parent,
-        String locationScope) {
+    public LocationPropertiesDto(String name, Long parent, LocationScope locationScope,
+        Boolean isAssignable, Long geoLocation) {
         super(name);
-        this.locationCodes = locationCodes;
         this.parent = parent;
         this.locationScope = locationScope;
-    }
-
-    public List<Long> getLocationCodes() {
-        return locationCodes;
-    }
-
-    public void setLocationCodes(List<Long> locationCodes) {
-        this.locationCodes = locationCodes;
+        this.isAssignable = isAssignable;
+        this.geoLocation = geoLocation;
     }
 
     public Long getParent() {
@@ -58,11 +55,43 @@ public class LocationPropertiesDto extends NamedDto {
         this.parent = parent;
     }
 
-    public String getLocationScope() {
+    public LocationScope getLocationScope() {
         return locationScope;
     }
 
-    public void setLocationScope(String locationScope) {
+    public void setLocationScope(LocationScope locationScope) {
         this.locationScope = locationScope;
+    }
+
+    public Boolean isAssignable() {
+        return isAssignable;
+    }
+
+    public void setIsAssignable(Boolean isAssignable) {
+        this.isAssignable = isAssignable;
+    }
+
+    public Long getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(Long geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    @Override public void validation() {
+        super.validation();
+        validator(Long.class).validate(parent).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.locationPropertiesService.get()));
+        validator(Long.class).validate(geoLocation).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.geoLocationService.get()));
+        validator(Boolean.class).validate(isAssignable).withValidator(new NotNullValidator());
+        validator(LocationScope.class).validate(locationScope)
+            .withValidator(new NotNullValidator());
+    }
+
+    public static class References {
+        @Inject public static Provider<ModelService<LocationProperties>> locationPropertiesService;
+        @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
     }
 }

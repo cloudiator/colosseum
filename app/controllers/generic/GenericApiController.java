@@ -21,9 +21,9 @@ package controllers.generic;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import controllers.security.SecuredSessionOrToken;
-import dtos.conversion.api.ModelDtoConversionService;
 import dtos.api.Dto;
-import dtos.generic.WrapperDto;
+import dtos.conversion.api.ModelDtoConversionService;
+import dtos.generic.LinkDecoratorDto;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
 import play.data.Form;
@@ -36,9 +36,9 @@ import play.mvc.Security;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -147,17 +147,11 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     protected abstract String getSelfRoute(final Long id);
 
     /**
-     * Helper for retrieving the self routes for multiple models.
      *
-     * @param models a list of model entities
-     * @return a map linking a model id to a route.
      */
-    private Map<Long, String> getSelfRoutes(List<T> models) {
-        Map<Long, String> map = new HashMap<>(models.size());
-        for (T model : models) {
-            map.put(model.getId(), this.getSelfRoute(model.getId()));
-        }
-        return map;
+    private Dto convertToDto(T entity) {
+        U dto = this.conversionService.toDto(entity, getType);
+        return LinkDecoratorDto.decorate(dto, this.getSelfRoute(entity.getId()));
     }
 
     /**
@@ -182,7 +176,10 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      * @return A json representation of all entities.
      */
     @Transactional(readOnly = true) @BodyParser.Of(BodyParser.Empty.class) public Result list() {
-        return ok(Json.toJson(this.conversionService.toDtos(this.loadEntities(), this.getType)));
+        List<T> entities = this.loadEntities();
+        List<Dto> dtos = new ArrayList<>(entities.size());
+        dtos.addAll(entities.stream().map(this::convertToDto).collect(Collectors.toList()));
+        return ok(Json.toJson(dtos));
     }
 
     /**
@@ -207,8 +204,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
             return this.notFound(id);
         }
 
-        return ok(Json.toJson(
-            WrapperDto.of(this.conversionService.toDto(entity, this.getType), getSelfRoute(id))));
+        return ok(Json.toJson(this.convertToDto(entity)));
     }
 
     /**

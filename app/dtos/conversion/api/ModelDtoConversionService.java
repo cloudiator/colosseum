@@ -34,7 +34,4 @@ import java.util.List;
     public <T extends Model, S extends Dto> T toModel(S dto, Class<T> modelClass);
 
     public <T extends Model, S extends Dto> T toModel(S dto, T model);
-
-    public <T extends Model, S extends Dto> List<S> toDtos(List<T> models, Class<S> dtoClass);
-
 }

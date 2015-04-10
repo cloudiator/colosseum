@@ -42,7 +42,7 @@ public abstract class ValidatableDto implements Dto, Validatable {
         this.validationHolder = new ValidationHolder();
     }
 
-    public <S> ValidationBuilder<S> validator(Class<S> sClass) {
+    protected <S> ValidationBuilder<S> validator(Class<S> sClass) {
         return this.validationHolder.getBuilder(sClass);
     }
 

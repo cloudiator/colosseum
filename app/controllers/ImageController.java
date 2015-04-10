@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.ImageDto;
@@ -37,7 +38,7 @@ public class ImageController extends GenericApiController<Image, ImageDto, Image
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public ImageController(ModelService<Image> modelService, TypeLiteral<Image> typeLiteral,
+    @Inject public ImageController(ModelService<Image> modelService, TypeLiteral<Image> typeLiteral,
         ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

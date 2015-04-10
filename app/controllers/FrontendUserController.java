@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.FrontendUserDto;
@@ -37,7 +38,7 @@ public class FrontendUserController extends GenericApiController<FrontendUser, F
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public FrontendUserController(ModelService<FrontendUser> modelService,
+    @Inject public FrontendUserController(ModelService<FrontendUser> modelService,
         TypeLiteral<FrontendUser> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

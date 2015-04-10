@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.HardwarePropertiesDto;
@@ -37,7 +38,7 @@ public class HardwarePropertiesController extends GenericApiController<HardwareP
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public HardwarePropertiesController(ModelService<HardwareProperties> modelService,
+    @Inject public HardwarePropertiesController(ModelService<HardwareProperties> modelService,
         TypeLiteral<HardwareProperties> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

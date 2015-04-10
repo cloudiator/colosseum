@@ -1,5 +1,6 @@
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
@@ -20,7 +21,7 @@ public class HardwareController
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    public HardwareController(ModelService<Hardware> modelService,
+    @Inject public HardwareController(ModelService<Hardware> modelService,
         TypeLiteral<Hardware> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }

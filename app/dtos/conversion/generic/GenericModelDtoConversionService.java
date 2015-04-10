@@ -21,16 +21,14 @@ package dtos.conversion.generic;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.Singleton;
+import dtos.api.Dto;
 import dtos.conversion.api.DtoConverter;
 import dtos.conversion.api.ModelDtoConversionServiceWithRegistry;
-import dtos.api.Dto;
 import models.generic.Model;
 import play.Logger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -99,17 +97,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Override public <T extends Model, S extends Dto> T toModel(S dto, T model) {
         //noinspection unchecked
         return (T) this.converters.get(model.getClass(), dto.getClass()).toModel(dto, model);
-    }
-
-    @Override public <T extends Model, S extends Dto> List<S> toDtos(final List<T> models,
-        final Class<S> dtoClass) {
-        checkNotNull(models);
-        checkNotNull(dtoClass);
-        List<S> dtos = new ArrayList<>(models.size());
-        for (T model : models) {
-            dtos.add(this.toDto(model, dtoClass));
-        }
-        return dtos;
     }
 
     /**

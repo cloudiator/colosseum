@@ -16,15 +16,35 @@
  * under the License.
  */
 
-package dtos.conversion.generic;
+package dtos.generic;
 
-import dtos.conversion.api.DtoConverter;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import dtos.api.Dto;
-import models.generic.Model;
+
+import java.util.Set;
 
 /**
- * Created by daniel on 18.12.14.
+ * Created by daniel on 19.03.15.
  */
-public abstract class BaseConverter<T extends Model, S extends Dto>
-    implements DtoConverter<T, S> {
+public class LinkDecoratorDto<T extends Dto> implements Dto{
+
+    private final T dto;
+    private final Set<Link> link;
+
+    private LinkDecoratorDto(T dto, String selfLink) {
+        this.dto = dto;
+        this.link = Links.fromSelfLink(selfLink);
+    }
+
+    public static <S extends Dto> LinkDecoratorDto<S> of(S dto, String selfLink) {
+        return new LinkDecoratorDto<>(dto, selfLink);
+    }
+
+    @JsonUnwrapped public T getDto() {
+        return dto;
+    }
+
+    public Set<Link> getLink() {
+        return link;
+    }
 }

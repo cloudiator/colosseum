@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import models.Cloud;
-import models.HardwareProperties;
+import models.HardwareOffer;
 import models.service.impl.generic.BaseModelService;
 
 public class HardwareDto extends ValidatableDto {
@@ -103,7 +103,7 @@ public class HardwareDto extends ValidatableDto {
 
         @Inject public static Provider<BaseModelService<Cloud>> cloudService;
 
-        @Inject public static Provider<BaseModelService<HardwareProperties>> hardwarePropertiesService;
+        @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
 
 
     }

@@ -20,7 +20,7 @@ package models.repository.api;
 
 import models.Cloud;
 import models.Image;
-import models.ImageProperties;
+import models.ImageOffer;
 import models.repository.api.generic.ModelRepository;
 
 /**
@@ -28,6 +28,6 @@ import models.repository.api.generic.ModelRepository;
  */
 public interface ImageRepository extends ModelRepository<Image> {
 
-    public Image findByCloudAndImageProperties(Cloud cloud, ImageProperties imageProperties);
+    public Image findByCloudAndImageOffer(Cloud cloud, ImageOffer imageOffer);
 
 }

@@ -24,21 +24,21 @@ import dtos.generic.NamedDto;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullValidator;
 import models.GeoLocation;
-import models.LocationProperties;
+import models.LocationOffer;
 import models.LocationScope;
 import models.service.api.generic.ModelService;
 
-public class LocationPropertiesDto extends NamedDto {
+public class LocationOfferDto extends NamedDto {
 
     private Long parent;
     private LocationScope locationScope;
     private Boolean isAssignable;
     private Long geoLocation;
 
-    public LocationPropertiesDto() {
+    public LocationOfferDto() {
     }
 
-    public LocationPropertiesDto(String name, Long parent, LocationScope locationScope,
+    public LocationOfferDto(String name, Long parent, LocationScope locationScope,
         Boolean isAssignable, Long geoLocation) {
         super(name);
         this.parent = parent;
@@ -91,7 +91,7 @@ public class LocationPropertiesDto extends NamedDto {
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<LocationProperties>> locationPropertiesService;
+        @Inject public static Provider<ModelService<LocationOffer>> locationPropertiesService;
         @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
     }
 }

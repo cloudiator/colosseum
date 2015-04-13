@@ -20,25 +20,24 @@ package models.service.impl;
 
 import com.google.inject.Inject;
 import models.Cloud;
-import models.Hardware;
-import models.HardwareProperties;
-import models.repository.api.HardwareRepository;
-import models.service.api.CloudHardwareService;
+import models.Image;
+import models.ImageOffer;
+import models.repository.api.ImageRepository;
+import models.service.api.CloudImageService;
 import models.service.impl.generic.BaseModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class DefaultCloudHardwareService extends BaseModelService<Hardware>
-    implements CloudHardwareService {
+public class DefaultImageService extends BaseModelService<Image> implements CloudImageService {
 
-    @Inject public DefaultCloudHardwareService(HardwareRepository hardwareRepository) {
-        super(hardwareRepository);
+    @Inject public DefaultImageService(ImageRepository imageRepository) {
+        super(imageRepository);
     }
 
-    @Override public Hardware getByCloudAndHardwareFlavor(final Cloud cloud,
-        final HardwareProperties hardwareProperties) {
-        return ((HardwareRepository) this.modelRepository)
-            .findByCloudAndHardwareProperties(cloud, hardwareProperties);
+    @Override
+    public Image getByCloudAndImage(final Cloud cloud, final ImageOffer imageOffer) {
+        return ((ImageRepository) this.modelRepository)
+            .findByCloudAndImageOffer(cloud, imageOffer);
     }
 }

@@ -21,15 +21,15 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.HardwarePropertiesDto;
+import dtos.HardwareOfferDto;
 import dtos.conversion.api.ModelDtoConversionService;
-import models.HardwareProperties;
+import models.HardwareOffer;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
-public class HardwarePropertiesController extends GenericApiController<HardwareProperties, HardwarePropertiesDto, HardwarePropertiesDto, HardwarePropertiesDto> {
+public class HardwareOfferController extends GenericApiController<HardwareOffer, HardwareOfferDto, HardwareOfferDto, HardwareOfferDto> {
     /**
      * Constructs a GenericApiController.
      *
@@ -38,12 +38,12 @@ public class HardwarePropertiesController extends GenericApiController<HardwareP
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public HardwarePropertiesController(ModelService<HardwareProperties> modelService,
-        TypeLiteral<HardwareProperties> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public HardwareOfferController(ModelService<HardwareOffer> modelService,
+        TypeLiteral<HardwareOffer> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.HardwarePropertiesController.get(id).absoluteURL(request());
+        return controllers.routes.HardwareOfferController.get(id).absoluteURL(request());
     }
 }

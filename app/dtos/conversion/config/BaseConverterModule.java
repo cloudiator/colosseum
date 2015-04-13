@@ -20,10 +20,7 @@ package dtos.conversion.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
-import dtos.conversion.ApiConverter;
-import dtos.conversion.ApplicationConverter;
-import dtos.conversion.CloudConverter;
-import dtos.conversion.FrontendGroupConverter;
+import dtos.conversion.*;
 import dtos.conversion.api.DtoConverter;
 
 /**
@@ -44,6 +41,8 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CloudConverter.class);
         // FrontendGroup
         converterBinder.addBinding().to(FrontendGroupConverter.class);
+        //FrontendUSer
+        converterBinder.addBinding().to(FrontendUserConverter.class);
     }
 
 }

@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import models.Cloud;
-import models.ImageProperties;
+import models.ImageOffer;
 import models.service.impl.generic.BaseModelService;
 
 public class ImageDto extends ValidatableDto {
@@ -103,6 +103,6 @@ public class ImageDto extends ValidatableDto {
 
         @Inject public static Provider<BaseModelService<Cloud>> cloudService;
 
-        @Inject public static Provider<BaseModelService<ImageProperties>> imagePropertiesService;
+        @Inject public static Provider<BaseModelService<ImageOffer>> imageOfferService;
     }
 }

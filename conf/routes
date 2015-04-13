@@ -100,12 +100,12 @@ POST          /api/cloudHardware                   @controllers.HardwareControll
 PUT           /api/cloudHardware/:id               @controllers.HardwareController.put(id: Long)
 DELETE        /api/cloudHardware/:id               @controllers.HardwareController.delete(id: Long)
 
-#HardwareProperties
-GET           /api/hardwareProperties              @controllers.HardwarePropertiesController.list()
-GET           /api/hardwareProperties/:id          @controllers.HardwarePropertiesController.get(id: Long)
-POST          /api/hardwareProperties              @controllers.HardwarePropertiesController.post()
-PUT           /api/hardwareProperties/:id          @controllers.HardwarePropertiesController.put(id: Long)
-DELETE        /api/hardwareProperties/:id          @controllers.HardwarePropertiesController.delete(id: Long)
+#HardwareOffer
+GET           /api/hardwareOffer                   @controllers.HardwareOfferController.list()
+GET           /api/hardwareOffer/:id               @controllers.HardwareOfferController.get(id: Long)
+POST          /api/hardwareOffer                   @controllers.HardwareOfferController.post()
+PUT           /api/hardwareOffer/:id               @controllers.HardwareOfferController.put(id: Long)
+DELETE        /api/hardwareOffer/:id               @controllers.HardwareOfferController.delete(id: Long)
 
 #Image
 GET           /api/image                           @controllers.ImageController.list()
@@ -114,12 +114,12 @@ POST          /api/image                           @controllers.ImageController.
 PUT           /api/image/:id                       @controllers.ImageController.put(id: Long)
 DELETE        /api/image/:id                       @controllers.ImageController.delete(id: Long)
 
-#ImageProperties
-GET           /api/imageProperties                 @controllers.ImagePropertiesController.list()
-GET           /api/imageProperties/:id             @controllers.ImagePropertiesController.get(id: Long)
-POST          /api/imageProperties                 @controllers.ImagePropertiesController.post()
-PUT           /api/imageProperties/:id             @controllers.ImagePropertiesController.put(id: Long)
-DELETE        /api/imageProperties/:id             @controllers.ImagePropertiesController.delete(id: Long)
+#ImageOffer
+GET           /api/imageOffer                      @controllers.ImageOfferController.list()
+GET           /api/imageOffer/:id                  @controllers.ImageOfferController.get(id: Long)
+POST          /api/imageOffer                      @controllers.ImageOfferController.post()
+PUT           /api/imageOffer/:id                  @controllers.ImageOfferController.put(id: Long)
+DELETE        /api/imageOffer/:id                  @controllers.ImageOfferController.delete(id: Long)
 
 #Instance
 GET           /api/instance                        @controllers.InstanceController.list()
@@ -149,12 +149,12 @@ POST          /api/location                        @controllers.LocationControll
 PUT           /api/location/:id                    @controllers.LocationController.put(id: Long)
 DELETE        /api/location/:id                    @controllers.LocationController.delete(id: Long)
 
-#LocationProperties
-GET           /api/locationProperties              @controllers.LocationPropertiesController.list()
-GET           /api/locationProperties/:id          @controllers.LocationPropertiesController.get(id: Long)
-POST          /api/locationProperties              @controllers.LocationPropertiesController.post()
-PUT           /api/locationProperties/:id          @controllers.LocationPropertiesController.put(id: Long)
-DELETE        /api/locationProperties/:id          @controllers.LocationPropertiesController.delete(id: Long)
+#LocationOffer
+GET           /api/locationOffer                   @controllers.LocationOfferController.list()
+GET           /api/locationOffer/:id               @controllers.LocationOfferController.get(id: Long)
+POST          /api/locationOffer                   @controllers.LocationOfferController.post()
+PUT           /api/locationOffer/:id               @controllers.LocationOfferController.put(id: Long)
+DELETE        /api/locationOffer/:id               @controllers.LocationOfferController.delete(id: Long)
 
 #VirtualMachine
 GET           /api/virtualMachine                  @controllers.VirtualMachineController.list()

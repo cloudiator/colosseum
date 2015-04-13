@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.Cloud;
 import models.Hardware;
-import models.HardwareProperties;
+import models.HardwareOffer;
 import models.repository.api.HardwareRepository;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
 
@@ -39,12 +39,12 @@ public class HardwareRepositoryJpa extends BaseModelRepositoryJpa<Hardware>
         super(type);
     }
 
-    @Override public Hardware findByCloudAndHardwareProperties(final Cloud cloud,
-        final HardwareProperties hardwareProperties) {
+    @Override public Hardware findByCloudAndHardwareOffer(final Cloud cloud,
+        final HardwareOffer hardwareOffer) {
 
         return (Hardware) getSingleResultOrNull(em().createQuery(
-            "from CloudHardwareFlavor ch where cloud = :cloud and hardwareFlavor = :hardwareFlavor")
-            .setParameter("cloud", cloud).setParameter("hardwareFlavor", hardwareProperties));
+            "from CloudHardwareFlavor ch where cloud = :cloud and hardwareOffer = :hardwareOffer")
+            .setParameter("cloud", cloud).setParameter("hardwareOffer", hardwareOffer));
 
     }
 }

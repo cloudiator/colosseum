@@ -27,7 +27,7 @@ import java.util.List;
 
     @Column(updatable = false) private String cloudUuid;
 
-    @ManyToOne(optional = false) private ImageProperties imageProperties;
+    @ManyToOne(optional = false) private ImageOffer imageOffer;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -42,10 +42,10 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, ImageProperties imageProperties) {
+    public Image(String cloudUuid, Cloud cloud, ImageOffer imageOffer) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
-        this.imageProperties = imageProperties;
+        this.imageOffer = imageOffer;
     }
 
     public String getCloudUuid() {
@@ -56,7 +56,7 @@ import java.util.List;
         return cloud;
     }
 
-    public ImageProperties getImageProperties() {
-        return imageProperties;
+    public ImageOffer getImageOffer() {
+        return imageOffer;
     }
 }

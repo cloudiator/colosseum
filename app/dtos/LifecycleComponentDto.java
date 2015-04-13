@@ -19,40 +19,68 @@
 package dtos;
 
 import dtos.generic.NamedDto;
+import dtos.validation.NotNullOrEmptyValidator;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
 public class LifecycleComponentDto extends NamedDto {
 
-
-    protected String download;
-
-    protected String install;
-
-    protected String start;
-
-    protected String stop;
+    private String init;
+    private String preInstall;
+    private String install;
+    private String postInstall;
+    private String preStart;
+    private String start;
+    private String startDetection;
+    private String stopDetection;
+    private String postStart;
+    private String preStop;
+    private String stop;
+    private String postStop;
+    private String shutdown;
 
     public LifecycleComponentDto() {
         super();
     }
 
-    public LifecycleComponentDto(String name, String download, String install, String start,
-        String stop) {
-        super(name);
-        this.download = download;
+    public LifecycleComponentDto(String init, String preInstall, String install, String postInstall,
+        String preStart, String start, String startDetection, String stopDetection,
+        String postStart, String preStop, String stop, String postStop, String shutdown) {
+        this.init = init;
+        this.preInstall = preInstall;
         this.install = install;
+        this.postInstall = postInstall;
+        this.preStart = preStart;
         this.start = start;
+        this.startDetection = startDetection;
+        this.stopDetection = stopDetection;
+        this.postStart = postStart;
+        this.preStop = preStop;
         this.stop = stop;
+        this.postStop = postStop;
+        this.shutdown = shutdown;
     }
 
-    public String getDownload() {
-        return download;
+    @Override public void validation() {
+        super.validation();
+        validator(String.class).validate(start).withValidator(new NotNullOrEmptyValidator());
     }
 
-    public void setDownload(String download) {
-        this.download = download;
+    public String getInit() {
+        return init;
+    }
+
+    public void setInit(String init) {
+        this.init = init;
+    }
+
+    public String getPreInstall() {
+        return preInstall;
+    }
+
+    public void setPreInstall(String preInstall) {
+        this.preInstall = preInstall;
     }
 
     public String getInstall() {
@@ -63,6 +91,22 @@ public class LifecycleComponentDto extends NamedDto {
         this.install = install;
     }
 
+    public String getPostInstall() {
+        return postInstall;
+    }
+
+    public void setPostInstall(String postInstall) {
+        this.postInstall = postInstall;
+    }
+
+    public String getPreStart() {
+        return preStart;
+    }
+
+    public void setPreStart(String preStart) {
+        this.preStart = preStart;
+    }
+
     public String getStart() {
         return start;
     }
@@ -71,11 +115,59 @@ public class LifecycleComponentDto extends NamedDto {
         this.start = start;
     }
 
+    public String getStartDetection() {
+        return startDetection;
+    }
+
+    public void setStartDetection(String startDetection) {
+        this.startDetection = startDetection;
+    }
+
+    public String getStopDetection() {
+        return stopDetection;
+    }
+
+    public void setStopDetection(String stopDetection) {
+        this.stopDetection = stopDetection;
+    }
+
+    public String getPostStart() {
+        return postStart;
+    }
+
+    public void setPostStart(String postStart) {
+        this.postStart = postStart;
+    }
+
+    public String getPreStop() {
+        return preStop;
+    }
+
+    public void setPreStop(String preStop) {
+        this.preStop = preStop;
+    }
+
     public String getStop() {
         return stop;
     }
 
     public void setStop(String stop) {
         this.stop = stop;
+    }
+
+    public String getPostStop() {
+        return postStop;
+    }
+
+    public void setPostStop(String postStop) {
+        this.postStop = postStop;
+    }
+
+    public String getShutdown() {
+        return shutdown;
+    }
+
+    public void setShutdown(String shutdown) {
+        this.shutdown = shutdown;
     }
 }

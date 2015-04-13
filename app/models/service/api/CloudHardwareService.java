@@ -20,7 +20,7 @@ package models.service.api;
 
 import models.Cloud;
 import models.Hardware;
-import models.HardwareProperties;
+import models.HardwareOffer;
 import models.service.api.generic.ModelService;
 
 /**
@@ -28,7 +28,7 @@ import models.service.api.generic.ModelService;
  */
 public interface CloudHardwareService extends ModelService<Hardware> {
 
-    public Hardware getByCloudAndHardwareFlavor(Cloud cloud, HardwareProperties hardwareProperties);
+    public Hardware getByCloudAndHardwareFlavor(Cloud cloud, HardwareOffer hardwareOffer);
 
 
 }

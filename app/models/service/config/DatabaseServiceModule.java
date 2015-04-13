@@ -79,6 +79,9 @@ public class DatabaseServiceModule extends AbstractModule {
         });
         // Frontend User
         bind(FrontendUserService.class).to(DefaultFrontendUserService.class);
+        bind(new TypeLiteral<ModelService<FrontendUser>>() {
+        }).to(new TypeLiteral<BaseModelService<FrontendUser>>() {
+        });
         requestStaticInjection(LoginDto.References.class);
         // Frontend User Group
         bind(new TypeLiteral<ModelService<FrontendGroup>>() {
@@ -94,16 +97,16 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Hardware>>() {
         });
         //Hardware Properties
-        bind(new TypeLiteral<ModelService<HardwareProperties>>() {
-        }).to(new TypeLiteral<BaseModelService<HardwareProperties>>() {
+        bind(new TypeLiteral<ModelService<HardwareOffer>>() {
+        }).to(new TypeLiteral<BaseModelService<HardwareOffer>>() {
         });
         //Image
         bind(new TypeLiteral<ModelService<Image>>() {
         }).to(new TypeLiteral<BaseModelService<Image>>() {
         });
         //Image Properties
-        bind(new TypeLiteral<ModelService<ImageProperties>>() {
-        }).to(new TypeLiteral<BaseModelService<ImageProperties>>() {
+        bind(new TypeLiteral<ModelService<ImageOffer>>() {
+        }).to(new TypeLiteral<BaseModelService<ImageOffer>>() {
         });
         //Instance
         bind(new TypeLiteral<ModelService<Instance>>() {
@@ -122,8 +125,8 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Location>>() {
         });
         //LocationProperties
-        bind(new TypeLiteral<ModelService<LocationProperties>>() {
-        }).to(new TypeLiteral<BaseModelService<LocationProperties>>() {
+        bind(new TypeLiteral<ModelService<LocationOffer>>() {
+        }).to(new TypeLiteral<BaseModelService<LocationOffer>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {

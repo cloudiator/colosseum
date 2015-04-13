@@ -28,9 +28,9 @@ import javax.annotation.Nullable;
 public class VirtualMachineTemplateBuilder {
 
     private Cloud cloud;
-    private HardwareProperties hardwareProperties;
-    private LocationProperties locationProperties;
-    private ImageProperties imageProperties;
+    private HardwareOffer hardwareOffer;
+    private LocationOffer locationOffer;
+    private ImageOffer imageOffer;
     private Location location;
     private Image image;
     private Hardware hardware;
@@ -43,18 +43,18 @@ public class VirtualMachineTemplateBuilder {
         return this;
     }
 
-    public VirtualMachineTemplateBuilder hardware(HardwareProperties hardwareProperties) {
-        this.hardwareProperties = hardwareProperties;
+    public VirtualMachineTemplateBuilder hardware(HardwareOffer hardwareOffer) {
+        this.hardwareOffer = hardwareOffer;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder location(LocationProperties locationProperties) {
-        this.locationProperties = locationProperties;
+    public VirtualMachineTemplateBuilder location(LocationOffer locationOffer) {
+        this.locationOffer = locationOffer;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder image(ImageProperties imageProperties) {
-        this.imageProperties = imageProperties;
+    public VirtualMachineTemplateBuilder image(ImageOffer imageOffer) {
+        this.imageOffer = imageOffer;
         return this;
     }
 
@@ -85,9 +85,9 @@ public class VirtualMachineTemplateBuilder {
         if (hardware != null) {
             return hardware;
         }
-        if (cloud != null && hardwareProperties != null) {
+        if (cloud != null && hardwareOffer != null) {
             for (Hardware searchHardware : cloud.getHardware()) {
-                if (searchHardware.getHardwareProperties().equals(hardwareProperties)) {
+                if (searchHardware.getHardwareOffer().equals(hardwareOffer)) {
                     return searchHardware;
                 }
             }
@@ -99,9 +99,9 @@ public class VirtualMachineTemplateBuilder {
         if (image != null) {
             return image;
         }
-        if (cloud != null && imageProperties != null) {
+        if (cloud != null && imageOffer != null) {
             for (Image searchImage : cloud.getImages()) {
-                if (searchImage.getImageProperties().equals(imageProperties)) {
+                if (searchImage.getImageOffer().equals(imageOffer)) {
                     return searchImage;
                 }
             }
@@ -114,9 +114,9 @@ public class VirtualMachineTemplateBuilder {
         if (location != null) {
             return location;
         }
-        if (cloud != null && locationProperties != null) {
+        if (cloud != null && locationOffer != null) {
             for (Location searchLocation : cloud.getLocations()) {
-                if (searchLocation.getLocationProperties().equals(locationProperties)) {
+                if (searchLocation.getLocationOffer().equals(locationOffer)) {
                     return searchLocation;
                 }
             }

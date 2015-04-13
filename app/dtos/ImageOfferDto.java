@@ -27,16 +27,16 @@ import play.data.validation.ValidationError;
 
 import java.util.List;
 
-public class ImagePropertiesDto extends NamedDto {
+public class ImageOfferDto extends NamedDto {
 
     protected Long operatingSystem;
 
 
-    public ImagePropertiesDto() {
+    public ImageOfferDto() {
         super();
     }
 
-    public ImagePropertiesDto(String name, Long operatingSystem) {
+    public ImageOfferDto(String name, Long operatingSystem) {
         super(name);
         this.operatingSystem = operatingSystem;
     }

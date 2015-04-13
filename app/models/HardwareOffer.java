@@ -27,7 +27,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 
-@Entity public class HardwareProperties extends Model {
+@Entity public class HardwareOffer extends Model {
 
     @Column(nullable = false, updatable = false) private int numberOfCpu;
 
@@ -35,12 +35,12 @@ import java.util.List;
 
     @Column(nullable = false, updatable = false) private long localDiskSpace;
 
-    @OneToMany(mappedBy = "hardwareProperties", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
+    @OneToMany(mappedBy = "hardwareOffer", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
 
-    private HardwareProperties() {
+    private HardwareOffer() {
     }
 
-    private HardwareProperties(int numberOfCpu, long mbOfRam, long localDiskSpace) {
+    private HardwareOffer(int numberOfCpu, long mbOfRam, long localDiskSpace) {
         this.numberOfCpu = numberOfCpu;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;

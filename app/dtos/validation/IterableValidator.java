@@ -30,18 +30,19 @@ import java.util.LinkedList;
  */
 public class IterableValidator<T> implements Validator<Iterable<T>> {
 
-    private final Validator<T> validator;
+    private Validator<T> validator;
 
-    public IterableValidator(Validator<T> validator) {
-        this.validator = validator;
+    public IterableValidator(Validator<T> tValidator) {
+        this.validator = tValidator;
     }
 
     @Override public Collection<ValidationError> validate(Iterable<T> ts)
         throws ValidationException {
-        Collection<ValidationError> errors = new LinkedList<>();
+
+        Collection<ValidationError> validationErrorList = new LinkedList<>();
         for (T t : ts) {
-            errors.addAll(validator.validate(t));
+            validationErrorList.addAll(this.validator.validate(t));
         }
-        return errors;
+        return validationErrorList;
     }
 }

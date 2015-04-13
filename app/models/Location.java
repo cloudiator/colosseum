@@ -27,7 +27,7 @@ import java.util.List;
 
     private String cloudUuid;
 
-    @ManyToOne(optional = false) private LocationProperties locationProperties;
+    @ManyToOne(optional = false) private LocationOffer locationOffer;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -43,18 +43,18 @@ import java.util.List;
 
     }
 
-    public Location(String cloudUuid, Cloud cloud, LocationProperties locationProperties) {
+    public Location(String cloudUuid, Cloud cloud, LocationOffer locationOffer) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
-        this.locationProperties = locationProperties;
+        this.locationOffer = locationOffer;
     }
 
     public String getCloudUuid() {
         return cloudUuid;
     }
 
-    public LocationProperties getLocationProperties() {
-        return locationProperties;
+    public LocationOffer getLocationOffer() {
+        return locationOffer;
     }
 
     public Cloud getCloud() {

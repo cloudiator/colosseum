@@ -20,10 +20,11 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
 import dtos.generic.NamedDto;
 import dtos.validation.IterableValidator;
 import dtos.validation.ModelIdValidator;
-import models.FrontendGroup;
+import models.FrontendUser;
 import models.service.api.generic.ModelService;
 
 import java.util.List;
@@ -44,11 +45,12 @@ public class FrontendGroupDto extends NamedDto {
 
     @Override public void validation() {
         super.validation();
-        validator(List.class).validate(frontendUsers).withValidator(new IterableValidator<Long>(
-            new ModelIdValidator<FrontendGroup>(References.frontendGroupService.get())));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(frontendUsers).withValidator(
+            new IterableValidator<>(new ModelIdValidator<>(References.frontendUserService.get())));
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<FrontendGroup>> frontendGroupService;
+        @Inject public static Provider<ModelService<FrontendUser>> frontendUserService;
     }
 }

@@ -27,7 +27,7 @@ import java.util.List;
 
     @Column(updatable = false) private String cloudUuid;
 
-    @ManyToOne(optional = false) private HardwareProperties hardwareProperties;
+    @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -42,10 +42,10 @@ import java.util.List;
     private Hardware() {
     }
 
-    public Hardware(String cloudUuid, Cloud cloud, HardwareProperties hardwareProperties) {
+    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
-        this.hardwareProperties = hardwareProperties;
+        this.hardwareOffer = hardwareOffer;
     }
 
     public String getCloudUuid() {
@@ -60,8 +60,8 @@ import java.util.List;
         return cloudCredentials;
     }
 
-    public HardwareProperties getHardwareProperties() {
-        return hardwareProperties;
+    public HardwareOffer getHardwareOffer() {
+        return hardwareOffer;
     }
 
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {

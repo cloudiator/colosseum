@@ -20,13 +20,13 @@ package dtos;
 
 import dtos.generic.ValidatableDto;
 
-public class HardwarePropertiesDto extends ValidatableDto {
+public class HardwareOfferDto extends ValidatableDto {
 
     protected Integer numberOfCpu;
     protected Long mbOfRam;
     protected Long localDiskSpace;
 
-    public HardwarePropertiesDto() {
+    public HardwareOfferDto() {
         super();
     }
 
@@ -34,7 +34,7 @@ public class HardwarePropertiesDto extends ValidatableDto {
 
     }
 
-    public HardwarePropertiesDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
+    public HardwareOfferDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
         this.numberOfCpu = numberOfCpu;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;

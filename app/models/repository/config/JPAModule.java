@@ -23,9 +23,11 @@ import com.google.inject.TypeLiteral;
 import models.*;
 import models.repository.api.ApiAccessTokenRepository;
 import models.repository.api.FrontendUserRepository;
+import models.repository.api.HardwareRepository;
 import models.repository.api.generic.ModelRepository;
 import models.repository.impl.ApiAccessTokenRepositoryJpa;
 import models.repository.impl.FrontendUserRepositoryJpa;
+import models.repository.impl.HardwareRepositoryJpa;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
 
 /**
@@ -74,6 +76,9 @@ public class JPAModule extends AbstractModule {
         });
         // Frontend User
         bind(FrontendUserRepository.class).to(FrontendUserRepositoryJpa.class);
+        bind(new TypeLiteral<ModelRepository<FrontendUser>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<FrontendUser>>() {
+        });
         // Frontend User Group
         bind(new TypeLiteral<ModelRepository<FrontendGroup>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<FrontendGroup>>() {
@@ -83,20 +88,21 @@ public class JPAModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<GeoLocation>>() {
         });
         //Hardware
+        bind(HardwareRepository.class).to(HardwareRepositoryJpa.class);
         bind(new TypeLiteral<ModelRepository<Hardware>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Hardware>>() {
         });
         //Hardware Properties
-        bind(new TypeLiteral<ModelRepository<HardwareProperties>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<HardwareProperties>>() {
+        bind(new TypeLiteral<ModelRepository<HardwareOffer>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<HardwareOffer>>() {
         });
         //Image
         bind(new TypeLiteral<ModelRepository<Image>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Image>>() {
         });
         //Image Properties
-        bind(new TypeLiteral<ModelRepository<ImageProperties>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<ImageProperties>>() {
+        bind(new TypeLiteral<ModelRepository<ImageOffer>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ImageOffer>>() {
         });
         //Instance
         bind(new TypeLiteral<ModelRepository<Instance>>() {
@@ -115,8 +121,8 @@ public class JPAModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
         });
         //LocationProperties
-        bind(new TypeLiteral<ModelRepository<LocationProperties>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<LocationProperties>>() {
+        bind(new TypeLiteral<ModelRepository<LocationOffer>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<LocationOffer>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelRepository<VirtualMachine>>() {

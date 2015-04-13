@@ -16,39 +16,24 @@
  * under the License.
  */
 
-package models;
+package dtos.conversion;
 
-import models.generic.Model;
-
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import java.util.List;
+import dtos.FrontendUserDto;
+import dtos.conversion.generic.AbstractConverter;
+import models.FrontendUser;
 
 /**
- * @todo we should probably normalize this table?
+ * Created by daniel on 13.04.15.
  */
-@Entity public class GeoLocation extends Model {
+public class FrontendUserConverter extends AbstractConverter<FrontendUser, FrontendUserDto> {
 
-    private String region;
-
-    private String city;
-
-    private String country;
-
-    private String iso3166;
-
-    private Long locationLatitude;
-
-    private Long LocationLongitude;
-
-    @OneToMany(mappedBy = "geoLocation")
-    private List<LocationOffer> locationOffers;
-
-    /**
-     * No-args constructor used by hibernate.
-     */
-    private GeoLocation() {
+    protected FrontendUserConverter() {
+        super(FrontendUser.class, FrontendUserDto.class);
     }
 
-
+    @Override public void configure() {
+        builder().from("firstName").to("firstName");
+        builder().from("lastName").to("lastName");
+        builder().from("mail").to("mail");
+    }
 }

@@ -21,16 +21,16 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.ImagePropertiesDto;
+import dtos.LocationOfferDto;
 import dtos.conversion.api.ModelDtoConversionService;
-import models.ImageProperties;
+import models.LocationOffer;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
-public class ImagePropertiesController extends
-    GenericApiController<ImageProperties, ImagePropertiesDto, ImagePropertiesDto, ImagePropertiesDto> {
+public class LocationOfferController extends
+    GenericApiController<LocationOffer, LocationOfferDto, LocationOfferDto, LocationOfferDto> {
     /**
      * Constructs a GenericApiController.
      *
@@ -39,12 +39,12 @@ public class ImagePropertiesController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ImagePropertiesController(ModelService<ImageProperties> modelService,
-        TypeLiteral<ImageProperties> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public LocationOfferController(ModelService<LocationOffer> modelService,
+        TypeLiteral<LocationOffer> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ImagePropertiesController.get(id).absoluteURL(request());
+        return controllers.routes.LocationOfferController.get(id).absoluteURL(request());
     }
 }

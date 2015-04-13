@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.Cloud;
 import models.Image;
-import models.ImageProperties;
+import models.ImageOffer;
 import models.repository.api.ImageRepository;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
 
@@ -43,15 +43,14 @@ public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
      * Searches the concrete image on the given cloud and the image
      *
      * @param cloud           the cloud
-     * @param imageProperties the image
+     * @param imageOffer the image
      * @return the unique cloud image if any, otherwise null.
      */
-    @Override public Image findByCloudAndImageProperties(final Cloud cloud,
-        final ImageProperties imageProperties) {
+    @Override public Image findByCloudAndImageOffer(final Cloud cloud, final ImageOffer imageOffer) {
 
         return (Image) getSingleResultOrNull(
             em().createQuery("from Image i where cloud = :cloud and image = :image")
-                .setParameter("cloud", cloud).setParameter("image", imageProperties));
+                .setParameter("cloud", cloud).setParameter("image", imageOffer));
 
     }
 }

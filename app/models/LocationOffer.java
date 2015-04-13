@@ -24,13 +24,13 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity public class LocationProperties extends Model {
+@Entity public class LocationOffer extends Model {
 
-    @OneToMany(mappedBy = "locationProperties") private List<Location> locations;
+    @OneToMany(mappedBy = "locationOffer") private List<Location> locations;
 
-    @ManyToOne @Nullable private LocationProperties parent;
+    @ManyToOne @Nullable private LocationOffer parent;
 
-    @OneToMany(mappedBy = "parent") private List<LocationProperties> children;
+    @OneToMany(mappedBy = "parent") private List<LocationOffer> children;
 
     @Column(updatable = false) @Enumerated(EnumType.STRING) private LocationScope locationScope;
 
@@ -41,10 +41,10 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private LocationProperties() {
+    private LocationOffer() {
     }
 
-    public LocationProperties(@Nullable LocationProperties parent, LocationScope locationScope,
+    public LocationOffer(@Nullable LocationOffer parent, LocationScope locationScope,
         boolean isAssignable, @Nullable GeoLocation geoLocation) {
         this.parent = parent;
         this.locationScope = locationScope;
@@ -56,11 +56,11 @@ import java.util.List;
         return locations;
     }
 
-    @Nullable public LocationProperties getParent() {
+    @Nullable public LocationOffer getParent() {
         return parent;
     }
 
-    public List<LocationProperties> getChildren() {
+    public List<LocationOffer> getChildren() {
         return children;
     }
 

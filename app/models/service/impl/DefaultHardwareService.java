@@ -19,18 +19,26 @@
 package models.service.impl;
 
 import com.google.inject.Inject;
-import models.Location;
-import models.repository.api.LocationRepository;
-import models.service.api.CloudLocationService;
+import models.Cloud;
+import models.Hardware;
+import models.HardwareOffer;
+import models.repository.api.HardwareRepository;
+import models.service.api.CloudHardwareService;
 import models.service.impl.generic.BaseModelService;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel on 03.11.14.
  */
-public class DefaultCloudLocationService extends BaseModelService<Location>
-    implements CloudLocationService {
+public class DefaultHardwareService extends BaseModelService<Hardware>
+    implements CloudHardwareService {
 
-    @Inject public DefaultCloudLocationService(LocationRepository locationRepository) {
-        super(locationRepository);
+    @Inject public DefaultHardwareService(HardwareRepository hardwareRepository) {
+        super(hardwareRepository);
+    }
+
+    @Override public Hardware getByCloudAndHardwareFlavor(final Cloud cloud,
+        final HardwareOffer hardwareOffer) {
+        return ((HardwareRepository) this.modelRepository)
+            .findByCloudAndHardwareOffer(cloud, hardwareOffer);
     }
 }

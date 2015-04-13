@@ -18,6 +18,7 @@
 
 package dtos.generic;
 
+import com.google.inject.TypeLiteral;
 import dtos.api.Dto;
 import dtos.api.Validatable;
 import dtos.validation.api.ValidateBuilder;
@@ -44,6 +45,10 @@ public abstract class ValidatableDto implements Dto, Validatable {
 
     protected <S> ValidateBuilder<S> validator(Class<S> sClass) {
         return this.validationHolder.getBuilder(sClass);
+    }
+
+    protected <S> ValidateBuilder<S> validator(TypeLiteral<S> implementation) {
+        return this.validationHolder.getBuilder(implementation);
     }
 
     public abstract void validation();

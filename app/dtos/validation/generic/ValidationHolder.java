@@ -19,7 +19,7 @@
 package dtos.validation.generic;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Lists;
+import com.google.inject.TypeLiteral;
 import dtos.validation.api.ReferenceValidator;
 import dtos.validation.api.ValidationException;
 
@@ -53,7 +53,7 @@ public class ValidationHolder implements ReferenceValidator {
         final ImmutableList.Builder<ReferenceValidator> builder =
             ImmutableList.<ReferenceValidator>builder();
         for (ValidationBuilder validationBuilder : validationBuilders) {
-            for(Object o : validationBuilder.build()) {
+            for (Object o : validationBuilder.build()) {
                 builder.add((ReferenceValidator) o);
             }
         }
@@ -71,8 +71,17 @@ public class ValidationHolder implements ReferenceValidator {
     }
 
     public <T> ValidationBuilder<T> getBuilder(Class<T> clazz) {
-        ValidationBuilder<T> validationBuilder = new ValidationBuilder<T>(clazz);
+        ValidationBuilder<T> validationBuilder = new ValidationBuilder<>();
         this.validationBuilders.add(validationBuilder);
         return validationBuilder;
     }
+
+    public <T> ValidationBuilder<T> getBuilder(TypeLiteral<T> typeLiteral) {
+        ValidationBuilder<T> validationBuilder = new ValidationBuilder<>();
+        this.validationBuilders.add(validationBuilder);
+        return validationBuilder;
+    }
+
+
+
 }

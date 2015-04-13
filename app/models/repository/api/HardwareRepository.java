@@ -20,12 +20,11 @@ package models.repository.api;
 
 import models.Cloud;
 import models.Hardware;
-import models.HardwareProperties;
+import models.HardwareOffer;
 import models.repository.api.generic.ModelRepository;
 
 public interface HardwareRepository extends ModelRepository<Hardware> {
 
-    public Hardware findByCloudAndHardwareProperties(Cloud cloud,
-        HardwareProperties hardwareProperties);
+    public Hardware findByCloudAndHardwareOffer(Cloud cloud, HardwareOffer hardwareOffer);
 
 }

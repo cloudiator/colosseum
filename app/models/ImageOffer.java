@@ -25,19 +25,19 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
 
-@Entity public class ImageProperties extends NamedModel {
+@Entity public class ImageOffer extends NamedModel {
 
     @ManyToOne(optional = false) private OperatingSystem operatingSystem;
 
-    @OneToMany(mappedBy = "imageProperties") private List<Image> images;
+    @OneToMany(mappedBy = "imageOffer") private List<Image> images;
 
     /**
      * Empty constructor for hibernate.
      */
-    private ImageProperties() {
+    private ImageOffer() {
     }
 
-    private ImageProperties(OperatingSystem operatingSystem) {
+    private ImageOffer(OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 

@@ -20,7 +20,7 @@ package models.service.api;
 
 import models.Cloud;
 import models.Image;
-import models.ImageProperties;
+import models.ImageOffer;
 import models.service.api.generic.ModelService;
 
 /**
@@ -28,7 +28,7 @@ import models.service.api.generic.ModelService;
  */
 public interface CloudImageService extends ModelService<Image> {
 
-    public Image getByCloudAndImage(Cloud cloud, ImageProperties imageProperties);
+    public Image getByCloudAndImage(Cloud cloud, ImageOffer imageOffer);
 
 
 }

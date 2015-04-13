@@ -19,25 +19,18 @@
 package models.service.impl;
 
 import com.google.inject.Inject;
-import models.Cloud;
-import models.Image;
-import models.ImageProperties;
-import models.repository.api.ImageRepository;
-import models.service.api.CloudImageService;
+import models.Location;
+import models.repository.api.LocationRepository;
+import models.service.api.CloudLocationService;
 import models.service.impl.generic.BaseModelService;
 
 /**
- * Created by daniel on 03.11.14.
+ * Created by bwpc on 09.12.2014.
  */
-public class DefaultCloudImageService extends BaseModelService<Image> implements CloudImageService {
+public class DefaultLocationService extends BaseModelService<Location>
+    implements CloudLocationService {
 
-    @Inject public DefaultCloudImageService(ImageRepository imageRepository) {
-        super(imageRepository);
-    }
-
-    @Override
-    public Image getByCloudAndImage(final Cloud cloud, final ImageProperties imageProperties) {
-        return ((ImageRepository) this.modelRepository)
-            .findByCloudAndImageProperties(cloud, imageProperties);
+    @Inject public DefaultLocationService(LocationRepository locationRepository) {
+        super(locationRepository);
     }
 }

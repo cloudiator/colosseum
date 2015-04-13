@@ -21,6 +21,11 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.IpAddressValidator;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
+import models.IpType;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
 
@@ -30,7 +35,7 @@ import models.service.impl.generic.BaseModelService;
 public class IpAddressDto extends ValidatableDto {
 
     private String ip;
-    private String ipType;
+    private IpType ipType;
     private Long virtualMachine;
 
     public IpAddressDto() {
@@ -38,10 +43,14 @@ public class IpAddressDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-
+        validator(String.class).validate(ip).withValidator(new NotNullOrEmptyValidator())
+            .withValidator(new IpAddressValidator());
+        validator(IpType.class).validate(ipType).withValidator(new NotNullValidator());
+        validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
     }
 
-    public IpAddressDto(String ip, String ipType, Long virtualMachine) {
+    public IpAddressDto(String ip, IpType ipType, Long virtualMachine) {
         this.ip = ip;
         this.ipType = ipType;
         this.virtualMachine = virtualMachine;
@@ -55,11 +64,11 @@ public class IpAddressDto extends ValidatableDto {
         this.ip = ip;
     }
 
-    public String getIpType() {
+    public IpType getIpType() {
         return ipType;
     }
 
-    public void setIpType(String ipType) {
+    public void setIpType(IpType ipType) {
         this.ipType = ipType;
     }
 
@@ -70,41 +79,6 @@ public class IpAddressDto extends ValidatableDto {
     public void setVirtualMachine(Long virtualMachine) {
         this.virtualMachine = virtualMachine;
     }
-
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        if (virtualMachine == null) {
-//            errors
-//                .add(new ValidationError("virtualMachine", "The virtual machine id is mandatory."));
-//        } else {
-//            if (References.virtualMachineService.get().getById(virtualMachine) == null) {
-//                errors.add(
-//                    new ValidationError("virtualMachine", "The virtual machine id is illegal."));
-//            }
-//        }
-//
-//        if (ip == null) {
-//            errors.add(new ValidationError("ip", "The ip is mandatory."));
-//        } else {
-//            if (!ValidatorHelper.isValidIpAddress(ip)) {
-//                errors.add(new ValidationError("ip", "The ip is not a valid ip address"));
-//            }
-//        }
-//
-//        if (ipType == null) {
-//            errors.add(new ValidationError("ipType", "The ip type is mandatory."));
-//        } else {
-//            try {
-//                IpType.valueOf(ipType);
-//            } catch (IllegalArgumentException e) {
-//                errors.add(new ValidationError("ipType", "The ipType value is illegal."));
-//            }
-//        }
-//
-//        return errors;
-//    }
-
 
     public static class References {
         @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;

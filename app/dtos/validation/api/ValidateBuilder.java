@@ -21,6 +21,6 @@ package dtos.validation.api;
 /**
  * Created by daniel on 20.03.15.
  */
-public interface ValidateBuilder {
-    public <T> ValidatorBuilder<T> validate(T t);
+public interface ValidateBuilder<T> {
+    public ValidatorBuilder<T> validate(T t);
 }

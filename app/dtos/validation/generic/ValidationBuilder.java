@@ -31,21 +31,14 @@ import java.util.List;
 /**
  * Created by daniel on 20.03.15.
  */
-public class ValidationBuilder<S> implements ValidateBuilder, ValidatorBuilder<S> {
+public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilder<S> {
 
-    private Class<S> type;
     @Nullable private S s;
     private List<Validator<? super S>> validators = new LinkedList<>();
 
-    public ValidationBuilder(Class<S> clazz) {
-        this.type = clazz;
-    }
-
-    @Override public <T> ValidatorBuilder<T> validate(@Nullable T t) {
-        //noinspection unchecked
-        this.s = (S) t;
-        //noinspection unchecked
-        return (ValidatorBuilder<T>) this;
+    @Override public ValidatorBuilder<S> validate(@Nullable S s) {
+        this.s = s;
+        return this;
     }
 
     @Override public ValidatorBuilder<S> withValidator(Validator<? super S> validator) {

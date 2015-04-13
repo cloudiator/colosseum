@@ -20,8 +20,8 @@ package dtos.generic;
 
 import dtos.api.Dto;
 import dtos.api.Validatable;
+import dtos.validation.api.ValidateBuilder;
 import dtos.validation.api.ValidationException;
-import dtos.validation.generic.ValidationBuilder;
 import dtos.validation.generic.ValidationHolder;
 import play.data.validation.ValidationError;
 
@@ -42,7 +42,7 @@ public abstract class ValidatableDto implements Dto, Validatable {
         this.validationHolder = new ValidationHolder();
     }
 
-    protected <S> ValidationBuilder<S> validator(Class<S> sClass) {
+    protected <S> ValidateBuilder<S> validator(Class<S> sClass) {
         return this.validationHolder.getBuilder(sClass);
     }
 

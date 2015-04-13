@@ -28,7 +28,7 @@ public class ValidationError {
     private final String message;
     private final String field;
 
-    public ValidationError(String field, String message) {
+    private ValidationError(String field, String message) {
         this.message = message;
         this.field = field;
     }

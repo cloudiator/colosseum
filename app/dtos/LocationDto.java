@@ -21,6 +21,9 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
 import models.Cloud;
 import models.LocationProperties;
 import models.service.impl.generic.BaseModelService;
@@ -29,81 +32,31 @@ import models.service.impl.generic.BaseModelService;
  * Created by daniel on 09.04.15.
  */
 public class LocationDto extends ValidatableDto {
-    @Override public void validation() {
-        
-    }
-
     protected Long cloud;
-    protected Long location;
+    protected Long locationProperties;
     protected String cloudUuid;
 
     public LocationDto() {
         super();
     }
 
-    public LocationDto(Long cloud, Long location, String cloudUuid) {
+    public LocationDto(Long cloud, Long locationProperties, String cloudUuid) {
         this.cloud = cloud;
-        this.location = location;
+        this.locationProperties = locationProperties;
         this.cloudUuid = cloudUuid;
     }
 
-    public Long getCloud() {
-        return cloud;
+    @Override public void validation() {
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(Long.class).validate(locationProperties).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.locationPropertiesService.get()));
+        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
     }
-
-    public void setCloud(Long cloud) {
-        this.cloud = cloud;
-    }
-
-    public Long getLocation() {
-        return location;
-    }
-
-    public void setLocation(Long location) {
-        this.location = location;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
-    }
-
-    //    @Override public List<ValidationError> validateNotNull() {
-    //        List<ValidationError> errors = new ArrayList<>();
-    //
-    //        //validate cloud reference
-    //        Cloud cloud = null;
-    //        if (this.cloud == null) {
-    //            errors.add(new ValidationError("cloud", "The cloud is required."));
-    //        } else {
-    //            cloud = References.cloudService.get().getById(this.cloud);
-    //            if (cloud == null) {
-    //                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-    //            }
-    //        }
-    //
-    //        //validate location reference
-    //        LocationProperties locationProperties = null;
-    //        if (this.location == null) {
-    //            errors.add(new ValidationError("location", "The location is required."));
-    //        } else {
-    //            locationProperties = References.locationPropertiesService.get().getById(this.location);
-    //            if (locationProperties == null) {
-    //                errors.add(new ValidationError("location", "The given location is invalid."));
-    //            }
-    //        }
-    //
-    //        return errors;
-    //    }
-
 
     public static class References {
-
         @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-
-        @Inject public static Provider<BaseModelService<LocationProperties>> locationPropertiesService;
+        @Inject public static Provider<BaseModelService<LocationProperties>>
+            locationPropertiesService;
     }
 }

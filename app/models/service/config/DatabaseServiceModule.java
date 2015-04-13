@@ -65,10 +65,6 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<CloudCredential>>() {
         }).to(new TypeLiteral<BaseModelService<CloudCredential>>() {
         });
-        // Cloud Virtual Machine
-        bind(new TypeLiteral<ModelService<CloudVirtualMachine>>() {
-        }).to(new TypeLiteral<BaseModelService<CloudVirtualMachine>>() {
-        });
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {

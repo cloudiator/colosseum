@@ -60,10 +60,6 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<CloudCredential>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<CloudCredential>>() {
         });
-        // Cloud Virtual Machine
-        bind(new TypeLiteral<ModelRepository<CloudVirtualMachine>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<CloudVirtualMachine>>() {
-        });
         // Communication
         bind(new TypeLiteral<ModelRepository<Communication>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Communication>>() {

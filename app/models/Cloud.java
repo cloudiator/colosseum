@@ -32,7 +32,7 @@ import java.util.List;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudVirtualMachine>
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<VirtualMachine>
         virtualMachines;
 
     /**
@@ -65,7 +65,7 @@ import java.util.List;
         return virtualMachineTemplates;
     }
 
-    public List<CloudVirtualMachine> getVirtualMachines() {
+    public List<VirtualMachine> getVirtualMachines() {
         return virtualMachines;
     }
 }

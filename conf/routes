@@ -44,13 +44,6 @@ POST          /api/cloud                           @controllers.CloudController.
 PUT           /api/cloud/:id                       @controllers.CloudController.put(id: Long)
 DELETE        /api/cloud/:id                       @controllers.CloudController.delete(id: Long)
 
-#CloudVirtualMachine
-GET           /api/cvm                             @controllers.CloudVirtualMachineController.list()
-GET           /api/cvm/:id                         @controllers.CloudVirtualMachineController.get(id: Long)
-POST          /api/cvm                             @controllers.CloudVirtualMachineController.post()
-PUT           /api/cvm/:id                         @controllers.CloudVirtualMachineController.put(id: Long)
-DELETE        /api/cvm/:id                         @controllers.CloudVirtualMachineController.delete(id: Long)
-
 #CloudCredential
 GET           /api/cloudCredential                 @controllers.CloudCredentialController.list()
 GET           /api/cloudCredential/:id             @controllers.CloudCredentialController.get(id: Long)

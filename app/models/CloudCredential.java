@@ -47,6 +47,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @ManyToMany(mappedBy = "cloudCredentials") private List<Location> locations;
 
+    @ManyToMany(mappedBy = "cloudCredentials") private List<VirtualMachine> virtualMachines;
+
     /**
      * Empty constructor for hibernate.
      */
@@ -88,19 +90,47 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return cloud;
     }
 
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
     public FrontendGroup getFrontendGroup() {
         return frontendGroup;
+    }
+
+    public void setFrontendGroup(FrontendGroup frontendGroup) {
+        this.frontendGroup = frontendGroup;
     }
 
     public List<Image> getImages() {
         return images;
     }
 
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
     public List<Hardware> getHardware() {
         return hardware;
     }
 
+    public void setHardware(List<Hardware> hardware) {
+        this.hardware = hardware;
+    }
+
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<VirtualMachine> getVirtualMachines() {
+        return virtualMachines;
+    }
+
+    public void setVirtualMachines(List<VirtualMachine> virtualMachines) {
+        this.virtualMachines = virtualMachines;
     }
 }

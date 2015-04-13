@@ -21,10 +21,7 @@ package models;
 import models.generic.NamedModel;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -35,12 +32,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class VirtualMachine extends NamedModel {
 
     @ManyToOne(optional = true) private Cloud cloud;
+    @ManyToMany private List<CloudCredential> cloudCredentials;
+
+    @Column(updatable = false, nullable = false) private String cloudUuid;
+
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
     @Nullable @ManyToOne(optional = true) private Location location;
+
     @OneToMany(mappedBy = "virtualMachine") private List<IpAddress> ipAddresses;
-    @Nullable @OneToOne(mappedBy = "virtualMachine", optional = true) private CloudVirtualMachine
-        cloudVirtualMachine;
 
     /**
      * Empty constructor for hibernate.
@@ -48,14 +48,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     private VirtualMachine() {
     }
 
-    public VirtualMachine(String name, Cloud cloud, Image image, Hardware hardware,
-        Location location, CloudVirtualMachine cloudVirtualMachine) {
+    public VirtualMachine(String name, Cloud cloud, String cloudUuid, @Nullable Hardware hardware,
+        @Nullable Image image, @Nullable Location location) {
         super(name);
         this.cloud = cloud;
-        this.image = image;
+        this.cloudUuid = cloudUuid;
         this.hardware = hardware;
+        this.image = image;
         this.location = location;
-        this.cloudVirtualMachine = cloudVirtualMachine;
     }
 
     public Cloud getCloud() {
@@ -99,11 +99,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.ipAddresses = ipAddresses;
     }
 
-    @Nullable public CloudVirtualMachine getCloudVirtualMachine() {
-        return cloudVirtualMachine;
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
     }
 
-    public void setCloudVirtualMachine(@Nullable CloudVirtualMachine cloudVirtualMachine) {
-        this.cloudVirtualMachine = cloudVirtualMachine;
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 }

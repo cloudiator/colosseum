@@ -18,7 +18,14 @@
 
 package dtos;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
+import models.Communication;
+import models.Instance;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.01.15.
@@ -34,7 +41,12 @@ public class CommunicationChannelDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-
+        validator(Long.class).validate(communication).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.communicationService.get()));
+        validator(Long.class).validate(provider).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.instanceService.get()));
+        validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.instanceService.get()));
     }
 
     public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
@@ -65,5 +77,12 @@ public class CommunicationChannelDto extends ValidatableDto {
 
     public void setConsumer(Long consumer) {
         this.consumer = consumer;
+    }
+
+    public static class References {
+
+        @Inject public static Provider<ModelService<Instance>> instanceService;
+
+        @Inject public static Provider<ModelService<Communication>> communicationService;
     }
 }

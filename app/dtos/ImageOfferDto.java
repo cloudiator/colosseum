@@ -21,16 +21,14 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.NamedDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
 import models.OperatingSystem;
 import models.service.impl.generic.BaseModelService;
-import play.data.validation.ValidationError;
-
-import java.util.List;
 
 public class ImageOfferDto extends NamedDto {
 
     protected Long operatingSystem;
-
 
     public ImageOfferDto() {
         super();
@@ -41,6 +39,12 @@ public class ImageOfferDto extends NamedDto {
         this.operatingSystem = operatingSystem;
     }
 
+    @Override public void validation() {
+        super.validation();
+        validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
+    }
+
     public Long getOperatingSystem() {
         return operatingSystem;
     }
@@ -49,28 +53,7 @@ public class ImageOfferDto extends NamedDto {
         this.operatingSystem = operatingSystem;
     }
 
-//    @Override public List<ValidationError> validateNotNull() {
-//        final List<ValidationError> errors = super.validateNotNull();
-//
-//        //validate cloud reference
-//        OperatingSystem operatingSystem = null;
-//        if (this.operatingSystem == null) {
-//            errors.add(new ValidationError("operatingsystem", "The operatingsystem is required."));
-//        } else {
-//            operatingSystem = References.operatingSystemService.get().getById(this.operatingSystem);
-//            if (operatingSystem == null) {
-//                errors.add(new ValidationError("operatingsystem",
-//                    "The given operatingsystem is invalid."));
-//            }
-//        }
-//
-//        return errors;
-//    }
-
-
     public static class References {
-
         @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
-
     }
 }

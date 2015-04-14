@@ -42,9 +42,12 @@ public class ReflectionField<U> {
         Field getField = getField(o.getClass(), fieldName);
         checkNotNull(getField,
             String.format("Could not find field %s on class of o (%s)", fieldName, o.getClass()));
+
         checkArgument(isValidField(getField, fieldType), String
             .format("Illegal field type %s. Not assignable from %s", fieldType.getName(),
                 getField.getType().getClass().getName()));
+
+
         getField.setAccessible(true);
         this.field = getField;
         this.o = o;
@@ -52,6 +55,10 @@ public class ReflectionField<U> {
 
     public static <P> ReflectionField<P> of(String fieldName, Class<P> fieldType, Object o) {
         return new ReflectionField<>(fieldName, fieldType, o);
+    }
+
+    public static ReflectionField<Object> of(String fieldName, Object o) {
+        return new ReflectionField<>(fieldName, Object.class, o);
     }
 
     public U getValue() {
@@ -63,8 +70,7 @@ public class ReflectionField<U> {
                 .format("Could not get value on field %s on object %s having class %s.",
                     field.getName(), o, o.getClass()), e);
         } catch (ClassCastException e) {
-            throw new AssertionError(
-                "Could not cast field value. This should have been avoided in the constructor.", e);
+            throw new BindingException("Could not cast field value.", e);
         }
     }
 

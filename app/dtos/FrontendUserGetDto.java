@@ -18,23 +18,19 @@
 
 package dtos;
 
-import dtos.generic.ValidatableDto;
+import dtos.api.Dto;
 
-public class FrontendUserDto extends ValidatableDto {
+public class FrontendUserGetDto implements Dto {
 
     protected String firstName;
     protected String lastName;
     protected String mail;
 
-    public FrontendUserDto() {
+    public FrontendUserGetDto() {
         super();
     }
 
-    @Override public void validation() {
-
-    }
-
-    public FrontendUserDto(String firstName, String lastName, String mail) {
+    public FrontendUserGetDto(String firstName, String lastName, String mail) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.mail = mail;
@@ -63,22 +59,4 @@ public class FrontendUserDto extends ValidatableDto {
     public void setMail(String mail) {
         this.mail = mail;
     }
-
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        if (this.firstName.isEmpty()) {
-//            errors.add(new ValidationError("frontenduser", "Firstname must not be empty"));
-//        }
-//
-//        if (this.lastName.isEmpty()) {
-//            errors.add(new ValidationError("frontenduser", "Lastname must not be empty"));
-//        }
-//
-//        if (!Constraints.email().isValid(this.mail)) {
-//            errors.add(new ValidationError("frontenduser", "Mail is not valid"));
-//        }
-//
-//        return errors;
-//    }
 }

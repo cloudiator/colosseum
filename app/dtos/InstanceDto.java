@@ -21,6 +21,8 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
 import models.ApplicationComponent;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
@@ -30,20 +32,18 @@ import models.service.impl.generic.BaseModelService;
  */
 public class InstanceDto extends ValidatableDto {
 
-    protected Long applicationComponent;
-    protected Long virtualMachine;
+    private Long applicationComponent;
+    private Long virtualMachine;
 
     protected InstanceDto() {
         super();
     }
 
     @Override public void validation() {
-
-    }
-
-    public InstanceDto(Long applicationComponent, Long virtualMachine) {
-        this.applicationComponent = applicationComponent;
-        this.virtualMachine = virtualMachine;
+        validator(Long.class).validate(applicationComponent).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+        validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
     }
 
     public Long getApplicationComponent() {
@@ -62,44 +62,10 @@ public class InstanceDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        //validate applicationComponent reference
-//        ApplicationComponent applicationComponent = null;
-//        if (this.applicationComponent == null) {
-//            errors.add(new ValidationError("applicationComponent",
-//                "The applicationComponent is required."));
-//        } else {
-//            applicationComponent =
-//                References.applicationComponentService.get().getById(this.applicationComponent);
-//            if (applicationComponent == null) {
-//                errors.add(new ValidationError("applicationComponent",
-//                    "The given applicationComponent is invalid."));
-//            }
-//        }
-//
-//        //validate virtualMachine reference
-//        VirtualMachine virtualMachine = null;
-//        if (this.virtualMachine == null) {
-//            errors.add(new ValidationError("virtualMachine", "The virtualMachine is required."));
-//        } else {
-//            virtualMachine = References.virtualMachineService.get().getById(this.virtualMachine);
-//            if (virtualMachine == null) {
-//                errors.add(
-//                    new ValidationError("virtualMachine", "The given virtualMachine is invalid."));
-//            }
-//        }
-//
-//        return errors;
-//    }
-
-
     public static class References {
 
         @Inject public static Provider<BaseModelService<ApplicationComponent>>
             applicationComponentService;
-
         @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
     }
 }

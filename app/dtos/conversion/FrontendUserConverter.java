@@ -18,22 +18,15 @@
 
 package dtos.conversion;
 
-import dtos.FrontendUserDto;
-import dtos.conversion.generic.AbstractConverter;
+import dtos.FrontendUserGetDto;
+import dtos.conversion.generic.DefaultConverter;
 import models.FrontendUser;
 
 /**
  * Created by daniel on 13.04.15.
  */
-public class FrontendUserConverter extends AbstractConverter<FrontendUser, FrontendUserDto> {
-
+public class FrontendUserConverter extends DefaultConverter<FrontendUser, FrontendUserGetDto> {
     protected FrontendUserConverter() {
-        super(FrontendUser.class, FrontendUserDto.class);
-    }
-
-    @Override public void configure() {
-        builder().from("firstName").to("firstName");
-        builder().from("lastName").to("lastName");
-        builder().from("mail").to("mail");
+        super(FrontendUser.class, FrontendUserGetDto.class);
     }
 }

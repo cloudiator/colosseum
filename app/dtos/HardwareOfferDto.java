@@ -19,6 +19,8 @@
 package dtos;
 
 import dtos.generic.ValidatableDto;
+import dtos.validation.ExpressionValidator;
+import dtos.validation.NotNullValidator;
 
 public class HardwareOfferDto extends ValidatableDto {
 
@@ -31,7 +33,12 @@ public class HardwareOfferDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-
+        validator(Integer.class).validate(numberOfCpu).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(numberOfCpu > 0));
+        validator(Long.class).validate(mbOfRam).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(mbOfRam > 0));
+        validator(Long.class).validate(localDiskSpace).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(localDiskSpace > 0));
     }
 
     public HardwareOfferDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
@@ -63,23 +70,4 @@ public class HardwareOfferDto extends ValidatableDto {
     public void setLocalDiskSpace(Long localDiskSpace) {
         this.localDiskSpace = localDiskSpace;
     }
-
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        if (this.numberOfCpu <= 0) {
-//            errors.add(new ValidationError("hardware", "NumberOfCpu must be greater 0"));
-//        }
-//
-//        if (this.mbOfRam <= 0) {
-//            errors.add(new ValidationError("hardware", "MbOfRam must be greater 0"));
-//        }
-//
-//        if (this.mbOfRam <= 0) {
-//            errors.add(new ValidationError("hardware", "LocalDiskSpace must be greater 0"));
-//        }
-//
-//        return errors;
-//
-//    }
 }

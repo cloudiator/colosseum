@@ -23,13 +23,19 @@ import dtos.validation.generic.AbstractValidator;
 import dtos.validation.generic.ValidationError;
 
 /**
- * Created by daniel on 13.03.15.
+ * Created by daniel on 14.04.15.
  */
-public class NotNullValidator extends AbstractValidator<Object> {
+public class ExpressionValidator extends AbstractValidator<Object> {
+
+    private boolean expression;
+
+    public ExpressionValidator(boolean expression) {
+        this.expression = expression;
+    }
 
     @Override protected void validation(Object o) throws ValidationException {
-        if (o == null) {
-            addError(ValidationError.of("This field is required."));
+        if (!expression) {
+            addError(ValidationError.of("The expression did not match."));
         }
     }
 }

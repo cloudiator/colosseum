@@ -45,7 +45,6 @@ public abstract class AbstractValidator<T> implements Validator<T> {
 
     @Override public Collection<ValidationError> validate(T t) throws ValidationException {
         this.validationErrors = new LinkedList<>();
-        checkState(validationErrors.isEmpty());
         this.validation(t);
         return validationErrors;
     }

@@ -37,12 +37,11 @@ import java.util.List;
 
     private String iso3166;
 
-    private Long locationLatitude;
+    private Float locationLatitude;
 
-    private Long LocationLongitude;
+    private Float LocationLongitude;
 
-    @OneToMany(mappedBy = "geoLocation")
-    private List<LocationOffer> locationOffers;
+    @OneToMany(mappedBy = "geoLocation") private List<LocationOffer> locationOffers;
 
     /**
      * No-args constructor used by hibernate.
@@ -50,5 +49,69 @@ import java.util.List;
     private GeoLocation() {
     }
 
+    public GeoLocation(String region, String city, String country, String iso3166,
+        Float locationLatitude, Float locationLongitude) {
+        this.region = region;
+        this.city = city;
+        this.country = country;
+        this.iso3166 = iso3166;
+        this.locationLatitude = locationLatitude;
+        LocationLongitude = locationLongitude;
+    }
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getIso3166() {
+        return iso3166;
+    }
+
+    public void setIso3166(String iso3166) {
+        this.iso3166 = iso3166;
+    }
+
+    public Float getLocationLatitude() {
+        return locationLatitude;
+    }
+
+    public void setLocationLatitude(Float locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
+
+    public Float getLocationLongitude() {
+        return LocationLongitude;
+    }
+
+    public void setLocationLongitude(Float locationLongitude) {
+        LocationLongitude = locationLongitude;
+    }
+
+    public List<LocationOffer> getLocationOffers() {
+        return locationOffers;
+    }
+
+    public void setLocationOffers(List<LocationOffer> locationOffers) {
+        this.locationOffers = locationOffers;
+    }
 }

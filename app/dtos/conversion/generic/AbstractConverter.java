@@ -18,13 +18,10 @@
 
 package dtos.conversion.generic;
 
+import dtos.api.Dto;
 import dtos.conversion.api.DtoConverter;
 import dtos.conversion.api.FromBindingBuilder;
-import dtos.api.Dto;
 import models.generic.Model;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by daniel on 16.03.15.
@@ -82,17 +79,6 @@ public abstract class AbstractConverter<T extends Model, S extends Dto>
         return dto;
     }
 
-    private class TypeBuilder<U> {
-        public U getInstance(Class<U> clazz) {
-            try {
-                final Constructor<U> constructor = clazz.getDeclaredConstructor();
-                constructor.setAccessible(true);
-                return constructor.newInstance();
-            } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
-                throw new RuntimeException(
-                    String.format("Could not create instance of class %s", clazz.getName()), e);
-            }
-        }
-    }
+
 
 }

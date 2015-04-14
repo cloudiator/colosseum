@@ -21,28 +21,37 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
 import models.Cloud;
 import models.ImageOffer;
 import models.service.impl.generic.BaseModelService;
 
 public class ImageDto extends ValidatableDto {
 
+    private String cloudUuid;
+    private Long cloud;
+    protected Long imageOffer;
 
-    protected Long cloud;
-    protected Long image;
-    protected String cloudUuid;
 
     public ImageDto() {
         super();
     }
 
     @Override public void validation() {
-
+        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(Long.class).validate(imageOffer).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.imageOfferService.get()));
     }
 
-    public ImageDto(Long cloud, Long image, String cloudUuid) {
-        this.cloud = cloud;
-        this.image = image;
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
         this.cloudUuid = cloudUuid;
     }
 
@@ -54,50 +63,13 @@ public class ImageDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public Long getImage() {
-        return image;
+    public Long getImageOffer() {
+        return imageOffer;
     }
 
-    public void setImage(Long image) {
-        this.image = image;
+    public void setImageOffer(Long imageOffer) {
+        this.imageOffer = imageOffer;
     }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
-    }
-
-//    @Override public List<ValidationError> validateNotNull() {
-//        List<ValidationError> errors = new ArrayList<>();
-//
-//        //validate cloud reference
-//        Cloud cloud = null;
-//        if (this.cloud == null) {
-//            errors.add(new ValidationError("cloud", "The cloud is required."));
-//        } else {
-//            cloud = References.cloudService.get().getById(this.cloud);
-//            if (cloud == null) {
-//                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-//            }
-//        }
-//
-//        //validate cloud reference
-//        ImageProperties imageProperties = null;
-//        if (this.image == null) {
-//            errors.add(new ValidationError("image", "The image is required."));
-//        } else {
-//            imageProperties = References.imagePropertiesService.get().getById(this.image);
-//            if (imageProperties == null) {
-//                errors.add(new ValidationError("image", "The given image is invalid."));
-//            }
-//        }
-//
-//        return errors;
-//    }
-
 
     public static class References {
 

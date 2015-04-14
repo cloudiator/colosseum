@@ -41,8 +41,11 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CloudConverter.class);
         // FrontendGroup
         converterBinder.addBinding().to(FrontendGroupConverter.class);
-        //FrontendUSer
+        //FrontendUser
         converterBinder.addBinding().to(FrontendUserConverter.class);
+        //GeoLocation
+        converterBinder.addBinding().to(GeoLocationConverter.class);
+
     }
 
 }

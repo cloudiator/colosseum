@@ -21,7 +21,7 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.FrontendUserDto;
+import dtos.FrontendUserGetDto;
 import dtos.conversion.api.ModelDtoConversionService;
 import models.FrontendUser;
 import models.service.api.generic.ModelService;
@@ -29,7 +29,7 @@ import models.service.api.generic.ModelService;
 /**
  * Created by daniel on 09.04.15.
  */
-public class FrontendUserController extends GenericApiController<FrontendUser, FrontendUserDto, FrontendUserDto, FrontendUserDto> {
+public class FrontendUserController extends GenericApiController<FrontendUser, FrontendUserGetDto, FrontendUserGetDto, FrontendUserGetDto> {
     /**
      * Constructs a GenericApiController.
      *

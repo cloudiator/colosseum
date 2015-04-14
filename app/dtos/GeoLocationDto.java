@@ -24,7 +24,62 @@ import dtos.generic.ValidatableDto;
  * Created by daniel on 09.04.15.
  */
 public class GeoLocationDto extends ValidatableDto {
-    @Override public void validation() {
 
+    private String region;
+    private String city;
+    private String country;
+    private String iso3166;
+    private Float locationLatitude;
+    private Float LocationLongitude;
+
+    @Override public void validation() {
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getIso3166() {
+        return iso3166;
+    }
+
+    public void setIso3166(String iso3166) {
+        this.iso3166 = iso3166;
+    }
+
+    public Float getLocationLatitude() {
+        return locationLatitude;
+    }
+
+    public void setLocationLatitude(Float locationLatitude) {
+        this.locationLatitude = locationLatitude;
+    }
+
+    public Float getLocationLongitude() {
+        return LocationLongitude;
+    }
+
+    public void setLocationLongitude(Float locationLongitude) {
+        LocationLongitude = locationLongitude;
     }
 }

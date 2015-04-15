@@ -23,8 +23,8 @@ import dtos.conversion.api.DtoConverter;
 import models.generic.Model;
 
 import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by daniel on 14.04.15.
@@ -39,12 +39,15 @@ public class DefaultConverter<T extends Model, S extends Dto> implements DtoConv
         this.sClass = sClass;
     }
 
-    private Iterable<String> getFieldsToBind(S dto) {
-        return new FieldFinder(dto).getFields(false);
+    private Iterable<String> getFieldsToBind() {
+        Set<String> dtoFields = new FieldFinder(sClass).getFields();
+        Set<String> modelFields = new FieldFinder(tClass).getFields();
+        dtoFields.retainAll(modelFields);
+        return dtoFields;
     }
 
     private S bindFromModelToDto(T model, S dto) {
-        for (String field : getFieldsToBind(dto)) {
+        for (String field : getFieldsToBind()) {
             ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field, model);
             ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field, dto);
             reflectionFieldDto.setValue(reflectionFieldModel.getValue());
@@ -53,7 +56,7 @@ public class DefaultConverter<T extends Model, S extends Dto> implements DtoConv
     }
 
     private T bindFromDtoToModel(S dto, T model) {
-        for (String field : getFieldsToBind(dto)) {
+        for (String field : getFieldsToBind()) {
             ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field, model);
             ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field, dto);
             reflectionFieldModel.setValue(reflectionFieldDto.getValue());
@@ -79,24 +82,20 @@ public class DefaultConverter<T extends Model, S extends Dto> implements DtoConv
 
     private static class FieldFinder {
 
-        private final Object o;
+        private final Class c;
 
-        private FieldFinder(Object o) {
-            this.o = o;
+        private FieldFinder(Class c) {
+            this.c = c;
         }
 
-        private Iterable<String> getFields(boolean recursive) {
-            Class clazz = o.getClass();
-            List<String> fields = new LinkedList<>();
+        private Set<String> getFields() {
+            Class clazz = c;
+            Set<String> fields = new HashSet<>();
             while (clazz != null) {
                 for (Field field : clazz.getDeclaredFields()) {
                     fields.add(field.getName());
                 }
-                if (recursive) {
-                    clazz = clazz.getSuperclass();
-                } else {
-                    break;
-                }
+                clazz = clazz.getSuperclass();
             }
             return fields;
         }

@@ -156,6 +156,20 @@ POST          /api/locationOffer                   @controllers.LocationOfferCon
 PUT           /api/locationOffer/:id               @controllers.LocationOfferController.put(id: Long)
 DELETE        /api/locationOffer/:id               @controllers.LocationOfferController.delete(id: Long)
 
+#Operating System
+GET           /api/os                              @controllers.OperatingSystemController.list()
+GET           /api/os/:id                          @controllers.OperatingSystemController.get(id: Long)
+POST          /api/os                              @controllers.OperatingSystemController.post()
+PUT           /api/os/:id                          @controllers.OperatingSystemController.put(id: Long)
+DELETE        /api/os/:id                          @controllers.OperatingSystemController.delete(id: Long)
+
+#Operating System Vendor
+GET           /api/osVendor                        @controllers.OperatingSystemVendorController.list()
+GET           /api/osVendor/:id                    @controllers.OperatingSystemVendorController.get(id: Long)
+POST          /api/osVendor                        @controllers.OperatingSystemVendorController.post()
+PUT           /api/osVendor/:id                    @controllers.OperatingSystemVendorController.put(id: Long)
+DELETE        /api/osVendor/:id                    @controllers.OperatingSystemVendorController.delete(id: Long)
+
 #VirtualMachine
 GET           /api/virtualMachine                  @controllers.VirtualMachineController.list()
 GET           /api/virtualMachine/:id              @controllers.VirtualMachineController.get(id: Long)

@@ -28,17 +28,11 @@ import java.util.List;
  */
 @Entity public class OperatingSystem extends Model {
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
-
     @Enumerated(EnumType.STRING) private OperatingSystemArchitecture operatingSystemArchitecture;
 
     @OneToMany(mappedBy = "operatingSystem") private List<ImageOffer> imageOffers;
 
     @ManyToOne private OperatingSystemVendor operatingSystemVendor;
-
 
     private String version;
 

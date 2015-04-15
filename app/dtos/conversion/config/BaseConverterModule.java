@@ -45,6 +45,12 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(FrontendUserConverter.class);
         //GeoLocation
         converterBinder.addBinding().to(GeoLocationConverter.class);
+        //HardwareOffer
+        converterBinder.addBinding().to(HardwareOfferConverter.class);
+        //Operating System
+        converterBinder.addBinding().to(OperatingSystemConverter.class);
+        //Operating System Vendor
+        converterBinder.addBinding().to(OperatingSystemVendorConverter.class);
 
     }
 

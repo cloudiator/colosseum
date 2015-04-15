@@ -16,29 +16,23 @@
  * under the License.
  */
 
-package models;
+package dtos;
 
-import models.generic.NamedModel;
-
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
-import java.util.List;
+import dtos.generic.NamedDto;
+import dtos.validation.NotNullValidator;
+import models.OperatingSystemVendorType;
 
 /**
- * Created by daniel on 04.11.14.
+ * Created by daniel on 15.04.15.
  */
-@Entity public class OperatingSystemVendor extends NamedModel {
+public class OperatingSystemVendorDto extends NamedDto {
 
-    @OneToMany(mappedBy = "operatingSystemVendor") private List<OperatingSystem> operatingSystems;
+    private OperatingSystemVendorType operatingSystemVendorType;
 
-    @Enumerated(EnumType.STRING) private OperatingSystemVendorType operatingSystemVendorType;
-
-    /**
-     * Empty constructor for hibernate.
-     */
-    private OperatingSystemVendor() {
+    @Override public void validation() {
+        super.validation();
+        validator(OperatingSystemVendorType.class).validate(operatingSystemVendorType)
+            .withValidator(new NotNullValidator());
     }
 
     public OperatingSystemVendorType getOperatingSystemVendorType() {
@@ -47,13 +41,5 @@ import java.util.List;
 
     public void setOperatingSystemVendorType(OperatingSystemVendorType operatingSystemVendorType) {
         this.operatingSystemVendorType = operatingSystemVendorType;
-    }
-
-    public List<OperatingSystem> getOperatingSystems() {
-        return operatingSystems;
-    }
-
-    public void setOperatingSystems(List<OperatingSystem> operatingSystems) {
-        this.operatingSystems = operatingSystems;
     }
 }

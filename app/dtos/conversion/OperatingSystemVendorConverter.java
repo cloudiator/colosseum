@@ -16,17 +16,19 @@
  * under the License.
  */
 
-package dtos.conversion.transformers;
+package dtos.conversion;
+
+import dtos.OperatingSystemVendorDto;
+import dtos.conversion.generic.DefaultConverter;
+import models.OperatingSystemVendor;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 15.04.15.
  */
-public class DefaultTransformer implements Transformer<Object,Object> {
-    @Override public Object transform(Object o) {
-        return o;
-    }
+public class OperatingSystemVendorConverter
+    extends DefaultConverter<OperatingSystemVendor, OperatingSystemVendorDto> {
 
-    @Override public Object transformReverse(Object o) {
-        return transform(o);
+    protected OperatingSystemVendorConverter() {
+        super(OperatingSystemVendor.class, OperatingSystemVendorDto.class);
     }
 }

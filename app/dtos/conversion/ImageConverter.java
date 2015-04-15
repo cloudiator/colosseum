@@ -1,0 +1,52 @@
+/*
+ * Copyright (c) 2014-2015 University of Ulm
+ *
+ * See the NOTICE file distributed with this work for additional information
+ * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+package dtos.conversion;
+
+import com.google.inject.Inject;
+import dtos.ImageDto;
+import dtos.conversion.generic.AbstractConverter;
+import dtos.conversion.transformers.IdToModelTransformer;
+import models.Cloud;
+import models.Image;
+import models.ImageOffer;
+import models.service.api.generic.ModelService;
+
+/**
+ * Created by daniel on 14.04.15.
+ */
+public class ImageConverter extends AbstractConverter<Image, ImageDto> {
+
+    private final ModelService<Cloud> cloudModelService;
+    private final ModelService<ImageOffer> imageOfferModelService;
+
+    @Inject protected ImageConverter(ModelService<Cloud> cloudModelService,
+        ModelService<ImageOffer> imageOfferModelService) {
+        super(Image.class, ImageDto.class);
+        this.cloudModelService = cloudModelService;
+        this.imageOfferModelService = imageOfferModelService;
+    }
+
+    @Override public void configure() {
+        builder().from("cloudUuid").to("cloudUuid");
+        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+            .withTransformation(new IdToModelTransformer<>(cloudModelService));
+        builder().from(Long.class, "imageOffer").to(ImageOffer.class, "imageOffer")
+            .withTransformation(new IdToModelTransformer<>(imageOfferModelService));
+    }
+}

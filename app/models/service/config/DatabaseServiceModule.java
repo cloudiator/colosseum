@@ -20,10 +20,7 @@ package models.service.config;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import dtos.ApplicationComponentDto;
-import dtos.CloudApiDto;
-import dtos.FrontendGroupDto;
-import dtos.LoginDto;
+import dtos.*;
 import models.*;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
@@ -60,19 +57,22 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<CloudApi>>() {
         }).to(new TypeLiteral<BaseModelService<CloudApi>>() {
         });
-        requestInjection(CloudApiDto.References.class);
+        requestStaticInjection(CloudApiDto.References.class);
         // Cloud Credential
         bind(new TypeLiteral<ModelService<CloudCredential>>() {
         }).to(new TypeLiteral<BaseModelService<CloudCredential>>() {
         });
+        requestStaticInjection(CloudCredentialDto.References.class);
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {
         });
+        requestStaticInjection(CommunicationDto.References.class);
         // Communication Channel
         bind(new TypeLiteral<ModelService<CommunicationChannel>>() {
         }).to(new TypeLiteral<BaseModelService<CommunicationChannel>>() {
         });
+        requestStaticInjection(CommunicationChannelDto.References.class);
         // Component
         bind(new TypeLiteral<ModelService<Component>>() {
         }).to(new TypeLiteral<BaseModelService<Component>>() {
@@ -96,7 +96,8 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Hardware>>() {
         }).to(new TypeLiteral<BaseModelService<Hardware>>() {
         });
-        //Hardware Properties
+        requestStaticInjection(HardwareDto.References.class);
+        //Hardware Offer
         bind(new TypeLiteral<ModelService<HardwareOffer>>() {
         }).to(new TypeLiteral<BaseModelService<HardwareOffer>>() {
         });
@@ -104,7 +105,8 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Image>>() {
         }).to(new TypeLiteral<BaseModelService<Image>>() {
         });
-        //Image Properties
+        requestStaticInjection(ImageDto.References.class);
+        //Image Offer
         bind(new TypeLiteral<ModelService<ImageOffer>>() {
         }).to(new TypeLiteral<BaseModelService<ImageOffer>>() {
         });
@@ -112,10 +114,12 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Instance>>() {
         }).to(new TypeLiteral<BaseModelService<Instance>>() {
         });
+        requestStaticInjection(InstanceDto.References.class);
         //Ip Address
         bind(new TypeLiteral<ModelService<IpAddress>>() {
         }).to(new TypeLiteral<BaseModelService<IpAddress>>() {
         });
+        requestStaticInjection(IpAddressDto.References.class);
         //Lifecycle Component
         bind(new TypeLiteral<ModelService<LifecycleComponent>>() {
         }).to(new TypeLiteral<BaseModelService<LifecycleComponent>>() {
@@ -124,17 +128,30 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Location>>() {
         }).to(new TypeLiteral<BaseModelService<Location>>() {
         });
-        //LocationProperties
+        requestStaticInjection(LocationDto.References.class);
+        //Location Offer
         bind(new TypeLiteral<ModelService<LocationOffer>>() {
         }).to(new TypeLiteral<BaseModelService<LocationOffer>>() {
+        });
+        requestStaticInjection(LocationDto.References.class);
+        //Operating System
+        bind(new TypeLiteral<ModelService<OperatingSystem>>() {
+        }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
+        });
+        requestStaticInjection(OperatingSystemDto.References.class);
+        //Operating System Vendor
+        bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
+        }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachine>>() {
         });
+        requestStaticInjection(VirtualMachineDto.References.class);
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelService<VirtualMachineTemplate>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachineTemplate>>() {
         });
+        requestStaticInjection(VirtualMachineDto.References.class);
     }
 }

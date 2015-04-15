@@ -16,17 +16,18 @@
  * under the License.
  */
 
-package dtos.conversion.transformers;
+package dtos.conversion;
+
+import dtos.HardwareOfferDto;
+import dtos.conversion.generic.DefaultConverter;
+import models.HardwareOffer;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 14.04.15.
  */
-public class DefaultTransformer implements Transformer<Object,Object> {
-    @Override public Object transform(Object o) {
-        return o;
+public class HardwareOfferConverter extends DefaultConverter<HardwareOffer, HardwareOfferDto> {
+    protected HardwareOfferConverter() {
+        super(HardwareOffer.class, HardwareOfferDto.class);
     }
 
-    @Override public Object transformReverse(Object o) {
-        return transform(o);
-    }
 }

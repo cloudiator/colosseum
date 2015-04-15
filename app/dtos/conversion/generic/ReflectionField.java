@@ -44,8 +44,8 @@ public class ReflectionField<U> {
             String.format("Could not find field %s on class of o (%s)", fieldName, o.getClass()));
 
         checkArgument(isValidField(getField, fieldType), String
-            .format("Illegal field type %s. Not assignable from %s", fieldType.getName(),
-                getField.getType().getClass().getName()));
+            .format("Illegal field type %s for field %s. Not assignable from %s",
+                fieldType.getName(), fieldName, getField.getType().getClass().getName()));
 
 
         getField.setAccessible(true);
@@ -97,7 +97,7 @@ public class ReflectionField<U> {
     }
 
     private boolean isValidField(Field field, Class<?> fieldType) {
-        return field != null && fieldType.isAssignableFrom(field.getType().getClass());
+        return field != null && fieldType.isAssignableFrom(field.getType());
     }
 
 

@@ -37,21 +37,50 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(ApiConverter.class);
         // Application
         converterBinder.addBinding().to(ApplicationConverter.class);
+        // Application Component
+        converterBinder.addBinding().to(ApplicationComponentConverter.class);
         // Cloud
         converterBinder.addBinding().to(CloudConverter.class);
-        // FrontendGroup
+        // Cloud API
+        converterBinder.addBinding().to(CloudApiConverter.class);
+        // Cloud Credential
+        converterBinder.addBinding().to(CloudCredentialConverter.class);
+        // Communication
+        converterBinder.addBinding().to(CommunicationConverter.class);
+        // Communication Channel
+        converterBinder.addBinding().to(CommunicationChannelConverter.class);
+        // Frontend Group
         converterBinder.addBinding().to(FrontendGroupConverter.class);
-        //FrontendUser
+        //Frontend User
         converterBinder.addBinding().to(FrontendUserConverter.class);
         //GeoLocation
         converterBinder.addBinding().to(GeoLocationConverter.class);
+        // Hardware
+        converterBinder.addBinding().to(HardwareConverter.class);
         //HardwareOffer
         converterBinder.addBinding().to(HardwareOfferConverter.class);
+        // Image
+        converterBinder.addBinding().to(ImageConverter.class);
+        // Image Offer
+        converterBinder.addBinding().to(ImageOfferConverter.class);
+        // Instance
+        converterBinder.addBinding().to(InstanceConverter.class);
+        // IpAddress
+        converterBinder.addBinding().to(IpAddressConverter.class);
+        // Lifecycle Component
+        converterBinder.addBinding().to(LifecycleComponentConverter.class);
+        // Location
+        converterBinder.addBinding().to(LocationConverter.class);
+        // Location Offer
+        converterBinder.addBinding().to(LocationOfferConverter.class);
         //Operating System
         converterBinder.addBinding().to(OperatingSystemConverter.class);
         //Operating System Vendor
         converterBinder.addBinding().to(OperatingSystemVendorConverter.class);
-
+        // Virtual Machine
+        converterBinder.addBinding().to(VirtualMachineConverter.class);
+        // Virtual Machine Template
+        converterBinder.addBinding().to(VirtualMachineTemplateConverter.class);
     }
 
 }

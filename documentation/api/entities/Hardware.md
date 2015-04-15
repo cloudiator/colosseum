@@ -1,23 +1,23 @@
 ﻿# Hardware Actions
 ***
 
-## Description
+##Description
 
-A hardware entity describes abstract hardware properties.
-
+The hardware entity represents a specific hardware flavor which is associated to a cloud and a hardware.
+***
 ## GET /api/hardware
 
-### Description
+###Description
 
-Returns all hardware entities currently stored in the system.
+Returns a list of hardware entities supported by the system.
 
-### Request Parameters
+###Request Parameters
 None
 
-### Response
+###Response
 A list of all hardware entities stored in the database.
 
-### Response Example
+###Response Example
 ```
 [  
    {  
@@ -27,9 +27,9 @@ A list of all hardware entities stored in the database.
             "rel":"self"
          }
       ],
-      "numberOfCpu":4,
-      "mbOfRam":4096,
-      "localDiskSpace":20000
+      "cloud":1,
+      "hardwareOffer":1,
+      "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433"
    },
    {  
       "links":[  
@@ -38,33 +38,38 @@ A list of all hardware entities stored in the database.
             "rel":"self"
          }
       ],
-      "numberOfCpu":8,
-      "mbOfRam":8192,
-      "localDiskSpace":40000
+      "cloud":1,
+      "hardwareOffer":2,
+      "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433"
    }
 ]
 ```
-### Response Codes
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/hardware/{hardware_id}
 
-### Description
+###Description
 
-Returns the hardware entity identified by the given id.
+Returns the hardware entities identified by the given {hardware_id}.
 
-### Request Parameters
+###Request Parameters
 
-Parameter     | Description
-------------- | -------------
-hardware_id   | The id of the hardware.
+Parameter           | Description
+-------------       | -------------
+hardware_id         | The id of the hardware.
 
-### Response
-Shows the selected hardware entity.
+###Response
 
-### Response Example
+The hardware entity identified by the given id.
+
+###Response
+
 ```
 {  
    "links":[  
@@ -73,103 +78,111 @@ Shows the selected hardware entity.
          "rel":"self"
       }
    ],
-   "numberOfCpu":4,
-   "mbOfRam":4096,
-   "localDiskSpace":20000
+   "cloud":1,
+   "hardwareOffer":1,
+   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433"
 }
 ```
 
-### Response Codes
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
+***
+
 ## POST /api/hardware
 
-### Description
+###Description
 
-Creates a new hardware entity base on the given request data and returns it.
+Creates a new hardware entity. The new entity will be returned.
 
-### Request Parameters**
+###Request Parameters
 
-Parameter      | Description
--------------- | -------------
-numberOfCpu    | The number of CPU cores.
-mbOfRam        | The amount of RAM in MB.
-localDiskSpace | The amount of locally available disk space.
+Parameter           | Description
+-------------       | -------------
+cloud               | The cloud associated with the hardware.
+hardwareOffer       | The hardwareOffer associated with the hardware.
+cloudUuid           | The UUID of the hardware.
 
-### Request Example
+###Request Example 
+
 ```
 {  
-   "numberOfCpu":4,
-   "mbOfRam":4096,
-   "localDiskSpace":20000
-} 
+   "cloud":1,
+   "hardwareOffer":1,
+   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433"
+}
 ```
 
-### Response
-The create entity. See /api/hardware/{hardware_id}
+###Response
+The created entity. See GET /api/hardware/{hardware_id}
 
-### Response Error Codes
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
+***
+
 ## PUT /api/hardware/{hardware_id}
 
-### Description
+###Description
 
-Updates the hardware entity identified by the given id with the data from the request and returns the updated entity.
+Updates the Hardware entity identified by the given id.
 
-### Request Parameters** 
+###Request Parameters
 
-Parameter      | Description
--------------- | ------------------------------------------
-hardware_id    | The id of the hardware to update.
-numberOfCpu    | The number of CPU cores.
-mbOfRam        | The amount of RAM in MB.
-localDiskSpace | The amount of locally available disk space.
+Parameter           | Description
+-------------       | -------------
+hardware_id         | The id of the hardware to update.
+cloud               | The cloud associated with the hardware.
+hardwareOffer       | The hardware offer associated with the hardware.
+cloudUuid           | The UUID of the hardware.
 
-### Request Example
-```
+###Request Example
+
 PUT /api/hardware/1
-```
+
 ```
 {  
-   "numberOfCpu":4,
-   "mbOfRam":4096,
-   "localDiskSpace":20000
+   "cloud":1,
+   "hardwareOffer":1,
+   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433"
 }
 ```
 
-### Response
-The updates entity. See /api/hardare/{hardware_id}.
+###Response
 
-### Response Codes
+The updated entity. See GET /api/hardware/{hardware_id}
+
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/hardware/{hardware_id}
 
-### Description
+###Description
 
-Deletes the hardware entity identified by the given id.
+Deletes the hardware entity identified by the given {hardware_id}.
 
-### Request Parameters
+**Request Parameters** 
 
-Parameter     | Description
-------------- | -------------
-hardware_id   | The id of the hardware to delete.
+Parameter          | Description
+-------------      | -------------
+hardware_id        | The id of the hardware to delete.
 
-### Response
+
+###Response
 No data.
 
-### Response Codes
-
+###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)

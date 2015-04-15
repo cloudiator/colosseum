@@ -1,23 +1,23 @@
-# CloudLocation Actions
+﻿# Location Actions
 ***
 
 ##Description
 
-The CloudLocation entity represents a specific location which is associated with a cloud and a location.
+The location entity represents a specific location which is associated with a cloud and a location.
 
 ***
-## GET /api/cloudLocation
+## GET /api/location
 
 ###Description
 
-Returns a list of CloudLocations entities supported by the system.
+Returns a list of locations entities supported by the system.
 
 ###Request Parameters
 None
 
 ###Response
 
-A list of all CloudLocation entities stored in the database.
+A list of all location entities stored in the database.
 
 ###Response Example
 
@@ -27,23 +27,23 @@ A list of all CloudLocation entities stored in the database.
    {  
       "links":[  
          {  
-            "href":"http://example.com:9000/cloudLocation/1",
+            "href":"http://example.com:9000/location/1",
             "rel":"self"
          }
       ],
       "cloud":1,
-      "location":1,
+      "locationOffer":1,
       "cloudUuid":"regionOne"
    },
    {  
       "links":[  
          {  
-            "href":"http://example.com:9000/cloudLocation/2",
+            "href":"http://example.com:9000/location/2",
             "rel":"self"
          }
       ],
       "cloud":1,
-      "location":1,
+      "locationOffer":1,
       "cloudUuid":"regionOne"
    }
 ]
@@ -57,21 +57,21 @@ A list of all CloudLocation entities stored in the database.
 
 ***
 
-## GET /api/cloudLocation/{cloudLocation_id}
+## GET /api/location/{location_id}
 
 ###Description
 
-Returns the CloudLocation entity identified by the given {cloudLocation_id}.
+Returns the location entity identified by the given {location_id}.
 
 ###Request Parameters
 
 Parameter        | Description
 -------------    | -------------
-cloudLocation_id    | The id of the cloudLocation.
+location_id      | The id of the location.
 
 ###Response
 
-The CloudLocation entity identified by the given id.
+The location entity identified by the given id.
 
 ###Response Example
 
@@ -79,12 +79,12 @@ The CloudLocation entity identified by the given id.
 {  
    "links":[  
       {  
-         "href":"http://example.com:9000/cloudLocation/1",
+         "href":"http://example.com:9000/location/1",
          "rel":"self"
       }
    ],
    "cloud":1,
-   "location":1,
+   "locationOffer":1,
    "cloudUuid":"regionOne"
 }
 ```
@@ -97,33 +97,33 @@ The CloudLocation entity identified by the given id.
 
 ***
 
-## POST /api/cloudLocation
+## POST /api/location
 
 ###Description
 
-Creates a new CloudLocation entity. The new entity will be returned.
+Creates a new location entity. The new entity will be returned.
 
 ###Request Parameters
 
 Parameter        | Description
 -------------    | -------------
-cloud            | The cloud associated with the CloudLocation.
-location         | The location associated with the CloudLocation.
-cloudUuid        | The UUID of the CloudLocation.
+cloud            | The cloud associated with the location.
+location         | The location associated with the location.
+cloudUuid        | The UUID of the location.
 
 ###Request Example
 
 ```
 {  
    "cloud":1,
-   "location":1,
+   "locationOffer":1,
    "cloudUuid":"regionOne"
 }
 ```
 
 ###Response
 
-The created entity. See GET /api/cloudLocation/{cloudLocation_id}
+The created entity. See GET /api/location/{location_id}
 
 ###Response Codes
 
@@ -133,34 +133,34 @@ The created entity. See GET /api/cloudLocation/{cloudLocation_id}
 
 ***
 
-## PUT /api/cloudLocation/{cloudLocation_id}
+## PUT /api/location/{location_id}
 
 ###Description
 
-Updates the CloudLocation entity identified by the given id.
+Updates the location entity identified by the given id.
 
 ###Request Parameters
 
 Parameter           | Description
 -------------       | -------------
-cloudLocation_id    | The id of the cloudLocation to update.
-cloud               | The cloud associated with the CloudLocation.
-location            | The location associated with the CloudLocation.
-cloudUuid           | The UUID of the CloudLocation.
+location_id         | The id of the location to update.
+cloud               | The cloud associated with the location.
+locationOffer       | The location associated with the location.
+cloudUuid           | The UUID of the location.
 
 ###Request Example 
 
 ```
 {  
    "cloud":1,
-   "location":1,
+   "locationOffer":1,
    "cloudUuid":"regionOne"
 }
 ```
 
 ###Response
 
-The updated entity. See GET /api/cloudLocation/{cloudLocation_id}
+The updated entity. See GET /api/location/{location_id}
 
 ###Response Codes
 
@@ -170,17 +170,17 @@ The updated entity. See GET /api/cloudLocation/{cloudLocation_id}
 
 ***
 
-## DELETE /api/cloudLocation/{cloudLocation_id}
+## DELETE /api/location/{location_id}
 
 ###Description
 
-Deletes the CloudLocation entity identified by the given {cloudLocation_id}.
+Deletes the location entity identified by the given {location_id}.
 
 ###Request Parameters
 
 Parameter          | Description
 -------------      | -------------
-cloudLocation_id   | The id of the cloudLocation to delete.
+location_id   | The id of the location to delete.
 
 
 ###Response

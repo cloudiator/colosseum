@@ -1,17 +1,27 @@
 ﻿# Image Actions
 ***
-# Description
-The image entity describes abstract properties of an operating system image.
+
+##Description
+
+The image entity represents a specific image which is associated with a cloud and an image.
+
+***
 
 ## GET /api/image
 
-### Request Parameters
-None.
+###Description
 
-### Response
+Returns a list of images entities supported by the system.
+
+###Request Parameters
+None
+
+###Response
+
 A list of all image entities stored in the database.
 
-### Response Example
+###Response Example
+
 ```
 [  
    {  
@@ -21,8 +31,9 @@ A list of all image entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"Ubuntu-Cloud-Image",
-      "operatingSystem":1
+      "cloud":1,
+      "imageOffer":2,
+      "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
    },
    {  
       "links":[  
@@ -31,31 +42,40 @@ A list of all image entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"CentOS-Cloud-Image",
-      "operatingSystem":1
+      "cloud":1,
+      "imageOffer":3,
+      "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
    }
 ]
 ```
-### Response Codes
+
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 
+***
+
 ## GET /api/image/{image_id}
 
-### Description
-Returns a single image entity identified by {image_id}.
+###Description
 
-### Request Parameters
+Returns the image entity identified by the given {image_id}.
 
-Parameter     | Description
-------------- | -------------
-image_id      | The id of the image.
+###Request Parameters
 
-### Response
+Parameter        | Description
+-------------    | -------------
+image_id         | The id of the image.
+
+
+
+###Response
 The image entity identified by the given id.
 
-### Response Example
+###Response Example
+
 ```
 {  
    "links":[  
@@ -64,92 +84,111 @@ The image entity identified by the given id.
          "rel":"self"
       }
    ],
-   "name":"Ubuntu-Cloud-Image",
-   "operatingSystem":1
+   "cloud":1,
+   "imageOffer":2,
+   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
 }
 ```
-### Response Codes
+
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 
+***
+
 ## POST /api/image
 
-### Description
-Creates a new image entity and returns the newly created entity.
+###Description
 
-### Request Parameters
+Creates a new image entity. The new entity will be returned.
 
-Parameter       | Description
---------------- | -------------
-name            | The name of the image.
-operatingSystem | The id of the operating system.
+###Request Parameters
 
-### Request Example
+Parameter        | Description
+-------------    | -------------
+cloud            | The cloud associated with the image.
+imageOffer       | The image associated with the image.
+cloudUuid        | The UUID of the image.
+
+###Request Example
+
 ```
 {  
-   "name":"Ubuntu-Cloud-Image",
-   "operatingSystem":1
-}    
+   "cloud":1,
+   "imageOffer":2,
+   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
+}   
 ```
-### Response
-The newly created image. See /api/image/{image_id}
 
-### Response Codes
+###Response
+
+The created entity. See GET /api/image/{image_id}
+
+###Response Codes
+
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 
+***
+
 ## PUT /api/image/{image_id}
 
-### Description
+###Description
 
-Updates the image entity identified by the given id with the data of the request.
+Updates the image entity identified by the given id.
 
-### Request Parameters** 
+###Request Parameters** 
 
-Parameter       | Description
---------------- | --------------------------------
-image_id        | The id of the image to update.
-name            | The name of the image.
-operatingSystem | The id of the operating system.
+Parameter        | Description
+-------------    | -------------
+image_id         | The id of the image to update.
+cloud            | The cloud associated with the image.
+imageOffer       | The image associated with the image.
+cloudUuid        | The UUID of the image.
 
-### Request Example
-```
+###Request Example
+
 PUT /api/image/1
-```
+
 ```
 {  
-   "name":"Ubuntu-Cloud-Image",
-   "operatingSystem":1
+   "cloud":1,
+   "imageOffer":2,
+   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2"
 }
 ```
+###Response
 
-### Response
-The updated image entity. See /api/image/{image_id}
+The updated entity. See GET /api/image/{image_id}
 
-### Response Codes
+###Response Codes
 
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 
+***
+
 ## DELETE /api/image/{image_id}
 
-### Description
+###Description
 
-Deletes the image entity with the given id.
+Deletes the image entity identified by the given {image_id}.
 
-### Request Parameters** 
+###Request Parameters 
 
-Parameter     | Description
-------------- | -------------
-image_id   | The id of the image to delete.
+Parameter       | Description
+-------------   | -------------
+image_id        | The id of the image to delete.
 
-### Response
+
+###Response
 No data.
 
-### Response Codes
+###Response Codes
 
 **Normal Response Code** 200
 

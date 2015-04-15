@@ -1,9 +1,9 @@
-# Credential Actions
+﻿# Credential Actions
 ***
 
 ###Description
 
-The Credential entity represents an User of the system which is identified by user and secret.
+The CloudCredential entity represents the user account for a specified cloud.
 
 ***
 
@@ -11,7 +11,7 @@ The Credential entity represents an User of the system which is identified by us
 
 ###Description
 
-Returns a list of Credential entities supported by the system.
+Returns a list of Credential entities stored in the system.
 
 ###Request Parameters
 None
@@ -27,22 +27,26 @@ A list of all Credential entities stored in the database.
    {  
       "links":[  
          {  
-            "href":"http://example.com:9000/credential/1",
+            "href":"http://example.com:9000/cloudCredential/1",
             "rel":"self"
          }
       ],
       "user":"john",
-      "secret":"secret"
+      "secret":"secret",
+      "cloud":1,
+      "frontendUserGroup":1
    },
    {  
       "links":[  
          {  
-            "href":"http://example.com:9000/credential/2",
+            "href":"http://example.com:9000/cloudCredential/2",
             "rel":"self"
          }
       ],
       "user":"doe",
-      "secret":"secret"
+      "secret":"secret",
+      "cloud":1,
+      "frontendUserGroup":2
    }
 ]
 ```
@@ -55,7 +59,7 @@ A list of all Credential entities stored in the database.
 
 ***
 
-## GET /api/credential/{credential_id}
+## GET /api/cloudCredential/{cloudCredential_id}
 
 ####Description
 
@@ -63,9 +67,9 @@ Returns the Credential entity identified by the given {credential_id}.
 
 ###Request Parameters
 
-Parameter      | Description
--------------  | -------------
-credential_id  | The id of the credential.
+Parameter           | Description
+------------------  | -------------
+cloudCredential_id  | The id of the credential.
 
 ###Response
 
@@ -77,7 +81,7 @@ The Credential entity identified by the given id.
 {  
    "links":[  
       {  
-         "href":"http://example.com:9000/credential/1",
+         "href":"http://example.com:9000/cloudCredential/1",
          "rel":"self"
       }
    ],
@@ -103,23 +107,27 @@ Creates a new Credential entity. The new entity will be returned.
 
 ###Request Parameters
 
-Parameter      | Description
--------------  | -------------
-user           | The username.
-secret         | The password.
+Parameter         | Description
+----------------- | --------------
+user              | The username.
+secret            | The password.
+cloud             | The cloud the credential belongs to.
+frontendUserGroup | The frontend group that has access to it.
 
 ###Request Example
 
 ```
 {  
    "user":"john",
-   "secret":"secret"
+   "secret":"secret",
+   "cloud":1,
+   "frontendUserGroup":1
 }
 ```
 
 ###Response
 
-The created entity. See GET /api/credential/{credential_id}
+The created entity. See GET /api/cloudCredential/{cloudCredential_id}
 
 ###Response Codes
 
@@ -129,7 +137,7 @@ The created entity. See GET /api/credential/{credential_id}
 
 ***
 
-## PUT /api/credential/{credential_id}
+## PUT /api/cloudCredential/{cloudCredential_id}
 
 ###Description
 
@@ -137,26 +145,29 @@ Updates the Credential entity identified by the given id.
 
 ###Request Parameters 
 
-Parameter      | Description
--------------  | -------------
-credential_id  | The id of the credential to update.
-user           | The username.
-secret         | The password.
+Parameter           | Description
+------------------- | -------------
+cloudCredential_id  | The id of the credential to update.
+user                | The username.
+secret              | The password.
+cloud               | The cloud the credential belongs to.
+frontendUserGroup   | The frontend group that has access to it.
 
 ###Request Example
 
-PUT /api/credential/1
+PUT /api/cloudCredential/1
 
 ```
 {  
    "user":"john",
-   "secret":"secret"
+   "secret":"secret",
+   "cloud":1,
+   "frontendUserGroup":1
 }
-```
 
 ###Response
 
-The updated entity. See GET /api/credential/{credential_id}
+The updated entity. See GET /api/cloudCredential/{cloudCredential_id}
 
 ###Response Codes
 
@@ -166,17 +177,17 @@ The updated entity. See GET /api/credential/{credential_id}
 
 ***
 
-## DELETE /api/credential/{credential_id}
+## DELETE /api/cloudCredential/{cloudCredential_id}
 
 ###Description
 
-Deletes the Credential entity identified by the given {credential_id}.
+Deletes the Credential entity identified by the given {cloudCredential_id}.
 
 ###Request Parameters
 
-Parameter      | Description
--------------  | -------------
-credential_id  | The id of the credential to delete.
+Parameter           | Description
+------------------- | -------------
+cloudCredential_id  | The id of the credential to delete.
 
 
 ###Response

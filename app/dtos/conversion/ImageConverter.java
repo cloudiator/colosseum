@@ -22,9 +22,11 @@ import com.google.inject.Inject;
 import dtos.ImageDto;
 import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Cloud;
 import models.Image;
 import models.ImageOffer;
+import models.Location;
 import models.service.api.generic.ModelService;
 
 /**
@@ -34,12 +36,15 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
 
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<ImageOffer> imageOfferModelService;
+    private final ModelService<Location> locationModelService;
 
     @Inject protected ImageConverter(ModelService<Cloud> cloudModelService,
-        ModelService<ImageOffer> imageOfferModelService) {
+        ModelService<ImageOffer> imageOfferModelService,
+        ModelService<Location> locationModelService) {
         super(Image.class, ImageDto.class);
         this.cloudModelService = cloudModelService;
         this.imageOfferModelService = imageOfferModelService;
+        this.locationModelService = locationModelService;
     }
 
     @Override public void configure() {
@@ -48,5 +53,7 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "imageOffer").to(ImageOffer.class, "imageOffer")
             .withTransformation(new IdToModelTransformer<>(imageOfferModelService));
+        builder().from("locations").to("locations").withUnsafeTransformation(
+            new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
     }
 }

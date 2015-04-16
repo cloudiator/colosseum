@@ -31,6 +31,8 @@ import java.util.List;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
+    @ManyToMany private List<Location> locations;
+
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
@@ -42,21 +44,58 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, ImageOffer imageOffer) {
+    public Image(String cloudUuid, Cloud cloud, ImageOffer imageOffer, List<Location> locations) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
         this.imageOffer = imageOffer;
+        this.locations = locations;
     }
 
     public String getCloudUuid() {
         return cloudUuid;
     }
 
-    public Cloud getCloud() {
-        return cloud;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
     public ImageOffer getImageOffer() {
         return imageOffer;
+    }
+
+    public void setImageOffer(ImageOffer imageOffer) {
+        this.imageOffer = imageOffer;
+    }
+
+    public Cloud getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

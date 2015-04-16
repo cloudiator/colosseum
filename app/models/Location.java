@@ -36,11 +36,13 @@ import java.util.List;
     @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
+    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
+    private List<Image> images;
+
     /**
      * Empty constructor for hibernate.
      */
     private Location() {
-
     }
 
     public Location(String cloudUuid, Cloud cloud, LocationOffer locationOffer) {
@@ -53,19 +55,47 @@ import java.util.List;
         return cloudUuid;
     }
 
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
+
     public LocationOffer getLocationOffer() {
         return locationOffer;
+    }
+
+    public void setLocationOffer(LocationOffer locationOffer) {
+        this.locationOffer = locationOffer;
     }
 
     public Cloud getCloud() {
         return cloud;
     }
 
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
     public List<CloudCredential> getCloudCredentials() {
         return cloudCredentials;
     }
 
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
         return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 }

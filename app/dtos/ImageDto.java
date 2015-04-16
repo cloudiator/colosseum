@@ -20,20 +20,25 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
+import dtos.validation.IterableValidator;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.Cloud;
 import models.ImageOffer;
-import models.service.impl.generic.BaseModelService;
+import models.Location;
+import models.service.api.generic.ModelService;
+
+import java.util.List;
 
 public class ImageDto extends ValidatableDto {
 
     private String cloudUuid;
     private Long cloud;
-    protected Long imageOffer;
-
+    private Long imageOffer;
+    private List<Long> locations;
 
     public ImageDto() {
         super();
@@ -45,6 +50,9 @@ public class ImageDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(imageOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.imageOfferService.get()));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(locations).withValidator(
+            new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
     }
 
     public String getCloudUuid() {
@@ -71,10 +79,17 @@ public class ImageDto extends ValidatableDto {
         this.imageOffer = imageOffer;
     }
 
+    public List<Long> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Long> locations) {
+        this.locations = locations;
+    }
+
     public static class References {
-
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-
-        @Inject public static Provider<BaseModelService<ImageOffer>> imageOfferService;
+        @Inject public static Provider<ModelService<Cloud>> cloudService;
+        @Inject public static Provider<ModelService<ImageOffer>> imageOfferService;
+        @Inject public static Provider<ModelService<Location>> locationService;
     }
 }

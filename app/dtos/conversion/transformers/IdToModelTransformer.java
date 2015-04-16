@@ -18,9 +18,10 @@
 
 package dtos.conversion.transformers;
 
-import com.google.inject.Inject;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 16.03.15.
@@ -29,15 +30,21 @@ public class IdToModelTransformer<T extends Model> implements Transformer<Long, 
 
     private final ModelService<T> modelService;
 
-    @Inject public IdToModelTransformer(ModelService<T> modelService) {
+    public IdToModelTransformer(ModelService<T> modelService) {
         this.modelService = modelService;
     }
 
-    @Override public T transform(Long aLong) {
-        return modelService.getById(aLong);
+    @Override public T transform(@Nullable Long id) {
+        if (id == null) {
+            return null;
+        }
+        return modelService.getById(id);
     }
 
-    @Override public Long transformReverse(T t) {
+    @Override public Long transformReverse(@Nullable T t) {
+        if (t == null) {
+            return null;
+        }
         return t.getId();
     }
 }

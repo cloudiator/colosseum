@@ -25,6 +25,8 @@ import dtos.validation.generic.ValidationError;
 import java.util.Collection;
 import java.util.LinkedList;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 19.03.15.
  */
@@ -38,6 +40,8 @@ public class IterableValidator<T> implements Validator<Iterable<T>> {
 
     @Override public Collection<ValidationError> validate(Iterable<T> ts)
         throws ValidationException {
+
+        checkNotNull(ts);
 
         Collection<ValidationError> validationErrorList = new LinkedList<>();
         for (T t : ts) {

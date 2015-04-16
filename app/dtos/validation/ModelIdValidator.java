@@ -18,12 +18,13 @@
 
 package dtos.validation;
 
-import com.google.common.reflect.TypeToken;
 import dtos.validation.api.ValidationException;
 import dtos.validation.generic.AbstractValidator;
 import dtos.validation.generic.ValidationError;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 13.03.15.
@@ -36,13 +37,13 @@ public class ModelIdValidator<T extends Model> extends AbstractValidator<Long> {
         this.modelService = modelService;
     }
 
-    @Override protected void validation(Long aLong) throws ValidationException {
-        if (aLong == null) {
-            throw new ValidationException("The model id must not be null.");
+    @Override protected void validation(@Nullable Long id) throws ValidationException {
+        if (id == null) {
+            return;
         }
-        if (modelService.getById(aLong) == null) {
-            this.addError(ValidationError
-                .of(String.format("Could not find the Model with id %s.",aLong)));
+        if (modelService.getById(id) == null) {
+            this.addError(
+                ValidationError.of(String.format("Could not find the Model with id %s.", id)));
         }
     }
 }

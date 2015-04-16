@@ -31,6 +31,8 @@ import java.util.List;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
+    @ManyToMany private List<Location> locations;
+
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @OneToMany(mappedBy = "hardware", cascade = CascadeType.REMOVE)
@@ -42,29 +44,58 @@ import java.util.List;
     private Hardware() {
     }
 
-    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
+    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer, List<Location> locations) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
         this.hardwareOffer = hardwareOffer;
+        this.locations = locations;
     }
 
     public String getCloudUuid() {
         return cloudUuid;
     }
 
-    public Cloud getCloud() {
-        return cloud;
-    }
-
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
     public HardwareOffer getHardwareOffer() {
         return hardwareOffer;
     }
 
+    public void setHardwareOffer(HardwareOffer hardwareOffer) {
+        this.hardwareOffer = hardwareOffer;
+    }
+
+    public Cloud getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
         return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

@@ -36,8 +36,10 @@ import java.util.List;
     @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
-    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
-    private List<Image> images;
+    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Image> images;
+
+    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Hardware>
+        hardwareList;
 
     /**
      * Empty constructor for hibernate.
@@ -97,5 +99,13 @@ import java.util.List;
 
     public void setImages(List<Image> images) {
         this.images = images;
+    }
+
+    public List<Hardware> getHardwareList() {
+        return hardwareList;
+    }
+
+    public void setHardwareList(List<Hardware> hardwareList) {
+        this.hardwareList = hardwareList;
     }
 }

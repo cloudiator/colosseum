@@ -22,9 +22,11 @@ import com.google.inject.Inject;
 import dtos.HardwareDto;
 import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
+import models.Location;
 import models.service.api.generic.ModelService;
 
 /**
@@ -34,12 +36,14 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
 
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final ModelService<Cloud> cloudModelService;
+    private final ModelService<Location> locationModelService;
 
     @Inject protected HardwareConverter(ModelService<HardwareOffer> hardwareOfferModelService,
-        ModelService<Cloud> cloudModelService) {
+        ModelService<Cloud> cloudModelService, ModelService<Location> locationModelService) {
         super(Hardware.class, HardwareDto.class);
         this.hardwareOfferModelService = hardwareOfferModelService;
         this.cloudModelService = cloudModelService;
+        this.locationModelService = locationModelService;
     }
 
     @Override public void configure() {
@@ -48,5 +52,7 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
+        builder().from("locations").to("locations").withUnsafeTransformation(
+            new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
     }
 }

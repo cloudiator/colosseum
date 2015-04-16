@@ -20,19 +20,26 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
+import dtos.validation.IterableValidator;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.Cloud;
 import models.HardwareOffer;
+import models.Location;
+import models.service.api.generic.ModelService;
 import models.service.impl.generic.BaseModelService;
+
+import java.util.List;
 
 public class HardwareDto extends ValidatableDto {
 
     private Long cloud;
     private Long hardwareOffer;
     private String cloudUuid;
+    private List<Long> locations;
 
     public HardwareDto() {
         super();
@@ -44,6 +51,9 @@ public class HardwareDto extends ValidatableDto {
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
         validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(locations).withValidator(
+            new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
     }
 
     public Long getCloud() {
@@ -70,8 +80,17 @@ public class HardwareDto extends ValidatableDto {
         this.cloudUuid = cloudUuid;
     }
 
+    public List<Long> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Long> locations) {
+        this.locations = locations;
+    }
+
     public static class References {
         @Inject public static Provider<BaseModelService<Cloud>> cloudService;
         @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
+        @Inject public static Provider<ModelService<Location>> locationService;
     }
 }

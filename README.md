@@ -1,11 +1,11 @@
-ExecutionWareFrontend
+Colloseum
 =====================================
 
 Installation (dev)
 =====================================
 
 Dependencies:
-	- play-framework 2.3.7
+	- play-framework 2.3.8
 	- a hibernate compatible database (the following sections will use mysql)
 	- JDK 8
 	
@@ -13,7 +13,7 @@ Dependencies:
 2. Install mysql and setup a database and a user for the application.
 3. git-clone the repository.
 ```
-git@github.com:dbaur/execWareFrontend.git
+git@github.com:cloudiator/colloseum.git
 ```
 4. Create a configuration file like below which will hold your database configuration, e.g. dev.conf.
 ```
@@ -41,12 +41,12 @@ Installation and Building (prod)
 
 1. Follow steps 1-4 of the Installation guide above.
 2. Run "activator clean dist" to build the project.
-3. Unzip the dist file at target/universal/executionware-{version}.zip
+3. Unzip the dist file at target/universal/colloseum-{version}.zip
 4. Run the application
 ```
-bin/executionware -Dconfig.file=/path/to/your/config.conf
+bin/colloseum -Dconfig.file=/path/to/your/config.conf
 ```
-5. Frontend should be available at localhost:9000
+5. Colloseum should be available at localhost:9000
 
 Usage
 =====================================

@@ -29,8 +29,8 @@ public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocati
     implements HardwareFlavor {
 
 
-    public HardwareInCloudAndLocation(HardwareFlavor resource, String cloud) {
-        super(resource, cloud);
+    public HardwareInCloudAndLocation(HardwareFlavor resource, String cloud, String credential) {
+        super(resource, cloud, credential);
     }
 
     private HardwareFlavor getHardware() {

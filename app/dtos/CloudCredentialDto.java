@@ -18,7 +18,7 @@ public class CloudCredentialDto extends ValidatableDto {
     private String user;
     private String secret;
     private Long cloud;
-    private Long frontendUserGroup;
+    private Long frontendGroup;
 
     public String getUser() {
         return user;
@@ -44,12 +44,12 @@ public class CloudCredentialDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public Long getFrontendUserGroup() {
-        return frontendUserGroup;
+    public Long getFrontendGroup() {
+        return frontendGroup;
     }
 
-    public void setFrontendUserGroup(Long frontendUserGroup) {
-        this.frontendUserGroup = frontendUserGroup;
+    public void setFrontendGroup(Long frontendGroup) {
+        this.frontendGroup = frontendGroup;
     }
 
     @Override public void validation() {
@@ -57,7 +57,7 @@ public class CloudCredentialDto extends ValidatableDto {
         validator(String.class).validate(secret).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(frontendUserGroup).withValidator(new NotNullValidator())
+        validator(Long.class).validate(frontendGroup).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.frontendGroupService.get()));
     }
 

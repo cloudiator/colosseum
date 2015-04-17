@@ -36,9 +36,9 @@ import java.util.List;
     @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
-    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Image> images;
+    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Image> images;
 
-    @ManyToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Hardware>
+    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Hardware>
         hardwareList;
 
     /**

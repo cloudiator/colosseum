@@ -28,8 +28,8 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 public class LocationInCloud extends AbstractResourceInCloud<Location> implements Location {
 
 
-    public LocationInCloud(Location resource, String cloud) {
-        super(resource, cloud);
+    public LocationInCloud(Location resource, String cloud, String credential) {
+        super(resource, cloud, credential);
     }
 
     private Location getLocation() {

@@ -21,9 +21,9 @@ package cloud;
 /**
  * Created by daniel on 10.03.15.
  */
-public class ExecWareModule extends AbstractCloudServiceModule {
+public class SwordModule extends AbstractCloudServiceModule {
 
     @Override protected CloudServiceFactory getCloudServiceFactory() {
-        return new ExecWareFactory();
+        return new SwordFactory();
     }
 }

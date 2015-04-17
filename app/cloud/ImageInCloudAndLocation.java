@@ -27,7 +27,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Image;
  */
 public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<Image>
     implements Image {
-    public ImageInCloudAndLocation(Image resource, String cloud) {
-        super(resource, cloud);
+    public ImageInCloudAndLocation(Image resource, String cloud, String credential) {
+        super(resource, cloud, credential);
     }
 }

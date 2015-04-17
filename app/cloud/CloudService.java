@@ -20,12 +20,7 @@ package cloud;
 
 import com.google.common.base.Optional;
 import com.google.common.net.HostAndPort;
-import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
-import de.uniulm.omi.cloudiator.sword.api.domain.Image;
-import de.uniulm.omi.cloudiator.sword.api.domain.Location;
-import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 
 import javax.annotation.Nullable;
@@ -33,30 +28,30 @@ import javax.annotation.Nullable;
 /**
  * Created by daniel on 12.03.15.
  */
-public interface MultiCloudComputeService extends ComputeService {
+public interface CloudService {
 
-    @Nullable @Override ImageInCloudAndLocation getImage(String s);
+    @Nullable ImageInCloudAndLocation getImage(String s);
 
-    @Nullable @Override VirtualMachineInCloudAndLocation getVirtualMachine(String s);
+    @Nullable VirtualMachineInCloudAndLocation getVirtualMachine(String s);
 
-    @Nullable @Override LocationInCloud getLocation(String s);
+    @Nullable LocationInCloud getLocation(String s);
 
-    @Nullable @Override HardwareInCloudAndLocation getHardwareFlavor(String s);
+    @Nullable HardwareInCloudAndLocation getHardware(String s);
 
-    @Override Iterable<HardwareFlavor> listHardwareFlavors();
+    Iterable<HardwareInCloudAndLocation> listHardware();
 
-    @Override Iterable<Image> listImages();
+    Iterable<ImageInCloudAndLocation> listImages();
 
-    @Override Iterable<Location> listLocations();
+    Iterable<LocationInCloud> listLocations();
 
-    @Override Iterable<VirtualMachine> listVirtualMachines();
+    Iterable<VirtualMachineInCloudAndLocation> listVirtualMachines();
 
-    @Override void deleteVirtualMachine(String s);
+    void deleteVirtualMachine(String s);
 
-    @Override VirtualMachine createVirtualMachine(
+    VirtualMachineInCloudAndLocation createVirtualMachine(
         de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate virtualMachineTemplate);
 
-    @Override SshConnection getSshConnection(HostAndPort hostAndPort);
+    SshConnection getSshConnection(HostAndPort hostAndPort);
 
-    @Override Optional<PublicIpService> getPublicIpService();
+    Optional<PublicIpService> getPublicIpService();
 }

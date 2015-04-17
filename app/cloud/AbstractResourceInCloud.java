@@ -20,6 +20,9 @@ package cloud;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.03.15.
  */
@@ -27,10 +30,19 @@ public abstract class AbstractResourceInCloud<T extends Resource> implements Res
 
     protected final Resource resource;
     protected final String cloud;
+    protected final String credential;
 
-    public AbstractResourceInCloud(T resource, String cloud) {
+    public AbstractResourceInCloud(T resource, String cloud, String credential) {
+
+        checkNotNull(resource);
+        checkNotNull(cloud);
+        checkArgument(!cloud.isEmpty());
+        checkNotNull(credential);
+        checkArgument(!credential.isEmpty());
+
         this.resource = resource;
         this.cloud = cloud;
+        this.credential = credential;
     }
 
     @Override public String cloud() {
@@ -43,5 +55,9 @@ public abstract class AbstractResourceInCloud<T extends Resource> implements Res
 
     @Override public String name() {
         return resource.name();
+    }
+
+    @Override public String credential() {
+        return credential;
     }
 }

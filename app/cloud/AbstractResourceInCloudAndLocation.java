@@ -30,8 +30,8 @@ public class AbstractResourceInCloudAndLocation<T extends Resource>
 
     private final String location;
 
-    public AbstractResourceInCloudAndLocation(T resource, String cloud) {
-        super(resource, cloud);
+    public AbstractResourceInCloudAndLocation(T resource, String cloud, String credential) {
+        super(resource, cloud, credential);
         this.location = IdScopeByLocations.from(id()).getLocationId();
     }
 

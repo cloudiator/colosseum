@@ -27,10 +27,10 @@ import models.CloudCredential;
  */
 public interface CloudServiceFactory {
 
-    public ComputeService from(CloudCredential cloudCredential);
+    public CloudService from(CloudCredential cloudCredential);
 
-    public MultiCloudComputeService from(Cloud cloud);
+    public CloudService from(Cloud cloud);
 
-    public MultiCloudComputeService from();
+    public CloudService from();
 
 }

@@ -31,8 +31,9 @@ public class VirtualMachineInCloudAndLocation
     extends AbstractResourceInCloudAndLocation<VirtualMachine> implements VirtualMachine {
 
 
-    public VirtualMachineInCloudAndLocation(VirtualMachine resource, String cloud) {
-        super(resource, cloud);
+    public VirtualMachineInCloudAndLocation(VirtualMachine resource, String cloud,
+        String credential) {
+        super(resource, cloud, credential);
     }
 
     private VirtualMachine getVirtualMachine() {

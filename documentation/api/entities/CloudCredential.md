@@ -34,7 +34,7 @@ A list of all Credential entities stored in the database.
       "user":"john",
       "secret":"secret",
       "cloud":1,
-      "frontendUserGroup":1
+      "frontendGroup":1
    },
    {  
       "links":[  
@@ -46,7 +46,7 @@ A list of all Credential entities stored in the database.
       "user":"doe",
       "secret":"secret",
       "cloud":1,
-      "frontendUserGroup":2
+      "frontendGroup":2
    }
 ]
 ```
@@ -112,7 +112,7 @@ Parameter         | Description
 user              | The username.
 secret            | The password.
 cloud             | The cloud the credential belongs to.
-frontendUserGroup | The frontend group that has access to it.
+frontendGroup | The frontend group that has access to it.
 
 ###Request Example
 
@@ -121,7 +121,7 @@ frontendUserGroup | The frontend group that has access to it.
    "user":"john",
    "secret":"secret",
    "cloud":1,
-   "frontendUserGroup":1
+   "frontendGroup":1
 }
 ```
 
@@ -151,7 +151,7 @@ cloudCredential_id  | The id of the credential to update.
 user                | The username.
 secret              | The password.
 cloud               | The cloud the credential belongs to.
-frontendUserGroup   | The frontend group that has access to it.
+frontendGroup   | The frontend group that has access to it.
 
 ###Request Example
 
@@ -162,7 +162,7 @@ PUT /api/cloudCredential/1
    "user":"john",
    "secret":"secret",
    "cloud":1,
-   "frontendUserGroup":1
+   "frontendGroup":1
 }
 
 ###Response

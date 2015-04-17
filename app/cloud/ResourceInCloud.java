@@ -29,4 +29,6 @@ public interface ResourceInCloud extends Resource {
 
     public String cloud();
 
+    public String credential();
+
 }

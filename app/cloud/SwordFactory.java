@@ -19,7 +19,6 @@
 package cloud;
 
 
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 import models.Cloud;
 import models.CloudCredential;
@@ -27,23 +26,28 @@ import models.CloudCredential;
 /**
  * Created by daniel on 10.03.15.
  */
-public class ExecWareFactory implements CloudServiceFactory {
+public class SwordFactory implements CloudServiceFactory {
 
-    private ComputeService createComputeService(String providerName, String endpoint,
-        String username, String password, String nodeGroupName) {
-        return ServiceBuilder.newServiceBuilder("cloudProviderName").endpoint("endpoint")
-            .credentials("username", "password").nodeGroup("nodeGroupName").build();
+    private CloudService createCloudService(String providerName, String endpoint, String username,
+        String password, String cloud, String credential) {
+        return new SwordCloudService(
+            ServiceBuilder.newServiceBuilder(providerName).endpoint(endpoint)
+                .credentials(username, password).nodeGroup("geagzjkue").build(), cloud, credential);
     }
 
-    @Override public ComputeService from(CloudCredential cloudCredential) {
+    @Override public CloudService from(CloudCredential cloudCredential) {
+        return createCloudService(
+            cloudCredential.getCloud().getCloudApi().getApi().getInternalProviderName(),
+            cloudCredential.getCloud().getCloudApi().getEndpoint(), cloudCredential.getUser(),
+            cloudCredential.getSecret(), cloudCredential.getCloud().getUuid(),
+            cloudCredential.getUuid());
+    }
+
+    @Override public CloudService from(Cloud cloud) {
         return null;
     }
 
-    @Override public MultiCloudComputeService from(Cloud cloud) {
-        return null;
-    }
-
-    @Override public MultiCloudComputeService from() {
+    @Override public CloudService from() {
         return null;
     }
 }

@@ -36,7 +36,7 @@ A list of all frontend group entities stored in the database.
     "name":"PaaSage",
     "frontendUsers":[
       1,
-      2s
+      2
     ],
     "link":[
       {

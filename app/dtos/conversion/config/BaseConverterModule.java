@@ -71,8 +71,6 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(LifecycleComponentConverter.class);
         // Location
         converterBinder.addBinding().to(LocationConverter.class);
-        // Location Offer
-        converterBinder.addBinding().to(LocationOfferConverter.class);
         //Operating System
         converterBinder.addBinding().to(OperatingSystemConverter.class);
         //Operating System Vendor

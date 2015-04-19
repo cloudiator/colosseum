@@ -20,16 +20,25 @@ package models;
 
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
 @Entity public class Location extends Model {
 
+    @ManyToOne(optional = false) private Cloud cloud;
+
     private String cloudUuid;
 
-    @ManyToOne(optional = false) private LocationOffer locationOffer;
+    @Nullable @ManyToOne(optional = true) private GeoLocation geoLocation;
 
-    @ManyToOne(optional = false) private Cloud cloud;
+    @ManyToOne @Nullable private Location parent;
+
+    @OneToMany(mappedBy = "parent") private List<Location> children;
+
+    @Column(updatable = false) @Enumerated(EnumType.STRING) private LocationScope locationScope;
+
+    @Column(updatable = false) private boolean isAssignable;
 
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
@@ -47,10 +56,22 @@ import java.util.List;
     private Location() {
     }
 
-    public Location(String cloudUuid, Cloud cloud, LocationOffer locationOffer) {
-        this.cloudUuid = cloudUuid;
+    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation, @Nullable Location parent,
+        LocationScope locationScope, boolean isAssignable) {
         this.cloud = cloud;
-        this.locationOffer = locationOffer;
+        this.cloudUuid = cloudUuid;
+        this.geoLocation = geoLocation;
+        this.parent = parent;
+        this.locationScope = locationScope;
+        this.isAssignable = isAssignable;
+    }
+
+    public Cloud getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
     }
 
     public String getCloudUuid() {
@@ -61,20 +82,44 @@ import java.util.List;
         this.cloudUuid = cloudUuid;
     }
 
-    public LocationOffer getLocationOffer() {
-        return locationOffer;
+    @Nullable public GeoLocation getGeoLocation() {
+        return geoLocation;
     }
 
-    public void setLocationOffer(LocationOffer locationOffer) {
-        this.locationOffer = locationOffer;
+    public void setGeoLocation(@Nullable GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
     }
 
-    public Cloud getCloud() {
-        return cloud;
+    @Nullable public Location getParent() {
+        return parent;
     }
 
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
+    public void setParent(@Nullable Location parent) {
+        this.parent = parent;
+    }
+
+    public List<Location> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Location> children) {
+        this.children = children;
+    }
+
+    public LocationScope getLocationScope() {
+        return locationScope;
+    }
+
+    public void setLocationScope(LocationScope locationScope) {
+        this.locationScope = locationScope;
+    }
+
+    public boolean isAssignable() {
+        return isAssignable;
+    }
+
+    public void setIsAssignable(boolean isAssignable) {
+        this.isAssignable = isAssignable;
     }
 
     public List<CloudCredential> getCloudCredentials() {

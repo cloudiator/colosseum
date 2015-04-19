@@ -129,10 +129,6 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Location>>() {
         });
         requestStaticInjection(LocationDto.References.class);
-        //Location Offer
-        bind(new TypeLiteral<ModelService<LocationOffer>>() {
-        }).to(new TypeLiteral<BaseModelService<LocationOffer>>() {
-        });
         requestStaticInjection(LocationDto.References.class);
         //Operating System
         bind(new TypeLiteral<ModelService<OperatingSystem>>() {

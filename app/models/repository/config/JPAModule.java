@@ -120,10 +120,6 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
         });
-        //LocationProperties
-        bind(new TypeLiteral<ModelRepository<LocationOffer>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<LocationOffer>>() {
-        });
         //Operating System
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystem>>() {

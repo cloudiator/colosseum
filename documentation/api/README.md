@@ -22,7 +22,6 @@ Entity                                                       | URL
 [Instance](entities/Instance.md)                             | /api/instance
 [IpAddress](entities/IpAddress.md)                           | /api/ip
 [Location](entities/Location.md)                             | /api/location
-[LocationOffer](entities/LocationOffer.md)                   | /api/locationOffer
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor

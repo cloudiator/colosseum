@@ -23,8 +23,8 @@ import dtos.LocationDto;
 import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
+import models.GeoLocation;
 import models.Location;
-import models.LocationOffer;
 import models.service.api.generic.ModelService;
 
 /**
@@ -32,21 +32,32 @@ import models.service.api.generic.ModelService;
  */
 public class LocationConverter extends AbstractConverter<Location, LocationDto> {
 
-    private final ModelService<LocationOffer> locationOfferModelService;
+    private final ModelService<Location> locationModelService;
     private final ModelService<Cloud> cloudModelService;
+    private final ModelService<GeoLocation> geoLocationModelService;
 
-    @Inject protected LocationConverter(ModelService<LocationOffer> locationOfferModelService,
-        ModelService<Cloud> cloudModelService) {
+    @Inject protected LocationConverter(ModelService<Location> locationModelService,
+        ModelService<Cloud> cloudModelService, ModelService<GeoLocation> geoLocationModelService) {
         super(Location.class, LocationDto.class);
-        this.locationOfferModelService = locationOfferModelService;
+        this.locationModelService = locationModelService;
         this.cloudModelService = cloudModelService;
+        this.geoLocationModelService = geoLocationModelService;
     }
 
     @Override public void configure() {
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "locationOffer").to(LocationOffer.class, "locationOffer")
-            .withTransformation(new IdToModelTransformer<>(locationOfferModelService));
+
         builder().from("cloudUuid").to("cloudUuid");
+
+        builder().from(Long.class, "parent").to(Location.class, "parent")
+            .withTransformation(new IdToModelTransformer<>(locationModelService));
+
+        builder().from("locationScope").to("locationScope");
+
+        builder().from("isAssignable").to("isAssignable");
+
+        builder().from(Long.class, "geoLocation").to(GeoLocation.class, "geoLocation")
+            .withTransformation(new IdToModelTransformer<>(geoLocationModelService));
     }
 }

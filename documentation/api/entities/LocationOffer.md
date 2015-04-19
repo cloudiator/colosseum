@@ -110,10 +110,7 @@ Creates a new location offer entity. The new entity will be returned.
 
 Parameter        | Description
 -------------    | -------------
-parent           | The parent location (hierachical)
-locationScope    | The scope of the location (REGION,ZONE,HOST)
-isAssignable     | If the location can be assigned to a virtual machine.
-geoLocation      | The id of the geographical location assigned to this offer.
+
 
 ###Request Example
 

@@ -61,8 +61,6 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(HardwareOfferConverter.class);
         // Image
         converterBinder.addBinding().to(ImageConverter.class);
-        // Image Offer
-        converterBinder.addBinding().to(ImageOfferConverter.class);
         // Instance
         converterBinder.addBinding().to(InstanceConverter.class);
         // IpAddress

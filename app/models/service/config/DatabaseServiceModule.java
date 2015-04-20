@@ -106,10 +106,6 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Image>>() {
         });
         requestStaticInjection(ImageDto.References.class);
-        //Image Offer
-        bind(new TypeLiteral<ModelService<ImageOffer>>() {
-        }).to(new TypeLiteral<BaseModelService<ImageOffer>>() {
-        });
         //Instance
         bind(new TypeLiteral<ModelService<Instance>>() {
         }).to(new TypeLiteral<BaseModelService<Instance>>() {

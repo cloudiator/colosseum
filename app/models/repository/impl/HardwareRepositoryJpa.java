@@ -39,12 +39,4 @@ public class HardwareRepositoryJpa extends BaseModelRepositoryJpa<Hardware>
         super(type);
     }
 
-    @Override public Hardware findByCloudAndHardwareOffer(final Cloud cloud,
-        final HardwareOffer hardwareOffer) {
-
-        return (Hardware) getSingleResultOrNull(em().createQuery(
-            "from CloudHardwareFlavor ch where cloud = :cloud and hardwareOffer = :hardwareOffer")
-            .setParameter("cloud", cloud).setParameter("hardwareOffer", hardwareOffer));
-
-    }
 }

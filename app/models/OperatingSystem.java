@@ -30,7 +30,7 @@ import java.util.List;
 
     @Enumerated(EnumType.STRING) private OperatingSystemArchitecture operatingSystemArchitecture;
 
-    @OneToMany(mappedBy = "operatingSystem") private List<ImageOffer> imageOffers;
+    @OneToMany(mappedBy = "operatingSystem") private List<Image> images;
 
     @ManyToOne private OperatingSystemVendor operatingSystemVendor;
 
@@ -51,12 +51,12 @@ import java.util.List;
         this.operatingSystemArchitecture = operatingSystemArchitecture;
     }
 
-    public List<ImageOffer> getImageOffers() {
-        return imageOffers;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setImageOffers(List<ImageOffer> imageOffers) {
-        this.imageOffers = imageOffers;
+    public void setImages(List<Image> images) {
+        this.images = images;
     }
 
     public String getVersion() {

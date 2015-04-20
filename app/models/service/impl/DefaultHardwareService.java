@@ -19,9 +19,7 @@
 package models.service.impl;
 
 import com.google.inject.Inject;
-import models.Cloud;
 import models.Hardware;
-import models.HardwareOffer;
 import models.repository.api.HardwareRepository;
 import models.service.api.CloudHardwareService;
 import models.service.impl.generic.BaseModelService;
@@ -34,11 +32,5 @@ public class DefaultHardwareService extends BaseModelService<Hardware>
 
     @Inject public DefaultHardwareService(HardwareRepository hardwareRepository) {
         super(hardwareRepository);
-    }
-
-    @Override public Hardware getByCloudAndHardwareFlavor(final Cloud cloud,
-        final HardwareOffer hardwareOffer) {
-        return ((HardwareRepository) this.modelRepository)
-            .findByCloudAndHardwareOffer(cloud, hardwareOffer);
     }
 }

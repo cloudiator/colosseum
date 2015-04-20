@@ -29,8 +29,8 @@ public class VirtualMachineTemplateBuilder {
 
     private Cloud cloud;
     private HardwareOffer hardwareOffer;
-    private LocationOffer locationOffer;
-    private ImageOffer imageOffer;
+    private GeoLocation geoLocation;
+    private OperatingSystem operatingSystem;
     private Location location;
     private Image image;
     private Hardware hardware;
@@ -48,13 +48,13 @@ public class VirtualMachineTemplateBuilder {
         return this;
     }
 
-    public VirtualMachineTemplateBuilder location(LocationOffer locationOffer) {
-        this.locationOffer = locationOffer;
+    public VirtualMachineTemplateBuilder geoLocation(GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder image(ImageOffer imageOffer) {
-        this.imageOffer = imageOffer;
+    public VirtualMachineTemplateBuilder os(OperatingSystem operatingSystem) {
+        this.operatingSystem = operatingSystem;
         return this;
     }
 
@@ -99,9 +99,9 @@ public class VirtualMachineTemplateBuilder {
         if (image != null) {
             return image;
         }
-        if (cloud != null && imageOffer != null) {
+        if (cloud != null && operatingSystem != null) {
             for (Image searchImage : cloud.getImages()) {
-                if (searchImage.getImageOffer().equals(imageOffer)) {
+                if (searchImage.getOperatingSystem().equals(operatingSystem)) {
                     return searchImage;
                 }
             }
@@ -114,9 +114,9 @@ public class VirtualMachineTemplateBuilder {
         if (location != null) {
             return location;
         }
-        if (cloud != null && locationOffer != null) {
+        if (cloud != null && geoLocation != null) {
             for (Location searchLocation : cloud.getLocations()) {
-                if (searchLocation.getLocationOffer().equals(locationOffer)) {
+                if (geoLocation.equals(searchLocation.getGeoLocation())) {
                     return searchLocation;
                 }
             }

@@ -27,7 +27,7 @@ import java.util.List;
 
     @Column(updatable = false) private String cloudUuid;
 
-    @ManyToOne(optional = false) private ImageOffer imageOffer;
+    @ManyToOne(optional = false) private OperatingSystem operatingSystem;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -44,10 +44,10 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, ImageOffer imageOffer, List<Location> locations) {
+    public Image(String cloudUuid, Cloud cloud, OperatingSystem operatingSystem, List<Location> locations) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
-        this.imageOffer = imageOffer;
+        this.operatingSystem = operatingSystem;
         this.locations = locations;
     }
 
@@ -57,14 +57,6 @@ import java.util.List;
 
     public void setCloudUuid(String cloudUuid) {
         this.cloudUuid = cloudUuid;
-    }
-
-    public ImageOffer getImageOffer() {
-        return imageOffer;
-    }
-
-    public void setImageOffer(ImageOffer imageOffer) {
-        this.imageOffer = imageOffer;
     }
 
     public Cloud getCloud() {
@@ -97,5 +89,13 @@ import java.util.List;
 
     public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    public OperatingSystem getOperatingSystem() {
+        return operatingSystem;
+    }
+
+    public void setOperatingSystem(OperatingSystem operatingSystem) {
+        this.operatingSystem = operatingSystem;
     }
 }

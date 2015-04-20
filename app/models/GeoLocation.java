@@ -41,7 +41,7 @@ import java.util.List;
 
     private Float LocationLongitude;
 
-    @OneToMany(mappedBy = "geoLocation") private List<LocationOffer> locationOffers;
+    @OneToMany(mappedBy = "geoLocation") private List<Location> locations;
 
     /**
      * No-args constructor used by hibernate.
@@ -107,11 +107,11 @@ import java.util.List;
         LocationLongitude = locationLongitude;
     }
 
-    public List<LocationOffer> getLocationOffers() {
-        return locationOffers;
+    public List<Location> getLocations() {
+        return locations;
     }
 
-    public void setLocationOffers(List<LocationOffer> locationOffers) {
-        this.locationOffers = locationOffers;
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

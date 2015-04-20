@@ -18,7 +18,6 @@ Entity                                                       | URL
 [Hardware](entities/Hardware.md)                             | /api/hardware
 [HardwareOffer](entities/HardwareOffer.md)                   | /api/hardwareOffer
 [Image](entities/Image.md)                                   | /api/image
-[ImageOffer](entities/ImageOffer.md)                         | /api/imageOffer
 [Instance](entities/Instance.md)                             | /api/instance
 [IpAddress](entities/IpAddress.md)                           | /api/ip
 [Location](entities/Location.md)                             | /api/location

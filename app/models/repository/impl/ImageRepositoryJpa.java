@@ -20,37 +20,16 @@ package models.repository.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import models.Cloud;
 import models.Image;
-import models.ImageOffer;
 import models.repository.api.ImageRepository;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
-
-import static models.util.JpaResultHelper.getSingleResultOrNull;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image>
-    implements ImageRepository {
+public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image> implements ImageRepository {
 
-    @Inject
-    public ImageRepositoryJpa(TypeLiteral<Image> type) {
+    @Inject public ImageRepositoryJpa(TypeLiteral<Image> type) {
         super(type);
-    }
-
-    /**
-     * Searches the concrete image on the given cloud and the image
-     *
-     * @param cloud           the cloud
-     * @param imageOffer the image
-     * @return the unique cloud image if any, otherwise null.
-     */
-    @Override public Image findByCloudAndImageOffer(final Cloud cloud, final ImageOffer imageOffer) {
-
-        return (Image) getSingleResultOrNull(
-            em().createQuery("from Image i where cloud = :cloud and image = :image")
-                .setParameter("cloud", cloud).setParameter("image", imageOffer));
-
     }
 }

@@ -18,17 +18,11 @@
 
 package models.service.api;
 
-import models.Cloud;
 import models.Image;
-import models.ImageOffer;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
 public interface CloudImageService extends ModelService<Image> {
-
-    public Image getByCloudAndImage(Cloud cloud, ImageOffer imageOffer);
-
-
 }

@@ -18,16 +18,12 @@
 
 package models.repository.api;
 
-import models.Cloud;
 import models.Image;
-import models.ImageOffer;
 import models.repository.api.generic.ModelRepository;
 
 /**
  * Created by daniel on 31.10.14.
  */
 public interface ImageRepository extends ModelRepository<Image> {
-
-    public Image findByCloudAndImageOffer(Cloud cloud, ImageOffer imageOffer);
 
 }

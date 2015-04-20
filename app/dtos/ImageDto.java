@@ -27,9 +27,10 @@ import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.Cloud;
-import models.ImageOffer;
 import models.Location;
+import models.OperatingSystem;
 import models.service.api.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
 import java.util.List;
 
@@ -37,8 +38,8 @@ public class ImageDto extends ValidatableDto {
 
     private String cloudUuid;
     private Long cloud;
-    private Long imageOffer;
     private List<Long> locations;
+    private Long operatingSystem;
 
     public ImageDto() {
         super();
@@ -48,11 +49,11 @@ public class ImageDto extends ValidatableDto {
         validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(imageOffer).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.imageOfferService.get()));
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
     }
 
     public String getCloudUuid() {
@@ -71,12 +72,12 @@ public class ImageDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public Long getImageOffer() {
-        return imageOffer;
+    public Long getOperatingSystem() {
+        return operatingSystem;
     }
 
-    public void setImageOffer(Long imageOffer) {
-        this.imageOffer = imageOffer;
+    public void setOperatingSystem(Long operatingSystem) {
+        this.operatingSystem = operatingSystem;
     }
 
     public List<Long> getLocations() {
@@ -89,7 +90,7 @@ public class ImageDto extends ValidatableDto {
 
     public static class References {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<ImageOffer>> imageOfferService;
         @Inject public static Provider<ModelService<Location>> locationService;
+        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
     }
 }

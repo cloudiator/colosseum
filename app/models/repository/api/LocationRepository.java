@@ -25,4 +25,5 @@ import models.repository.api.generic.ModelRepository;
  * Created by bwpc on 09.12.2014.
  */
 public interface LocationRepository extends ModelRepository<Location> {
+
 }

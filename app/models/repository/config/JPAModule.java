@@ -100,10 +100,6 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Image>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Image>>() {
         });
-        //Image Properties
-        bind(new TypeLiteral<ModelRepository<ImageOffer>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<ImageOffer>>() {
-        });
         //Instance
         bind(new TypeLiteral<ModelRepository<Instance>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Instance>>() {

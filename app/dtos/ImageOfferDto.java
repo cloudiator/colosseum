@@ -41,8 +41,7 @@ public class ImageOfferDto extends NamedDto {
 
     @Override public void validation() {
         super.validation();
-        validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
+
     }
 
     public Long getOperatingSystem() {

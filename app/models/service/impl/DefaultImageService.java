@@ -19,9 +19,7 @@
 package models.service.impl;
 
 import com.google.inject.Inject;
-import models.Cloud;
 import models.Image;
-import models.ImageOffer;
 import models.repository.api.ImageRepository;
 import models.service.api.CloudImageService;
 import models.service.impl.generic.BaseModelService;
@@ -33,11 +31,5 @@ public class DefaultImageService extends BaseModelService<Image> implements Clou
 
     @Inject public DefaultImageService(ImageRepository imageRepository) {
         super(imageRepository);
-    }
-
-    @Override
-    public Image getByCloudAndImage(final Cloud cloud, final ImageOffer imageOffer) {
-        return ((ImageRepository) this.modelRepository)
-            .findByCloudAndImageOffer(cloud, imageOffer);
     }
 }

@@ -114,13 +114,6 @@ POST          /api/image                           @controllers.ImageController.
 PUT           /api/image/:id                       @controllers.ImageController.put(id: Long)
 DELETE        /api/image/:id                       @controllers.ImageController.delete(id: Long)
 
-#ImageOffer
-GET           /api/imageOffer                      @controllers.ImageOfferController.list()
-GET           /api/imageOffer/:id                  @controllers.ImageOfferController.get(id: Long)
-POST          /api/imageOffer                      @controllers.ImageOfferController.post()
-PUT           /api/imageOffer/:id                  @controllers.ImageOfferController.put(id: Long)
-DELETE        /api/imageOffer/:id                  @controllers.ImageOfferController.delete(id: Long)
-
 #Instance
 GET           /api/instance                        @controllers.InstanceController.list()
 GET           /api/instance/:id                    @controllers.InstanceController.get(id: Long)

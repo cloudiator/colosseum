@@ -18,17 +18,12 @@
 
 package models.service.api;
 
-import models.Cloud;
 import models.Hardware;
-import models.HardwareOffer;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
 public interface CloudHardwareService extends ModelService<Hardware> {
-
-    public Hardware getByCloudAndHardwareFlavor(Cloud cloud, HardwareOffer hardwareOffer);
-
 
 }

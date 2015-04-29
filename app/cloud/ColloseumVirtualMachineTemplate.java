@@ -28,13 +28,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.02.15.
  */
-public class VirtualMachineTemplate {
+public class ColloseumVirtualMachineTemplate {
 
     private final Image image;
     private final Hardware hardware;
     private final Location location;
 
-    VirtualMachineTemplate(Image image, Hardware hardware, Location location) {
+    ColloseumVirtualMachineTemplate(Image image, Hardware hardware, Location location) {
 
         // everything needs to be not null.
         checkNotNull(image);
@@ -51,8 +51,8 @@ public class VirtualMachineTemplate {
         this.location = location;
     }
 
-    public static VirtualMachineTemplateBuilder builder() {
-        return new VirtualMachineTemplateBuilder();
+    public static ColloseumVirtualMachineTemplateBuilder builder() {
+        return new ColloseumVirtualMachineTemplateBuilder();
     }
 
     public String cloudHardware() {

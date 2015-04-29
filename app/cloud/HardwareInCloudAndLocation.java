@@ -41,7 +41,7 @@ public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocati
         return swordHardware.numberOfCores();
     }
 
-    @Override public int mbRam() {
+    @Override public long mbRam() {
         return swordHardware.mbRam();
     }
 }

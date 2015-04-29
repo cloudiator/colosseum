@@ -18,7 +18,7 @@ public class SwordHardware implements HardwareFlavor, ResourceInLocation {
         return hardwareFlavor.numberOfCores();
     }
 
-    @Override public int mbRam() {
+    @Override public long mbRam() {
         return hardwareFlavor.mbRam();
     }
 

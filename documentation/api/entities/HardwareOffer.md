@@ -27,7 +27,7 @@ A list of all hardware offers stored in the database.
             "rel":"self"
          }
       ],
-      "numberOfCpu":4,
+      "numberOfCores":4,
       "mbOfRam":4096,
       "localDiskSpace":20000
    },
@@ -38,7 +38,7 @@ A list of all hardware offers stored in the database.
             "rel":"self"
          }
       ],
-      "numberOfCpu":8,
+      "numberOfCores":8,
       "mbOfRam":8192,
       "localDiskSpace":40000
    }
@@ -73,7 +73,7 @@ Shows the selected hardware offer.
          "rel":"self"
       }
    ],
-   "numberOfCpu":4,
+   "numberOfCores":4,
    "mbOfRam":4096,
    "localDiskSpace":20000
 }
@@ -95,14 +95,14 @@ Creates a new hardware offer based on the given request data and returns it.
 
 Parameter      | Description
 -------------- | -------------
-numberOfCpu    | The number of CPU cores.
+numberOfCores    | The number of CPU cores.
 mbOfRam        | The amount of RAM in MB.
 localDiskSpace | The amount of locally available disk space.
 
 ### Request Example
 ```
 {  
-   "numberOfCpu":4,
+   "numberOfCores":4,
    "mbOfRam":4096,
    "localDiskSpace":20000
 } 
@@ -128,7 +128,7 @@ Updates the hardware offer identified by the given id with the data from the req
 Parameter         | Description
 ----------------- | ------------------------------------------
 hardwareOffer_id  | The id of the hardware offer to update.
-numberOfCpu       | The number of CPU cores.
+numberOfCores       | The number of CPU cores.
 mbOfRam           | The amount of RAM in MB.
 localDiskSpace    | The amount of locally available disk space.
 
@@ -138,7 +138,7 @@ PUT /api/hardwareOffer/1
 ```
 ```
 {  
-   "numberOfCpu":4,
+   "numberOfCores":4,
    "mbOfRam":4096,
    "localDiskSpace":20000
 }

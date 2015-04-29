@@ -20,6 +20,7 @@ package models;
 
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,32 +30,33 @@ import java.util.List;
 
 @Entity public class HardwareOffer extends Model {
 
-    @Column(nullable = false, updatable = false) private int numberOfCpu;
+    @Column(nullable = false, updatable = false) private Integer numberOfCores;
 
-    @Column(nullable = false, updatable = false) private long mbOfRam;
+    @Column(nullable = false, updatable = false) private Long mbOfRam;
 
-    @Column(nullable = false, updatable = false) private long localDiskSpace;
+    @Nullable private Long localDiskSpace;
 
-    @OneToMany(mappedBy = "hardwareOffer", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
+    @OneToMany(mappedBy = "hardwareOffer", cascade = CascadeType.REMOVE) private List<Hardware>
+        hardware;
 
     private HardwareOffer() {
     }
 
-    private HardwareOffer(int numberOfCpu, long mbOfRam, long localDiskSpace) {
-        this.numberOfCpu = numberOfCpu;
+    public HardwareOffer(Integer numberOfCores, Long mbOfRam, @Nullable Long localDiskSpace) {
+        this.numberOfCores = numberOfCores;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;
     }
 
-    public int getNumberOfCpu() {
-        return numberOfCpu;
+    public Integer getNumberOfCores() {
+        return numberOfCores;
     }
 
-    public long getMbOfRam() {
+    public Long getMbOfRam() {
         return mbOfRam;
     }
 
-    public long getLocalDiskSpace() {
+    @Nullable public Long getLocalDiskSpace() {
         return localDiskSpace;
     }
 

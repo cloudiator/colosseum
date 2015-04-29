@@ -24,7 +24,7 @@ import dtos.validation.NotNullValidator;
 
 public class HardwareOfferDto extends ValidatableDto {
 
-    protected Integer numberOfCpu;
+    protected Integer numberOfCores;
     protected Long mbOfRam;
     protected Long localDiskSpace;
 
@@ -33,26 +33,26 @@ public class HardwareOfferDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(Integer.class).validate(numberOfCpu).withValidator(new NotNullValidator())
-            .withValidator(new ExpressionValidator(numberOfCpu > 0));
+        validator(Integer.class).validate(numberOfCores).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(numberOfCores > 0));
         validator(Long.class).validate(mbOfRam).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(mbOfRam > 0));
         validator(Long.class).validate(localDiskSpace).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(localDiskSpace > 0));
     }
 
-    public HardwareOfferDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
-        this.numberOfCpu = numberOfCpu;
+    public HardwareOfferDto(Integer numberOfCores, Long mbOfRam, Long localDiskSpace) {
+        this.numberOfCores = numberOfCores;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;
     }
 
-    public Integer getNumberOfCpu() {
-        return numberOfCpu;
+    public Integer getNumberOfCores() {
+        return numberOfCores;
     }
 
-    public void setNumberOfCpu(Integer numberOfCpu) {
-        this.numberOfCpu = numberOfCpu;
+    public void setNumberOfCores(Integer numberOfCores) {
+        this.numberOfCores = numberOfCores;
     }
 
     public Long getMbOfRam() {

@@ -17,6 +17,7 @@
  */
 
 import cloud.CloudModule;
+import cloud.HardwareWatcher;
 import cloud.ImageWatcher;
 import cloud.LocationWatcher;
 import com.google.inject.Guice;
@@ -68,10 +69,12 @@ public class Global extends GlobalSettings {
 
         LocationWatcher locationWatcher = this.injector.getInstance(LocationWatcher.class);
         ImageWatcher imageWatcher = this.injector.getInstance(ImageWatcher.class);
+        HardwareWatcher hardwareWatcher = this.injector.getInstance(HardwareWatcher.class);
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
         executionService.schedule(locationWatcher, 1, TimeUnit.MINUTES);
         executionService.schedule(imageWatcher, 1, TimeUnit.MINUTES);
+        executionService.schedule(hardwareWatcher, 1, TimeUnit.MINUTES);
 
 
         //new Thread(locationWatcher).start();

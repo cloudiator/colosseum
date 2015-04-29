@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 /**
  * Created by daniel on 12.02.15.
  */
-public class VirtualMachineTemplateBuilder {
+public class ColloseumVirtualMachineTemplateBuilder {
 
     private Cloud cloud;
     private HardwareOffer hardwareOffer;
@@ -35,45 +35,45 @@ public class VirtualMachineTemplateBuilder {
     private Image image;
     private Hardware hardware;
 
-    VirtualMachineTemplateBuilder() {
+    ColloseumVirtualMachineTemplateBuilder() {
     }
 
-    public VirtualMachineTemplateBuilder cloud(Cloud cloud) {
+    public ColloseumVirtualMachineTemplateBuilder cloud(Cloud cloud) {
         this.cloud = cloud;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder hardware(HardwareOffer hardwareOffer) {
+    public ColloseumVirtualMachineTemplateBuilder hardware(HardwareOffer hardwareOffer) {
         this.hardwareOffer = hardwareOffer;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder geoLocation(GeoLocation geoLocation) {
+    public ColloseumVirtualMachineTemplateBuilder geoLocation(GeoLocation geoLocation) {
         this.geoLocation = geoLocation;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder os(OperatingSystem operatingSystem) {
+    public ColloseumVirtualMachineTemplateBuilder os(OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder cloudLocation(Location location) {
+    public ColloseumVirtualMachineTemplateBuilder cloudLocation(Location location) {
         this.location = location;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder cloudHardware(Hardware hardware) {
+    public ColloseumVirtualMachineTemplateBuilder cloudHardware(Hardware hardware) {
         this.hardware = hardware;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder cloudImage(Image image) {
+    public ColloseumVirtualMachineTemplateBuilder cloudImage(Image image) {
         this.image = image;
         return this;
     }
 
-    public VirtualMachineTemplateBuilder virtualMachineTemplateModel(
+    public ColloseumVirtualMachineTemplateBuilder virtualMachineTemplateModel(
         models.VirtualMachineTemplate virtualMachineTemplateModel) {
         this.image = virtualMachineTemplateModel.getImage();
         this.location = virtualMachineTemplateModel.getLocation();
@@ -124,8 +124,8 @@ public class VirtualMachineTemplateBuilder {
         return null;
     }
 
-    public VirtualMachineTemplate build() {
-        return new VirtualMachineTemplate(getImage(), getHardware(), getLocation());
+    public ColloseumVirtualMachineTemplate build() {
+        return new ColloseumVirtualMachineTemplate(getImage(), getHardware(), getLocation());
     }
 
 

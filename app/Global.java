@@ -16,8 +16,14 @@
  * under the License.
  */
 
+import cloud.CloudModule;
+import cloud.ImageWatcher;
+import cloud.LocationWatcher;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import components.execution.DefaultExecutionService;
+import components.execution.ExecutionService;
+import components.execution.TransactionAwareExecutionService;
 import dtos.conversion.config.BaseConverterModule;
 import models.repository.config.JPAModule;
 import models.service.config.DatabaseServiceModule;
@@ -28,6 +34,7 @@ import play.db.jpa.JPA;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Global class.
@@ -55,8 +62,19 @@ public class Global extends GlobalSettings {
         super.onStart(app);
 
         //create guice injector
-        this.injector = Guice.createInjector(new JPAModule(), new BaseConverterModule(),
-            new DatabaseServiceModule());
+        this.injector = Guice
+            .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
+                new CloudModule());
+
+        LocationWatcher locationWatcher = this.injector.getInstance(LocationWatcher.class);
+        ImageWatcher imageWatcher = this.injector.getInstance(ImageWatcher.class);
+        ExecutionService executionService =
+            new TransactionAwareExecutionService(new DefaultExecutionService());
+        executionService.schedule(locationWatcher, 1, TimeUnit.MINUTES);
+        executionService.schedule(imageWatcher, 1, TimeUnit.MINUTES);
+
+
+        //new Thread(locationWatcher).start();
 
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);

@@ -16,12 +16,13 @@
  * under the License.
  */
 
-package cloud;
+package cloud.sword;
 
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
 /**
  * Created by daniel on 11.03.15.
  */
-public interface Problem<T extends Model> {
+public interface ResourceInLocation extends Resource {
+    public String location();
 }

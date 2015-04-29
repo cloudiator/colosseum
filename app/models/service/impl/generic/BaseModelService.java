@@ -30,18 +30,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-public class BaseModelService<T extends Model> implements models.service.api.generic.ModelService<T> {
+public class BaseModelService<T extends Model>
+    implements models.service.api.generic.ModelService<T> {
 
     protected final ModelRepository<T> modelRepository;
 
-    @Inject
-    public BaseModelService(ModelRepository<T> modelRepository) {
+    @Inject public BaseModelService(ModelRepository<T> modelRepository) {
         checkNotNull(modelRepository);
         this.modelRepository = modelRepository;
     }
 
     @Override @Nullable public T getById(Long id) {
         return modelRepository.findById(id);
+    }
+
+    @Override @Nullable public T getByUuid(String uuid) {
+        return modelRepository.findByUuid(uuid);
     }
 
     @Override public List<T> getAll() {

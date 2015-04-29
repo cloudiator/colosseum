@@ -20,6 +20,7 @@ package models.service.api.generic;
 
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
@@ -27,11 +28,14 @@ import java.util.List;
  */
 public interface ModelService<T extends Model> {
 
-    public T getById(Long id);
+    @Nullable T getById(Long id);
 
-    public List<T> getAll();
+    @Nullable T getByUuid(String uuid);
 
-    public void save(T t);
+    List<T> getAll();
 
-    public void delete(T t);
+    void save(T t);
+
+    void delete(T t);
+
 }

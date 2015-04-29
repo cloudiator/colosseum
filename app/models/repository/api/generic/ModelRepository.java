@@ -30,19 +30,11 @@ public interface ModelRepository<T extends Model> {
 
     @Nullable public T findById(Long id);
 
-    //T create(T t);
+    void delete(T t);
 
-    //public void flush();
+    void save(T t);
 
-    //T refresh(T t);
+    List<T> findAll();
 
-    public void delete(T t);
-
-    //T update(T t);
-
-    public void save(T t);
-
-    public List<T> findAll();
-
-
+    @Nullable T findByUuid(String uuid);
 }

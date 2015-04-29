@@ -18,6 +18,7 @@
 
 package cloud;
 
+import cloud.sword.SwordVirtualMachine;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
@@ -28,27 +29,25 @@ import java.util.Set;
  * Created by daniel on 12.03.15.
  */
 public class VirtualMachineInCloudAndLocation
-    extends AbstractResourceInCloudAndLocation<VirtualMachine> implements VirtualMachine {
+    extends AbstractResourceInCloudAndLocation<SwordVirtualMachine> implements VirtualMachine {
 
+    private final SwordVirtualMachine swordVirtualMachine;
 
-    public VirtualMachineInCloudAndLocation(VirtualMachine resource, String cloud,
+    public VirtualMachineInCloudAndLocation(SwordVirtualMachine resourceInLocation, String cloud,
         String credential) {
-        super(resource, cloud, credential);
-    }
-
-    private VirtualMachine getVirtualMachine() {
-        return (VirtualMachine) this.resource;
+        super(resourceInLocation, cloud, credential);
+        this.swordVirtualMachine = resourceInLocation;
     }
 
     @Override public Set<String> publicAddresses() {
-        return getVirtualMachine().publicAddresses();
+        return swordVirtualMachine.publicAddresses();
     }
 
     @Override public Set<String> privateAddresses() {
-        return getVirtualMachine().privateAddresses();
+        return swordVirtualMachine.privateAddresses();
     }
 
     @Override public Optional<LoginCredential> loginCredential() {
-        return getVirtualMachine().loginCredential();
+        return swordVirtualMachine.loginCredential();
     }
 }

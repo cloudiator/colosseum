@@ -25,18 +25,35 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 /**
  * Created by daniel on 12.03.15.
  */
-public class LocationInCloud extends AbstractResourceInCloud<Location> implements Location {
+public class LocationInCloud implements Location, ResourceInCloud {
 
+    private String cloud;
+    private String credential;
+    private Location location;
 
-    public LocationInCloud(Location resource, String cloud, String credential) {
-        super(resource, cloud, credential);
-    }
-
-    private Location getLocation() {
-        return (Location) this.resource;
+    public LocationInCloud(Location location, String cloud, String credential) {
+        this.location = location;
+        this.cloud = cloud;
+        this.credential = credential;
     }
 
     @Override public boolean isAssignable() {
-        return getLocation().isAssignable();
+        return location.isAssignable();
+    }
+
+    @Override public String id() {
+        return CloudCredentialLocationId.of(location.id(), cloud, credential).id();
+    }
+
+    @Override public String name() {
+        return location.name();
+    }
+
+    @Override public String cloud() {
+        return cloud;
+    }
+
+    @Override public String credential() {
+        return credential;
     }
 }

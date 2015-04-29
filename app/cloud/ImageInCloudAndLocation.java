@@ -20,14 +20,16 @@ package cloud;
 
 
 
+import cloud.sword.SwordImage;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<Image>
+public class ImageInCloudAndLocation extends AbstractResourceInCloudAndLocation<SwordImage>
     implements Image {
-    public ImageInCloudAndLocation(Image resource, String cloud, String credential) {
-        super(resource, cloud, credential);
+
+    public ImageInCloudAndLocation(SwordImage resourceInLocation, String cloud, String credential) {
+        super(resourceInLocation, cloud, credential);
     }
 }

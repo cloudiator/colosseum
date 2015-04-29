@@ -19,23 +19,43 @@
 package cloud;
 
 
-import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
-import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
+import cloud.sword.ResourceInLocation;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class AbstractResourceInCloudAndLocation<T extends Resource>
-    extends AbstractResourceInCloud<T> implements ResourceInCloudAndLocation {
+public class AbstractResourceInCloudAndLocation<T extends ResourceInLocation>
+    implements ResourceInCloudAndLocation {
 
-    private final String location;
+    private final String cloud;
+    private final String credential;
+    private final T resourceInLocation;
 
-    public AbstractResourceInCloudAndLocation(T resource, String cloud, String credential) {
-        super(resource, cloud, credential);
-        this.location = IdScopeByLocations.from(id()).getLocationId();
+
+    public AbstractResourceInCloudAndLocation(T resourceInLocation, String cloud,
+        String credential) {
+        this.cloud = cloud;
+        this.credential = credential;
+        this.resourceInLocation = resourceInLocation;
     }
 
     @Override public String location() {
-        return location;
+        return resourceInLocation.location();
+    }
+
+    @Override public String cloud() {
+        return cloud;
+    }
+
+    @Override public String credential() {
+        return credential;
+    }
+
+    @Override public String id() {
+        return CloudCredentialLocationId.of(resourceInLocation.id(), cloud, credential).id();
+    }
+
+    @Override public String name() {
+        return resourceInLocation.name();
     }
 }

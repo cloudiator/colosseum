@@ -18,11 +18,11 @@
 
 package cloud;
 
+import cloud.sword.ResourceInLocation;
+
 /**
  * Created by daniel on 12.03.15.
  */
-public interface ResourceInCloudAndLocation extends ResourceInCloud {
-
-    public String location();
+public interface ResourceInCloudAndLocation extends ResourceInLocation, ResourceInCloud {
 
 }

@@ -36,9 +36,10 @@ import java.util.List;
 
     @OneToMany(mappedBy = "parent") private List<Location> children;
 
-    @Column(updatable = false) @Enumerated(EnumType.STRING) private LocationScope locationScope;
+    @Nullable @Column(updatable = false) @Enumerated(EnumType.STRING) private LocationScope
+        locationScope;
 
-    @Column(updatable = false) private boolean isAssignable;
+    @Column(nullable = false, updatable = false) private Boolean isAssignable;
 
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
@@ -56,8 +57,8 @@ import java.util.List;
     private Location() {
     }
 
-    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation, @Nullable Location parent,
-        LocationScope locationScope, boolean isAssignable) {
+    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,
+        @Nullable Location parent, @Nullable LocationScope locationScope, boolean isAssignable) {
         this.cloud = cloud;
         this.cloudUuid = cloudUuid;
         this.geoLocation = geoLocation;
@@ -106,11 +107,11 @@ import java.util.List;
         this.children = children;
     }
 
-    public LocationScope getLocationScope() {
+    public @Nullable LocationScope getLocationScope() {
         return locationScope;
     }
 
-    public void setLocationScope(LocationScope locationScope) {
+    public void setLocationScope(@Nullable LocationScope locationScope) {
         this.locationScope = locationScope;
     }
 

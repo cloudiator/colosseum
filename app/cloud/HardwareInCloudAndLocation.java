@@ -20,28 +20,28 @@ package cloud;
 
 
 
+import cloud.sword.SwordHardware;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocation<HardwareFlavor>
+public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocation<SwordHardware>
     implements HardwareFlavor {
 
+    private final SwordHardware swordHardware;
 
-    public HardwareInCloudAndLocation(HardwareFlavor resource, String cloud, String credential) {
-        super(resource, cloud, credential);
-    }
-
-    private HardwareFlavor getHardware() {
-        return (HardwareFlavor) this.resource;
+    public HardwareInCloudAndLocation(SwordHardware resourceInLocation, String cloud,
+        String credential) {
+        super(resourceInLocation, cloud, credential);
+        this.swordHardware = resourceInLocation;
     }
 
     @Override public int numberOfCores() {
-        return getHardware().numberOfCores();
+        return swordHardware.numberOfCores();
     }
 
     @Override public int mbRam() {
-        return getHardware().mbRam();
+        return swordHardware.mbRam();
     }
 }

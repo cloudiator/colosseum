@@ -20,14 +20,16 @@ package models;
 
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity public class Image extends Model {
 
     @Column(updatable = false) private String cloudUuid;
 
-    @ManyToOne(optional = false) private OperatingSystem operatingSystem;
+    @Nullable @ManyToOne(optional = true) private OperatingSystem operatingSystem;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -44,11 +46,13 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, OperatingSystem operatingSystem, List<Location> locations) {
+    public Image(String cloudUuid, Cloud cloud, @Nullable OperatingSystem operatingSystem,
+        Location location) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
         this.operatingSystem = operatingSystem;
-        this.locations = locations;
+        this.locations = new ArrayList<>();
+        this.locations.add(location);
     }
 
     public String getCloudUuid() {
@@ -91,11 +95,11 @@ import java.util.List;
         this.virtualMachineTemplates = virtualMachineTemplates;
     }
 
-    public OperatingSystem getOperatingSystem() {
+    @Nullable public OperatingSystem getOperatingSystem() {
         return operatingSystem;
     }
 
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
+    public void setOperatingSystem(@Nullable OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
     }
 }

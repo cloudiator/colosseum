@@ -20,7 +20,10 @@ package models;
 
 import models.generic.NamedModel;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import java.util.List;
 
 @Entity public class Cloud extends NamedModel {
@@ -34,6 +37,8 @@ import java.util.List;
     private List<VirtualMachineTemplate> virtualMachineTemplates;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<VirtualMachine>
         virtualMachines;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudCredential>
+        cloudCredentials;
 
     /**
      * Empty constructor. Needed by hibernate.
@@ -41,31 +46,59 @@ import java.util.List;
     private Cloud() {
     }
 
-    public Cloud(String name) {
-        super(name);
-    }
-
     public CloudApi getCloudApi() {
         return cloudApi;
+    }
+
+    public void setCloudApi(CloudApi cloudApi) {
+        this.cloudApi = cloudApi;
     }
 
     public List<Image> getImages() {
         return images;
     }
 
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
     public List<Location> getLocations() {
         return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 
     public List<Hardware> getHardware() {
         return hardware;
     }
 
+    public void setHardware(List<Hardware> hardware) {
+        this.hardware = hardware;
+    }
+
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
         return virtualMachineTemplates;
     }
 
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
     public List<VirtualMachine> getVirtualMachines() {
         return virtualMachines;
+    }
+
+    public void setVirtualMachines(List<VirtualMachine> virtualMachines) {
+        this.virtualMachines = virtualMachines;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
     }
 }

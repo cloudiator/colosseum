@@ -24,6 +24,7 @@ import models.generic.Model;
 import models.repository.api.generic.ModelRepository;
 import play.db.jpa.JPA;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import java.util.List;
@@ -46,7 +47,7 @@ public class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<
         return JPA.em();
     }
 
-    @Override public T findById(Long id) {
+    @Override @Nullable public T findById(Long id) {
         checkNotNull(id);
         return em().find(type, id);
     }
@@ -89,5 +90,13 @@ public class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<
         Query query = em().createQuery(queryString);
         //noinspection unchecked
         return query.getResultList();
+    }
+
+    @Nullable @Override public T findByUuid(String uuid) {
+        checkNotNull(uuid);
+        String queryString = String.format("from %s where uuid=:uuid", type.getName());
+        Query query = em().createQuery(queryString).setParameter("uuid", uuid);
+        //noinspection unchecked
+        return (T) query.getSingleResult();
     }
 }

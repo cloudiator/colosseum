@@ -94,11 +94,11 @@ PUT           /api/geo/:id                         @controllers.GeoLocationContr
 DELETE        /api/geo/:id                         @controllers.GeoLocationController.delete(id: Long)
 
 #Hardware
-GET           /api/cloudHardware                   @controllers.HardwareController.list()
-GET           /api/cloudHardware/:id               @controllers.HardwareController.get(id: Long)
-POST          /api/cloudHardware                   @controllers.HardwareController.post()
-PUT           /api/cloudHardware/:id               @controllers.HardwareController.put(id: Long)
-DELETE        /api/cloudHardware/:id               @controllers.HardwareController.delete(id: Long)
+GET           /api/hardware                        @controllers.HardwareController.list()
+GET           /api/hardware/:id                    @controllers.HardwareController.get(id: Long)
+POST          /api/hardware                        @controllers.HardwareController.post()
+PUT           /api/hardware/:id                    @controllers.HardwareController.put(id: Long)
+DELETE        /api/hardware/:id                    @controllers.HardwareController.delete(id: Long)
 
 #HardwareOffer
 GET           /api/hardwareOffer                   @controllers.HardwareOfferController.list()

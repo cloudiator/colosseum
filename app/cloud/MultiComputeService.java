@@ -17,10 +17,7 @@ import models.CloudCredential;
 import models.service.api.generic.ModelService;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by daniel on 17.04.15.
@@ -129,9 +126,9 @@ import java.util.Map;
             }
         }
 
-        public synchronized Iterable<ComputeService> getComputeServices() {
+        public Iterable<ComputeService> getComputeServices() {
             update();
-            return computeServices.values();
+            return new ArrayList<>(computeServices.values());
         }
 
     }

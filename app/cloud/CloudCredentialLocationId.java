@@ -10,13 +10,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class CloudCredentialLocationId {
 
     private static final String DELIMITER = "/";
-    private final String swordId;
+    private final String baseId;
     private final String cloud;
     private final String credential;
 
 
-    private CloudCredentialLocationId(String swordId, String cloud, String credential) {
-        this.swordId = swordId;
+    private CloudCredentialLocationId(String baseId, String cloud, String credential) {
+        this.baseId = baseId;
         this.cloud = cloud;
         this.credential = credential;
     }
@@ -30,19 +30,19 @@ public class CloudCredentialLocationId {
     }
 
     public String swordId() {
-        return swordId;
+        return baseId;
     }
 
     public String location() {
-        return IdScopeByLocations.from(swordId).getLocationId();
+        return IdScopeByLocations.from(baseId).getLocationId();
     }
 
-    public String rawId() {
-        return IdScopeByLocations.from(swordId).getId();
+    public String baseId() {
+        return IdScopeByLocations.from(baseId).getId();
     }
 
     public String id() {
-        return cloud + DELIMITER + credential + DELIMITER + swordId;
+        return cloud + DELIMITER + credential + DELIMITER + baseId;
     }
 
     public static CloudCredentialLocationId of(String swordId, String cloud, String credential) {

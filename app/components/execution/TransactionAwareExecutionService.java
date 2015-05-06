@@ -15,15 +15,27 @@ public class TransactionAwareExecutionService implements ExecutionService {
         this.executionService = executionService;
     }
 
-    private Runnable wrapRunnable(Runnable runnable) {
-        if (runnable.getClass().isAnnotationPresent(Transactional.class)) {
-            //wrap in runnable with transaction
-            runnable = new RunnableWithTransaction(runnable);
+    private Runnable decorateRunnableIfTransaction(Runnable runnable) {
+        try {
+            if (runnable.getClass().getMethod("run").isAnnotationPresent(Transactional.class)) {
+                return new RunWithTransaction(runnable);
+            }
+        } catch (NoSuchMethodException shouldNeverOccur) {
+            throw new AssertionError("Runnable without run method", shouldNeverOccur);
         }
         return runnable;
     }
 
-    @Override public void schedule(Runnable runnable, long delay, TimeUnit timeUnit) {
-        this.executionService.schedule(this.wrapRunnable(runnable), delay, timeUnit);
+    @Override public void scheduleAtFixedRate(Runnable runnable, long delay, TimeUnit timeUnit) {
+        this.executionService
+            .scheduleAtFixedRate(this.decorateRunnableIfTransaction(runnable), delay, timeUnit);
+    }
+
+    @Override public void execute(Runnable runnable) {
+        this.executionService.execute(this.decorateRunnableIfTransaction(runnable));
+    }
+
+    @Override public void executeInLoop(Runnable runnable) {
+        this.executionService.executeInLoop(this.decorateRunnableIfTransaction(runnable));
     }
 }

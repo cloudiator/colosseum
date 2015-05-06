@@ -7,6 +7,9 @@ import java.util.concurrent.TimeUnit;
 
 public interface ExecutionService {
 
-    void schedule(Runnable runnable, long delay, TimeUnit timeUnit);
+    void scheduleAtFixedRate(Runnable runnable, long delay, TimeUnit timeUnit);
 
+    void execute(Runnable runnable);
+
+    void executeInLoop(Runnable runnable);
 }

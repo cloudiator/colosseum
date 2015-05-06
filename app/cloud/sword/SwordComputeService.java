@@ -24,7 +24,7 @@ public class SwordComputeService implements ComputeService {
         this.computeService = ServiceBuilder.newServiceBuilder(providerName).endpoint(endpoint)
             .credentials(username, password).nodeGroup("geagzjkue").loginCredentials(
                 LoginCredentialBuilder.newBuilder().username("ubuntu").password("test").build())
-            .build();
+            .loggingModule(new SwordLoggingModule()).build();
     }
 
     @Nullable @Override public SwordImage getImage(String id) {

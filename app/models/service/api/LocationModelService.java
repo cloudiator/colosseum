@@ -24,5 +24,8 @@ import models.service.api.generic.ModelService;
 /**
  * Created by bwpc on 09.12.2014.
  */
-public interface CloudLocationService extends ModelService<Location> {
+public interface LocationModelService extends ModelService<Location> {
+
+    Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud);
+
 }

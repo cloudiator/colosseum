@@ -17,9 +17,9 @@
  */
 
 import cloud.CloudModule;
-import cloud.HardwareWatcher;
-import cloud.ImageWatcher;
-import cloud.LocationWatcher;
+import cloud.sync.Solver;
+import cloud.sync.config.SolutionModule;
+import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import components.execution.DefaultExecutionService;
@@ -65,20 +65,14 @@ public class Global extends GlobalSettings {
         //create guice injector
         this.injector = Guice
             .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
-                new CloudModule());
+                new CloudModule(), new SolutionModule());
 
-        LocationWatcher locationWatcher = this.injector.getInstance(LocationWatcher.class);
-        ImageWatcher imageWatcher = this.injector.getInstance(ImageWatcher.class);
-        HardwareWatcher hardwareWatcher = this.injector.getInstance(HardwareWatcher.class);
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
-        executionService.schedule(locationWatcher, 1, TimeUnit.MINUTES);
-        executionService.schedule(imageWatcher, 1, TimeUnit.MINUTES);
-        executionService.schedule(hardwareWatcher, 1, TimeUnit.MINUTES);
+        LocationWatchdog locationWatchdog = injector.getInstance(LocationWatchdog.class);
 
-
-        //new Thread(locationWatcher).start();
-
+        executionService.scheduleAtFixedRate(locationWatchdog, 1, TimeUnit.MINUTES);
+        executionService.executeInLoop(injector.getInstance(Solver.class));
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 

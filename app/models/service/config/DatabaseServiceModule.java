@@ -24,10 +24,12 @@ import dtos.OperatingSystemDto;
 import models.*;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
+import models.service.api.HardwareModelService;
 import models.service.api.LocationModelService;
 import models.service.api.generic.ModelService;
 import models.service.impl.DefaultApiAccessTokenService;
 import models.service.impl.DefaultFrontendUserService;
+import models.service.impl.DefaultHardwareModelService;
 import models.service.impl.DefaultLocationModelService;
 import models.service.impl.generic.BaseModelService;
 
@@ -95,6 +97,7 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Hardware>>() {
         }).to(new TypeLiteral<BaseModelService<Hardware>>() {
         });
+        bind(HardwareModelService.class).to(DefaultHardwareModelService.class);
         //Hardware Offer
         bind(new TypeLiteral<ModelService<HardwareOffer>>() {
         }).to(new TypeLiteral<BaseModelService<HardwareOffer>>() {

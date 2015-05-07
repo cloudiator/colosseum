@@ -21,7 +21,6 @@ package models;
 import models.generic.Model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity public class Hardware extends Model {
@@ -45,12 +44,10 @@ import java.util.List;
     private Hardware() {
     }
 
-    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer, Location location) {
+    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
         this.hardwareOffer = hardwareOffer;
-        this.locations = new ArrayList<>();
-        this.locations.add(location);
     }
 
     public String getCloudUuid() {

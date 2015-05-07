@@ -7,6 +7,7 @@ import cloud.sync.ProblemQueue;
 import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import models.CloudCredential;
 import models.Location;
 import models.service.api.LocationModelService;
 
@@ -38,13 +39,23 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
                 if (modelLocation == null) {
                     this.report(
                         new LocationProblems.BaseLocationNotInDatabase((LocationInCloud) location));
-                }
+                } else {
+                    CloudCredential credentialToSearchFor = null;
+                    for (CloudCredential cloudCredential : modelLocation.getCloudCredentials()) {
+                        if (cloudCredential.getUuid()
+                            .equals(cloudCredentialLocationId.credential())) {
+                            credentialToSearchFor = cloudCredential;
+                            break;
+                        }
+                    }
 
-            } else {
-                throw new IllegalStateException("Wrong type of compute service.");
+                    if (credentialToSearchFor == null) {
+                        this.report(new LocationProblems.LocationMissesCredential(
+                            (LocationInCloud) location));
+                    }
+                }
             }
         }
-
-
     }
+
 }

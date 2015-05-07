@@ -19,6 +19,7 @@
 import cloud.CloudModule;
 import cloud.sync.Solver;
 import cloud.sync.config.SolutionModule;
+import cloud.sync.watchdogs.HardwareWatchdog;
 import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -70,8 +71,10 @@ public class Global extends GlobalSettings {
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
         LocationWatchdog locationWatchdog = injector.getInstance(LocationWatchdog.class);
+        HardwareWatchdog hardwareWatchdog = injector.getInstance(HardwareWatchdog.class);
 
         executionService.scheduleAtFixedRate(locationWatchdog, 1, TimeUnit.MINUTES);
+        executionService.scheduleAtFixedRate(hardwareWatchdog, 1, TimeUnit.MINUTES);
         executionService.executeInLoop(injector.getInstance(Solver.class));
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);

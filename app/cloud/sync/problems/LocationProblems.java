@@ -20,7 +20,7 @@ public class LocationProblems {
         }
 
         @Override public int getPriority() {
-            return Problem.Priority.MEDIUM;
+            return Priority.HIGH;
         }
 
         public LocationInCloud getLocationInCloud() {

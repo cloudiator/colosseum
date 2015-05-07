@@ -16,21 +16,17 @@
  * under the License.
  */
 
-package models.service.impl;
+package models.service.api;
 
-import com.google.inject.Inject;
 import models.Hardware;
-import models.repository.api.HardwareRepository;
-import models.service.api.CloudHardwareService;
-import models.service.impl.generic.BaseModelService;
+import models.service.api.generic.ModelService;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class DefaultHardwareService extends BaseModelService<Hardware>
-    implements CloudHardwareService {
-
-    @Inject public DefaultHardwareService(HardwareRepository hardwareRepository) {
-        super(hardwareRepository);
-    }
+public interface HardwareModelService extends ModelService<Hardware> {
+    @Nullable Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
+        String UuidOfCloud);
 }

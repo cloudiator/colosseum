@@ -17,6 +17,9 @@ public class SolutionModule extends AbstractModule {
         solutionBinder.addBinding().to(CreateHardwareInDatabase.class);
         solutionBinder.addBinding().to(ConnectHardwareToCredential.class);
         solutionBinder.addBinding().to(ConnectHardwareToLocation.class);
+        solutionBinder.addBinding().to(CreateImageInDatabase.class);
+        solutionBinder.addBinding().to(ConnectImageToCredential.class);
+        solutionBinder.addBinding().to(ConnectImageToLocation.class);
     }
 
 }

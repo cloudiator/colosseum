@@ -22,7 +22,6 @@ import models.generic.Model;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity public class Image extends Model {
@@ -46,13 +45,10 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, @Nullable OperatingSystem operatingSystem,
-        Location location) {
+    public Image(String cloudUuid, Cloud cloud, @Nullable OperatingSystem operatingSystem) {
         this.cloudUuid = cloudUuid;
         this.cloud = cloud;
         this.operatingSystem = operatingSystem;
-        this.locations = new ArrayList<>();
-        this.locations.add(location);
     }
 
     public String getCloudUuid() {

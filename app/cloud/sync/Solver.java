@@ -17,14 +17,23 @@ public class Solver implements Runnable {
     }
 
     @Transactional @Override public void run() {
+
+        Problem problemToSolve = null;
         try {
-            final Problem problemToSolve = this.problemQueue.take();
-            final Solution solution = this.solutionDatabase.getSolution(problemToSolve);
-            solution.applyTo(problemToSolve);
+            problemToSolve = this.problemQueue.take();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-        } catch (SolutionException | SolutionNotFoundException e) {
-            e.printStackTrace();
+        }
+
+        if (problemToSolve != null) {
+            try {
+                final Solution solution = this.solutionDatabase.getSolution(problemToSolve);
+                solution.applyTo(problemToSolve);
+            } catch (SolutionNotFoundException e) {
+                throw new IllegalStateException(e);
+            } catch (SolutionException e) {
+                this.problemQueue.add(problemToSolve);
+            }
         }
     }
 }

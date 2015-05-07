@@ -22,15 +22,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import dtos.OperatingSystemDto;
 import models.*;
-import models.service.api.ApiAccessTokenService;
-import models.service.api.FrontendUserService;
-import models.service.api.HardwareModelService;
-import models.service.api.LocationModelService;
+import models.service.api.*;
 import models.service.api.generic.ModelService;
-import models.service.impl.DefaultApiAccessTokenService;
-import models.service.impl.DefaultFrontendUserService;
-import models.service.impl.DefaultHardwareModelService;
-import models.service.impl.DefaultLocationModelService;
+import models.service.impl.*;
 import models.service.impl.generic.BaseModelService;
 
 /**
@@ -106,6 +100,7 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Image>>() {
         }).to(new TypeLiteral<BaseModelService<Image>>() {
         });
+        bind(ImageModelService.class).to(DefaultImageModelService.class);
         //Instance
         bind(new TypeLiteral<ModelService<Instance>>() {
         }).to(new TypeLiteral<BaseModelService<Instance>>() {

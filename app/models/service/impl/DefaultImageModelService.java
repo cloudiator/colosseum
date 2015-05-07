@@ -20,16 +20,30 @@ package models.service.impl;
 
 import com.google.inject.Inject;
 import models.Image;
-import models.repository.api.ImageRepository;
-import models.service.api.CloudImageService;
+import models.repository.api.generic.ModelRepository;
+import models.service.api.ImageModelService;
 import models.service.impl.generic.BaseModelService;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class DefaultImageService extends BaseModelService<Image> implements CloudImageService {
+public class DefaultImageModelService extends BaseModelService<Image> implements ImageModelService {
 
-    @Inject public DefaultImageService(ImageRepository imageRepository) {
+    @Inject public DefaultImageModelService(ModelRepository<Image> imageRepository) {
         super(imageRepository);
+    }
+
+    @Nullable @Override
+    public Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
+        String UuidOfCloud) {
+        for (Image image : getAll()) {
+            if (image.getCloudUuid().equals(cloudUuid) && image.getCloud().getUuid()
+                .equals(UuidOfCloud)) {
+                return image;
+            }
+        }
+        return null;
     }
 }

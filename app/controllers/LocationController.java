@@ -18,33 +18,65 @@
 
 package controllers;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.LocationDto;
 import dtos.conversion.api.ModelDtoConversionService;
+import models.CloudCredential;
+import models.FrontendGroup;
+import models.FrontendUser;
 import models.Location;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 09.04.15.
  */
 public class LocationController
     extends GenericApiController<Location, LocationDto, LocationDto, LocationDto> {
+    private final FrontendUserService frontendUserModelService;
+
     /**
      * Constructs a GenericApiController.
      *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
+     * @param modelService             the model service for retrieving the models.
+     * @param typeLiteral              a type literal for the model type
+     * @param conversionService        the conversion service for converting models and dtos.
+     * @param frontendUserModelService service to retrieve frontend users from db.
      * @throws NullPointerException if any of the above parameters is null.
      */
     @Inject public LocationController(ModelService<Location> modelService,
-        TypeLiteral<Location> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Location> typeLiteral, ModelDtoConversionService conversionService,
+        FrontendUserService frontendUserModelService) {
         super(modelService, typeLiteral, conversionService);
+        checkNotNull(frontendUserModelService);
+        this.frontendUserModelService = frontendUserModelService;
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.LocationController.get(id).absoluteURL(request());
+    }
+
+    @Override protected Optional<Predicate<Location>> filter() {
+        return Optional.of(new Predicate<Location>() {
+            @Override public boolean apply(Location location) {
+                String userName = request().username();
+
+                FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
+                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
+                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
+                        if (location.getCloudCredentials().contains(cloudCredential)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

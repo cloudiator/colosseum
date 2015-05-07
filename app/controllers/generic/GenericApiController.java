@@ -18,6 +18,10 @@
 
 package controllers.generic;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import controllers.security.SecuredSessionOrToken;
@@ -34,6 +38,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
+import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -124,9 +129,17 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      * if not.
      * @throws java.lang.NullPointerException if the given id is null.
      */
-    protected T loadEntity(final Long id) {
+    @Nullable private T loadEntity(final Long id) {
         checkNotNull(id);
-        return modelService.getById(id);
+        T t = modelService.getById(id);
+        if (filter().isPresent()) {
+            if (filter().get().apply(t)) {
+                return t;
+            } else {
+                return null;
+            }
+        }
+        return t;
     }
 
     /**
@@ -135,8 +148,21 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      *
      * @return a list of all model entities.
      */
-    protected List<T> loadEntities() {
-        return modelService.getAll();
+    private List<T> loadEntities() {
+        List<T> ts = modelService.getAll();
+        if (filter().isPresent()) {
+            return Lists.newArrayList(Iterables.filter(ts, filter().get()));
+        }
+        return ts;
+    }
+
+    /**
+     * Extension Point for a filter used when retrieving entities.
+     *
+     * @return an optional filter applied when retrieving entities.
+     */
+    protected Optional<Predicate<T>> filter() {
+        return Optional.absent();
     }
 
     /**

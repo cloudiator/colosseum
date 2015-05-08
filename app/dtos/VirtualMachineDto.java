@@ -20,8 +20,9 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
 import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.Cloud;
 import models.Hardware;
@@ -32,19 +33,20 @@ import models.service.api.generic.ModelService;
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class VirtualMachineDto extends NamedDto {
+public class VirtualMachineDto extends ValidatableDto {
 
-    protected Long cloud;
-    protected Long image;
-    protected Long hardware;
-    protected Long location;
+    private String name;
+    private Long cloud;
+    private Long image;
+    private Long hardware;
+    private Long location;
 
     public VirtualMachineDto() {
         super();
     }
 
     public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location) {
-        super(name);
+        this.name = name;
         this.cloud = cloud;
         this.image = image;
         this.hardware = hardware;
@@ -52,7 +54,7 @@ public class VirtualMachineDto extends NamedDto {
     }
 
     @Override public void validation() {
-        super.validation();
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(image).withValidator(new NotNullValidator())

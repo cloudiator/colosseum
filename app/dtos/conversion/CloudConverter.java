@@ -18,23 +18,29 @@
 
 package dtos.conversion;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import dtos.CloudDto;
 import dtos.conversion.generic.AbstractConverter;
+import dtos.conversion.transformers.IdToModelTransformer;
+import models.Api;
 import models.Cloud;
+import models.service.api.generic.ModelService;
 
 
 @Singleton public class CloudConverter extends AbstractConverter<Cloud, CloudDto> {
 
-    public CloudConverter() {
-        super(Cloud.class, CloudDto.class);
-    }
+    private final ModelService<Api> apiModelService;
 
-    protected CloudConverter(Class<Cloud> t, Class<CloudDto> s) {
-        super(t, s);
+    @Inject protected CloudConverter(ModelService<Api> apiModelService) {
+        super(Cloud.class, CloudDto.class);
+        this.apiModelService = apiModelService;
     }
 
     @Override public void configure() {
         builder().from("name").to("name");
+        builder().from("endpoint").to("endpoint");
+        builder().from(Long.class, "api").to(Api.class, "api")
+            .withTransformation(new IdToModelTransformer<>(apiModelService));
     }
 }

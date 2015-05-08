@@ -18,23 +18,37 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.03.15.
  */
-@Entity public class FrontendGroup extends NamedModel {
+@Entity public class FrontendGroup extends Model {
 
     @ManyToMany private List<FrontendUser> frontendUsers;
+    @Column(unique = true, nullable = false) private String name;
 
     @OneToMany(mappedBy = "frontendGroup", cascade = CascadeType.REMOVE)
     private List<CloudCredential> cloudCredentials;
+
+    /**
+     * Empty constructor for hibernate.
+     */
+    private FrontendGroup() {
+
+    }
+
+    public FrontendGroup(String name) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
+    }
 
     public List<FrontendUser> getFrontendUsers() {
         return frontendUsers;
@@ -42,5 +56,21 @@ import java.util.List;
 
     public List<CloudCredential> getCloudCredentials() {
         return cloudCredentials;
+    }
+
+    public void setFrontendUsers(List<FrontendUser> frontendUsers) {
+        this.frontendUsers = frontendUsers;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
     }
 }

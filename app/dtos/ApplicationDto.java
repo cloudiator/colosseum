@@ -18,18 +18,33 @@
 
 package dtos;
 
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.NotNullOrEmptyValidator;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class ApplicationDto extends NamedDto {
+public class ApplicationDto extends ValidatableDto {
+
+    private String name;
 
     public ApplicationDto() {
         super();
     }
 
     public ApplicationDto(String name) {
-        super(name);
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override public void validation() {
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
     }
 }

@@ -18,18 +18,19 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.List;
 
-@Entity public class Cloud extends NamedModel {
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    @OneToOne(mappedBy = "cloud", cascade = CascadeType.REMOVE, optional = false) private CloudApi
-        cloudApi;
+@Entity public class Cloud extends Model {
+
+    @Column(unique = true, nullable = false) private String name;
+    @Column(nullable = false) private String endpoint;
+    @ManyToOne(optional = false) private Api api;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Image> images;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Location> locations;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
@@ -46,12 +47,39 @@ import java.util.List;
     private Cloud() {
     }
 
-    public CloudApi getCloudApi() {
-        return cloudApi;
+    public Cloud(String name, String endpoint, Api api) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        checkNotNull(endpoint);
+        checkArgument(!endpoint.isEmpty());
+        checkNotNull(api);
+        this.name = name;
+        this.endpoint = endpoint;
+        this.api = api;
     }
 
-    public void setCloudApi(CloudApi cloudApi) {
-        this.cloudApi = cloudApi;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    public Api getApi() {
+        return api;
+    }
+
+    public void setApi(Api api) {
+        this.api = api;
     }
 
     public List<Image> getImages() {

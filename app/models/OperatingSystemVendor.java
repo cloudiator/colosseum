@@ -18,27 +18,37 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 04.11.14.
  */
-@Entity public class OperatingSystemVendor extends NamedModel {
+@Entity public class OperatingSystemVendor extends Model {
 
     @OneToMany(mappedBy = "operatingSystemVendor") private List<OperatingSystem> operatingSystems;
+    @Column(unique = true, nullable = false) private String name;
 
-    @Enumerated(EnumType.STRING) private OperatingSystemVendorType operatingSystemVendorType;
+    @Enumerated(EnumType.STRING) @Column(nullable = false) private OperatingSystemVendorType
+        operatingSystemVendorType;
 
     /**
      * Empty constructor for hibernate.
      */
     private OperatingSystemVendor() {
+    }
+
+    public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
+        checkNotNull(operatingSystemVendorType);
+        this.operatingSystemVendorType = operatingSystemVendorType;
     }
 
     public OperatingSystemVendorType getOperatingSystemVendorType() {
@@ -55,5 +65,13 @@ import java.util.List;
 
     public void setOperatingSystems(List<OperatingSystem> operatingSystems) {
         this.operatingSystems = operatingSystems;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

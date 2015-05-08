@@ -18,15 +18,42 @@
 
 package dtos;
 
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.NotNullOrEmptyValidator;
 
-public class CloudDto extends NamedDto {
+public class CloudDto extends ValidatableDto {
+
+    private String name;
+    private String endpoint;
 
     public CloudDto() {
         super();
     }
 
-    public CloudDto(String name) {
-        super(name);
+    public CloudDto(String name, String endpoint) {
+        this.name = name;
+        this.endpoint = endpoint;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+    }
+
+    @Override public void validation() {
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(this.endpoint)
+            .withValidator(new NotNullOrEmptyValidator());
     }
 }

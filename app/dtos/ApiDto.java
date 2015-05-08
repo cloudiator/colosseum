@@ -18,22 +18,23 @@
 
 package dtos;
 
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
 import dtos.validation.NotNullOrEmptyValidator;
 
 /**
  * Created by daniel seybold on 11.12.2014.
  */
-public class ApiDto extends NamedDto {
+public class ApiDto extends ValidatableDto {
 
     private String internalProviderName;
+    private String name;
 
     public ApiDto() {
         super();
     }
 
     public ApiDto(String name) {
-        super(name);
+        this.name = name;
     }
 
     public String getInternalProviderName() {
@@ -44,8 +45,16 @@ public class ApiDto extends NamedDto {
         this.internalProviderName = internalProviderName;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override public void validation() {
-        super.validation();
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.internalProviderName)
             .withValidator(new NotNullOrEmptyValidator());
     }

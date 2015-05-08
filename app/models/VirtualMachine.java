@@ -18,20 +18,22 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends NamedModel {
+@Entity public class VirtualMachine extends Model {
 
     @ManyToOne(optional = true) private Cloud cloud;
+    @Column(unique = true, nullable = false) private String name;
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @Column(updatable = false, nullable = false) private String cloudUuid;
@@ -50,8 +52,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public VirtualMachine(String name, Cloud cloud, String cloudUuid, @Nullable Hardware hardware,
         @Nullable Image image, @Nullable Location location) {
-        super(name);
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
+        checkNotNull(cloud);
         this.cloud = cloud;
+        checkNotNull(cloudUuid);
+        checkArgument(!cloudUuid.isEmpty());
         this.cloudUuid = cloudUuid;
         this.hardware = hardware;
         this.image = image;
@@ -113,5 +120,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setCloudUuid(String cloudUuid) {
         this.cloudUuid = cloudUuid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

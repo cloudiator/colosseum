@@ -109,9 +109,10 @@ import java.util.*;
         }
 
         private SwordComputeService createComputeService(CloudCredential cloudCredential) {
+            //TODO: validate for possible nulls, if user has not finished creating all stuff
             return new SwordComputeService(
-                cloudCredential.getCloud().getCloudApi().getApi().getInternalProviderName(),
-                cloudCredential.getCloud().getCloudApi().getEndpoint(), cloudCredential.getUser(),
+                cloudCredential.getCloud().getApi().getInternalProviderName(),
+                cloudCredential.getCloud().getEndpoint(), cloudCredential.getUser(),
                 cloudCredential.getSecret());
         }
 

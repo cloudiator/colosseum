@@ -18,14 +18,15 @@
 
 package dtos;
 
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
 import dtos.validation.NotNullOrEmptyValidator;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
-public class LifecycleComponentDto extends NamedDto {
+public class LifecycleComponentDto extends ValidatableDto {
 
+    private String name;
     private String init;
     private String preInstall;
     private String install;
@@ -44,9 +45,11 @@ public class LifecycleComponentDto extends NamedDto {
         super();
     }
 
-    public LifecycleComponentDto(String init, String preInstall, String install, String postInstall,
-        String preStart, String start, String startDetection, String stopDetection,
-        String postStart, String preStop, String stop, String postStop, String shutdown) {
+    public LifecycleComponentDto(String name, String init, String preInstall, String install,
+        String postInstall, String preStart, String start, String startDetection,
+        String stopDetection, String postStart, String preStop, String stop, String postStop,
+        String shutdown) {
+        this.name = name;
         this.init = init;
         this.preInstall = preInstall;
         this.install = install;
@@ -63,8 +66,16 @@ public class LifecycleComponentDto extends NamedDto {
     }
 
     @Override public void validation() {
-        super.validation();
+        validator(String.class).validate(name).withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(start).withValidator(new NotNullOrEmptyValidator());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getInit() {

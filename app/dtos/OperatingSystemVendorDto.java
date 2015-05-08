@@ -18,21 +18,31 @@
 
 package dtos;
 
-import dtos.generic.NamedDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.OperatingSystemVendorType;
 
 /**
  * Created by daniel on 15.04.15.
  */
-public class OperatingSystemVendorDto extends NamedDto {
+public class OperatingSystemVendorDto extends ValidatableDto {
 
+    private String name;
     private OperatingSystemVendorType operatingSystemVendorType;
 
     @Override public void validation() {
-        super.validation();
+        validator(String.class).validate(name).withValidator(new NotNullOrEmptyValidator());
         validator(OperatingSystemVendorType.class).validate(operatingSystemVendorType)
             .withValidator(new NotNullValidator());
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public OperatingSystemVendorType getOperatingSystemVendorType() {

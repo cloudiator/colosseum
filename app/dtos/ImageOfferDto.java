@@ -20,28 +20,30 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.NamedDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.generic.ValidatableDto;
+import dtos.validation.NotNullOrEmptyValidator;
 import models.OperatingSystem;
 import models.service.impl.generic.BaseModelService;
 
-public class ImageOfferDto extends NamedDto {
+public class ImageOfferDto extends ValidatableDto {
 
-    protected Long operatingSystem;
+    private String name;
+    private Long operatingSystem;
 
     public ImageOfferDto() {
         super();
     }
 
     public ImageOfferDto(String name, Long operatingSystem) {
-        super(name);
+        this.name = name;
         this.operatingSystem = operatingSystem;
     }
 
+    /**
+     * @todo validate operating system.
+     */
     @Override public void validation() {
-        super.validation();
-
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
     }
 
     public Long getOperatingSystem() {
@@ -50,6 +52,14 @@ public class ImageOfferDto extends NamedDto {
 
     public void setOperatingSystem(Long operatingSystem) {
         this.operatingSystem = operatingSystem;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public static class References {

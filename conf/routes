@@ -51,13 +51,6 @@ POST          /api/cloudCredential                 @controllers.CloudCredentialC
 PUT           /api/cloudCredential/:id             @controllers.CloudCredentialController.put(id: Long)
 DELETE        /api/cloudCredential/:id             @controllers.CloudCredentialController.delete(id: Long)
 
-#CloudApi
-GET           /api/cloudApi                        @controllers.CloudApiController.list()
-GET           /api/cloudApi/:id                    @controllers.CloudApiController.get(id: Long)
-POST          /api/cloudApi                        @controllers.CloudApiController.post()
-PUT           /api/cloudApi/:id                    @controllers.CloudApiController.put(id: Long)
-DELETE        /api/cloudApi/:id                    @controllers.CloudApiController.delete(id: Long)
-
 #Communication
 GET           /api/communication                   @controllers.CommunicationController.list()
 GET           /api/communication/:id               @controllers.CommunicationController.get(id: Long)

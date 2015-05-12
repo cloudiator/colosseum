@@ -18,10 +18,14 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
-import play.data.validation.ValidationError;
-
-import java.util.List;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ExpressionValidator;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
+import models.ApplicationComponent;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.01.15.
@@ -36,6 +40,19 @@ public class CommunicationDto extends ValidatableDto {
         this.provider = provider;
         this.consumer = consumer;
         this.port = port;
+    }
+
+    public CommunicationDto() {
+        super();
+    }
+
+    @Override public void validation() {
+        validator(Long.class).validate(provider).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+        validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+        validator(Integer.class).validate(port).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(port.compareTo(0) > 0));
     }
 
     public Long getProvider() {
@@ -62,12 +79,8 @@ public class CommunicationDto extends ValidatableDto {
         this.port = port;
     }
 
-    public CommunicationDto() {
-        super();
-    }
-
-    @Override
-    public List<ValidationError> validateNotNull() {
-        return super.validateNotNull();
+    public static class References {
+        @Inject public static Provider<ModelService<ApplicationComponent>>
+            applicationComponentService;
     }
 }

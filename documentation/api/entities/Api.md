@@ -27,7 +27,8 @@ A list of all api entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"aws-ec2"
+      "name":"aws-ec2",
+      "internalProviderName":"aws-ec2"
    },
    {
       "links":[
@@ -36,7 +37,8 @@ A list of all api entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"openstack-nova"
+      "name":"openstack-nova",
+      "internalProviderName":"openstack-nova"
    }
 ]
 ```
@@ -67,7 +69,8 @@ The API entity identified by the given id.
          "rel":"self"
       }
    ],
-   "name":"aws-ec2"
+   "name":"aws-ec2",
+   "internalProviderName":"aws-ec2"
 }
 ```
 ###Response Codes
@@ -81,14 +84,16 @@ The API entity identified by the given id.
 Creates a new API entity. The new entity will be returned.
 
 ###Request Parameters
-Parameter     | Description
-------------- | -------------
-name          | The name of the api.
+Parameter            | Description
+-------------------- | ------------------------------------
+name                 | The name of the api.
+internalProviderName | The internal name of the provider.
 
 ###Request Example
 ```
 {
-    "name":"openstack-nova"
+    "name":"openstack-nova",
+    "internalProviderName":"openstack-nova"
 }
 ```
 ###Response 
@@ -104,10 +109,11 @@ The created entity. See GET /api/api/{api_id}
 Updates the API type identified by the given id.
 
 ###Request Parameters
-Parameter     | Description
-------------- | -------------
-api_id        | The id of the api to update.
-name          | The name of the API.
+Parameter            | Description
+-------------------- | -------------
+api_id               | The id of the api to update.
+name                 | The name of the API.
+internalProviderName | The internal name of the provider.
 
 ###Request Example
 ```
@@ -115,7 +121,8 @@ PUT /api/api/1
 ```
 ```
 {
-    "name":"openstack-nova"
+    "name":"openstack-nova",
+    "internalProviderName":"openstack-nova"
 }
 ```
 ###Response

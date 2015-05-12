@@ -33,19 +33,18 @@ import play.mvc.Security;
  *
  * @author Daniel Baur
  */
-@Security.Authenticated(SecuredSessionOrToken.class)
-public class SiteController extends Controller {
+@Security.Authenticated(SecuredSessionOrToken.class) public class SiteController
+    extends Controller {
 
     private final FrontendUserService frontendUserService;
 
-    @Inject
-    public SiteController(final FrontendUserService frontendUserService) {
+    @Inject public SiteController(final FrontendUserService frontendUserService) {
         this.frontendUserService = frontendUserService;
     }
 
-    @Transactional(readOnly = true)
-    public Result index() {
-        return ok(views.html.site.index.render(this.frontendUserService.getByMail(request().username())));
+    @Transactional(readOnly = true) public Result index() {
+        return ok(
+            views.html.site.index.render(this.frontendUserService.getByMail(request().username())));
     }
 
     public Result manage() {

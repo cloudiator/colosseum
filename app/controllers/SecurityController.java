@@ -25,14 +25,14 @@ import dtos.LoginDto;
 import models.ApiAccessToken;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
-import models.service.impl.ApiAccessTokenServiceImpl;
-import models.service.impl.FrontendUserServiceImpl;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 19.12.14.
@@ -43,18 +43,20 @@ public class SecurityController extends Controller {
     private final FrontendUserService frontendUserService;
     private final ApiAccessTokenService apiAccessTokenService;
 
-    public Result login() {
-        return ok(views.html.site.login.render(loginForm));
-    }
+    @Inject public SecurityController(FrontendUserService frontendUserService,
+        ApiAccessTokenService apiAccessTokenService) {
+        checkNotNull(frontendUserService);
+        checkNotNull(apiAccessTokenService);
 
-    @Inject
-    public SecurityController(FrontendUserServiceImpl frontendUserService, ApiAccessTokenServiceImpl apiAccessTokenService) {
         this.frontendUserService = frontendUserService;
         this.apiAccessTokenService = apiAccessTokenService;
     }
 
-    @Transactional(readOnly = true)
-    public Result authenticate() {
+    public Result login() {
+        return ok(views.html.site.login.render(loginForm));
+    }
+
+    @Transactional(readOnly = true) public Result authenticate() {
         Form<LoginDto> filledForm = loginForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             return badRequest(views.html.site.login.render(filledForm));
@@ -65,15 +67,15 @@ public class SecurityController extends Controller {
         }
     }
 
-    @Transactional
-    @BodyParser.Of(BodyParser.Json.class)
-    public Result authenticateApi() {
+    @Transactional @BodyParser.Of(BodyParser.Json.class) public Result authenticateApi() {
         final Form<LoginDto> filledForm = loginForm.bindFromRequest();
         if (filledForm.hasErrors()) {
             return badRequest(filledForm.errorsAsJson());
         }
         //generate a new token
-        ApiAccessToken apiAccessToken = new ApiAccessToken(this.frontendUserService.getByMail(filledForm.get().getEmail()), Password.getInstance().generateToken());
+        ApiAccessToken apiAccessToken =
+            new ApiAccessToken(this.frontendUserService.getByMail(filledForm.get().getEmail()),
+                Password.getInstance().generateToken());
         this.apiAccessTokenService.save(apiAccessToken);
 
         ObjectNode result = Json.newObject();

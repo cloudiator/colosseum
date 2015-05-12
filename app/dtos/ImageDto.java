@@ -19,33 +19,57 @@
 package dtos;
 
 import com.google.inject.Inject;
-import dtos.generic.impl.NamedDto;
-import models.OperatingSystem;
-import models.service.api.OperatingSystemService;
-
 import com.google.inject.Provider;
-import play.data.validation.ValidationError;
+import com.google.inject.TypeLiteral;
+import dtos.generic.ValidatableDto;
+import dtos.validation.IterableValidator;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
+import models.Cloud;
+import models.Location;
+import models.OperatingSystem;
+import models.service.api.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
 import java.util.List;
 
-public class ImageDto extends NamedDto {
+public class ImageDto extends ValidatableDto {
 
-    public static class References{
-
-        @Inject
-        public static Provider<OperatingSystemService> operatingSystemService;
-
-    }
-
-    protected Long operatingSystem;
+    private String cloudUuid;
+    private Long cloud;
+    private List<Long> locations;
+    private Long operatingSystem;
 
     public ImageDto() {
         super();
     }
 
-    public ImageDto(String name, Long operatingSystem) {
-        super(name);
-        this.operatingSystem = operatingSystem;
+    @Override public void validation() {
+        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(locations).withValidator(
+            new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
     }
 
     public Long getOperatingSystem() {
@@ -56,21 +80,17 @@ public class ImageDto extends NamedDto {
         this.operatingSystem = operatingSystem;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        final List<ValidationError> errors = super.validateNotNull();
+    public List<Long> getLocations() {
+        return locations;
+    }
 
-        //validate cloud reference
-        OperatingSystem operatingSystem = null;
-        if (this.operatingSystem == null) {
-            errors.add(new ValidationError("operatingsystem", "The operatingsystem is required."));
-        } else {
-            operatingSystem = References.operatingSystemService.get().getById(this.operatingSystem);
-            if (operatingSystem == null) {
-                errors.add(new ValidationError("operatingsystem", "The given operatingsystem is invalid."));
-            }
-        }
+    public void setLocations(List<Long> locations) {
+        this.locations = locations;
+    }
 
-        return errors;
+    public static class References {
+        @Inject public static Provider<ModelService<Cloud>> cloudService;
+        @Inject public static Provider<ModelService<Location>> locationService;
+        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
     }
 }

@@ -42,31 +42,25 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class Password {
 
     /**
-     * Instance of the class (singleton)
-     */
-    private static Password instance = null;
-
-    /**
-     * Random generator.
-     */
-    private final SecureRandom random;
-
-    /**
      * Iterations for pbkdef2
      */
     private static final int iterations = 10 * 1024;
     /**
      * length of the generated salt
      */
-    private static final int saltLenght = 32;
+    private static final int saltLength = 32;
     /**
      * key length for pbkdef2
      */
-    private static final int desiredKeyLenght = 512;
+    private static final int desiredKeyLength = 512;
     /**
-     *
+     * Instance of the class (singleton)
      */
-    private static final int tokenLenght = 128;
+    private static Password instance = null;
+    /**
+     * Random generator.
+     */
+    private final SecureRandom random;
 
     /**
      * Constructor.
@@ -99,7 +93,7 @@ public class Password {
      * @return the generated salt.
      */
     public byte[] generateSalt() {
-        byte[] salt = new byte[saltLenght];
+        byte[] salt = new byte[saltLength];
         random.nextBytes(salt);
         return salt;
     }
@@ -128,7 +122,8 @@ public class Password {
 
         try {
             SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
-            SecretKey key = f.generateSecret(new PBEKeySpec(password, salt, iterations, desiredKeyLenght));
+            SecretKey key =
+                f.generateSecret(new PBEKeySpec(password, salt, iterations, desiredKeyLength));
             return Base64.encodeBase64String(key.getEncoded()).toCharArray();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             Logger.error("Problem during password hashing", e);

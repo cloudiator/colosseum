@@ -9,7 +9,7 @@ var executionware = angular.module('executionware', [
 ]);
 
 executionware.config(['$routeProvider',
-    function($routeProvider) {
+    function ($routeProvider) {
         $routeProvider.
             when('/api/cloud', {
                 templateUrl: '/api/cloud',

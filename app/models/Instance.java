@@ -31,24 +31,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity
-public class Instance extends Model {
+@Entity public class Instance extends Model {
 
-    @ManyToOne
-    private ApplicationComponent applicationComponent;
+    @ManyToOne(optional = false) private ApplicationComponent applicationComponent;
+    @ManyToOne(optional = false) private ApplicationInstance applicationInstance;
 
-    @OneToMany(mappedBy = "provider")
-    private List<CommunicationChannel> providedCommunicationChannels;
-    @OneToMany(mappedBy = "consumer")
-    private List<CommunicationChannel> consumedCommunicationChannels;
+    @OneToMany(mappedBy = "provider") private List<CommunicationChannel>
+        providedCommunicationChannels;
+    @OneToMany(mappedBy = "consumer") private List<CommunicationChannel>
+        consumedCommunicationChannels;
 
-    @ManyToOne
-    private VirtualMachine virtualMachine;
+    @ManyToOne private VirtualMachine virtualMachine;
 
     /**
      * Empty constructor for hibernate.
      */
     private Instance() {
+    }
+
+    public Instance(ApplicationComponent applicationComponent,
+        ApplicationInstance applicationInstance) {
+        this.applicationComponent = applicationComponent;
+        this.applicationInstance = applicationInstance;
     }
 
     public ApplicationComponent getApplicationComponent() {
@@ -73,7 +77,8 @@ public class Instance extends Model {
         return providedCommunicationChannels;
     }
 
-    public void setProvidedCommunicationChannels(List<CommunicationChannel> providedCommunicationChannels) {
+    public void setProvidedCommunicationChannels(
+        List<CommunicationChannel> providedCommunicationChannels) {
         this.providedCommunicationChannels = providedCommunicationChannels;
     }
 
@@ -81,7 +86,16 @@ public class Instance extends Model {
         return consumedCommunicationChannels;
     }
 
-    public void setConsumedCommunicationChannels(List<CommunicationChannel> consumedCommunicationChannels) {
+    public void setConsumedCommunicationChannels(
+        List<CommunicationChannel> consumedCommunicationChannels) {
         this.consumedCommunicationChannels = consumedCommunicationChannels;
+    }
+
+    public ApplicationInstance getApplicationInstance() {
+        return applicationInstance;
+    }
+
+    public void setApplicationInstance(ApplicationInstance applicationInstance) {
+        this.applicationInstance = applicationInstance;
     }
 }

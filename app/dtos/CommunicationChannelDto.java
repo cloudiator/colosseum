@@ -18,18 +18,35 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
-import play.data.validation.ValidationError;
-
-import java.util.List;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
+import models.Communication;
+import models.Instance;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.01.15.
  */
 public class CommunicationChannelDto extends ValidatableDto {
 
+    protected Long communication;
+    protected Long provider;
+    protected Long consumer;
+
     public CommunicationChannelDto() {
         super();
+    }
+
+    @Override public void validation() {
+        validator(Long.class).validate(communication).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.communicationService.get()));
+        validator(Long.class).validate(provider).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.instanceService.get()));
+        validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.instanceService.get()));
     }
 
     public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
@@ -37,12 +54,6 @@ public class CommunicationChannelDto extends ValidatableDto {
         this.provider = provider;
         this.consumer = consumer;
     }
-
-    protected Long communication;
-
-    protected Long provider;
-
-    protected Long consumer;
 
     public Long getCommunication() {
         return communication;
@@ -68,8 +79,10 @@ public class CommunicationChannelDto extends ValidatableDto {
         this.consumer = consumer;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        return super.validateNotNull();
+    public static class References {
+
+        @Inject public static Provider<ModelService<Instance>> instanceService;
+
+        @Inject public static Provider<ModelService<Communication>> communicationService;
     }
 }

@@ -18,21 +18,29 @@
 
 package models.repository.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import models.ApiAccessToken;
 import models.FrontendUser;
 import models.repository.api.ApiAccessTokenRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
 
 import java.util.List;
 
 /**
  * Created by daniel on 19.12.14.
  */
-public class ApiAccessTokenRepositoryJpa extends ModelRepositoryJpa<ApiAccessToken> implements ApiAccessTokenRepository {
+public class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
+    implements ApiAccessTokenRepository {
 
-    @Override
-    public List<ApiAccessToken> findByFrontendUser(final FrontendUser frontendUser) {
+    @Inject
+    public ApiAccessTokenRepositoryJpa(TypeLiteral<ApiAccessToken> type) {
+        super(type);
+    }
+
+    @Override public List<ApiAccessToken> findByFrontendUser(final FrontendUser frontendUser) {
         //noinspection unchecked
-        return em().createQuery("from ApiAccessToken aat where frontendUser = :frontendUser").setParameter("frontendUser", frontendUser).getResultList();
+        return em().createQuery("from ApiAccessToken aat where frontendUser = :frontendUser")
+            .setParameter("frontendUser", frontendUser).getResultList();
     }
 }

@@ -19,31 +19,34 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.VirtualMachineTemplateDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.VirtualMachineTemplate;
-import models.service.api.VirtualMachineTemplateService;
-import models.service.api.generic.ModelServiceInterface;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel on 12.02.15.
+ * Created by daniel on 10.04.15.
  */
-public class VirtualMachineTemplateController extends GenericApiController<VirtualMachineTemplate, VirtualMachineTemplateDto> {
-
+public class VirtualMachineTemplateController extends
+    GenericApiController<VirtualMachineTemplate, VirtualMachineTemplateDto, VirtualMachineTemplateDto, VirtualMachineTemplateDto> {
     /**
      * Constructs a GenericApiController.
      *
-     * @param virtualMachineTemplateService      the model service for retrieving the models.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
      */
     @Inject
-    protected VirtualMachineTemplateController(VirtualMachineTemplateService virtualMachineTemplateService, ModelDtoConversionService conversionService) {
-        super(virtualMachineTemplateService, conversionService);
+    public VirtualMachineTemplateController(ModelService<VirtualMachineTemplate> modelService,
+        TypeLiteral<VirtualMachineTemplate> typeLiteral,
+        ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.VirtualMachineTemplateController.get(id).absoluteURL(request());
     }
 }

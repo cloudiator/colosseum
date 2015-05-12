@@ -18,27 +18,21 @@
 
 package models.service.api;
 
-import com.google.inject.ImplementedBy;
 import models.FrontendUser;
-import models.service.api.generic.ModelServiceInterface;
-import models.service.impl.FrontendUserServiceImpl;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 03.11.14.
  */
-@ImplementedBy(FrontendUserServiceImpl.class)
-public interface FrontendUserService extends ModelServiceInterface<FrontendUser>{
+public interface FrontendUserService extends ModelService<FrontendUser> {
 
     public FrontendUser getByMail(String mail);
 
     /**
      * Tries to authenticate the user.
      *
-     * @param mail
-     *            the mail address given by the user
-     * @param password
-     *            the plain text given by the user.
-     *
+     * @param mail     the mail address given by the user
+     * @param password the plain text given by the user.
      * @return the user object if auth was successful, null if not.
      */
     public FrontendUser authenticate(String mail, String password);

@@ -18,41 +18,26 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.annotation.Nullable;
+import javax.persistence.*;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+@Entity public class Image extends Model {
 
-/**
- * The model class image.
- * <p>
- * Stores information about the cloud images available in a cloud.
- *
- * @author Daniel Baur
- */
-@Entity
-public class Image extends NamedModel {
+    @Column(updatable = false) private String cloudUuid;
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+    @Nullable @ManyToOne(optional = true) private OperatingSystem operatingSystem;
 
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    @ManyToOne(optional = false)
-    private OperatingSystem operatingSystem;
+    @ManyToMany private List<Location> locations;
 
-    /**
-     * The cloud images where this image is used (ManyToMany)
-     */
-    @OneToMany(mappedBy = "image")
-    private List<CloudImage> cloudImages;
+    @ManyToMany private List<CloudCredential> cloudCredentials;
 
-
+    @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
 
     /**
      * Empty constructor for hibernate.
@@ -60,21 +45,57 @@ public class Image extends NamedModel {
     private Image() {
     }
 
-    public OperatingSystem getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public void setOperatingSystem(OperatingSystem operatingSystem) {
-        checkNotNull(operatingSystem);
+    public Image(String cloudUuid, Cloud cloud, @Nullable OperatingSystem operatingSystem) {
+        this.cloudUuid = cloudUuid;
+        this.cloud = cloud;
         this.operatingSystem = operatingSystem;
     }
 
-    public List<CloudImage> getCloudImages() {
-        return cloudImages;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setCloudImages(List<CloudImage> cloudImages) {
-        checkNotNull(cloudImages);
-        this.cloudImages = cloudImages;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
+
+    public Cloud getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    @Nullable public OperatingSystem getOperatingSystem() {
+        return operatingSystem;
+    }
+
+    public void setOperatingSystem(@Nullable OperatingSystem operatingSystem) {
+        this.operatingSystem = operatingSystem;
     }
 }

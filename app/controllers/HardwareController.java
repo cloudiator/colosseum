@@ -1,47 +1,64 @@
-/*
- * Copyright (c) 2014-2015 University of Ulm
- *
- * See the NOTICE file distributed with this work for additional information
- * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 package controllers;
 
+import com.google.common.base.Optional;
+import com.google.common.base.Predicate;
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
+import models.CloudCredential;
+import models.FrontendGroup;
+import models.FrontendUser;
 import models.Hardware;
-import models.service.api.HardwareService;
+import models.service.api.FrontendUserService;
+import models.service.api.generic.ModelService;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel seybold on 10.12.2014.
+ * Created by daniel on 09.04.15.
  */
-public class HardwareController extends GenericApiController<Hardware, HardwareDto> {
+public class HardwareController
+    extends GenericApiController<Hardware, HardwareDto, HardwareDto, HardwareDto> {
+
+    private final FrontendUserService frontendUserModelService;
+
     /**
      * Constructs a GenericApiController.
      *
-     * @param hardwareService   the model service for retrieving the models.
-     * @param conversionService the conversion service for converting models and dtos.
+     * @param modelService        the model service for retrieving the models.
+     * @param typeLiteral         a type literal for the model type
+     * @param conversionService   the conversion service for converting models and dtos.
+     * @param frontendUserService the service to retrieve frontend users.
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected HardwareController(HardwareService hardwareService, ModelDtoConversionService conversionService) {
-        super(hardwareService, conversionService);
+    @Inject public HardwareController(ModelService<Hardware> modelService,
+        TypeLiteral<Hardware> typeLiteral, ModelDtoConversionService conversionService,
+        FrontendUserService frontendUserService) {
+        super(modelService, typeLiteral, conversionService);
+        checkNotNull(frontendUserService);
+        this.frontendUserModelService = frontendUserService;
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.HardwareController.get(id).absoluteURL(request());
+    }
+
+    @Override protected Optional<Predicate<Hardware>> filter() {
+        return Optional.of(new Predicate<Hardware>() {
+            @Override public boolean apply(Hardware hardware) {
+                String userName = request().username();
+                FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
+                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
+                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
+                        if (hardware.getCloudCredentials().contains(cloudCredential)) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+        });
     }
 }

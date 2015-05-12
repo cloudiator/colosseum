@@ -16,10 +16,20 @@
  * under the License.
  */
 
+import cloud.CloudModule;
+import cloud.sync.Solver;
+import cloud.sync.config.SolutionModule;
+import cloud.sync.watchdogs.HardwareWatchdog;
+import cloud.sync.watchdogs.ImageWatchdog;
+import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import dtos.convert.config.BaseConverterModule;
-import models.service.config.ServiceInjection;
+import components.execution.DefaultExecutionService;
+import components.execution.ExecutionService;
+import components.execution.TransactionAwareExecutionService;
+import dtos.conversion.config.BaseConverterModule;
+import models.repository.config.JPAModule;
+import models.service.config.DatabaseServiceModule;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
@@ -27,6 +37,7 @@ import play.db.jpa.JPA;
 
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The Global class.
@@ -54,8 +65,20 @@ public class Global extends GlobalSettings {
         super.onStart(app);
 
         //create guice injector
-        this.injector = Guice.createInjector(new ServiceInjection(), new BaseConverterModule());
+        this.injector = Guice
+            .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
+                new CloudModule(), new SolutionModule());
 
+        ExecutionService executionService =
+            new TransactionAwareExecutionService(new DefaultExecutionService());
+        LocationWatchdog locationWatchdog = injector.getInstance(LocationWatchdog.class);
+        HardwareWatchdog hardwareWatchdog = injector.getInstance(HardwareWatchdog.class);
+        ImageWatchdog imageWatchdog = injector.getInstance(ImageWatchdog.class);
+
+        executionService.scheduleAtFixedRate(locationWatchdog, 1, TimeUnit.MINUTES);
+        executionService.scheduleAtFixedRate(hardwareWatchdog, 1, TimeUnit.MINUTES);
+        executionService.scheduleAtFixedRate(imageWatchdog, 1, TimeUnit.MINUTES);
+        executionService.executeInLoop(injector.getInstance(Solver.class));
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 
@@ -80,8 +103,7 @@ public class Global extends GlobalSettings {
      * @return An instance of the given class, with injected dependencies.
      * @throws Exception if creating the controller fails.
      */
-    @Override
-    public <A> A getControllerInstance(Class<A> aClass) throws Exception {
+    @Override public <A> A getControllerInstance(Class<A> aClass) throws Exception {
         return injector.getInstance(aClass);
     }
 
@@ -95,26 +117,22 @@ public class Global extends GlobalSettings {
          *
          * If a string is left empty, this formatter makes it null.
          */
-        Formatters.register(String.class,
-                new Formatters.SimpleFormatter<String>() {
+        Formatters.register(String.class, new Formatters.SimpleFormatter<String>() {
 
-                    @Override
-                    public String parse(String text, Locale locale)
-                            throws ParseException {
-                        text = text.trim();
-                        if (text.isEmpty()) {
-                            return null;
-                        }
-                        return text;
-                    }
+            @Override public String parse(String text, Locale locale) throws ParseException {
+                text = text.trim();
+                if (text.isEmpty()) {
+                    return null;
+                }
+                return text;
+            }
 
-                    @Override
-                    public String print(String string, Locale locale) {
-                        if (string == null) {
-                            return "";
-                        }
-                        return string;
-                    }
-                });
+            @Override public String print(String string, Locale locale) {
+                if (string == null) {
+                    return "";
+                }
+                return string;
+            }
+        });
     }
 }

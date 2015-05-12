@@ -19,24 +19,32 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.CommunicationDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.Communication;
-import models.service.api.CommunicationService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel on 09.01.15.
+ * Created by daniel on 10.04.15.
  */
-public class CommunicationController extends GenericApiController<Communication, CommunicationDto> {
-
-    @Inject
-    protected CommunicationController(CommunicationService communicationService, ModelDtoConversionService conversionService) {
-        super(communicationService, conversionService);
+public class CommunicationController extends
+    GenericApiController<Communication, CommunicationDto, CommunicationDto, CommunicationDto> {
+    /**
+     * Constructs a GenericApiController.
+     *
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
+     */
+    @Inject public CommunicationController(ModelService<Communication> modelService,
+        TypeLiteral<Communication> typeLiteral, ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.CommunicationController.get(id).absoluteURL(request());
     }
 }

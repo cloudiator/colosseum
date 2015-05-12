@@ -28,9 +28,9 @@ A list of all virtual machine template entities stored in the database.
          }
       ],
       "cloud":1
-      "cloudImage":1
-      "cloudLocation":2
-      "cloudHardware":3
+      "image":1
+      "location":2
+      "hardware":3
    }
 ]
 ```
@@ -62,9 +62,9 @@ Shows the selected virtual machine template entity.
      }s
   ],
   "cloud":1
-  "cloudImage":1
-  "cloudLocation":2
-  "cloudHardware":3s
+  "image":1
+  "location":2
+  "hardware":3s
 }
 ```
 ###Response Codes
@@ -82,17 +82,17 @@ Creates a new virtual machine template entity. The new entity will be returned.
 Parameter     | Description
 ------------- | ----------------------------------------------------------
 cloud         | The cloud the virtual machine will be started in.
-cloudImage    | The cloud image that will be used to start the machine.
-cloudLocation | The cloud location that will be used to start the machine.
-cloudHardware | The cloud hardware that will be used to start the machine.
+image    | The cloud image that will be used to start the machine.
+location | The cloud location that will be used to start the machine.
+hardware | The cloud hardware that will be used to start the machine.
 
 ###Request Example
 ```
 {
   "cloud":1
-  "cloudImage":1
-  "cloudLocation":2
-  "cloudHardware":3
+  "image":1
+  "location":2
+  "hardware":3
 }
 ```
 ###Response
@@ -114,9 +114,9 @@ Parameter     | Description
 ------------- | -------------
 vmt_id        | The id of the virtual machine template.
 cloud         | The cloud the virtual machine will be started in.
-cloudImage    | The cloud image that will be used to start the machine.
-cloudLocation | The cloud location that will be used to start the machine.
-cloudHardware | The cloud hardware that will be used to start the machine.
+image    | The cloud image that will be used to start the machine.
+location | The cloud location that will be used to start the machine.
+hardware | The cloud hardware that will be used to start the machine.
 
 ###Request Example
 ```
@@ -125,9 +125,9 @@ PUT /api/virtualMachineTemplate/1
 ```
 {
   "cloud":1
-  "cloudImage":1
-  "cloudLocation":1
-  "cloudHardware":1
+  "image":1
+  "location":1
+  "hardware":1
 }
 ```
 ###Response

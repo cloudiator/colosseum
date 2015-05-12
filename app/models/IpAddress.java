@@ -25,18 +25,13 @@ import javax.persistence.*;
 /**
  * Created by daniel on 12.03.15.
  */
-@Entity
-public class IpAddress extends Model {
+@Entity public class IpAddress extends Model {
 
-    @Column(updatable = false)
-    private String ip;
+    @Column(updatable = false) private String ip;
 
-    @Enumerated(EnumType.STRING)
-    @Column(updatable = false)
-    private IpType ipType;
+    @Enumerated(EnumType.STRING) @Column(updatable = false) private IpType ipType;
 
-    @ManyToOne(optional = false)
-    private VirtualMachine virtualMachine;
+    @ManyToOne(optional = false) private VirtualMachine virtualMachine;
 
     /**
      * Empty constructor for hibernate.
@@ -53,12 +48,12 @@ public class IpAddress extends Model {
         return ip;
     }
 
-    public IpType getIpType() {
-        return ipType;
-    }
-
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public IpType getIpType() {
+        return ipType;
     }
 
     public void setIpType(IpType ipType) {

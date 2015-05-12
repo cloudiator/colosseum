@@ -26,24 +26,13 @@ import java.util.List;
 /**
  * Created by daniel on 31.10.14.
  */
-public interface ModelRepository<T extends Model> {
+public interface ModelRepository<T extends Model> extends ResourceRepository<T> {
 
-    @Nullable
-    public T findById(Long id);
+    @Nullable public T findById(Long id);
 
-    //T create(T t);
+    void delete(T t);
 
-    //public void flush();
+    void save(T t);
 
-    //T refresh(T t);
-
-    public void delete(T t);
-
-    //T update(T t);
-
-    public void save(T t);
-
-    public List<T> findAll();
-
-
+    List<T> findAll();
 }

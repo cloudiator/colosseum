@@ -18,66 +18,84 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
-/**
- * The model class location.
- * <p>
- * Represents a location of the cloud, e.g. a data center, us-west....
- *
- * @author Daniel Baur
- */
-@Entity
-public class Location extends NamedModel {
+@Entity public class Location extends Model {
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    /**
-     * The cloud locations related to this location (ManyToMany)
-     */
-    @OneToMany(mappedBy = "location")
-    private List<CloudLocation> cloudLocations;
+    private String cloudUuid;
 
+    @Nullable @ManyToOne(optional = true) private GeoLocation geoLocation;
 
+    @ManyToOne @Nullable private Location parent;
 
-    @ManyToOne
-    private Location parent;
+    @OneToMany(mappedBy = "parent") private List<Location> children;
 
-    @OneToMany(mappedBy = "parent")
-    private List<Location> children;
+    @Nullable @Column(updatable = false) @Enumerated(EnumType.STRING) private LocationScope
+        locationScope;
 
-    @ManyToMany
-    private List<LocationCode> locationCodes;
+    @Column(nullable = false, updatable = false) private Boolean isAssignable;
 
-    @Enumerated(EnumType.STRING)
-    private LocationScope locationScope;
+    @ManyToMany private List<CloudCredential> cloudCredentials;
+
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+
+    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Image> images;
+
+    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Hardware>
+        hardwareList;
 
     /**
      * Empty constructor for hibernate.
      */
     private Location() {
-
     }
 
-    public List<CloudLocation> getCloudLocations() {
-        return cloudLocations;
+    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,
+        @Nullable Location parent, @Nullable LocationScope locationScope, boolean isAssignable) {
+        this.cloud = cloud;
+        this.cloudUuid = cloudUuid;
+        this.geoLocation = geoLocation;
+        this.parent = parent;
+        this.locationScope = locationScope;
+        this.isAssignable = isAssignable;
     }
 
-    public void setCloudLocations(List<CloudLocation> cloudLocations) {
-        this.cloudLocations = cloudLocations;
+    public Cloud getCloud() {
+        return cloud;
     }
 
-    public Location getParent() {
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
+    }
+
+    @Nullable public GeoLocation getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(@Nullable GeoLocation geoLocation) {
+        this.geoLocation = geoLocation;
+    }
+
+    @Nullable public Location getParent() {
         return parent;
     }
 
-    public void setParent(Location parent) {
+    public void setParent(@Nullable Location parent) {
         this.parent = parent;
     }
 
@@ -89,19 +107,51 @@ public class Location extends NamedModel {
         this.children = children;
     }
 
-    public List<LocationCode> getLocationCodes() {
-        return locationCodes;
-    }
-
-    public void setLocationCodes(List<LocationCode> locationCodes) {
-        this.locationCodes = locationCodes;
-    }
-
-    public LocationScope getLocationScope() {
+    public @Nullable LocationScope getLocationScope() {
         return locationScope;
     }
 
-    public void setLocationScope(LocationScope locationScope) {
+    public void setLocationScope(@Nullable LocationScope locationScope) {
         this.locationScope = locationScope;
+    }
+
+    public boolean isAssignable() {
+        return isAssignable;
+    }
+
+    public void setIsAssignable(boolean isAssignable) {
+        this.isAssignable = isAssignable;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    public List<Image> getImages() {
+        return images;
+    }
+
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public List<Hardware> getHardwareList() {
+        return hardwareList;
+    }
+
+    public void setHardwareList(List<Hardware> hardwareList) {
+        this.hardwareList = hardwareList;
     }
 }

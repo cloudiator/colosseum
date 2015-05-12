@@ -26,15 +26,11 @@ import javax.persistence.ManyToOne;
 /**
  * Created by daniel on 08.01.15.
  */
-@Entity
-public class CommunicationChannel extends Model {
+@Entity public class CommunicationChannel extends Model {
 
-    @ManyToOne
-    private Communication communication;
-    @ManyToOne
-    private Instance provider;
-    @ManyToOne
-    private Instance consumer;
+    @ManyToOne private Communication communication;
+    @ManyToOne private Instance provider;
+    @ManyToOne private Instance consumer;
 
     /**
      * Empty constructor for hibernate.

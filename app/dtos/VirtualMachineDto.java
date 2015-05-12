@@ -20,53 +20,46 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.NamedDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
 import models.Cloud;
-import models.CloudHardware;
-import models.CloudImage;
-import models.CloudLocation;
-import models.service.api.CloudHardwareService;
-import models.service.api.CloudImageService;
-import models.service.api.CloudLocationService;
-import models.service.api.CloudService;
-import play.data.validation.ValidationError;
-
-import java.util.List;
+import models.Hardware;
+import models.Image;
+import models.Location;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class VirtualMachineDto extends NamedDto {
+public class VirtualMachineDto extends ValidatableDto {
 
-    public static class References {
-        @Inject
-        public static Provider<CloudService> cloudService;
-        @Inject
-        public static Provider<CloudImageService> cloudImageService;
-        @Inject
-        public static Provider<CloudHardwareService> cloudHardwareFlavorService;
-        @Inject
-        public static Provider<CloudLocationService> cloudLocationService;
-    }
-
-    protected Long cloud;
-
-    protected Long cloudImage;
-
-    protected Long cloudHardware;
-
-    protected Long cloudLocation;
+    private String name;
+    private Long cloud;
+    private Long image;
+    private Long hardware;
+    private Long location;
+    private String cloudUuid;
 
     public VirtualMachineDto() {
         super();
     }
 
-    public VirtualMachineDto(String name, Long cloud, Long cloudImage, Long cloudHardware, Long cloudLocation) {
-        super(name);
+    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location, String cloudUuid) {
+        this.name = name;
         this.cloud = cloud;
-        this.cloudImage = cloudImage;
-        this.cloudHardware = cloudHardware;
-        this.cloudLocation = cloudLocation;
+        this.image = image;
+        this.hardware = hardware;
+        this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getCloud() {
@@ -77,87 +70,50 @@ public class VirtualMachineDto extends NamedDto {
         this.cloud = cloud;
     }
 
-    public Long getCloudImage() {
-        return cloudImage;
+    public Long getImage() {
+        return image;
     }
 
-    public void setCloudImage(Long cloudImage) {
-        this.cloudImage = cloudImage;
+    public void setImage(Long image) {
+        this.image = image;
     }
 
-    public Long getCloudHardware() {
-        return cloudHardware;
+    public Long getHardware() {
+        return hardware;
     }
 
-    public void setCloudHardware(Long cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public void setHardware(Long hardware) {
+        this.hardware = hardware;
     }
 
-    public Long getCloudLocation() {
-        return cloudLocation;
+    public Long getLocation() {
+        return location;
     }
 
-    public void setCloudLocation(Long cloudLocation) {
-        this.cloudLocation = cloudLocation;
+    public void setLocation(Long location) {
+        this.location = location;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        final List<ValidationError> errors = super.validateNotNull();
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
 
-        //validate cloud reference
-        Cloud cloud = null;
-        if (this.cloud == null) {
-            errors.add(new ValidationError("cloud", "The cloud is required."));
-        } else {
-            cloud = References.cloudService.get().getById(this.cloud);
-            if (cloud == null) {
-                errors.add(new ValidationError("cloud", "The given cloud is invalid."));
-            }
-        }
+    @Override public void validation() {
+        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(Long.class).validate(image).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.imageService.get()));
+        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.locationService.get()));
+        validator(Long.class).validate(hardware).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
+    }
 
-        //validate the cloud image
-        if (this.cloudImage == null) {
-            errors.add(new ValidationError("cloudImage", "The cloud image is required."));
-        } else {
-            final CloudImage cloudImage = References.cloudImageService.get().getById(this.cloudImage);
-            if (cloudImage == null) {
-                errors.add(new ValidationError("cloudImage", "The given cloud image is invalid."));
-            } else {
-                if (!cloudImage.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudImage", "The cloud image does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        //validate the cloud hardware
-        if (this.cloudHardware == null) {
-            errors.add(new ValidationError("cloudHardware", "The cloud hardware is required."));
-        } else {
-            final CloudHardware cloudHardware = References.cloudHardwareFlavorService.get().getById(this.cloudHardware);
-            if (cloudHardware == null) {
-                errors.add(new ValidationError("cloudHardware", "The given cloud hardware is invalid"));
-            } else {
-                if (!cloudHardware.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudHardware", "The cloud hardware does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        //validate the cloud location
-        if (this.cloudLocation == null) {
-            errors.add(new ValidationError("cloudLocation", "The cloud location is required."));
-        } else {
-            final CloudLocation cloudLocation = References.cloudLocationService.get().getById(this.cloudLocation);
-            if (cloudLocation == null) {
-                errors.add(new ValidationError("cloudLocation", "The given cloud location is invalid."));
-            } else {
-                if (!cloudLocation.getCloud().equals(cloud)) {
-                    errors.add(new ValidationError("cloudLocation", "The cloud location does not belong to the specified cloud."));
-                }
-            }
-        }
-
-        return errors;
+    public static class References {
+        @Inject public static Provider<ModelService<Cloud>> cloudService;
+        @Inject public static Provider<ModelService<Image>> imageService;
+        @Inject public static Provider<ModelService<Location>> locationService;
+        @Inject public static Provider<ModelService<Hardware>> hardwareService;
     }
 }

@@ -19,30 +19,31 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.FrontendUserDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.FrontendUserGetDto;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.FrontendUser;
-import models.service.api.FrontendUserService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel seybold on 11.12.2014.
+ * Created by daniel on 09.04.15.
  */
-public class FrontendUserController extends GenericApiController<FrontendUser, FrontendUserDto> {
+public class FrontendUserController extends GenericApiController<FrontendUser, FrontendUserGetDto, FrontendUserGetDto, FrontendUserGetDto> {
     /**
      * Constructs a GenericApiController.
      *
-     * @param frontendUserService the model service for retrieving the models.
-     * @param conversionService   the conversion service for converting models and dtos.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected FrontendUserController(FrontendUserService frontendUserService, ModelDtoConversionService conversionService) {
-        super(frontendUserService, conversionService);
+    @Inject public FrontendUserController(ModelService<FrontendUser> modelService,
+        TypeLiteral<FrontendUser> typeLiteral, ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.FrontendUserController.get(id).absoluteURL(request());
     }
 }

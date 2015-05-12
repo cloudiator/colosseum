@@ -25,6 +25,7 @@ A list of all instance entities stored in the database.
             "rel":"self"
          }
       ],
+      "applicationInstance":1,
       "applicationComponent":1,
       "virtualMachine":1
    },
@@ -35,6 +36,7 @@ A list of all instance entities stored in the database.
             "rel":"self"
          }
       ],
+      "applicationInstance":1,
       "applicationComponent":2,
       "virtualMachine":1
    }
@@ -70,6 +72,7 @@ Shows the selected instance entity.
          "rel":"self"
       }
    ],
+   "applicationInstance":1,
    "applicationComponent":1,
    "virtualMachine":1
 }
@@ -90,6 +93,7 @@ Creates a new instance entity and returns it.
 
 Parameter            | Description
 -------------------- | -------------------------------------
+applicationInstance  | The id of the application instance.
 applicationComponent | The id of the application component.
 virtualMachine       | The id of the virtual machine.
 
@@ -97,6 +101,7 @@ virtualMachine       | The id of the virtual machine.
 ### Request Example
 ```
 {  
+   "applicationInstance":1,
    "applicationComponent":1,
    "virtualMachine":1
 }    
@@ -124,6 +129,7 @@ Updates the application instance residing under the given id.
 Parameter            | Description
 -------------------- | -------------------------------------
 instance_id          | The id of the instance to update.
+applicationInstance  | The id of the application instance.
 applicationComponent | The id of the application component.
 virtualMachine       | The id of the virtual machine.
 
@@ -133,6 +139,7 @@ PUT /api/instance/1
 ```
 ```
 {  
+   "applicationInstance":1,
    "applicationComponent":1,
    "virtualMachine":1
 }

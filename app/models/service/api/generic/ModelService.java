@@ -26,11 +26,9 @@ import java.util.List;
 /**
  * Created by daniel on 31.10.14.
  */
-public interface ModelService<T extends Model> {
+public interface ModelService<T extends Model> extends ResourceService<T> {
 
     @Nullable T getById(Long id);
-
-    @Nullable T getByUuid(String uuid);
 
     List<T> getAll();
 

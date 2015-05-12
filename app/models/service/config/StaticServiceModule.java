@@ -14,6 +14,8 @@ public class StaticServiceModule extends AbstractModule {
 
         //static injection in dtos
         requestStaticInjection(ApplicationComponentDto.References.class);
+        requestStaticInjection(ApplicationInstanceDto.References.class);
+        requestStaticInjection(CloudDto.References.class);
         requestStaticInjection(CloudCredentialDto.References.class);
         requestStaticInjection(CommunicationDto.References.class);
         requestStaticInjection(CommunicationChannelDto.References.class);

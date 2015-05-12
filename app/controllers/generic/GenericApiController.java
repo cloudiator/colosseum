@@ -261,6 +261,8 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
 
         this.modelService.save(entity);
 
+        postPost(entity);
+
         return get(entity.getId());
     }
 
@@ -325,6 +327,10 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         this.modelService.delete(entity);
 
         return ok();
+    }
+
+    protected void postPost(T entity) {
+        // intentionally left empty
     }
 
 }

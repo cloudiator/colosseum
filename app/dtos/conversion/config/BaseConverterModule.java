@@ -39,6 +39,8 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(ApplicationConverter.class);
         // Application Component
         converterBinder.addBinding().to(ApplicationComponentConverter.class);
+        // Application Instance
+        converterBinder.addBinding().to(ApplicationInstanceConverter.class);
         // Cloud
         converterBinder.addBinding().to(CloudConverter.class);
         // Cloud Credential

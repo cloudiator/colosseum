@@ -20,7 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+import components.job.VirtualMachineJob;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
 import dtos.conversion.api.ModelDtoConversionService;
 import models.VirtualMachine;
@@ -32,21 +34,33 @@ import models.service.api.generic.ModelService;
 public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
+    private final ComputeService computeService;
+    private final ModelService<VirtualMachine> virtualMachineModelService;
+
     /**
      * Constructs a GenericApiController.
      *
      * @param modelService      the model service for retrieving the models.
      * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
+     * @param computeService
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    public VirtualMachineController(ModelService<VirtualMachine> modelService,
-        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
+        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
+        ComputeService computeService) {
         super(modelService, typeLiteral, conversionService);
+        this.computeService = computeService;
+        this.virtualMachineModelService = modelService;
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
+    }
+
+    @Override protected void postPost(VirtualMachine entity) {
+        VirtualMachineJob virtualMachineJob =
+            new VirtualMachineJob(entity, virtualMachineModelService, computeService);
+        virtualMachineJob.execute();
     }
 }

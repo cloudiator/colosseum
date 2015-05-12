@@ -18,21 +18,28 @@
 
 package dtos;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
+import models.Api;
+import models.service.api.generic.ModelService;
 
 public class CloudDto extends ValidatableDto {
 
     private String name;
     private String endpoint;
+    private Long api;
 
     public CloudDto() {
         super();
     }
 
-    public CloudDto(String name, String endpoint) {
+    public CloudDto(String name, String endpoint, Long api) {
         this.name = name;
         this.endpoint = endpoint;
+        this.api = api;
     }
 
     public String getName() {
@@ -51,9 +58,23 @@ public class CloudDto extends ValidatableDto {
         this.endpoint = endpoint;
     }
 
+    public Long getApi() {
+        return api;
+    }
+
+    public void setApi(Long api) {
+        this.api = api;
+    }
+
     @Override public void validation() {
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.endpoint)
             .withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(this.api)
+            .withValidator(new ModelIdValidator<>(References.apiService.get()));
+    }
+
+    public static class References {
+        @Inject public static Provider<ModelService<Api>> apiService;
     }
 }

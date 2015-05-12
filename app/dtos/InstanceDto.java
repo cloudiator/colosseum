@@ -24,6 +24,7 @@ import dtos.generic.ValidatableDto;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullValidator;
 import models.ApplicationComponent;
+import models.ApplicationInstance;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
 
@@ -33,6 +34,7 @@ import models.service.impl.generic.BaseModelService;
 public class InstanceDto extends ValidatableDto {
 
     private Long applicationComponent;
+    private Long applicationInstance;
     private Long virtualMachine;
 
     protected InstanceDto() {
@@ -42,6 +44,8 @@ public class InstanceDto extends ValidatableDto {
     @Override public void validation() {
         validator(Long.class).validate(applicationComponent).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+        validator(Long.class).validate(applicationInstance).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationInstanceService.get()));
         validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
     }
@@ -62,10 +66,20 @@ public class InstanceDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
+    public Long getApplicationInstance() {
+        return applicationInstance;
+    }
+
+    public void setApplicationInstance(Long applicationInstance) {
+        this.applicationInstance = applicationInstance;
+    }
+
     public static class References {
 
         @Inject public static Provider<BaseModelService<ApplicationComponent>>
             applicationComponentService;
         @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+        @Inject public static Provider<BaseModelService<ApplicationInstance>>
+            applicationInstanceService;
     }
 }

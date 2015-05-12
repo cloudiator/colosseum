@@ -3,9 +3,11 @@ package cloud.sync.watchdogs;
 import cloud.CloudCredentialLocationId;
 import cloud.ImageInCloudAndLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
-import cloud.sync.ProblemQueue;
+import cloud.sync.Problem;
+import components.execution.SimpleBlockingQueue;
 import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.CloudCredential;
@@ -19,11 +21,14 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
 
     private final ImageModelService imageModelService;
 
-    @Inject protected ImageWatchdog(ComputeService computeService, ProblemQueue problemQueue,
+    @Inject protected ImageWatchdog(ComputeService computeService,
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
         ImageModelService imageModelService) {
-        super(computeService, problemQueue);
+        super(computeService, simpleBlockingQueue);
         this.imageModelService = imageModelService;
     }
+
+
 
     @Override protected void watch(ComputeService computeService) {
         for (Image image : computeService.listImages()) {

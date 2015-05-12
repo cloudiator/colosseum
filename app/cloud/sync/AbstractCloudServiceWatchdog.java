@@ -1,6 +1,8 @@
 package cloud.sync;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import play.db.jpa.Transactional;
 
@@ -14,14 +16,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public abstract class AbstractCloudServiceWatchdog implements Runnable {
 
     private final ComputeService computeService;
-    private final ProblemQueue problemQueue;
+    private final SimpleBlockingQueue<Problem> problemQueue;
 
     @Inject protected AbstractCloudServiceWatchdog(ComputeService computeService,
-        ProblemQueue problemQueue) {
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue) {
         checkNotNull(computeService);
-        checkNotNull(problemQueue);
+        checkNotNull(simpleBlockingQueue);
         this.computeService = computeService;
-        this.problemQueue = problemQueue;
+        this.problemQueue = simpleBlockingQueue;
     }
 
     @Transactional @Override public void run() {

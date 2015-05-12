@@ -33,7 +33,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class Instance extends Model {
 
-    @ManyToOne private ApplicationComponent applicationComponent;
+    @ManyToOne(optional = false) private ApplicationComponent applicationComponent;
+    @ManyToOne(optional = false) private ApplicationInstance applicationInstance;
 
     @OneToMany(mappedBy = "provider") private List<CommunicationChannel>
         providedCommunicationChannels;
@@ -46,6 +47,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
      * Empty constructor for hibernate.
      */
     private Instance() {
+    }
+
+    public Instance(ApplicationComponent applicationComponent,
+        ApplicationInstance applicationInstance) {
+        this.applicationComponent = applicationComponent;
+        this.applicationInstance = applicationInstance;
     }
 
     public ApplicationComponent getApplicationComponent() {
@@ -82,5 +89,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setConsumedCommunicationChannels(
         List<CommunicationChannel> consumedCommunicationChannels) {
         this.consumedCommunicationChannels = consumedCommunicationChannels;
+    }
+
+    public ApplicationInstance getApplicationInstance() {
+        return applicationInstance;
+    }
+
+    public void setApplicationInstance(ApplicationInstance applicationInstance) {
+        this.applicationInstance = applicationInstance;
     }
 }

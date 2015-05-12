@@ -3,9 +3,11 @@ package cloud.sync.watchdogs;
 import cloud.CloudCredentialLocationId;
 import cloud.LocationInCloud;
 import cloud.sync.AbstractCloudServiceWatchdog;
-import cloud.sync.ProblemQueue;
+import cloud.sync.Problem;
+import components.execution.SimpleBlockingQueue;
 import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.CloudCredential;
 import models.Location;
@@ -18,11 +20,14 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
 
     private final LocationModelService locationModelService;
 
-    @Inject protected LocationWatchdog(ComputeService computeService, ProblemQueue problemQueue,
+    @Inject protected LocationWatchdog(ComputeService computeService,
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
         LocationModelService locationModelService) {
-        super(computeService, problemQueue);
+        super(computeService, simpleBlockingQueue);
         this.locationModelService = locationModelService;
     }
+
+
 
     @Override protected void watch(ComputeService computeService) {
 

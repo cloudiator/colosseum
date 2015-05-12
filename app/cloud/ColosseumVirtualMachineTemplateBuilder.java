@@ -25,9 +25,10 @@ import javax.annotation.Nullable;
 /**
  * Created by daniel on 12.02.15.
  */
-public class ColloseumVirtualMachineTemplateBuilder {
+public class ColosseumVirtualMachineTemplateBuilder {
 
     private Cloud cloud;
+    private CloudCredential cloudCredential;
     private HardwareOffer hardwareOffer;
     private GeoLocation geoLocation;
     private OperatingSystem operatingSystem;
@@ -35,51 +36,67 @@ public class ColloseumVirtualMachineTemplateBuilder {
     private Image image;
     private Hardware hardware;
 
-    ColloseumVirtualMachineTemplateBuilder() {
+    ColosseumVirtualMachineTemplateBuilder() {
     }
 
-    public ColloseumVirtualMachineTemplateBuilder cloud(Cloud cloud) {
+    public ColosseumVirtualMachineTemplateBuilder cloud(Cloud cloud) {
         this.cloud = cloud;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder hardware(HardwareOffer hardwareOffer) {
+    public ColosseumVirtualMachineTemplateBuilder cloudCredential(CloudCredential cloudCredential) {
+        this.cloudCredential = cloudCredential;
+        return this;
+    }
+
+    public ColosseumVirtualMachineTemplateBuilder hardware(HardwareOffer hardwareOffer) {
         this.hardwareOffer = hardwareOffer;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder geoLocation(GeoLocation geoLocation) {
+    public ColosseumVirtualMachineTemplateBuilder geoLocation(GeoLocation geoLocation) {
         this.geoLocation = geoLocation;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder os(OperatingSystem operatingSystem) {
+    public ColosseumVirtualMachineTemplateBuilder os(OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder cloudLocation(Location location) {
+    public ColosseumVirtualMachineTemplateBuilder cloudLocation(Location location) {
         this.location = location;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder cloudHardware(Hardware hardware) {
+    public ColosseumVirtualMachineTemplateBuilder cloudHardware(Hardware hardware) {
         this.hardware = hardware;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder cloudImage(Image image) {
+    public ColosseumVirtualMachineTemplateBuilder cloudImage(Image image) {
         this.image = image;
         return this;
     }
 
-    public ColloseumVirtualMachineTemplateBuilder virtualMachineTemplateModel(
+    public ColosseumVirtualMachineTemplateBuilder virtualMachineTemplateModel(
         models.VirtualMachineTemplate virtualMachineTemplateModel) {
+        this.cloud = virtualMachineTemplateModel.getCloud();
         this.image = virtualMachineTemplateModel.getImage();
         this.location = virtualMachineTemplateModel.getLocation();
         this.hardware = virtualMachineTemplateModel.getHardware();
         return this;
     }
+
+    public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
+        VirtualMachine virtualMachine) {
+        this.cloud = virtualMachine.getCloud();
+        this.image = virtualMachine.getImage();
+        this.location = virtualMachine.getLocation();
+        this.hardware = virtualMachine.getHardware();
+        return this;
+    }
+
 
     @Nullable protected Hardware getHardware() {
         if (hardware != null) {
@@ -101,7 +118,7 @@ public class ColloseumVirtualMachineTemplateBuilder {
         }
         if (cloud != null && operatingSystem != null) {
             for (Image searchImage : cloud.getImages()) {
-                if (searchImage.getOperatingSystem().equals(operatingSystem)) {
+                if (operatingSystem.equals(searchImage.getOperatingSystem())) {
                     return searchImage;
                 }
             }
@@ -124,8 +141,30 @@ public class ColloseumVirtualMachineTemplateBuilder {
         return null;
     }
 
-    public ColloseumVirtualMachineTemplate build() {
-        return new ColloseumVirtualMachineTemplate(getImage(), getHardware(), getLocation());
+    @Nullable protected CloudCredential getCloudCredential() {
+        if (cloudCredential != null) {
+            return cloudCredential;
+        }
+        if (cloud != null && image != null && location != null && hardware != null) {
+            for (CloudCredential inCloud : cloud.getCloudCredentials()) {
+                for (CloudCredential inImage : image.getCloudCredentials()) {
+                    for (CloudCredential inLocation : location.getCloudCredentials()) {
+                        for (CloudCredential inHardware : hardware.getCloudCredentials()) {
+                            if (inCloud.equals(inImage) && inCloud.equals(inLocation) && inCloud
+                                .equals(inHardware)) {
+                                return inCloud;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public ColosseumVirtualMachineTemplate build() {
+        return new ColosseumVirtualMachineTemplate(cloud, getCloudCredential(), getImage(),
+            getHardware(), getLocation());
     }
 
 

@@ -3,9 +3,11 @@ package cloud.sync.watchdogs;
 import cloud.CloudCredentialLocationId;
 import cloud.HardwareInCloudAndLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
-import cloud.sync.ProblemQueue;
+import cloud.sync.Problem;
+import components.execution.SimpleBlockingQueue;
 import cloud.sync.problems.HardwareProblems;
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.CloudCredential;
@@ -20,11 +22,14 @@ public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
 
     private final HardwareModelService hardwareModelService;
 
-    @Inject protected HardwareWatchdog(ComputeService computeService, ProblemQueue problemQueue,
+    @Inject protected HardwareWatchdog(ComputeService computeService,
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
         HardwareModelService hardwareModelService) {
-        super(computeService, problemQueue);
+        super(computeService, simpleBlockingQueue);
         this.hardwareModelService = hardwareModelService;
     }
+
+
 
     @Override protected void watch(ComputeService computeService) {
         for (HardwareFlavor hardwareFlavor : computeService.listHardwareFlavors()) {

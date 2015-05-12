@@ -23,6 +23,7 @@ import dtos.InstanceDto;
 import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.ApplicationComponent;
+import models.ApplicationInstance;
 import models.Instance;
 import models.VirtualMachine;
 import models.service.api.generic.ModelService;
@@ -32,21 +33,26 @@ import models.service.api.generic.ModelService;
  */
 public class InstanceConverter extends AbstractConverter<Instance, InstanceDto> {
 
-
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<ApplicationComponent> applicationComponentModelService;
+    private final ModelService<ApplicationInstance> applicationInstanceModelService;
 
     @Inject protected InstanceConverter(ModelService<VirtualMachine> virtualMachineModelService,
-        ModelService<ApplicationComponent> applicationComponentModelService) {
+        ModelService<ApplicationComponent> applicationComponentModelService,
+        ModelService<ApplicationInstance> applicationInstanceModelService) {
         super(Instance.class, InstanceDto.class);
         this.virtualMachineModelService = virtualMachineModelService;
         this.applicationComponentModelService = applicationComponentModelService;
+        this.applicationInstanceModelService = applicationInstanceModelService;
     }
 
     @Override public void configure() {
         builder().from(Long.class, "applicationComponent")
             .to(ApplicationComponent.class, "applicationComponent")
             .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
+        builder().from(Long.class, "applicationInstance")
+            .to(ApplicationInstance.class, "applicationInstance")
+            .withTransformation(new IdToModelTransformer<>(applicationInstanceModelService));
         builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
     }

@@ -1,15 +1,11 @@
 package cloud.sync;
 
+import components.execution.Prioritized;
+
 /**
  * Created by daniel on 04.05.15.
  */
-public interface Problem {
+public interface Problem extends Prioritized {
 
-    class Priority {
-        public static int HIGH = 2;
-        public static int MEDIUM = 1;
-        public static int LOW = 0;
-    }
 
-    int getPriority();
 }

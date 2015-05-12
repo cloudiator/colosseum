@@ -25,9 +25,9 @@ A list of all virtual machine entities stored in the database.
       ],
       "name":"scalarm_vm_1",
       "cloud":1,
-      "cloudImage":1,
-      "cloudHardware":1,
-      "cloudLocation":1
+      "image":1,
+      "hardware":1,
+      "location":1
    },
    {  
       "links":[  
@@ -38,9 +38,9 @@ A list of all virtual machine entities stored in the database.
       ],
       "name":"scalarm_vm_2",
       "cloud":1,
-      "cloudImage":1,
-      "cloudHardware":1,
-      "cloudLocation":2
+      "image":1,
+      "hardware":1,
+      "location":2
    }
 ]
 ```
@@ -73,9 +73,9 @@ Shows the selected virtualMachine entity.
    ],
    "name":"scalarm_vm_1",
    "cloud":1,
-   "cloudImage":1,
-   "cloudHardware":1,
-   "cloudLocation":1
+   "image":1,
+   "hardware":1,
+   "location":1
 }
 ```
 ###Response Codes
@@ -94,18 +94,18 @@ Creates a virtual machine and returns it.
 Parameter     | Description
 ------------- | ----------------------------------------------------------
 cloud         | The cloud the virtual machine will be started in.
-cloudImage    | The cloud image that will be used to start the machine.
-cloudLocation | The cloud location that will be used to start the machine.
-cloudHardware | The cloud hardware that will be used to start the machine.
+image    | The cloud image that will be used to start the machine.
+location | The cloud location that will be used to start the machine.
+hardware | The cloud hardware that will be used to start the machine.
 
 ###Request Example
 ```
 {  
    "name":"scalarm_vm_1",
    "cloud":1,
-   "cloudImage":1,
-   "cloudHardware":1,
-   "cloudLocation":1
+   "image":1,
+   "hardware":1,
+   "location":1
 }
 ```
 
@@ -128,9 +128,9 @@ Parameter            | Description
 -------------------- | -------------
 virtualMachine_id    | The id of the virtual machine to be updated.
 cloud                | The cloud the virtual machine will be started in.
-cloudImage           | The cloud image that will be used to start the machine.
-cloudLocation        | The cloud location that will be used to start the machine.
-cloudHardware        | The cloud hardware that will be used to start the machine.
+image           | The cloud image that will be used to start the machine.
+location        | The cloud location that will be used to start the machine.
+hardware        | The cloud hardware that will be used to start the machine.
 
 ###Request Example
 ```
@@ -140,9 +140,9 @@ PUT /api/virtualMachine/1
 {  
    "name":"Scalarm",
    "cloud":1,
-   "cloudImage":1,
-   "cloudHardware":1,
-   "cloudLocation":1
+   "image":1,
+   "hardware":1,
+   "location":1
 }
 ```
 ###Response

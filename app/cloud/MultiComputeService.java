@@ -87,7 +87,27 @@ import java.util.*;
 
     @Override
     public VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate) {
-        return null;
+        if (virtualMachineTemplate instanceof ColosseumVirtualMachineTemplate) {
+            ColosseumVirtualMachineTemplate colosseumVirtualMachineTemplate =
+                (ColosseumVirtualMachineTemplate) virtualMachineTemplate;
+            for (ComputeService computeService : computeServiceHolder.getComputeServices()) {
+                if (computeService instanceof CloudAndCredentialAwareComputeService) {
+                    CloudAndCredentialAwareComputeService cloudAndCredentialAwareComputeService =
+                        (CloudAndCredentialAwareComputeService) computeService;
+
+                    if (cloudAndCredentialAwareComputeService.cloud
+                        .equals(colosseumVirtualMachineTemplate.getCloudUuid())
+                        && cloudAndCredentialAwareComputeService.credential
+                        .equals(colosseumVirtualMachineTemplate.getCloudCredentialUuid())) {
+                        return cloudAndCredentialAwareComputeService
+                            .createVirtualMachine(colosseumVirtualMachineTemplate);
+                    }
+                }
+            }
+        } else {
+            throw new IllegalArgumentException();
+        }
+        throw new IllegalStateException();
     }
 
     @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {
@@ -216,7 +236,8 @@ import java.util.*;
 
         @Override
         public VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate) {
-            return swordComputeService.createVirtualMachine(virtualMachineTemplate);
+            return new VirtualMachineInCloudAndLocation((SwordVirtualMachine) swordComputeService
+                .createVirtualMachine(virtualMachineTemplate), cloud, credential);
         }
 
         @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {

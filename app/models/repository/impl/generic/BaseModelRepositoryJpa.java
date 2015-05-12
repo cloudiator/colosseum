@@ -26,6 +26,7 @@ import play.db.jpa.JPA;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import java.util.List;
 
@@ -96,7 +97,11 @@ public class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<
         checkNotNull(uuid);
         String queryString = String.format("from %s where uuid=:uuid", type.getName());
         Query query = em().createQuery(queryString).setParameter("uuid", uuid);
-        //noinspection unchecked
-        return (T) query.getSingleResult();
+        try {
+            //noinspection unchecked
+            return (T) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
     }
 }

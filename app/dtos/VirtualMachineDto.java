@@ -40,17 +40,62 @@ public class VirtualMachineDto extends ValidatableDto {
     private Long image;
     private Long hardware;
     private Long location;
+    private String cloudUuid;
 
     public VirtualMachineDto() {
         super();
     }
 
-    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location) {
+    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location, String cloudUuid) {
         this.name = name;
         this.cloud = cloud;
         this.image = image;
         this.hardware = hardware;
         this.location = location;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public Long getImage() {
+        return image;
+    }
+
+    public void setImage(Long image) {
+        this.image = image;
+    }
+
+    public Long getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(Long hardware) {
+        this.hardware = hardware;
+    }
+
+    public Long getLocation() {
+        return location;
+    }
+
+    public void setLocation(Long location) {
+        this.location = location;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
     @Override public void validation() {

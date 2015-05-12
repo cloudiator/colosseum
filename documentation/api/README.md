@@ -9,8 +9,8 @@ Entity                                                       | URL
 [API](entities/Api.md)                                       | /api/api
 [Application](entities/Application.md)                       | /api/application
 [ApplicationComponent](entities/ApplicationComponent.md)     | /api/applicationComponent
+[ApplicationInstance](entities/ApplicationInstance.md)       | /api/applicationInstance
 [Cloud](entities/Cloud.md)                                   | /api/cloud
-[CloudApi](entities/CloudApi.md)                             | /api/cloudApi
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser

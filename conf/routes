@@ -37,6 +37,13 @@ POST          /api/ac                              @controllers.ApplicationCompo
 PUT           /api/ac/:id                          @controllers.ApplicationComponentController.put(id: Long)
 DELETE        /api/ac/:id                          @controllers.ApplicationComponentController.delete(id: Long)
 
+#Application Instance
+GET           /api/applicationInstance             @controllers.ApplicationInstanceController.list()
+GET           /api/applicationInstance/:id         @controllers.ApplicationInstanceController.get(id: Long)
+POST          /api/applicationInstance             @controllers.ApplicationInstanceController.post()
+PUT           /api/applicationInstance/:id         @controllers.ApplicationInstanceController.put(id: Long)
+DELETE        /api/applicationInstance/:id         @controllers.ApplicationInstanceController.delete(id: Long)
+
 #Cloud
 GET           /api/cloud                           @controllers.CloudController.list()
 GET           /api/cloud/:id                       @controllers.CloudController.get(id: Long)

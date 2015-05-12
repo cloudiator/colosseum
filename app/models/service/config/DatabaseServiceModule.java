@@ -50,6 +50,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<ApplicationComponent>>() {
         }).to(new TypeLiteral<BaseModelService<ApplicationComponent>>() {
         });
+        //Application Instance
+        bind(new TypeLiteral<ModelService<ApplicationInstance>>() {
+        }).to(new TypeLiteral<BaseModelService<ApplicationInstance>>() {
+        });
         // Cloud
         bind(new TypeLiteral<ModelService<Cloud>>() {
         }).to(new TypeLiteral<BaseModelService<Cloud>>() {

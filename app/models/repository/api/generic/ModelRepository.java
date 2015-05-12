@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by daniel on 31.10.14.
  */
-public interface ModelRepository<T extends Model> {
+public interface ModelRepository<T extends Model> extends ResourceRepository<T> {
 
     @Nullable public T findById(Long id);
 
@@ -35,6 +35,4 @@ public interface ModelRepository<T extends Model> {
     void save(T t);
 
     List<T> findAll();
-
-    @Nullable T findByUuid(String uuid);
 }

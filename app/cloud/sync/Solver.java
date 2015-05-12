@@ -1,6 +1,8 @@
 package cloud.sync;
 
 import com.google.inject.Inject;
+import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
 import play.db.jpa.Transactional;
 
 /**
@@ -9,9 +11,10 @@ import play.db.jpa.Transactional;
 public class Solver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
-    private final ProblemQueue problemQueue;
+    private final SimpleBlockingQueue<Problem> problemQueue;
 
-    @Inject public Solver(SolutionDatabase solutionDatabase, ProblemQueue problemQueue) {
+    @Inject public Solver(SolutionDatabase solutionDatabase,
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {
         this.solutionDatabase = solutionDatabase;
         this.problemQueue = problemQueue;
     }

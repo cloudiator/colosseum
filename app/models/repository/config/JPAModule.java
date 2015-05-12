@@ -50,6 +50,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<ApplicationComponent>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ApplicationComponent>>() {
         });
+        //Application Instance
+        bind(new TypeLiteral<ModelRepository<ApplicationInstance>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ApplicationInstance>>() {
+        });
         // Cloud
         bind(new TypeLiteral<ModelRepository<Cloud>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Cloud>>() {

@@ -36,7 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Column(unique = true, nullable = false) private String name;
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    @Column(updatable = false, nullable = false) private String cloudUuid;
+    @Column(updatable = false, nullable = true) private String cloudUuid;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;

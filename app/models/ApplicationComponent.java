@@ -36,6 +36,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @ManyToOne(optional = false) private Component component;
 
+    @OneToMany(mappedBy = "applicationComponent") private List<Instance> instances;
+
     @OneToMany(mappedBy = "provider") private List<Communication> providedCommunications;
     @OneToMany(mappedBy = "consumer") private List<Communication> consumedCommunications;
 
@@ -87,5 +89,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setVirtualMachineTemplate(VirtualMachineTemplate virtualMachineTemplate) {
         this.virtualMachineTemplate = virtualMachineTemplate;
+    }
+
+    public List<Instance> getInstances() {
+        return instances;
+    }
+
+    public void setInstances(List<Instance> instances) {
+        this.instances = instances;
     }
 }

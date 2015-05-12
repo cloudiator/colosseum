@@ -38,6 +38,9 @@ public class FrontendGroupDto extends ValidatableDto {
     private String name;
     private List<Long> frontendUsers;
 
+    public FrontendGroupDto() {
+    }
+
     public FrontendGroupDto(String name, List<Long> frontendUsers) {
         this.name = name;
         this.frontendUsers = frontendUsers;

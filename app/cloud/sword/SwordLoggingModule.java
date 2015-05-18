@@ -2,7 +2,7 @@ package cloud.sword;
 
 import de.uniulm.omi.cloudiator.sword.api.logging.Logger;
 import de.uniulm.omi.cloudiator.sword.api.logging.LoggerFactory;
-import de.uniulm.omi.cloudiator.sword.core.config.LoggingModule;
+import de.uniulm.omi.cloudiator.sword.core.logging.LoggingModule;
 
 /**
  * Created by daniel on 06.05.15.

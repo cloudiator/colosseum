@@ -5,12 +5,14 @@ import components.execution.Prioritized;
 /**
  * Created by daniel on 08.05.15.
  */
-interface Job extends Prioritized {
+public interface Job extends Prioritized {
 
     String getResourceUuid();
 
-    JobState getState();
+    JobState state();
 
-    void execute();
+    void state(JobState jobState);
+
+    void execute() throws JobException;
 
 }

@@ -20,7 +20,10 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import components.job.VirtualMachineJob;
+import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
+import components.job.CreateVirtualMachineJob;
+import components.job.Job;
 import controllers.generic.GenericApiController;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
@@ -35,7 +38,7 @@ public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
     private final ComputeService computeService;
-    private final ModelService<VirtualMachine> virtualMachineModelService;
+    private final SimpleBlockingQueue<Job> jobQueue;
 
     /**
      * Constructs a GenericApiController.
@@ -44,14 +47,15 @@ public class VirtualMachineController extends
      * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
      * @param computeService
+     * @param jobQueue
      * @throws NullPointerException if any of the above parameters is null.
      */
     @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
-        ComputeService computeService) {
+        ComputeService computeService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
         super(modelService, typeLiteral, conversionService);
         this.computeService = computeService;
-        this.virtualMachineModelService = modelService;
+        this.jobQueue = jobQueue;
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -59,8 +63,8 @@ public class VirtualMachineController extends
     }
 
     @Override protected void postPost(VirtualMachine entity) {
-        VirtualMachineJob virtualMachineJob =
-            new VirtualMachineJob(entity, virtualMachineModelService, computeService);
-        virtualMachineJob.execute();
+        CreateVirtualMachineJob createVirtualMachineJob =
+            new CreateVirtualMachineJob(entity, getModelService(), computeService);
+        jobQueue.add(createVirtualMachineJob);
     }
 }

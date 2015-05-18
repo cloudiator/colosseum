@@ -24,7 +24,12 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Entity public class Image extends Model {
+
+    @Nullable @Column(updatable = false, nullable = true) private String name;
 
     @Column(updatable = false) private String cloudUuid;
 
@@ -45,8 +50,18 @@ import java.util.List;
     private Image() {
     }
 
-    public Image(String cloudUuid, Cloud cloud, @Nullable OperatingSystem operatingSystem) {
+    public Image(String cloudUuid, @Nullable String name, Cloud cloud,
+        @Nullable OperatingSystem operatingSystem) {
+
+        checkNotNull(cloudUuid);
+        checkNotNull(cloud);
+
+        if (name != null) {
+            checkArgument(!name.isEmpty());
+        }
+
         this.cloudUuid = cloudUuid;
+        this.name = name;
         this.cloud = cloud;
         this.operatingSystem = operatingSystem;
     }
@@ -97,5 +112,13 @@ import java.util.List;
 
     public void setOperatingSystem(@Nullable OperatingSystem operatingSystem) {
         this.operatingSystem = operatingSystem;
+    }
+
+    @Nullable public String getName() {
+        return name;
+    }
+
+    public void setName(@Nullable String name) {
+        this.name = name;
     }
 }

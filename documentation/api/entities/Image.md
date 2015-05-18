@@ -31,6 +31,7 @@ A list of all image entities stored in the database.
             "rel":"self"
          }
       ],
+      "name":"Ubuntu Server 14.04",
       "cloud":1,
       "imageOffer":2,
       "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
@@ -46,6 +47,7 @@ A list of all image entities stored in the database.
             "rel":"self"
          }
       ],
+      "name": "CentOS",
       "cloud":1,
       "imageOffer":3,
       "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
@@ -93,6 +95,7 @@ The image entity identified by the given id.
          "rel":"self"
       }
    ],
+   "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
    "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
@@ -122,6 +125,7 @@ Creates a new image entity. The new entity will be returned.
 
 Parameter        | Description
 -------------    | -------------
+name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 cloudUuid        | The UUID of the image.
@@ -132,6 +136,7 @@ operatingSystem  | The operating system used by the image.
 
 ```
 {  
+   "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
    "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
@@ -165,6 +170,7 @@ Updates the image entity identified by the given id.
 Parameter        | Description
 -------------    | -------------
 image_id         | The id of the image to update.
+name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 cloudUuid        | The UUID of the image.
@@ -177,6 +183,7 @@ PUT /api/image/1
 
 ```
 {  
+   "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
    "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",

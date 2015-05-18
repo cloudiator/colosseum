@@ -25,7 +25,9 @@ A list of all cloud entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"amazon"
+      "name":"amazon",
+      "endpoint":"https://amazon.de:9696",
+      "api":2
    },
    {
       "links":[
@@ -34,7 +36,9 @@ A list of all cloud entities stored in the database.
             "rel":"self"
          }
       ],
-      "name":"flexiant"
+      "name":"flexiant",
+      "endpoint":"https://flexiant.net:8774",
+      "api":1
    }
 ]
 ```
@@ -71,7 +75,9 @@ The Cloud entity identified by the given id.
          "rel":"self"
       }
    ],
-   "name":"amazon"
+   "name":"amazon",
+   "endpoint":"https://amazon.de:9696",
+   "api":2
 }
 ```
 
@@ -93,11 +99,15 @@ Creates a new Cloud entity. The new entity will be returned.
 Parameter     | Description
 ------------- | -------------
 name          | The name of the cloud.
+endpoint      | The endpoint of the api
+api           | The api used for requests to this clouds.
 
 ###Request Example
 ```
 {  
-   "name":"Flexiant"
+   "name":"amazon",
+   "endpoint":"https://amazon.de:9696",
+   "api":2
 }
 ```
 
@@ -122,7 +132,8 @@ Updates the Cloud entity identified by the given id.
 Parameter     | Description
 ------------- | -------------
 cloud_id      | The id of the cloud to update.
-name          | The name of the cloud.
+endpoint      | The endpoint of the api
+api           | The api used for requests to this clouds.
 
 ###Request Example
 ```
@@ -130,7 +141,9 @@ PUT /api/cloud/1
 ```
 ```
 {  
-   "name":"Flexiant"
+   "name":"Flexiant",
+   "endpoint":"https://amazon.de:9696",
+   "api":2
 }
 ```
 

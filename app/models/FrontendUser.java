@@ -24,6 +24,7 @@ import org.apache.commons.codec.binary.Base64;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import java.util.List;
 
@@ -34,46 +35,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Daniel Baur
  */
-@Entity
-public class FrontendUser extends Model {
+@Entity public class FrontendUser extends Model {
 
-    /**
-     * Serial version.
-     */
-    private static final long serialVersionUID = 1L;
+    @Column(nullable = false) private String firstName;
 
-    /**
-     * First name of the user.
-     */
-    @Column(nullable = false)
-    private String firstName;
+    @Column(nullable = false) private String lastName;
 
-    /**
-     * Last name of the user.
-     */
-    @Column(nullable = false)
-    private String lastName;
+    @Column(nullable = false) private String salt;
 
-    /**
-     * The salt used for the users password.
-     */
-    @Column(nullable = false)
-    private String salt;
+    @Column(unique = true) private String mail;
 
-    /**
-     * The mail address of the user.
-     */
-    @Column(unique = true)
-    private String mail;
+    @Column(nullable = false) private String password;
 
-    /**
-     * The salted and hashed password of the user.
-     */
-    @Column(nullable = false)
-    private String password;
+    @OneToMany(mappedBy = "frontendUser") private List<ApiAccessToken> tokens;
 
-    @OneToMany(mappedBy = "frontendUser")
-    private List<ApiAccessToken> tokens;
+    @ManyToMany(mappedBy = "frontendUsers") private List<FrontendGroup> frontendGroups;
 
     /**
      * Empty constructor for hibernate.
@@ -90,8 +66,8 @@ public class FrontendUser extends Model {
      * @param mail      Mail address of the user.
      * @param password  Hashed and salted password of the user.
      */
-    public FrontendUser(String firstName, String lastName, String salt,
-                        String mail, String password) {
+    public FrontendUser(String firstName, String lastName, String salt, String mail,
+        String password) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -122,8 +98,8 @@ public class FrontendUser extends Model {
 
         this.salt = Base64.encodeBase64String(generatedSalt);
 
-        this.password = new String(Password.getInstance().hash(
-                password.toCharArray(), generatedSalt));
+        this.password =
+            new String(Password.getInstance().hash(password.toCharArray(), generatedSalt));
     }
 
     public String getFirstName() {
@@ -169,6 +145,22 @@ public class FrontendUser extends Model {
     public void setPassword(String password) {
         checkNotNull(password);
         this.password = password;
+    }
+
+    public List<ApiAccessToken> getTokens() {
+        return tokens;
+    }
+
+    public void setTokens(List<ApiAccessToken> tokens) {
+        this.tokens = tokens;
+    }
+
+    public List<FrontendGroup> getFrontendGroups() {
+        return frontendGroups;
+    }
+
+    public void setFrontendGroups(List<FrontendGroup> frontendGroups) {
+        this.frontendGroups = frontendGroups;
     }
 
     public String getName() {

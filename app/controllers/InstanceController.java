@@ -19,29 +19,32 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.InstanceDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.Instance;
-import models.service.api.InstanceService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel seybold on 17.12.2014.
+ * Created by daniel on 09.04.15.
  */
-public class InstanceController extends GenericApiController<Instance, InstanceDto> {
+public class InstanceController
+    extends GenericApiController<Instance, InstanceDto, InstanceDto, InstanceDto> {
     /**
      * Constructs a GenericApiController.
      *
-     * @param instanceService   the model service for retrieving the models.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected InstanceController(InstanceService instanceService, ModelDtoConversionService conversionService) {
-        super(instanceService, conversionService);
+    @Inject public InstanceController(ModelService<Instance> modelService,
+        TypeLiteral<Instance> typeLiteral, ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.InstanceController.get(id).absoluteURL(request());
     }
 }

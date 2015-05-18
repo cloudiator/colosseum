@@ -18,12 +18,25 @@
 
 package models.repository.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
+import models.Cloud;
 import models.Hardware;
+import models.HardwareOffer;
 import models.repository.api.HardwareRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
+
+import static models.util.JpaResultHelper.getSingleResultOrNull;
 
 /**
- * Created by daniel seybold on 09.12.2014.
+ * Created by daniel on 31.10.14.
  */
-public class HardwareRepositoryJpa extends ModelRepositoryJpa<Hardware> implements HardwareRepository{
+public class HardwareRepositoryJpa extends BaseModelRepositoryJpa<Hardware>
+    implements HardwareRepository {
+
+    @Inject
+    public HardwareRepositoryJpa(TypeLiteral<Hardware> type) {
+        super(type);
+    }
+
 }

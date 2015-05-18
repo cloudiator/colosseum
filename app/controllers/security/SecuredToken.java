@@ -36,17 +36,7 @@ import javax.persistence.EntityManager;
 
 public class SecuredToken extends Security.Authenticator {
 
-    public static class References {
-
-        @Inject
-        public static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
-
-        @Inject
-        public static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
-    }
-
-    @Override
-    public String getUsername(final Http.Context context) {
+    @Override public String getUsername(final Http.Context context) {
 
         final String token = context.request().getHeader("X-Auth-Token");
 
@@ -69,7 +59,8 @@ public class SecuredToken extends Security.Authenticator {
         final EntityManager em = JPA.em();
         final FrontendUser frontendUser;
         try {
-            frontendUser = JPA.withTransaction(() -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
+            frontendUser = JPA.withTransaction(
+                () -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -85,7 +76,8 @@ public class SecuredToken extends Security.Authenticator {
         final EntityManager em1 = JPA.em();
         final String mail;
         try {
-            if (JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get().isValid(token, frontendUser))) {
+            if (JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get()
+                .isValid(token, frontendUser))) {
                 mail = frontendUser.getMail();
             } else {
                 mail = null;
@@ -99,8 +91,15 @@ public class SecuredToken extends Security.Authenticator {
         return mail;
     }
 
-    @Override
-    public Result onUnauthorized(Http.Context context) {
+    @Override public Result onUnauthorized(Http.Context context) {
         return unauthorized();
+    }
+
+
+    public static class References {
+
+        @Inject public static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
+
+        @Inject public static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
     }
 }

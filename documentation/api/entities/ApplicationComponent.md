@@ -29,7 +29,8 @@ A list of all application component entities stored in the database.
          }
       ],
       "application":1,
-      "component":1
+      "component":1,
+      "virtualMachineTemplate":1
    },
    {
       "links":[
@@ -39,7 +40,8 @@ A list of all application component entities stored in the database.
          }
       ],
       "application":2,
-      "component":2
+      "component":2,
+      "virtualMachineTemplate":2
    }
 ]
 ```
@@ -74,7 +76,8 @@ Shows the selected ApplicationComponent entity.
       }
    ],
    "application":1,
-   "component":1
+   "component":1,
+   "virtualMachineTemplate":1
 }
 ```
 
@@ -95,12 +98,14 @@ Parameter                | Description
 -------------            | -------------
 application              | The associated application.
 component                | The associated component.
+virtualMachineTemplate   | The associated virtual machine template.
 
 ### Request Example
 ```
 {  
    "application":1,
-   "component":1
+   "component":1,
+   "virtualMachineTemplate":1
 }
 ```
 ### Response
@@ -126,6 +131,7 @@ Parameter                | Description
 applicationComponent_id  | The id of the applicationComponent to update.
 application              | The associated application.
 component                | The associated component.
+virtualMachineTemplate   | The associated virtual machine template.
 
 
 ### Request Example
@@ -134,8 +140,9 @@ PUT /api/applicationComponent/1
 ```
 ```
 {  
-    "application":1,
-    "component":1
+   "application":1,
+   "component":1,
+   "virtualMachineTemplate":1
 }
 ```
 ### Response

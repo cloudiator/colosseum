@@ -20,41 +20,42 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
 import models.Application;
 import models.Component;
-import models.VirtualMachine;
 import models.VirtualMachineTemplate;
-import models.service.api.ApplicationService;
-import models.service.api.ComponentService;
-import models.service.api.VirtualMachineTemplateService;
-import play.data.validation.ValidationError;
-
-import java.util.ArrayList;
-import java.util.List;
+import models.service.impl.generic.BaseModelService;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
 public class ApplicationComponentDto extends ValidatableDto {
 
-    public static class References{
+    protected Long application;
+    protected Long component;
+    protected Long virtualMachineTemplate;
 
-        @Inject
-        public static Provider<ApplicationService> applicationService;
-
-        @Inject
-        public static Provider<ComponentService> componentService;
-
-        @Inject
-        public static Provider<VirtualMachineTemplateService> virtualMachineTemplateService;
+    public ApplicationComponentDto() {
+        super();
     }
 
-    protected Long application;
+    @Override public void validation() {
+        validator(Long.class).validate(this.application).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationService.get()));
+        validator(Long.class).validate(this.component).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.componentService.get()));
+        validator(Long.class).validate(this.virtualMachineTemplate)
+            .withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.virtualMachineTemplateService.get()));
+    }
 
-    protected Long component;
-
-    protected Long virtualMachineTemplate;
+    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate) {
+        this.application = application;
+        this.component = component;
+        this.virtualMachineTemplate = virtualMachineTemplate;
+    }
 
     public Long getApplication() {
         return application;
@@ -80,53 +81,13 @@ public class ApplicationComponentDto extends ValidatableDto {
         this.virtualMachineTemplate = virtualMachineTemplate;
     }
 
-    public ApplicationComponentDto(){
-        super();
-    }
+    public static class References {
 
-    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate){
-        this.application = application;
-        this.component = component;
-        this.virtualMachineTemplate = virtualMachineTemplate;
-    }
+        @Inject public static Provider<BaseModelService<Application>> applicationService;
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
+        @Inject public static Provider<BaseModelService<Component>> componentService;
 
-        //validate application reference
-        Application application;
-        if (this.application == null) {
-            errors.add(new ValidationError("application", "The application is required."));
-        } else {
-            application = References.applicationService.get().getById(this.application);
-            if (application == null) {
-                errors.add(new ValidationError("application", "The given application is invalid."));
-            }
-        }
-
-        //validate component reference
-        Component component = null;
-        if (this.component == null) {
-            errors.add(new ValidationError("component", "The component is required."));
-        } else {
-            component = References.componentService.get().getById(this.component);
-            if (component == null) {
-                errors.add(new ValidationError("component", "The given component is invalid."));
-            }
-        }
-
-        //validate the virtual machine Template
-        VirtualMachineTemplate virtualMachineTemplate;
-        if (this.virtualMachineTemplate == null) {
-            errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
-        } else {
-            virtualMachineTemplate = References.virtualMachineTemplateService.get().getById(this.virtualMachineTemplate);
-            if(virtualMachineTemplate == null) {
-                errors.add(new ValidationError("virtualMachineTemplate", "The virtual machine template is required."));
-            }
-        }
-
-        return errors;
+        @Inject public static Provider<BaseModelService<VirtualMachineTemplate>>
+            virtualMachineTemplateService;
     }
 }

@@ -19,24 +19,32 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.IpAddressDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.IpAddress;
-import models.service.api.IpAddressService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel on 12.03.15.
+ * Created by daniel on 10.04.15.
  */
-public class IpAddressController extends GenericApiController<IpAddress, IpAddressDto> {
-
-    @Inject
-    protected IpAddressController(IpAddressService modelService, ModelDtoConversionService conversionService) {
-        super(modelService, conversionService);
+public class IpAddressController
+    extends GenericApiController<IpAddress, IpAddressDto, IpAddressDto, IpAddressDto> {
+    /**
+     * Constructs a GenericApiController.
+     *
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
+     */
+    @Inject public IpAddressController(ModelService<IpAddress> modelService,
+        TypeLiteral<IpAddress> typeLiteral, ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
-        return controllers.routes.IpAddressController.get(id).absoluteURL(request());
+    @Override protected String getSelfRoute(Long id) {
+        return controllers.routes.VirtualMachineTemplateController.get(id).absoluteURL(request());
     }
 }

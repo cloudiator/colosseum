@@ -18,13 +18,18 @@
 
 package models.repository.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import models.Image;
 import models.repository.api.ImageRepository;
-import models.repository.impl.generic.ModelRepositoryJpa;
-import models.repository.impl.generic.NamedModelRepositoryJpa;
+import models.repository.impl.generic.BaseModelRepositoryJpa;
 
 /**
- * Created by daniel seybold on 10.12.2014.
+ * Created by daniel on 31.10.14.
  */
-public class ImageRepositoryJpa extends NamedModelRepositoryJpa<Image> implements ImageRepository {
+public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image> implements ImageRepository {
+
+    @Inject public ImageRepositoryJpa(TypeLiteral<Image> type) {
+        super(type);
+    }
 }

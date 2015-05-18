@@ -29,17 +29,12 @@ import java.util.List;
 /**
  * Created by daniel on 07.01.15.
  */
-@Entity
-public class Communication extends Model {
+@Entity public class Communication extends Model {
 
-    @ManyToOne(optional = false)
-    private ApplicationComponent provider;
-    @ManyToOne(optional = false)
-    private ApplicationComponent consumer;
-    @OneToMany(mappedBy = "communication")
-    private List<CommunicationChannel> communicationChannels;
-    @Column(nullable = false)
-    private int port;
+    @ManyToOne(optional = false) private ApplicationComponent provider;
+    @ManyToOne(optional = false) private ApplicationComponent consumer;
+    @OneToMany(mappedBy = "communication") private List<CommunicationChannel> communicationChannels;
+    @Column(nullable = false) private int port;
 
     /**
      * Empty constructor for hibernate.

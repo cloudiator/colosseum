@@ -20,50 +20,23 @@ package models;
 
 import models.generic.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+@Entity public class Hardware extends Model {
 
+    @Column(updatable = false) private String cloudUuid;
 
-/**
- * The model class hardware.
- * <p>
- * Represents a specific hardware configuration provided by the cloud.
- *
- * @author Daniel Baur
- */
-@Entity
-public class Hardware extends Model {
+    @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
 
-    /**
-     * Serial version uid.
-     */
-    private static final long serialVersionUID = 1L;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    /**
-     * Number of computing units.
-     */
-    private Integer numberOfCpu;
+    @ManyToMany private List<Location> locations;
 
-    /**
-     * The amount of ram.
-     * <p>
-     * Integrates machine_memory from Template.
-     */
-    private Long mbOfRam;
+    @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    /**
-     * The amount of disk space available locally on the machine.
-     */
-    private Long localDiskSpace;
-
-    /**
-     * The cloud hardware where this hardware is used (ManyToMany)
-     */
-    @OneToMany(mappedBy = "hardware")
-    private List<CloudHardware> cloudHardware;
+    @OneToMany(mappedBy = "hardware", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
 
     /**
      * Empty constructor for hibernate.
@@ -71,40 +44,57 @@ public class Hardware extends Model {
     private Hardware() {
     }
 
-    public Integer getNumberOfCpu() {
-        return numberOfCpu;
+    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
+        this.cloudUuid = cloudUuid;
+        this.cloud = cloud;
+        this.hardwareOffer = hardwareOffer;
     }
 
-    public void setNumberOfCpu(Integer numberOfCpu) {
-        checkNotNull(numberOfCpu);
-        this.numberOfCpu = numberOfCpu;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-
-    public Long getMbOfRam() {
-        return mbOfRam;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
-    public void setMbOfRam(Long mbOfRam) {
-        checkNotNull(mbOfRam);
-        this.mbOfRam = mbOfRam;
+    public HardwareOffer getHardwareOffer() {
+        return hardwareOffer;
     }
 
-    public Long getLocalDiskSpace() {
-        return localDiskSpace;
+    public void setHardwareOffer(HardwareOffer hardwareOffer) {
+        this.hardwareOffer = hardwareOffer;
     }
 
-    public void setLocalDiskSpace(Long localDiskSpace) {
-        checkNotNull(localDiskSpace);
-        this.localDiskSpace = localDiskSpace;
+    public Cloud getCloud() {
+        return cloud;
     }
 
-    public List<CloudHardware> getCloudHardware() {
-        return cloudHardware;
+    public void setCloud(Cloud cloud) {
+        this.cloud = cloud;
     }
 
-    public void setCloudHardware(List<CloudHardware> cloudHardware) {
-        checkNotNull(cloudHardware);
-        this.cloudHardware = cloudHardware;
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
+        return virtualMachineTemplates;
+    }
+
+    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
+        this.virtualMachineTemplates = virtualMachineTemplates;
     }
 }

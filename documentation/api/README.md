@@ -4,23 +4,26 @@
 [Authentication](general/Authentication.md)
 ***
 ## Entities
-Entity                                 | URL
+Entity                                                       | URL
 ------------------------------------------------------------ | ---------------------------
 [API](entities/Api.md)                                       | /api/api
 [Application](entities/Application.md)                       | /api/application
 [ApplicationComponent](entities/ApplicationComponent.md)     | /api/applicationComponent
+[ApplicationInstance](entities/ApplicationInstance.md)       | /api/applicationInstance
 [Cloud](entities/Cloud.md)                                   | /api/cloud
-[CloudApi](entities/CloudApi.md)                             | /api/cloudApi
-[CloudHardware](entities/CloudHardware.md)                   | /api/cloudHardware
-[CloudImage](entities/CloudImage.md)                         | /api/cloudImage
-[CloudLocation](entities/CloudLocation.md)                   | /api/cloudLocation
-[Credential](entities/Credential.md)                         | /api/credential
+[CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
+[FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
+[GeoLocation](entities/GeoLocation.md)                       | /api/geo
 [Hardware](entities/Hardware.md)                             | /api/hardware
+[HardwareOffer](entities/HardwareOffer.md)                   | /api/hardwareOffer
 [Image](entities/Image.md)                                   | /api/image
 [Instance](entities/Instance.md)                             | /api/instance
+[IpAddress](entities/IpAddress.md)                           | /api/ip
+[Location](entities/Location.md)                             | /api/location
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
-[UserCredential](entities/UserCredential.md)                 | /api/userCredential
+[OperatingSystem](entities/OperatingSystem.md)               | /api/os
+[OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/virtualMachineTemplate
 

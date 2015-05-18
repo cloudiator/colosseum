@@ -19,41 +19,34 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.CloudDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.Cloud;
-import models.service.api.CloudService;
-import play.mvc.Result;
+import models.service.api.generic.ModelService;
 
 /**
  * Implementation of the GenericApiController for the Cloud model class.
  *
  * @author Daniel Baur
  */
-public class CloudController extends GenericApiController<Cloud, CloudDto> {
+public class CloudController extends GenericApiController<Cloud, CloudDto, CloudDto, CloudDto> {
 
     /**
-     * Constructor.
+     * Constructs a GenericApiController.
      *
-     * @param cloudService      Model service for cloud model.
-     * @param conversionService Model <-> DTO conversion service.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected CloudController(CloudService cloudService, ModelDtoConversionService conversionService) {
-        super(cloudService, conversionService);
+    @Inject public CloudController(ModelService<Cloud> modelService, TypeLiteral<Cloud> typeLiteral,
+        ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    public Result index() {
-        return ok(views.html.cloud.index.render());
-    }
-
-    public Result form() {
-        return ok(views.html.cloud.form.render());
-    }
-
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.CloudController.get(id).absoluteURL(request());
     }
 }

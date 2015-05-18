@@ -18,21 +18,28 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 
-/**
- * The model class Cloud.
- * <p>
- * Represents a specific cloud like amazon ec2, flexiant etc.
- *
- * @author Daniel Baur
- */
-@Entity
-public class Cloud extends NamedModel {
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
+@Entity public class Cloud extends Model {
+
+    @Column(unique = true, nullable = false) private String name;
+    @Column(nullable = false) private String endpoint;
+    @ManyToOne(optional = false) private Api api;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Image> images;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Location> locations;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
+    private List<VirtualMachineTemplate> virtualMachineTemplates;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<VirtualMachine>
+        virtualMachines;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudCredential>
+        cloudCredentials;
 
     /**
      * Empty constructor. Needed by hibernate.
@@ -40,73 +47,63 @@ public class Cloud extends NamedModel {
     private Cloud() {
     }
 
-    public Cloud(String name) {
-        super(name);
+    public Cloud(String name, String endpoint, Api api) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        checkNotNull(endpoint);
+        checkArgument(!endpoint.isEmpty());
+        checkNotNull(api);
+        this.name = name;
+        this.endpoint = endpoint;
+        this.api = api;
     }
 
-    /**
-     * Serial Version.
-     */
-    private static final long serialVersionUID = 1L;
-
-    /**
-     * API information about this cloud.
-     */
-    @OneToMany
-    public List<CloudApi> cloudApis;
-
-    /**
-     * The concrete images available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
-    private List<CloudImage> cloudImages;
-
-    /**
-     * The concrete locations available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
-    private List<CloudLocation> cloudLocations;
-
-    /**
-     * The concrete hardware flavors available in this cloud.
-     */
-    @OneToMany(mappedBy = "cloud")
-    private List<CloudHardware> cloudHardware;
-
-    @OneToMany(mappedBy = "cloud")
-    private List<VirtualMachineTemplate> virtualMachineTemplates;
-
-
-    public List<CloudApi> getCloudApis() {
-        return cloudApis;
+    public String getName() {
+        return name;
     }
 
-    public void setCloudApis(List<CloudApi> cloudApis) {
-        this.cloudApis = cloudApis;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public List<CloudImage> getCloudImages() {
-        return cloudImages;
+    public String getEndpoint() {
+        return endpoint;
     }
 
-    public void setCloudImages(List<CloudImage> cloudImages) {
-        this.cloudImages = cloudImages;
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 
-    public List<CloudLocation> getCloudLocations() {
-        return cloudLocations;
+    public Api getApi() {
+        return api;
     }
 
-    public void setCloudLocations(List<CloudLocation> cloudLocations) {
-        this.cloudLocations = cloudLocations;
+    public void setApi(Api api) {
+        this.api = api;
     }
 
-    public List<CloudHardware> getCloudHardware() {
-        return cloudHardware;
+    public List<Image> getImages() {
+        return images;
     }
 
-    public void setCloudHardware(List<CloudHardware> cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public void setImages(List<Image> images) {
+        this.images = images;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
+    }
+
+    public List<Hardware> getHardware() {
+        return hardware;
+    }
+
+    public void setHardware(List<Hardware> hardware) {
+        this.hardware = hardware;
     }
 
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
@@ -115,5 +112,21 @@ public class Cloud extends NamedModel {
 
     public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    public List<VirtualMachine> getVirtualMachines() {
+        return virtualMachines;
+    }
+
+    public void setVirtualMachines(List<VirtualMachine> virtualMachines) {
+        this.virtualMachines = virtualMachines;
+    }
+
+    public List<CloudCredential> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
     }
 }

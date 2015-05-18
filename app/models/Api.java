@@ -18,30 +18,57 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity
-public class Api extends NamedModel {
+@Entity public class Api extends Model {
+
+    @Column(nullable = false) private String internalProviderName;
+    @Column(unique = true, nullable = false) private String name;
+    @OneToMany(mappedBy = "api") private List<Cloud> clouds;
 
     /**
      * Empty constructor for hibernate.
      */
-    private Api(){
-
+    private Api() {
     }
 
-    public Api(String name){
-        super(name);
+    public Api(String name, String internalProviderName) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        checkNotNull(internalProviderName);
+        checkArgument(!internalProviderName.isEmpty());
+        this.name = name;
+        this.internalProviderName = internalProviderName;
     }
 
-    /**
-     * Serial Version.
-     */
-    private static final long serialVersionUID = 1L;
+    public String getInternalProviderName() {
+        return internalProviderName;
+    }
 
+    public void setInternalProviderName(String internalProviderName) {
+        checkNotNull(internalProviderName);
+        checkArgument(!internalProviderName.isEmpty());
+        this.internalProviderName = internalProviderName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
+    }
 }

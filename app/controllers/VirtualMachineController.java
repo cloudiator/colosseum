@@ -19,29 +19,52 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
+import components.job.CreateVirtualMachineJob;
+import components.job.Job;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.VirtualMachine;
-import models.service.api.VirtualMachineService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel on 09.04.15.
  */
-public class VirtualMachineController extends GenericApiController<VirtualMachine, VirtualMachineDto> {
+public class VirtualMachineController extends
+    GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
+
+    private final ComputeService computeService;
+    private final SimpleBlockingQueue<Job> jobQueue;
+
     /**
      * Constructs a GenericApiController.
      *
-     * @param virtualMachineService the model service for retrieving the models.
-     * @param conversionService     the conversion service for converting models and dtos.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @param computeService
+     * @param jobQueue
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected VirtualMachineController(VirtualMachineService virtualMachineService, ModelDtoConversionService conversionService) {
-        super(virtualMachineService, conversionService);
+    @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
+        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
+        ComputeService computeService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
+        super(modelService, typeLiteral, conversionService);
+        this.computeService = computeService;
+        this.jobQueue = jobQueue;
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
+    }
+
+    @Override protected void postPost(VirtualMachine entity) {
+        CreateVirtualMachineJob createVirtualMachineJob =
+            new CreateVirtualMachineJob(entity, getModelService(), computeService);
+        jobQueue.add(createVirtualMachineJob);
     }
 }

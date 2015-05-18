@@ -20,41 +20,34 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.impl.ValidatableDto;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullValidator;
 import models.ApplicationComponent;
+import models.ApplicationInstance;
 import models.VirtualMachine;
-import models.service.api.ApplicationComponentService;
-import models.service.api.VirtualMachineService;
-import play.data.validation.ValidationError;
-
-import java.util.ArrayList;
-import java.util.List;
+import models.service.impl.generic.BaseModelService;
 
 /**
  * Created by daniel seybold on 17.12.2014.
  */
 public class InstanceDto extends ValidatableDto {
 
-    public static class References{
+    private Long applicationComponent;
+    private Long applicationInstance;
+    private Long virtualMachine;
 
-        @Inject
-        public static Provider<ApplicationComponentService> applicationComponentService;
-
-        @Inject
-        public static Provider<VirtualMachineService> virtualMachineService;
-    }
-
-    protected Long applicationComponent;
-
-    protected Long virtualMachine;
-
-    protected InstanceDto(){
+    protected InstanceDto() {
         super();
     }
 
-    public InstanceDto(Long applicationComponent, Long virtualMachine){
-        this.applicationComponent = applicationComponent;
-        this.virtualMachine = virtualMachine;
+    @Override public void validation() {
+        validator(Long.class).validate(applicationComponent).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+        validator(Long.class).validate(applicationInstance).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.applicationInstanceService.get()));
+        validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
     }
 
     public Long getApplicationComponent() {
@@ -73,32 +66,20 @@ public class InstanceDto extends ValidatableDto {
         this.virtualMachine = virtualMachine;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
+    public Long getApplicationInstance() {
+        return applicationInstance;
+    }
 
-        //validate applicationComponent reference
-        ApplicationComponent applicationComponent = null;
-        if (this.applicationComponent == null) {
-            errors.add(new ValidationError("applicationComponent", "The applicationComponent is required."));
-        } else {
-            applicationComponent = References.applicationComponentService.get().getById(this.applicationComponent);
-            if (applicationComponent == null) {
-                errors.add(new ValidationError("applicationComponent", "The given applicationComponent is invalid."));
-            }
-        }
+    public void setApplicationInstance(Long applicationInstance) {
+        this.applicationInstance = applicationInstance;
+    }
 
-        //validate virtualMachine reference
-        VirtualMachine virtualMachine = null;
-        if (this.virtualMachine == null) {
-            errors.add(new ValidationError("virtualMachine", "The virtualMachine is required."));
-        } else {
-            virtualMachine = References.virtualMachineService.get().getById(this.virtualMachine);
-            if (virtualMachine == null) {
-                errors.add(new ValidationError("virtualMachine", "The given virtualMachine is invalid."));
-            }
-        }
+    public static class References {
 
-        return errors;
+        @Inject public static Provider<BaseModelService<ApplicationComponent>>
+            applicationComponentService;
+        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+        @Inject public static Provider<BaseModelService<ApplicationInstance>>
+            applicationInstanceService;
     }
 }

@@ -19,29 +19,32 @@
 package controllers;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.LifecycleComponentDto;
-import dtos.convert.api.ModelDtoConversionService;
+import dtos.conversion.api.ModelDtoConversionService;
 import models.LifecycleComponent;
-import models.service.api.LifecycleComponentService;
+import models.service.api.generic.ModelService;
 
 /**
- * Created by daniel seybold on 16.12.2014.
+ * Created by daniel on 09.04.15.
  */
-public class LifecycleComponentController extends GenericApiController<LifecycleComponent, LifecycleComponentDto> {
+public class LifecycleComponentController extends
+    GenericApiController<LifecycleComponent, LifecycleComponentDto, LifecycleComponentDto, LifecycleComponentDto> {
     /**
      * Constructs a GenericApiController.
      *
-     * @param lifecycleComponentService the model service for retrieving the models.
-     * @param conversionService         the conversion service for converting models and dtos.
+     * @param modelService      the model service for retrieving the models.
+     * @param typeLiteral       a type literal for the model type
+     * @param conversionService the conversion service for converting models and dtos.
+     * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject
-    protected LifecycleComponentController(LifecycleComponentService lifecycleComponentService, ModelDtoConversionService conversionService) {
-        super(lifecycleComponentService, conversionService);
+    @Inject public LifecycleComponentController(ModelService<LifecycleComponent> modelService,
+        TypeLiteral<LifecycleComponent> typeLiteral, ModelDtoConversionService conversionService) {
+        super(modelService, typeLiteral, conversionService);
     }
 
-    @Override
-    protected String getSelfRoute(Long id) {
+    @Override protected String getSelfRoute(Long id) {
         return controllers.routes.LifecycleComponentController.get(id).absoluteURL(request());
     }
 }

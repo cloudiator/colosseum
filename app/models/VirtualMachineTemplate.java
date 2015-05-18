@@ -28,23 +28,18 @@ import java.util.List;
 /**
  * Created by daniel on 11.02.15.
  */
-@Entity
-public class VirtualMachineTemplate extends Model {
+@Entity public class VirtualMachineTemplate extends Model {
 
-    @OneToMany(mappedBy = "virtualMachineTemplate")
-    private List<ApplicationComponent> applicationComponents;
+    @OneToMany(mappedBy = "virtualMachineTemplate") private List<ApplicationComponent>
+        applicationComponents;
 
-    @ManyToOne(optional = false)
-    private Cloud cloud;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    @ManyToOne(optional = false)
-    private CloudImage cloudImage;
+    @ManyToOne(optional = false) private Image image;
 
-    @ManyToOne(optional = false)
-    private CloudLocation cloudLocation;
+    @ManyToOne(optional = false) private Location location;
 
-    @ManyToOne(optional = false)
-    private CloudHardware cloudHardware;
+    @ManyToOne(optional = false) private Hardware hardware;
 
     /**
      * Empty constructor for hibernate.
@@ -52,11 +47,11 @@ public class VirtualMachineTemplate extends Model {
     private VirtualMachineTemplate() {
     }
 
-    public VirtualMachineTemplate(Cloud cloud, CloudImage cloudImage, CloudLocation cloudLocation, CloudHardware cloudHardware) {
+    public VirtualMachineTemplate(Cloud cloud, Image image, Location location, Hardware hardware) {
         this.cloud = cloud;
-        this.cloudImage = cloudImage;
-        this.cloudLocation = cloudLocation;
-        this.cloudHardware = cloudHardware;
+        this.image = image;
+        this.location = location;
+        this.hardware = hardware;
     }
 
     public List<ApplicationComponent> getApplicationComponents() {
@@ -67,28 +62,28 @@ public class VirtualMachineTemplate extends Model {
         this.applicationComponents = applicationComponents;
     }
 
-    public CloudImage getCloudImage() {
-        return cloudImage;
+    public Image getImage() {
+        return image;
     }
 
-    public void setCloudImage(CloudImage cloudImage) {
-        this.cloudImage = cloudImage;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
-    public CloudLocation getCloudLocation() {
-        return cloudLocation;
+    public Location getLocation() {
+        return location;
     }
 
-    public void setCloudLocation(CloudLocation cloudLocation) {
-        this.cloudLocation = cloudLocation;
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
-    public CloudHardware getCloudHardware() {
-        return cloudHardware;
+    public Hardware getHardware() {
+        return hardware;
     }
 
-    public void setCloudHardware(CloudHardware cloudHardware) {
-        this.cloudHardware = cloudHardware;
+    public void setHardware(Hardware hardware) {
+        this.hardware = hardware;
     }
 
     public Cloud getCloud() {

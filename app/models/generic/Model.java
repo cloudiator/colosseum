@@ -30,12 +30,9 @@ import java.io.Serializable;
  * Defines the auto generated id for
  * each model class.
  */
-@MappedSuperclass
-public abstract class Model extends Resource implements Serializable {
+@MappedSuperclass public abstract class Model extends Resource implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    protected Long id;
+    @Id @GeneratedValue(strategy = GenerationType.AUTO) protected Long id;
 
     /**
      * Empty constructor for hibernate.
@@ -61,8 +58,7 @@ public abstract class Model extends Resource implements Serializable {
         this.id = id;
     }
 
-    @Override
-    public String toString() {
+    @Override public String toString() {
         return String.format("Model{id=%d}", id);
     }
 }

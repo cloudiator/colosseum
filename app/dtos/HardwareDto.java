@@ -18,69 +18,79 @@
 
 package dtos;
 
-import dtos.generic.impl.ValidatableDto;
-import play.data.validation.ValidationError;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
+import dtos.generic.ValidatableDto;
+import dtos.validation.IterableValidator;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
+import models.Cloud;
+import models.HardwareOffer;
+import models.Location;
+import models.service.api.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HardwareDto extends ValidatableDto {
 
-    protected Integer numberOfCpu;
-    protected Long mbOfRam;
-    protected Long localDiskSpace;
+    private Long cloud;
+    private Long hardwareOffer;
+    private String cloudUuid;
+    private List<Long> locations;
 
     public HardwareDto() {
         super();
     }
 
-    public HardwareDto(Integer numberOfCpu, Long mbOfRam, Long localDiskSpace) {
-        this.numberOfCpu = numberOfCpu;
-        this.mbOfRam = mbOfRam;
-        this.localDiskSpace = localDiskSpace;
+    @Override public void validation() {
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
+        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(locations).withValidator(
+            new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
     }
 
-    public Integer getNumberOfCpu() {
-        return numberOfCpu;
+    public Long getCloud() {
+        return cloud;
     }
 
-    public void setNumberOfCpu(Integer numberOfCpu) {
-        this.numberOfCpu = numberOfCpu;
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
     }
 
-    public Long getMbOfRam() {
-        return mbOfRam;
+    public Long getHardwareOffer() {
+        return hardwareOffer;
     }
 
-    public void setMbOfRam(Long mbOfRam) {
-        this.mbOfRam = mbOfRam;
+    public void setHardwareOffer(Long hardwareOffer) {
+        this.hardwareOffer = hardwareOffer;
     }
 
-    public Long getLocalDiskSpace() {
-        return localDiskSpace;
+    public String getCloudUuid() {
+        return cloudUuid;
     }
 
-    public void setLocalDiskSpace(Long localDiskSpace) {
-        this.localDiskSpace = localDiskSpace;
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
-    @Override
-    public List<ValidationError> validateNotNull() {
-        List<ValidationError> errors = new ArrayList<>();
+    public List<Long> getLocations() {
+        return locations;
+    }
 
-        if (this.numberOfCpu <= 0) {
-            errors.add(new ValidationError("hardware", "NumberOfCpu must be greater 0"));
-        }
+    public void setLocations(List<Long> locations) {
+        this.locations = locations;
+    }
 
-        if (this.mbOfRam <= 0) {
-            errors.add(new ValidationError("hardware", "MbOfRam must be greater 0"));
-        }
-
-        if (this.mbOfRam <= 0) {
-            errors.add(new ValidationError("hardware", "LocalDiskSpace must be greater 0"));
-        }
-
-        return errors;
-
+    public static class References {
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
+        @Inject public static Provider<ModelService<Location>> locationService;
     }
 }

@@ -18,24 +18,78 @@
 
 package dtos;
 
-import dtos.generic.impl.NamedDto;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import dtos.generic.ValidatableDto;
+import dtos.validation.ModelIdValidator;
+import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.NotNullValidator;
+import models.Cloud;
+import models.GeoLocation;
+import models.Location;
+import models.LocationScope;
+import models.service.api.generic.ModelService;
+import models.service.impl.generic.BaseModelService;
 
-import java.util.List;
+/**
+ * Created by daniel on 09.04.15.
+ */
+public class LocationDto extends ValidatableDto {
 
-public class LocationDto extends NamedDto {
+    protected Long cloud;
+    protected String cloudUuid;
+    private Long parent;
+    private LocationScope locationScope;
+    private Boolean isAssignable;
+    private Long geoLocation;
 
-    protected List<Long> locationCodes;
-
-    protected Long parent;
-
-    protected String locationScope;
-
-    public List<Long> getLocationCodes() {
-        return locationCodes;
+    public LocationDto() {
+        super();
     }
 
-    public void setLocationCodes(List<Long> locationCodes) {
-        this.locationCodes = locationCodes;
+    public LocationDto(Long cloud, String cloudUuid, Long parent, LocationScope locationScope,
+        Boolean isAssignable, Long geoLocation) {
+        this.cloud = cloud;
+        this.cloudUuid = cloudUuid;
+        this.parent = parent;
+        this.locationScope = locationScope;
+        this.isAssignable = isAssignable;
+        this.geoLocation = geoLocation;
+    }
+
+    @Override public void validation() {
+        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
+        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(geoLocation).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.geoLocationService.get()));
+        validator(Boolean.class).validate(isAssignable).withValidator(new NotNullValidator());
+        validator(LocationScope.class).validate(locationScope)
+            .withValidator(new NotNullValidator());
+        validator(Long.class).validate(parent)
+            .withValidator(new ModelIdValidator<>(References.locationService.get()));
+    }
+
+    public static class References {
+        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
+        @Inject public static Provider<ModelService<Location>> locationService;
+    }
+
+    public Long getCloud() {
+        return cloud;
+    }
+
+    public void setCloud(Long cloud) {
+        this.cloud = cloud;
+    }
+
+    public String getCloudUuid() {
+        return cloudUuid;
+    }
+
+    public void setCloudUuid(String cloudUuid) {
+        this.cloudUuid = cloudUuid;
     }
 
     public Long getParent() {
@@ -46,22 +100,27 @@ public class LocationDto extends NamedDto {
         this.parent = parent;
     }
 
-    public String getLocationScope() {
+    public LocationScope getLocationScope() {
         return locationScope;
     }
 
-    public void setLocationScope(String locationScope) {
+    public void setLocationScope(LocationScope locationScope) {
         this.locationScope = locationScope;
     }
 
-    public LocationDto() {
-        super();
+    public Boolean isAssignable() {
+        return isAssignable;
     }
 
-    public LocationDto(String name, List<Long> locationCodes, Long parent, String locationScope) {
-        super(name);
-        this.locationCodes = locationCodes;
-        this.parent = parent;
-        this.locationScope = locationScope;
+    public void setIsAssignable(Boolean isAssignable) {
+        this.isAssignable = isAssignable;
+    }
+
+    public Long getGeoLocation() {
+        return geoLocation;
+    }
+
+    public void setGeoLocation(Long geoLocation) {
+        this.geoLocation = geoLocation;
     }
 }

@@ -18,29 +18,34 @@
 
 package models;
 
-import models.generic.NamedModel;
+import models.generic.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity
-public class Application extends NamedModel {
+@Entity public class Application extends Model {
 
-    @OneToMany(mappedBy = "application")
-    private List<ApplicationComponent> applicationComponents;
+    @OneToMany(mappedBy = "application") private List<ApplicationComponent> applicationComponents;
+    @Column(unique = true, nullable = false) protected String name;
 
     /**
      * Empty constructor for hibernate.
      */
-    private Application(){
+    private Application() {
     }
 
-    public Application(String name){
-        super(name);
+    public Application(String name) {
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
     }
 
     public List<ApplicationComponent> getApplicationComponents() {
@@ -49,5 +54,13 @@ public class Application extends NamedModel {
 
     public void setApplicationComponents(List<ApplicationComponent> applicationComponents) {
         this.applicationComponents = applicationComponents;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

@@ -22,21 +22,19 @@ import models.generic.Model;
 
 import javax.persistence.*;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.03.15.
  */
-@Entity
-public class IpAddress extends Model {
+@Entity public class IpAddress extends Model {
 
-    @Column(updatable = false)
-    private String ip;
+    @Column(updatable = false) private String ip;
 
-    @Enumerated(EnumType.STRING)
-    @Column(updatable = false)
-    private IpType ipType;
+    @Enumerated(EnumType.STRING) @Column(updatable = false) private IpType ipType;
 
-    @ManyToOne(optional = false)
-    private VirtualMachine virtualMachine;
+    @ManyToOne(optional = false) private VirtualMachine virtualMachine;
 
     /**
      * Empty constructor for hibernate.
@@ -44,21 +42,28 @@ public class IpAddress extends Model {
     private IpAddress() {
     }
 
-    public IpAddress(String ip, IpType ipType) {
+    public IpAddress(VirtualMachine virtualMachine, String ip, IpType ipType) {
+
+        checkNotNull(virtualMachine);
+        checkNotNull(ip);
+        checkArgument(!ip.isEmpty());
+        checkNotNull(ipType);
+
         this.ip = ip;
         this.ipType = ipType;
+        this.virtualMachine = virtualMachine;
     }
 
     public String getIp() {
         return ip;
     }
 
-    public IpType getIpType() {
-        return ipType;
-    }
-
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public IpType getIpType() {
+        return ipType;
     }
 
     public void setIpType(IpType ipType) {

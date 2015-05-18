@@ -12,6 +12,8 @@ Entity                                                       | URL
 [ApplicationInstance](entities/ApplicationInstance.md)       | /api/applicationInstance
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
+[Communication](entities/Communication.md)                   | /api/communication
+[CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
 [FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo

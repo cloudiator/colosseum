@@ -22,6 +22,9 @@ import models.generic.Model;
 
 import javax.persistence.*;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.03.15.
  */
@@ -39,9 +42,16 @@ import javax.persistence.*;
     private IpAddress() {
     }
 
-    public IpAddress(String ip, IpType ipType) {
+    public IpAddress(VirtualMachine virtualMachine, String ip, IpType ipType) {
+
+        checkNotNull(virtualMachine);
+        checkNotNull(ip);
+        checkArgument(!ip.isEmpty());
+        checkNotNull(ipType);
+
         this.ip = ip;
         this.ipType = ipType;
+        this.virtualMachine = virtualMachine;
     }
 
     public String getIp() {

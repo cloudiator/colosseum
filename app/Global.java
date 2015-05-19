@@ -27,6 +27,8 @@ import com.google.inject.Injector;
 import components.execution.DefaultExecutionService;
 import components.execution.ExecutionService;
 import components.execution.TransactionAwareExecutionService;
+import components.job.JobWorker;
+import components.job.config.JobModule;
 import dtos.conversion.config.BaseConverterModule;
 import models.repository.config.JPAModule;
 import models.service.config.DatabaseServiceModule;
@@ -67,7 +69,7 @@ public class Global extends GlobalSettings {
         //create guice injector
         this.injector = Guice
             .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
-                new CloudModule(), new SolutionModule());
+                new CloudModule(), new SolutionModule(), new JobModule());
 
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
@@ -79,6 +81,7 @@ public class Global extends GlobalSettings {
         executionService.scheduleAtFixedRate(hardwareWatchdog, 1, TimeUnit.MINUTES);
         executionService.scheduleAtFixedRate(imageWatchdog, 1, TimeUnit.MINUTES);
         executionService.executeInLoop(injector.getInstance(Solver.class));
+        executionService.executeInLoop(injector.getInstance(JobWorker.class));
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 

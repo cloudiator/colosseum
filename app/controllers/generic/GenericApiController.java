@@ -301,6 +301,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         entity = this.conversionService.toModel(filledForm.get(), entity);
         this.modelService.save(entity);
 
+        postPut(entity);
 
         return get(id);
     }
@@ -333,4 +334,11 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         // intentionally left empty
     }
 
+    protected void postPut(T entity) {
+        //intentionally left empty
+    }
+
+    protected ModelService<T> getModelService() {
+        return modelService;
+    }
 }

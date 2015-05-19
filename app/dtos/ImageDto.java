@@ -36,6 +36,7 @@ import java.util.List;
 
 public class ImageDto extends ValidatableDto {
 
+    private String name;
     private String cloudUuid;
     private Long cloud;
     private List<Long> locations;
@@ -54,6 +55,14 @@ public class ImageDto extends ValidatableDto {
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
         validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCloudUuid() {

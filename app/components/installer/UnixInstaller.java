@@ -4,12 +4,17 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
 import play.Logger;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 
 /**
  * Created by Daniel Seybold on 19.05.2015.
  */
 public class UnixInstaller extends AbstractInstaller {
     private final String homeDir;
+    private final String javaArchive = "jre8.tar.gz";
+
     public UnixInstaller(RemoteConnection remoteConnection, String user) {
         super(remoteConnection);
 
@@ -49,9 +54,8 @@ public class UnixInstaller extends AbstractInstaller {
 
         Logger.debug("setting up Visor...");
 
-        String localIp = "1.2.3.4";
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(localIp), false);
+        this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(), false);
 
         //start visor
         this.remoteConnection.executeCommand("java -jar "+this.visorJar+" -conf default.properties &> /dev/null &");
@@ -71,14 +75,14 @@ public class UnixInstaller extends AbstractInstaller {
     }
 
     @Override
-    public void installDocker() {
+    public void installLifecycleAgent() {
 
         //install docker
-        Logger.debug("Installing and starting Docker...");
+        Logger.debug("Installing and starting LifecycleAgent:Docker...");
         this.remoteConnection.executeCommand("sudo chmod +x " + this.dockerInstall);
         this.remoteConnection.executeCommand("sudo ./" + this.dockerInstall);
         this.remoteConnection.executeCommand("sudo service docker restart");
-        Logger.debug("Docker installed and started successfully!");
+        Logger.debug("LifecycleAgent:Docker installed and started successfully!");
     }
 
     @Override
@@ -89,7 +93,7 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installJava();
 
-        this.installDocker();
+        this.installLifecycleAgent();
 
         //not yet needed
         //this.installKairosDb();

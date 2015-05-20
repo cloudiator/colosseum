@@ -31,9 +31,9 @@ public interface InstallApi {
     public void installKairosDb();
 
     /**
-     * download, setup and start docker
+     * download, setup and start the LifecycleAgent (Unix:Docker, Windows: not yet decided)
      */
-    public void installDocker();
+    public void installLifecycleAgent();
 
     /**
      * Download and install all necessary software for cloudiator (java, visor, lifecycle agent)

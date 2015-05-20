@@ -3,6 +3,8 @@ package components.installer;
 import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -18,7 +20,7 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected final String kairosDbArchive = "kairosdb.tar.gz";
     protected final String visorJar = "visor.jar";
-    protected final String javaArchive = "jre8.tar.gz";
+
     protected final String dockerInstall = "docker_install.sh ";
 
     protected final String javaDir = "jre8";
@@ -59,14 +61,25 @@ abstract class AbstractInstaller implements InstallApi {
 
     }
 
-    protected String buildDefaultVisorConfig(String ipKairosDB){
+    protected String buildDefaultVisorConfig(){
+
+
+        //TODO: get public ip if running Cloudiator on a VM in e.g. Openstack
+        InetAddress inetAddress = null;
+        try {
+            inetAddress=InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            Logger.error(e.getMessage());
+            e.printStackTrace();
+        }
+        String localIp = inetAddress.getHostName();
 
         String config = "executionThreads = 20\n" +
                 "reportingInterval = 10\n" +
                 "telnetPort = 9001\n" +
                 "restHost = http://0.0.0.0\n" +
                 "restPort = 9002\n" +
-                "kairosServer = "+ipKairosDB+"\n" +
+                "kairosServer = "+localIp+"\n" +
                 "kairosPort = 8080\n" +
                 "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule";
 

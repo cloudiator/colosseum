@@ -48,8 +48,10 @@ public class UnixInstaller extends AbstractInstaller {
     public void installVisor() {
 
         Logger.debug("setting up Visor...");
+
+        String localIp = "1.2.3.4";
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(localIp), false);
 
         //start visor
         this.remoteConnection.executeCommand("java -jar "+this.visorJar+" -conf default.properties &> /dev/null &");

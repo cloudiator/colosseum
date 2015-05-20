@@ -36,13 +36,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Column(unique = true, nullable = false) private String name;
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    @Column(nullable = true) private String cloudUuid;
+    @Nullable @Column(nullable = true) private String cloudUuid;
+    @Nullable @Column(nullable = true) private String generatedLoginUsername;
+    @Nullable @Column(nullable = true) private String generatedLoginPassword;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
     @Nullable @ManyToOne(optional = true) private Location location;
 
-    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private List<IpAddress> ipAddresses;
+
+
+    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private List<IpAddress>
+        ipAddresses;
 
     /**
      * Empty constructor for hibernate.
@@ -50,8 +55,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     private VirtualMachine() {
     }
 
-    public VirtualMachine(String name, Cloud cloud, String cloudUuid, @Nullable Hardware hardware,
-        @Nullable Image image, @Nullable Location location) {
+    public VirtualMachine(String name, Cloud cloud, @Nullable String cloudUuid,
+        @Nullable Hardware hardware, @Nullable Image image, @Nullable Location location,
+        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
@@ -63,6 +69,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.hardware = hardware;
         this.image = image;
         this.location = location;
+        this.generatedLoginUsername = generatedLoginUsername;
+        this.generatedLoginPassword = generatedLoginPassword;
     }
 
     public Cloud getCloud() {
@@ -114,11 +122,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.cloudCredentials = cloudCredentials;
     }
 
-    public String getCloudUuid() {
+    @Nullable public String getCloudUuid() {
         return cloudUuid;
     }
 
-    public void setCloudUuid(String cloudUuid) {
+    public void setCloudUuid(@Nullable String cloudUuid) {
         this.cloudUuid = cloudUuid;
     }
 
@@ -128,5 +136,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Nullable public String getGeneratedLoginUsername() {
+        return generatedLoginUsername;
+    }
+
+    public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
+        this.generatedLoginUsername = generatedLoginUsername;
+    }
+
+    @Nullable public String getGeneratedLoginPassword() {
+        return generatedLoginPassword;
+    }
+
+    public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
+        this.generatedLoginPassword = generatedLoginPassword;
     }
 }

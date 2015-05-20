@@ -20,17 +20,16 @@ package models;
 
 import models.generic.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-
-//@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"frontendGroup_id, cloud_id"}))
+/**
+ * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
+ */
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "frontendGroup_id"}))
 @Entity public class CloudCredential extends Model {
 
     @Column(nullable = false) private String user;

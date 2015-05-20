@@ -6,6 +6,10 @@ name := "colosseum"
 
 version := "1.2.0-SNAPSHOT"
 
+resolvers := (
+  "Local Maven Repository" at "file:///"+Path.userHome.absolutePath+"/.m2/repository"
+  ) +: resolvers.value
+
 libraryDependencies ++= Seq(
   javaJdbc,
   javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),

@@ -109,6 +109,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<IpAddress>>() {
         }).to(new TypeLiteral<BaseModelService<IpAddress>>() {
         });
+        //Key Pairs
+        bind(new TypeLiteral<ModelService<KeyPair>>() {
+        }).to(new TypeLiteral<BaseModelService<KeyPair>>() {
+        });
         //Lifecycle Component
         bind(new TypeLiteral<ModelService<LifecycleComponent>>() {
         }).to(new TypeLiteral<BaseModelService<LifecycleComponent>>() {

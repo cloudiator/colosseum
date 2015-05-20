@@ -108,6 +108,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<IpAddress>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<IpAddress>>() {
         });
+        //KeyPair
+        bind(new TypeLiteral<ModelRepository<KeyPair>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<KeyPair>>() {
+        });
         //Lifecycle Component
         bind(new TypeLiteral<ModelRepository<LifecycleComponent>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<LifecycleComponent>>() {

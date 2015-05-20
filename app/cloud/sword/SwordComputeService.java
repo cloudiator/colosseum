@@ -5,8 +5,8 @@ import com.google.common.collect.Iterables;
 import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 import de.uniulm.omi.cloudiator.sword.core.domain.builders.LoginCredentialBuilder;
 import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 
@@ -68,8 +68,9 @@ public class SwordComputeService implements ComputeService {
         return new SwordVirtualMachine(computeService.createVirtualMachine(virtualMachineTemplate));
     }
 
-    @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {
-        return this.computeService.getSshConnection(hostAndPort);
+    @Override
+    public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily) {
+        return this.getRemoteConnection(hostAndPort, osFamily);
     }
 
     @Override public Optional<PublicIpService> getPublicIpService() {

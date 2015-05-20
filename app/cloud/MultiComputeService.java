@@ -11,8 +11,8 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 import models.CloudCredential;
 import models.service.api.generic.ModelService;
 
@@ -110,9 +110,11 @@ import java.util.*;
         throw new IllegalStateException();
     }
 
-    @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {
+    @Override
+    public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily) {
         return null;
     }
+
 
     @Override public Optional<PublicIpService> getPublicIpService() {
         return null;
@@ -240,9 +242,11 @@ import java.util.*;
                 .createVirtualMachine(virtualMachineTemplate), cloud, credential);
         }
 
-        @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {
-            return swordComputeService.getSshConnection(hostAndPort);
+        @Override
+        public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily) {
+            return null;
         }
+
 
         @Override public Optional<PublicIpService> getPublicIpService() {
             return swordComputeService.getPublicIpService();

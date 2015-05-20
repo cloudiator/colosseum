@@ -10,6 +10,7 @@ import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
+import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
@@ -115,6 +116,10 @@ import java.util.*;
     }
 
     @Override public Optional<PublicIpService> getPublicIpService() {
+        return null;
+    }
+
+    @Override public Optional<KeyPairService> getKeyPairService() {
         return null;
     }
 
@@ -246,6 +251,10 @@ import java.util.*;
 
         @Override public Optional<PublicIpService> getPublicIpService() {
             return swordComputeService.getPublicIpService();
+        }
+
+        @Override public Optional<KeyPairService> getKeyPairService() {
+            return swordComputeService.getKeyPairService();
         }
     }
 }

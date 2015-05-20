@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
+import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
@@ -74,5 +75,9 @@ public class SwordComputeService implements ComputeService {
 
     @Override public Optional<PublicIpService> getPublicIpService() {
         return this.computeService.getPublicIpService();
+    }
+
+    @Override public Optional<KeyPairService> getKeyPairService() {
+        return this.computeService.getKeyPairService();
     }
 }

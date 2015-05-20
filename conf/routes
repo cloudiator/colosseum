@@ -128,6 +128,13 @@ POST          /api/ip                              @controllers.IpAddressControl
 PUT           /api/ip/:id                          @controllers.IpAddressController.put(id: Long)
 DELETE        /api/ip/:id                          @controllers.IpAddressController.delete(id: Long)
 
+#KeyPairs
+GET           /api/keyPair                         @controllers.KeyPairController.list()
+GET           /api/keyPair/:id                     @controllers.KeyPairController.get(id: Long)
+POST          /api/keyPair                         @controllers.KeyPairController.post()
+PUT           /api/keyPair/:id                     @controllers.KeyPairController.put(id: Long)
+DELETE        /api/keyPair/:id                     @controllers.KeyPairController.delete(id: Long)
+
 #LifecycleComponent
 GET           /api/lifecycleComponent              @controllers.LifecycleComponentController.list()
 GET           /api/lifecycleComponent/:id          @controllers.LifecycleComponentController.get(id: Long)

@@ -38,14 +38,14 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installJava() {
 
         Logger.debug("Installing Java...");
-        this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"jre8.exe /s INSTALLDIR="+this.homeDir+this.javaDir);
+        //this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"\\jre8.exe /s INSTALLDIR="+this.homeDir+"\\"+this.javaDir);
 
-        //TODO: verify if java path is set automatically during installation
-        //remoteConnection.executeCommand("java -version");
 
-        //TODO: if path vars are not set automatically set them manually
-        //remoteConnection.executeCommand("SET PATH=C:\\jre8\\bin;%PATH%");
-        //remoteConnection.executeCommand("SET JAVA_HOME=C:\\jre8");
+        //TODO: this sets only for cmd, set it also for powershell through: setx PATH "$env:path;\the\directory\to\add" -m or [Environment]::SetEnvironmentVariable ( "Path", $env:Path, [System.EnvironmentVariableTarget]::Machine )
+        //check this again in a clean installation
+        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+this.javaDir + "\\bin;%PATH%");
+        Logger.info("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
+        //remoteConnection.executeCommand("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
         Logger.debug("Java successfully installed");
 
     }
@@ -65,8 +65,11 @@ public class WindowsInstaller extends AbstractInstaller {
         this.remoteConnection.writeFile(this.homeDir + "/default.properties", this.buildDefaultVisorConfig(), false);
 
         String visorJobId = "visor";
-        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn "+ visorJobId +" /tr \""+this.homeDir+"\\" + this.visorJar +"-conf default.properties \"");
-        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId);
+
+        //TODO: start these tasks from powershell otherwise monitporing agent will crash!!!
+        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"java -jar " + this.homeDir + "\\" + this.visorJar + " -conf " + this.homeDir + "\\default.properties\"");
+
+        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId +" /I");
 
         Logger.debug("Visor started successfully!");
 
@@ -104,9 +107,10 @@ public class WindowsInstaller extends AbstractInstaller {
         this.downloadSources();
 
         this.installJava();
-        this.install7Zip();
+
 
         //not used yet
+        //this.install7Zip();
         //this.installKairosDb();
 
         this.installVisor();

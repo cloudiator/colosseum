@@ -34,6 +34,7 @@ abstract class AbstractInstaller implements InstallApi {
     @Override
     public void downloadSources(){
 
+        Logger.debug("Start downloading sources...");
         ExecutorService executorService = Executors.newCachedThreadPool();
 
         List<Callable<Integer>> tasks = new ArrayList<>();
@@ -51,6 +52,7 @@ abstract class AbstractInstaller implements InstallApi {
                     throw new RuntimeException("Downloading of one or more sources failed!");
                 }
             }
+            Logger.debug("All sources downloaded successfully!");
         } catch (InterruptedException e) {
             Logger.error(e.getMessage());
             e.printStackTrace();
@@ -81,7 +83,8 @@ abstract class AbstractInstaller implements InstallApi {
                 "restPort = 9002\n" +
                 "kairosServer = "+localIp+"\n" +
                 "kairosPort = 8080\n" +
-                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule";
+                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule ";
+
 
         return config;
 

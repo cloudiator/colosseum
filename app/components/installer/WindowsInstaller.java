@@ -12,6 +12,7 @@ public class WindowsInstaller extends AbstractInstaller {
     private final String javaExe = "jre8.exe";
     private final String sevenZipArchive = "7zip.zip";
     private final String sevenZipDir = "7zip";
+    private final String visorBat = "startVisor.bat";
 
 
     public WindowsInstaller(RemoteConnection remoteConnection, String user) {
@@ -38,15 +39,12 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installJava() {
 
         Logger.debug("Installing Java...");
-        //this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"\\jre8.exe /s INSTALLDIR="+this.homeDir+"\\"+this.javaDir);
+        this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"\\jre8.exe /s INSTALLDIR="+this.homeDir+"\\"+this.javaDir);
 
-
-        //TODO: this sets only for cmd, set it also for powershell through: setx PATH "$env:path;\the\directory\to\add" -m or [Environment]::SetEnvironmentVariable ( "Path", $env:Path, [System.EnvironmentVariableTarget]::Machine )
-        //check this again in a clean installation
+        //Set JAVA envirnonment vars
         remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+this.javaDir + "\\bin;%PATH%");
-        Logger.info("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
-        //remoteConnection.executeCommand("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
-        Logger.debug("Java successfully installed");
+        remoteConnection.executeCommand("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
+
 
     }
 
@@ -62,14 +60,21 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.debug("Setting up and starting Visor");
 
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "/default.properties", this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorProperties, this.buildDefaultVisorConfig(), false);
 
+        //id of the visor schtasks
         String visorJobId = "visor";
 
-        //TODO: start these tasks from powershell otherwise monitporing agent will crash!!!
-        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"java -jar " + this.homeDir + "\\" + this.visorJar + " -conf " + this.homeDir + "\\default.properties\"");
+        //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
+        String startCommand = "java -jar " + this.homeDir + "\\" + this.visorJar + " -conf " + this.homeDir + "\\" + this.visorProperties;
+        this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorBat, startCommand, false );
 
-        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId +" /I");
+        //TODO: open WindowsFirewall Ports if Rest/Telnet ports need to be remote accessible
+
+        //create schtaks
+        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"java -jar " + this.homeDir + "\\" + this.visorBat + "\"");
+        //run schtask
+        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId );
 
         Logger.debug("Visor started successfully!");
 

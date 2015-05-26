@@ -26,6 +26,8 @@ abstract class AbstractInstaller implements InstallApi {
     protected final String javaDir = "jre8";
     protected final String kairosDbDir = "kairosdb";
 
+    protected final String visorProperties = "default.properties";
+
     public AbstractInstaller(RemoteConnection remoteConnection){
 
         this.remoteConnection = remoteConnection;
@@ -74,7 +76,7 @@ abstract class AbstractInstaller implements InstallApi {
             Logger.error(e.getMessage());
             e.printStackTrace();
         }
-        String localIp = inetAddress.getHostName();
+        String localIp = inetAddress.getHostAddress();
 
         String config = "executionThreads = 20\n" +
                 "reportingInterval = 10\n" +
@@ -83,7 +85,7 @@ abstract class AbstractInstaller implements InstallApi {
                 "restPort = 9002\n" +
                 "kairosServer = "+localIp+"\n" +
                 "kairosPort = 8080\n" +
-                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule ";
+                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule";
 
 
         return config;

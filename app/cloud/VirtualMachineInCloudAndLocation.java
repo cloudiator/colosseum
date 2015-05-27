@@ -18,6 +18,7 @@
 
 package cloud;
 
+import cloud.resources.AbstractCredentialScopedResource;
 import cloud.sword.SwordVirtualMachine;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
@@ -29,7 +30,7 @@ import java.util.Set;
  * Created by daniel on 12.03.15.
  */
 public class VirtualMachineInCloudAndLocation
-    extends AbstractResourceInCloudAndLocation<SwordVirtualMachine> implements VirtualMachine {
+    extends AbstractCredentialScopedResource<SwordVirtualMachine> implements VirtualMachine {
 
     private final SwordVirtualMachine swordVirtualMachine;
 

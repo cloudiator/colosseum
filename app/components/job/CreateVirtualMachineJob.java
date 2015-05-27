@@ -1,6 +1,6 @@
 package components.job;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.ColosseumVirtualMachineTemplate;
 import cloud.ColosseumVirtualMachineTemplateBuilder;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
@@ -26,9 +26,9 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine cloudVirtualMachine =
             computeService
                 .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
-        final CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(cloudVirtualMachine.id());
-        virtualMachine.setCloudUuid(cloudCredentialLocationId.baseId());
+        final ScopedId scopedId =
+            ScopedId.of(cloudVirtualMachine.id());
+        virtualMachine.setCloudUuid(scopedId.baseId());
         for (String ip : cloudVirtualMachine.privateAddresses()) {
             virtualMachine.getIpAddresses().add(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
         }

@@ -20,13 +20,14 @@ package cloud;
 
 
 
+import cloud.resources.AbstractCredentialScopedResource;
 import cloud.sword.SwordHardware;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class HardwareInCloudAndLocation extends AbstractResourceInCloudAndLocation<SwordHardware>
+public class HardwareInCloudAndLocation extends AbstractCredentialScopedResource<SwordHardware>
     implements HardwareFlavor {
 
     private final SwordHardware swordHardware;

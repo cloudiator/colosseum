@@ -1,6 +1,6 @@
 package cloud.sync.watchdogs;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.LocationInCloud;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
@@ -34,12 +34,12 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
         for (de.uniulm.omi.cloudiator.sword.api.domain.Location location : computeService
             .listLocations()) {
             if (location instanceof LocationInCloud) {
-                final CloudCredentialLocationId cloudCredentialLocationId =
-                    CloudCredentialLocationId.of(location.id());
+                final ScopedId scopedId =
+                    ScopedId.of(location.id());
 
                 Location modelLocation = locationModelService
-                    .getByUuidInCloudAndUuidOfCloud(cloudCredentialLocationId.baseId(),
-                        cloudCredentialLocationId.cloud());
+                    .getByUuidInCloudAndUuidOfCloud(scopedId.baseId(),
+                        scopedId.cloud());
 
                 if (modelLocation == null) {
                     this.report(
@@ -48,7 +48,7 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
                     CloudCredential credentialToSearchFor = null;
                     for (CloudCredential cloudCredential : modelLocation.getCloudCredentials()) {
                         if (cloudCredential.getUuid()
-                            .equals(cloudCredentialLocationId.credential())) {
+                            .equals(scopedId.credential())) {
                             credentialToSearchFor = cloudCredential;
                             break;
                         }

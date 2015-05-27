@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
@@ -37,14 +37,14 @@ public class ConnectLocationToCredential implements Solution {
 
         LocationInCloud locationInCloud =
             ((LocationProblems.LocationMissesCredential) problem).getLocationInCloud();
-        final CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(locationInCloud.id());
+        final ScopedId scopedId =
+            ScopedId.of(locationInCloud.id());
 
         Location location = locationModelService
-            .getByUuidInCloudAndUuidOfCloud(cloudCredentialLocationId.baseId(),
-                cloudCredentialLocationId.cloud());
+            .getByUuidInCloudAndUuidOfCloud(scopedId.baseId(),
+                scopedId.cloud());
         CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(cloudCredentialLocationId.credential());
+            cloudCredentialModelService.getByUuid(scopedId.credential());
 
         if (location == null || cloudCredential == null) {
             throw new SolutionException();

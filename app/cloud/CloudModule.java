@@ -9,6 +9,6 @@ import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 public class CloudModule extends AbstractModule {
 
     @Override protected void configure() {
-        bind(ComputeService.class).to(MultiComputeService.class);
+        bind(ComputeService.class).to(CompositeComputeService.class);
     }
 }

@@ -16,31 +16,27 @@
  * under the License.
  */
 
-package cloud;
+package cloud.resources;
 
 
-import cloud.sword.ResourceInLocation;
+import cloud.ScopedId;
+import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class AbstractResourceInCloudAndLocation<T extends ResourceInLocation>
-    implements ResourceInCloudAndLocation {
+public class AbstractCredentialScopedResource<T extends Resource>
+    implements CredentialScoped, Resource {
 
     private final String cloud;
     private final String credential;
-    private final T resourceInLocation;
+    private final T resource;
 
 
-    public AbstractResourceInCloudAndLocation(T resourceInLocation, String cloud,
-        String credential) {
+    public AbstractCredentialScopedResource(T resource, String cloud, String credential) {
+        this.resource = resource;
         this.cloud = cloud;
         this.credential = credential;
-        this.resourceInLocation = resourceInLocation;
-    }
-
-    @Override public String location() {
-        return resourceInLocation.location();
     }
 
     @Override public String cloud() {
@@ -52,10 +48,10 @@ public class AbstractResourceInCloudAndLocation<T extends ResourceInLocation>
     }
 
     @Override public String id() {
-        return CloudCredentialLocationId.of(resourceInLocation.id(), cloud, credential).id();
+        return ScopedId.of(resource.id(), cloud, credential).id();
     }
 
     @Override public String name() {
-        return resourceInLocation.name();
+        return resource.name();
     }
 }

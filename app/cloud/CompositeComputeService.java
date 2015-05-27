@@ -8,14 +8,11 @@ import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
-import models.CloudCredential;
-import models.service.api.generic.ModelService;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -23,13 +20,12 @@ import java.util.*;
 /**
  * Created by daniel on 17.04.15.
  */
-@Singleton public class MultiComputeService implements ComputeService {
+public class CompositeComputeService implements ComputeService {
 
+    private final Iterable<ComputeService> computeServices;
 
-    private final ComputeServiceHolder computeServiceHolder;
-
-    @Inject public MultiComputeService(ModelService<CloudCredential> cloudCredentialModelService) {
-        this.computeServiceHolder = new ComputeServiceHolder(cloudCredentialModelService);
+    @Inject public CompositeComputeService(Iterable<ComputeService> computeServices) {
+        this.computeServices = computeServices;
     }
 
     @Nullable @Override public Image getImage(String s) {
@@ -50,7 +46,7 @@ import java.util.*;
 
     @Override public Iterable<HardwareFlavor> listHardwareFlavors() {
         List<HardwareFlavor> hardwareFlavors = new LinkedList<>();
-        for (ComputeService computeService : computeServiceHolder.getComputeServices()) {
+        for (ComputeService computeService : computeServices) {
             for (HardwareFlavor hardwareFlavor : computeService.listHardwareFlavors()) {
                 hardwareFlavors.add(hardwareFlavor);
             }
@@ -60,7 +56,7 @@ import java.util.*;
 
     @Override public Iterable<Image> listImages() {
         List<Image> images = new LinkedList<>();
-        for (ComputeService computeService : computeServiceHolder.getComputeServices()) {
+        for (ComputeService computeService : computeServices) {
             for (Image image : computeService.listImages()) {
                 images.add(image);
             }
@@ -70,7 +66,7 @@ import java.util.*;
 
     @Override public Iterable<Location> listLocations() {
         List<Location> locations = new LinkedList<>();
-        for (ComputeService computeService : computeServiceHolder.getComputeServices()) {
+        for (ComputeService computeService : computeServices) {
             for (Location location : computeService.listLocations()) {
                 locations.add(location);
             }
@@ -91,7 +87,7 @@ import java.util.*;
         if (virtualMachineTemplate instanceof ColosseumVirtualMachineTemplate) {
             ColosseumVirtualMachineTemplate colosseumVirtualMachineTemplate =
                 (ColosseumVirtualMachineTemplate) virtualMachineTemplate;
-            for (ComputeService computeService : computeServiceHolder.getComputeServices()) {
+            for (ComputeService computeService : computeServices) {
                 if (computeService instanceof CloudAndCredentialAwareComputeService) {
                     CloudAndCredentialAwareComputeService cloudAndCredentialAwareComputeService =
                         (CloudAndCredentialAwareComputeService) computeService;
@@ -123,41 +119,7 @@ import java.util.*;
         return null;
     }
 
-    private static class ComputeServiceHolder {
 
-        private final ModelService<CloudCredential> cloudCredentialModelService;
-        private Map<String, ComputeService> computeServices;
-
-        private ComputeServiceHolder(ModelService<CloudCredential> cloudCredentialModelService) {
-            this.cloudCredentialModelService = cloudCredentialModelService;
-            computeServices = new HashMap<>();
-        }
-
-        private SwordComputeService createComputeService(CloudCredential cloudCredential) {
-            //TODO: validate for possible nulls, if user has not finished creating all stuff
-            return new SwordComputeService(
-                cloudCredential.getCloud().getApi().getInternalProviderName(),
-                cloudCredential.getCloud().getEndpoint(), cloudCredential.getUser(),
-                cloudCredential.getSecret());
-        }
-
-        private synchronized void update() {
-            for (CloudCredential cloudCredential : cloudCredentialModelService.getAll()) {
-                if (!computeServices.containsKey(cloudCredential.getUuid())) {
-                    this.computeServices.put(cloudCredential.getUuid(),
-                        new CloudAndCredentialAwareComputeService(
-                            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid(),
-                            createComputeService(cloudCredential)));
-                }
-            }
-        }
-
-        public Iterable<ComputeService> getComputeServices() {
-            update();
-            return new ArrayList<>(computeServices.values());
-        }
-
-    }
 
 
     private static class CloudAndCredentialAwareComputeService implements ComputeService {
@@ -175,24 +137,24 @@ import java.util.*;
 
         @Nullable @Override public ImageInCloudAndLocation getImage(String id) {
             return new ImageInCloudAndLocation(
-                this.swordComputeService.getImage(CloudCredentialLocationId.of(id).swordId()),
+                this.swordComputeService.getImage(ScopedId.of(id).swordId()),
                 cloud, credential);
         }
 
         @Nullable @Override public VirtualMachineInCloudAndLocation getVirtualMachine(String id) {
             return new VirtualMachineInCloudAndLocation(this.swordComputeService
-                .getVirtualMachine(CloudCredentialLocationId.of(id).swordId()), cloud, credential);
+                .getVirtualMachine(ScopedId.of(id).swordId()), cloud, credential);
         }
 
         @Nullable @Override public LocationInCloud getLocation(String id) {
             return new LocationInCloud(
-                this.swordComputeService.getLocation(CloudCredentialLocationId.of(id).swordId()),
+                this.swordComputeService.getLocation(ScopedId.of(id).swordId()),
                 cloud, credential);
         }
 
         @Nullable @Override public HardwareInCloudAndLocation getHardwareFlavor(String id) {
             return new HardwareInCloudAndLocation(this.swordComputeService
-                .getHardwareFlavor(CloudCredentialLocationId.of(id).swordId()), cloud, credential);
+                .getHardwareFlavor(ScopedId.of(id).swordId()), cloud, credential);
         }
 
         @Override public Iterable<HardwareFlavor> listHardwareFlavors() {
@@ -236,7 +198,7 @@ import java.util.*;
 
         @Override public void deleteVirtualMachine(String id) {
             this.swordComputeService
-                .deleteVirtualMachine(CloudCredentialLocationId.of(id).swordId());
+                .deleteVirtualMachine(ScopedId.of(id).swordId());
         }
 
         @Override

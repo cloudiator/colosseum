@@ -1,12 +1,13 @@
 package cloud.sword;
 
+import cloud.resources.LocationScoped;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
 
 /**
  * Created by daniel on 28.04.15.
  */
-public class SwordHardware implements HardwareFlavor, ResourceInLocation {
+public class SwordHardware implements HardwareFlavor, LocationScoped {
 
     private final HardwareFlavor hardwareFlavor;
 

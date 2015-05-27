@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.HardwareInCloudAndLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
@@ -38,15 +38,15 @@ public class ConnectHardwareToLocation implements Solution {
         HardwareInCloudAndLocation hardwareInCloudAndLocation =
             ((HardwareProblems.HardwareMissesLocation) problem).getHardwareInCloudAndLocation();
 
-        CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(hardwareInCloudAndLocation.id());
+        ScopedId scopedId =
+            ScopedId.of(hardwareInCloudAndLocation.id());
 
         Hardware modelHardware = this.hardwareModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(cloudCredentialLocationId.baseId(),
-                cloudCredentialLocationId.cloud());
+            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(scopedId.baseId(),
+                scopedId.cloud());
         Location location = this.locationModelService
-            .getByUuidInCloudAndUuidOfCloud(cloudCredentialLocationId.location(),
-                cloudCredentialLocationId.cloud());
+            .getByUuidInCloudAndUuidOfCloud(scopedId.location(),
+                scopedId.cloud());
         if (modelHardware == null || location == null) {
             throw new SolutionException();
         }

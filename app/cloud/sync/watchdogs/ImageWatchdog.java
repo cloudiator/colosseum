@@ -1,6 +1,6 @@
 package cloud.sync.watchdogs;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.ImageInCloudAndLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
@@ -33,12 +33,12 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
     @Override protected void watch(ComputeService computeService) {
         for (Image image : computeService.listImages()) {
             if (image instanceof ImageInCloudAndLocation) {
-                final CloudCredentialLocationId cloudCredentialLocationId =
-                    CloudCredentialLocationId.of(image.id());
+                final ScopedId scopedId =
+                    ScopedId.of(image.id());
 
                 models.Image modelImage = imageModelService
                     .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(
-                        cloudCredentialLocationId.baseId(), cloudCredentialLocationId.cloud());
+                        scopedId.baseId(), scopedId.cloud());
 
                 if (modelImage == null) {
                     report(
@@ -47,7 +47,7 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
                     CloudCredential credentialToSearchFor = null;
                     for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {
                         if (cloudCredential.getUuid()
-                            .equals(cloudCredentialLocationId.credential())) {
+                            .equals(scopedId.credential())) {
                             credentialToSearchFor = cloudCredential;
                             break;
                         }
@@ -60,9 +60,9 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
 
                     Location locationToSearchFor = null;
                     for (Location location : modelImage.getLocations()) {
-                        if (location.getCloud().getUuid().equals(cloudCredentialLocationId.cloud())
+                        if (location.getCloud().getUuid().equals(scopedId.cloud())
                             && location.getCloudUuid()
-                            .equals(cloudCredentialLocationId.location())) {
+                            .equals(scopedId.location())) {
                             locationToSearchFor = location;
                             break;
                         }

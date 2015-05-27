@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package cloud.sword;
+package cloud.resources;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
 /**
  * Created by daniel on 11.03.15.
  */
-public interface ResourceInLocation extends Resource {
-    public String location();
+public interface LocationScoped extends Resource {
+    String location();
 }

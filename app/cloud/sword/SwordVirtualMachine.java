@@ -1,5 +1,6 @@
 package cloud.sword;
 
+import cloud.resources.LocationScoped;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
@@ -10,7 +11,7 @@ import java.util.Set;
 /**
  * Created by daniel on 28.04.15.
  */
-public class SwordVirtualMachine implements VirtualMachine, ResourceInLocation {
+public class SwordVirtualMachine implements VirtualMachine, LocationScoped {
 
     private final VirtualMachine virtualMachine;
 

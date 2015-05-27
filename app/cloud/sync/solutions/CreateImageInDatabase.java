@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
+import cloud.ScopedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -36,15 +36,15 @@ public class CreateImageInDatabase implements Solution {
         ImageProblems.BaseImageNotInDatabase baseImageNotInDatabase =
             (ImageProblems.BaseImageNotInDatabase) problem;
 
-        CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(baseImageNotInDatabase.getImageInCloudAndLocation().id());
+        ScopedId scopedId =
+            ScopedId.of(baseImageNotInDatabase.getImageInCloudAndLocation().id());
 
-        Cloud cloud = cloudModelService.getByUuid(cloudCredentialLocationId.cloud());
+        Cloud cloud = cloudModelService.getByUuid(scopedId.cloud());
         if (cloud == null) {
             throw new SolutionException();
         }
 
-        Image image = new Image(cloudCredentialLocationId.baseId(),
+        Image image = new Image(scopedId.baseId(),
             baseImageNotInDatabase.getImageInCloudAndLocation().name(), cloud, null);
         imageModelService.save(image);
     }

@@ -26,7 +26,7 @@ import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import controllers.security.SecuredSessionOrToken;
 import dtos.api.Dto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import dtos.generic.LinkDecoratorDto;
 import models.generic.Model;
 import models.service.api.generic.ModelService;

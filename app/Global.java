@@ -29,7 +29,7 @@ import components.execution.ExecutionService;
 import components.execution.TransactionAwareExecutionService;
 import components.job.JobWorker;
 import components.job.config.JobModule;
-import dtos.conversion.config.BaseConverterModule;
+import dtos.conversion.BaseConverterModule;
 import models.repository.config.JPAModule;
 import models.service.config.DatabaseServiceModule;
 import play.Application;

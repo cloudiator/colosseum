@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.CommunicationChannelDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.CommunicationChannel;
 import models.service.api.generic.ModelService;
 

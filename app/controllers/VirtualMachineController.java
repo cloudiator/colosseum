@@ -27,7 +27,7 @@ import components.job.Job;
 import controllers.generic.GenericApiController;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.VirtualMachine;
 import models.service.api.generic.ModelService;
 

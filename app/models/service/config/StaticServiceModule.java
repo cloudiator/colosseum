@@ -31,7 +31,7 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(MonitorInstanceDto.References.class);
         requestStaticInjection(RawMonitorDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
-        requestStaticInjection(VirtualMachineDto.References.class);
+        requestStaticInjection(VirtualMachineTemplateDto.References.class);
 
         //static injection in security tokens
         requestInjection(SecuredToken.References.class);

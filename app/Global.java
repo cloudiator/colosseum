@@ -29,7 +29,7 @@ import components.execution.ExecutionService;
 import components.execution.TransactionAwareExecutionService;
 import components.job.JobWorker;
 import components.job.config.JobModule;
-import dtos.conversion.config.BaseConverterModule;
+import dtos.conversion.BaseConverterModule;
 import models.repository.config.JPAModule;
 import models.service.config.DatabaseServiceModule;
 import play.Application;
@@ -68,7 +68,7 @@ public class Global extends GlobalSettings {
 
         //create guice injector
         this.injector = Guice
-            .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
+            .createInjector(new JPAModule(), new BaseConverterModule(app.classloader()), new DatabaseServiceModule(),
                 new CloudModule(), new SolutionModule(), new JobModule());
 
         ExecutionService executionService =

@@ -34,51 +34,50 @@ import models.service.api.generic.ModelService;
  */
 public class VirtualMachineTemplateDto extends ValidatableDto {
 
-    protected long cloud;
-    protected long image;
-    protected long location;
-    protected long hardware;
+    private Long cloud;
+    private Long image;
+    private Long location;
+    private Long hardware;
 
     public VirtualMachineTemplateDto() {
-        super();
     }
 
-    public VirtualMachineTemplateDto(long cloud, long image, long location, long hardware) {
+    public VirtualMachineTemplateDto(Long cloud, Long image, Long location, Long hardware) {
         this.cloud = cloud;
         this.image = image;
         this.location = location;
         this.hardware = hardware;
     }
 
-    public long getCloud() {
+    public Long getCloud() {
         return cloud;
     }
 
-    public void setCloud(long cloud) {
+    public void setCloud(Long cloud) {
         this.cloud = cloud;
     }
 
-    public long getImage() {
+    public Long getImage() {
         return image;
     }
 
-    public void setImage(long image) {
+    public void setImage(Long image) {
         this.image = image;
     }
 
-    public long getLocation() {
+    public Long getLocation() {
         return location;
     }
 
-    public void setLocation(long location) {
+    public void setLocation(Long location) {
         this.location = location;
     }
 
-    public long getHardware() {
+    public Long getHardware() {
         return hardware;
     }
 
-    public void setHardware(long hardware) {
+    public void setHardware(Long hardware) {
         this.hardware = hardware;
     }
 

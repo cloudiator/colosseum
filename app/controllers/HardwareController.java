@@ -6,7 +6,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
 import models.FrontendGroup;
 import models.FrontendUser;

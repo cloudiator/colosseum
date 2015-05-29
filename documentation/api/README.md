@@ -27,7 +27,7 @@ Entity                                                       | URL
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
-[VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/virtualMachineTemplate
+[VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 
 ## Examples
 [Examples](Examples.md)

@@ -22,17 +22,15 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.FormulaQuantifierDto;
-import dtos.GeoLocationDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.FormulaQuantifier;
-import models.GeoLocation;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
-public class FormulaQuantifierController
-    extends GenericApiController<FormulaQuantifier, FormulaQuantifierDto, FormulaQuantifierDto, FormulaQuantifierDto> {
+public class FormulaQuantifierController extends
+    GenericApiController<FormulaQuantifier, FormulaQuantifierDto, FormulaQuantifierDto, FormulaQuantifierDto> {
     /**
      * Constructs a GenericApiController.
      *

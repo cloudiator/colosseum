@@ -20,11 +20,8 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.CloudDto;
 import dtos.RawMonitorDto;
-import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.*;
 import models.service.api.generic.ModelService;
@@ -39,7 +36,11 @@ import models.service.api.generic.ModelService;
     private final ModelService<SensorDescription> sensorDescriptionModelService;
     private final ModelService<Schedule> scheduleModelService;
 
-    @Inject protected RawMonitorConverter(ModelService<Application> applicationModelService, ModelService<Component> componentModelService, ModelService<Instance> instanceModelService, ModelService<Cloud> cloudModelService, ModelService<SensorDescription> sensorDescriptionModelService, ModelService<Schedule> scheduleModelService) {
+    @Inject protected RawMonitorConverter(ModelService<Application> applicationModelService,
+        ModelService<Component> componentModelService, ModelService<Instance> instanceModelService,
+        ModelService<Cloud> cloudModelService,
+        ModelService<SensorDescription> sensorDescriptionModelService,
+        ModelService<Schedule> scheduleModelService) {
         super(RawMonitor.class, RawMonitorDto.class);
         this.applicationModelService = applicationModelService;
         this.componentModelService = componentModelService;
@@ -51,16 +52,17 @@ import models.service.api.generic.ModelService;
 
     @Override public void configure() {
         builder().from(Long.class, "application").to(Application.class, "application")
-                .withTransformation(new IdToModelTransformer<>(applicationModelService));
+            .withTransformation(new IdToModelTransformer<>(applicationModelService));
         builder().from(Long.class, "component").to(Component.class, "component")
-                .withTransformation(new IdToModelTransformer<>(componentModelService));
+            .withTransformation(new IdToModelTransformer<>(componentModelService));
         builder().from(Long.class, "componentInstance").to(Instance.class, "componentInstance")
-                .withTransformation(new IdToModelTransformer<>(instanceModelService));
+            .withTransformation(new IdToModelTransformer<>(instanceModelService));
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
-                .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "sensorDescription").to(SensorDescription.class, "sensorDescription")
-                .withTransformation(new IdToModelTransformer<>(sensorDescriptionModelService));
+            .withTransformation(new IdToModelTransformer<>(cloudModelService));
+        builder().from(Long.class, "sensorDescription")
+            .to(SensorDescription.class, "sensorDescription")
+            .withTransformation(new IdToModelTransformer<>(sensorDescriptionModelService));
         builder().from(Long.class, "schedule").to(Schedule.class, "schedule")
-                .withTransformation(new IdToModelTransformer<>(scheduleModelService));
+            .withTransformation(new IdToModelTransformer<>(scheduleModelService));
     }
 }

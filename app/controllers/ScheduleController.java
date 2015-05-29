@@ -21,10 +21,8 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.CloudDto;
 import dtos.ScheduleDto;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.Cloud;
+import dtos.conversion.ModelDtoConversionService;
 import models.Schedule;
 import models.service.api.generic.ModelService;
 
@@ -33,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class ScheduleController extends GenericApiController<Schedule, ScheduleDto, ScheduleDto, ScheduleDto> {
+public class ScheduleController
+    extends GenericApiController<Schedule, ScheduleDto, ScheduleDto, ScheduleDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -43,8 +42,8 @@ public class ScheduleController extends GenericApiController<Schedule, ScheduleD
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ScheduleController(ModelService<Schedule> modelService, TypeLiteral<Schedule> typeLiteral,
-                                   ModelDtoConversionService conversionService) {
+    @Inject public ScheduleController(ModelService<Schedule> modelService,
+        TypeLiteral<Schedule> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

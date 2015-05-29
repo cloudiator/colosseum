@@ -20,21 +20,13 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.CloudDto;
 import dtos.ConstantMonitorDto;
-import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
-import dtos.conversion.transformers.IdToModelTransformer;
-import models.Api;
-import models.Cloud;
 import models.ConstantMonitor;
-import models.Schedule;
-import models.service.api.generic.ModelService;
 
 
-@Singleton public class ConstantMonitorConverter extends
-    AbstractConverter<ConstantMonitor, ConstantMonitorDto> {
+@Singleton public class ConstantMonitorConverter
+    extends AbstractConverter<ConstantMonitor, ConstantMonitorDto> {
 
 
     @Inject protected ConstantMonitorConverter() {

@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.*;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.*;
+import dtos.TimeWindowDto;
+import dtos.conversion.ModelDtoConversionService;
+import models.TimeWindow;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class TimeWindowController extends GenericApiController<TimeWindow, TimeWindowDto, TimeWindowDto, TimeWindowDto> {
+public class TimeWindowController
+    extends GenericApiController<TimeWindow, TimeWindowDto, TimeWindowDto, TimeWindowDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -41,8 +42,8 @@ public class TimeWindowController extends GenericApiController<TimeWindow, TimeW
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public TimeWindowController(ModelService<TimeWindow> modelService, TypeLiteral<TimeWindow> typeLiteral,
-                                               ModelDtoConversionService conversionService) {
+    @Inject public TimeWindowController(ModelService<TimeWindow> modelService,
+        TypeLiteral<TimeWindow> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

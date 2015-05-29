@@ -21,15 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.CloudDto;
 import dtos.ConstantMonitorDto;
-import dtos.MonitorInstanceDto;
-import dtos.ScheduleDto;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.Cloud;
+import dtos.conversion.ModelDtoConversionService;
 import models.ConstantMonitor;
-import models.MonitorInstance;
-import models.Schedule;
 import models.service.api.generic.ModelService;
 
 /**
@@ -37,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class ConstantMonitorController extends GenericApiController<ConstantMonitor, ConstantMonitorDto, ConstantMonitorDto, ConstantMonitorDto> {
+public class ConstantMonitorController extends
+    GenericApiController<ConstantMonitor, ConstantMonitorDto, ConstantMonitorDto, ConstantMonitorDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -47,8 +42,8 @@ public class ConstantMonitorController extends GenericApiController<ConstantMoni
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ConstantMonitorController(ModelService<ConstantMonitor> modelService, TypeLiteral<ConstantMonitor> typeLiteral,
-                                             ModelDtoConversionService conversionService) {
+    @Inject public ConstantMonitorController(ModelService<ConstantMonitor> modelService,
+        TypeLiteral<ConstantMonitor> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import dtos.ComponentHorizontalOutScalingActionDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.ApplicationComponent;
 import models.ComponentHorizontalOutScalingAction;

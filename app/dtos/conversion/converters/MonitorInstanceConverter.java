@@ -22,21 +22,23 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import dtos.MonitorInstanceDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.*;
 import models.service.api.generic.ModelService;
 
 
-@Singleton public class MonitorInstanceConverter extends
-    AbstractConverter<MonitorInstance, MonitorInstanceDto> {
+@Singleton public class MonitorInstanceConverter
+    extends AbstractConverter<MonitorInstance, MonitorInstanceDto> {
 
     private final ModelService<Monitor> monitorModelService;
     private final ModelService<IpAddress> ipAddressModelService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Component> componentModelService;
 
-    @Inject protected MonitorInstanceConverter(ModelService<Monitor> monitorModelService, ModelService<IpAddress> ipAddressModelService, ModelService<VirtualMachine> virtualMachineModelService, ModelService<Component> componentModelService) {
+    @Inject protected MonitorInstanceConverter(ModelService<Monitor> monitorModelService,
+        ModelService<IpAddress> ipAddressModelService,
+        ModelService<VirtualMachine> virtualMachineModelService,
+        ModelService<Component> componentModelService) {
         super(MonitorInstance.class, MonitorInstanceDto.class);
         this.monitorModelService = monitorModelService;
         this.ipAddressModelService = ipAddressModelService;
@@ -46,12 +48,12 @@ import models.service.api.generic.ModelService;
 
     @Override public void configure() {
         builder().from(Long.class, "component").to(Component.class, "component")
-                .withTransformation(new IdToModelTransformer<>(componentModelService));
+            .withTransformation(new IdToModelTransformer<>(componentModelService));
         builder().from(Long.class, "monitor").to(Monitor.class, "monitor")
-                .withTransformation(new IdToModelTransformer<>(monitorModelService));
+            .withTransformation(new IdToModelTransformer<>(monitorModelService));
         builder().from(Long.class, "ipAddress").to(IpAddress.class, "ipAddress")
-                .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
+            .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
         builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
-                .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
+            .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
     }
 }

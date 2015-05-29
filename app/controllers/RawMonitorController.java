@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.*;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.*;
+import dtos.RawMonitorDto;
+import dtos.conversion.ModelDtoConversionService;
+import models.RawMonitor;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class RawMonitorController extends GenericApiController<RawMonitor, RawMonitorDto, RawMonitorDto, RawMonitorDto> {
+public class RawMonitorController
+    extends GenericApiController<RawMonitor, RawMonitorDto, RawMonitorDto, RawMonitorDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -41,8 +42,8 @@ public class RawMonitorController extends GenericApiController<RawMonitor, RawMo
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public RawMonitorController(ModelService<RawMonitor> modelService, TypeLiteral<RawMonitor> typeLiteral,
-                                             ModelDtoConversionService conversionService) {
+    @Inject public RawMonitorController(ModelService<RawMonitor> modelService,
+        TypeLiteral<RawMonitor> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

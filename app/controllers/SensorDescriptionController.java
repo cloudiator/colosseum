@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.*;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.*;
+import dtos.SensorDescriptionDto;
+import dtos.conversion.ModelDtoConversionService;
+import models.SensorDescription;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class SensorDescriptionController extends GenericApiController<SensorDescription, SensorDescriptionDto, SensorDescriptionDto, SensorDescriptionDto> {
+public class SensorDescriptionController extends
+    GenericApiController<SensorDescription, SensorDescriptionDto, SensorDescriptionDto, SensorDescriptionDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -41,8 +42,8 @@ public class SensorDescriptionController extends GenericApiController<SensorDesc
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public SensorDescriptionController(ModelService<SensorDescription> modelService, TypeLiteral<SensorDescription> typeLiteral,
-                                        ModelDtoConversionService conversionService) {
+    @Inject public SensorDescriptionController(ModelService<SensorDescription> modelService,
+        TypeLiteral<SensorDescription> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

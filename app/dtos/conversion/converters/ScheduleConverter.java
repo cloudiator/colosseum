@@ -20,13 +20,9 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.CloudDto;
 import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
-import dtos.conversion.transformers.IdToModelTransformer;
 import models.Api;
-import models.Cloud;
 import models.Schedule;
 import models.service.api.generic.ModelService;
 

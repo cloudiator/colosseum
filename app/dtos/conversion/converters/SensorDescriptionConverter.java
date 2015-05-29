@@ -20,21 +20,13 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.CloudDto;
-import dtos.ScheduleDto;
 import dtos.SensorDescriptionDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
-import dtos.conversion.transformers.IdToModelTransformer;
-import models.Api;
-import models.Cloud;
-import models.Schedule;
 import models.SensorDescription;
-import models.service.api.generic.ModelService;
 
 
-@Singleton public class SensorDescriptionConverter extends
-    AbstractConverter<SensorDescription, SensorDescriptionDto> {
+@Singleton public class SensorDescriptionConverter
+    extends AbstractConverter<SensorDescription, SensorDescriptionDto> {
 
     @Inject protected SensorDescriptionConverter() {
         super(SensorDescription.class, SensorDescriptionDto.class);

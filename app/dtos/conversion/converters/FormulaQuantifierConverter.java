@@ -20,16 +20,13 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.ConstantMonitorDto;
 import dtos.FormulaQuantifierDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
-import models.ConstantMonitor;
 import models.FormulaQuantifier;
 
 
-@Singleton public class FormulaQuantifierConverter extends
-    AbstractConverter<FormulaQuantifier, FormulaQuantifierDto> {
+@Singleton public class FormulaQuantifierConverter
+    extends AbstractConverter<FormulaQuantifier, FormulaQuantifierDto> {
 
 
     @Inject protected FormulaQuantifierConverter() {

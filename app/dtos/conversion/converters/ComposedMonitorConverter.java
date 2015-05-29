@@ -20,18 +20,15 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.CloudDto;
 import dtos.ComposedMonitorDto;
-import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.*;
 import models.service.api.generic.ModelService;
 
 
-@Singleton public class ComposedMonitorConverter extends
-    AbstractConverter<ComposedMonitor, ComposedMonitorDto> {
+@Singleton public class ComposedMonitorConverter
+    extends AbstractConverter<ComposedMonitor, ComposedMonitorDto> {
 
     private final ModelService<Schedule> scheduleModelService;
     private final ModelService<Window> windowModelService;
@@ -39,7 +36,11 @@ import models.service.api.generic.ModelService;
     private final ModelService<Monitor> monitorModelService;
     private final ModelService<FormulaQuantifier> formulaQuantifierModelService;
 
-    @Inject protected ComposedMonitorConverter(ModelService<Schedule> scheduleModelService, ModelService<Window> windowModelService, ModelService<ScalingAction> scalingActionModelService, ModelService<Monitor> monitorModelService, ModelService<FormulaQuantifier> formulaQuantifierModelService) {
+    @Inject protected ComposedMonitorConverter(ModelService<Schedule> scheduleModelService,
+        ModelService<Window> windowModelService,
+        ModelService<ScalingAction> scalingActionModelService,
+        ModelService<Monitor> monitorModelService,
+        ModelService<FormulaQuantifier> formulaQuantifierModelService) {
         super(ComposedMonitor.class, ComposedMonitorDto.class);
         this.scheduleModelService = scheduleModelService;
         this.windowModelService = windowModelService;
@@ -53,12 +54,12 @@ import models.service.api.generic.ModelService;
         builder().from("function").to("function");
         builder().from("quantifier").to("quantifier");
         builder().from(Long.class, "schedule").to(Schedule.class, "schedule")
-                .withTransformation(new IdToModelTransformer<>(scheduleModelService));
+            .withTransformation(new IdToModelTransformer<>(scheduleModelService));
         builder().from(Long.class, "window").to(Window.class, "window")
-                .withTransformation(new IdToModelTransformer<>(windowModelService));
+            .withTransformation(new IdToModelTransformer<>(windowModelService));
         builder().from(Long.class, "monitors").to(Monitor.class, "monitors")
-                .withTransformation(new IdToModelTransformer<>(monitorModelService));
+            .withTransformation(new IdToModelTransformer<>(monitorModelService));
         builder().from(Long.class, "scalingActions").to(ScalingAction.class, "scalingActions")
-                .withTransformation(new IdToModelTransformer<>(scalingActionModelService));
+            .withTransformation(new IdToModelTransformer<>(scalingActionModelService));
     }
 }

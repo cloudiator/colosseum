@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.*;
-import dtos.conversion.api.ModelDtoConversionService;
-import models.*;
+import dtos.ComponentHorizontalOutScalingActionDto;
+import dtos.conversion.ModelDtoConversionService;
+import models.ComponentHorizontalOutScalingAction;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,7 +31,8 @@ import models.service.api.generic.ModelService;
  *
  * @author Daniel Baur
  */
-public class ComponentHorizontalOutScalingActionController extends GenericApiController<ComponentHorizontalOutScalingAction, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto> {
+public class ComponentHorizontalOutScalingActionController extends
+    GenericApiController<ComponentHorizontalOutScalingAction, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -41,12 +42,15 @@ public class ComponentHorizontalOutScalingActionController extends GenericApiCon
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ComponentHorizontalOutScalingActionController(ModelService<ComponentHorizontalOutScalingAction> modelService, TypeLiteral<ComponentHorizontalOutScalingAction> typeLiteral,
-                                        ModelDtoConversionService conversionService) {
+    @Inject public ComponentHorizontalOutScalingActionController(
+        ModelService<ComponentHorizontalOutScalingAction> modelService,
+        TypeLiteral<ComponentHorizontalOutScalingAction> typeLiteral,
+        ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ComponentHorizontalOutScalingActionController.get(id).absoluteURL(request());
+        return controllers.routes.ComponentHorizontalOutScalingActionController.get(id)
+            .absoluteURL(request());
     }
 }

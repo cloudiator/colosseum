@@ -74,6 +74,22 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Component>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Component>>() {
         });
+        //ComponentHorizontalOutScalingAction
+        bind(new TypeLiteral<ModelRepository<ComponentHorizontalOutScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComponentHorizontalOutScalingAction>>() {
+        });
+        //ComposedMonitor
+        bind(new TypeLiteral<ModelRepository<ComposedMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComposedMonitor>>() {
+        });
+        //ConstantMonitor
+        bind(new TypeLiteral<ModelRepository<ConstantMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ConstantMonitor>>() {
+        });
+        //FormulaQuantifier
+        bind(new TypeLiteral<ModelRepository<FormulaQuantifier>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<FormulaQuantifier>>() {
+        });
         // Frontend User
         bind(FrontendUserRepository.class).to(FrontendUserRepositoryJpa.class);
         bind(new TypeLiteral<ModelRepository<FrontendUser>>() {
@@ -116,6 +132,14 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
         });
+        //Monitor
+        bind(new TypeLiteral<ModelRepository<Monitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Monitor>>() {
+        });
+        //MonitorInstance
+        bind(new TypeLiteral<ModelRepository<MonitorInstance>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MonitorInstance>>() {
+        });
         //Operating System
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystem>>() {
@@ -124,6 +148,26 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<OperatingSystemVendor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystemVendor>>() {
         });
+        //RawMonitor
+        bind(new TypeLiteral<ModelRepository<RawMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<RawMonitor>>() {
+        });
+        //ScalingAction
+        bind(new TypeLiteral<ModelRepository<ScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ScalingAction>>() {
+        });
+        //Schedule
+        bind(new TypeLiteral<ModelRepository<Schedule>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Schedule>>() {
+        });
+        //SensorDescription
+        bind(new TypeLiteral<ModelRepository<SensorDescription>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<SensorDescription>>() {
+        });
+        //TimeWindow
+        bind(new TypeLiteral<ModelRepository<TimeWindow>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<TimeWindow>>() {
+        });
         //VirtualMachine
         bind(new TypeLiteral<ModelRepository<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<VirtualMachine>>() {
@@ -131,6 +175,10 @@ public class JPAModule extends AbstractModule {
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelRepository<VirtualMachineTemplate>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<VirtualMachineTemplate>>() {
+        });
+        //Window
+        bind(new TypeLiteral<ModelRepository<Window>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Window>>() {
         });
     }
 }

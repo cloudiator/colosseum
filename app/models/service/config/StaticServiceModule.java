@@ -19,6 +19,8 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(CloudCredentialDto.References.class);
         requestStaticInjection(CommunicationDto.References.class);
         requestStaticInjection(CommunicationChannelDto.References.class);
+        requestStaticInjection(ComponentHorizontalOutScalingActionDto.References.class);
+        requestStaticInjection(ComposedMonitorDto.References.class);
         requestStaticInjection(LoginDto.References.class);
         requestStaticInjection(FrontendGroupDto.References.class);
         requestStaticInjection(HardwareDto.References.class);
@@ -26,6 +28,8 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(InstanceDto.References.class);
         requestStaticInjection(IpAddressDto.References.class);
         requestStaticInjection(LocationDto.References.class);
+        requestStaticInjection(MonitorInstanceDto.References.class);
+        requestStaticInjection(RawMonitorDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
 

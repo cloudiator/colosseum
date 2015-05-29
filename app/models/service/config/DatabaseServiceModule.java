@@ -70,6 +70,22 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<CommunicationChannel>>() {
         }).to(new TypeLiteral<BaseModelService<CommunicationChannel>>() {
         });
+        //ComponentHorizontalOutScalingAction
+        bind(new TypeLiteral<ModelService<ComponentHorizontalOutScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelService<ComponentHorizontalOutScalingAction>>() {
+        });
+        //ComposedMonitor
+        bind(new TypeLiteral<ModelService<ComposedMonitor>>() {
+        }).to(new TypeLiteral<BaseModelService<ComposedMonitor>>() {
+        });
+        //ConstantMonitor
+        bind(new TypeLiteral<ModelService<ConstantMonitor>>() {
+        }).to(new TypeLiteral<BaseModelService<ConstantMonitor>>() {
+        });
+        //FormulaQuantifier
+        bind(new TypeLiteral<ModelService<FormulaQuantifier>>() {
+        }).to(new TypeLiteral<BaseModelService<FormulaQuantifier>>() {
+        });
         // Component
         bind(new TypeLiteral<ModelService<Component>>() {
         }).to(new TypeLiteral<BaseModelService<Component>>() {
@@ -118,6 +134,14 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Location>>() {
         });
         bind(LocationModelService.class).to(DefaultLocationModelService.class);
+        //Monitor
+        bind(new TypeLiteral<ModelService<Monitor>>() {
+        }).to(new TypeLiteral<BaseModelService<Monitor>>() {
+        });
+        //MonitorInstance
+        bind(new TypeLiteral<ModelService<MonitorInstance>>() {
+        }).to(new TypeLiteral<BaseModelService<MonitorInstance>>() {
+        });
         //Operating System
         bind(new TypeLiteral<ModelService<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
@@ -127,6 +151,26 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
         }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
         });
+        //RawMonitor
+        bind(new TypeLiteral<ModelService<RawMonitor>>() {
+        }).to(new TypeLiteral<BaseModelService<RawMonitor>>() {
+        });
+        //ScalingAction
+        bind(new TypeLiteral<ModelService<ScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelService<ScalingAction>>() {
+        });
+        //Schedule
+        bind(new TypeLiteral<ModelService<Schedule>>() {
+        }).to(new TypeLiteral<BaseModelService<Schedule>>() {
+        });
+        //SensorDescription
+        bind(new TypeLiteral<ModelService<SensorDescription>>() {
+        }).to(new TypeLiteral<BaseModelService<SensorDescription>>() {
+        });
+        //TimeWindow
+        bind(new TypeLiteral<ModelService<TimeWindow>>() {
+        }).to(new TypeLiteral<BaseModelService<TimeWindow>>() {
+        });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachine>>() {
@@ -134,6 +178,10 @@ public class DatabaseServiceModule extends AbstractModule {
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelService<VirtualMachineTemplate>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachineTemplate>>() {
+        });
+        //Window
+        bind(new TypeLiteral<ModelService<Window>>() {
+        }).to(new TypeLiteral<BaseModelService<Window>>() {
         });
     }
 }

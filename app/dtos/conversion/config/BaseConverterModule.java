@@ -22,6 +22,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 import dtos.conversion.*;
 import dtos.conversion.api.DtoConverter;
+import models.SensorDescription;
 
 /**
  * Base converter module.
@@ -49,6 +50,14 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(CommunicationConverter.class);
         // Communication Channel
         converterBinder.addBinding().to(CommunicationChannelConverter.class);
+        // ComponentHorizontalOutScalingAction
+        converterBinder.addBinding().to(ComponentHorizontalOutScalingActionConverter.class);
+        // ComposedMonitor
+        converterBinder.addBinding().to(ComposedMonitorConverter.class);
+        // ConstantMonitor
+        converterBinder.addBinding().to(ConstantMonitorConverter.class);
+        // FormulaQuantifier
+        converterBinder.addBinding().to(FormulaQuantifierConverter.class);
         // Frontend Group
         converterBinder.addBinding().to(FrontendGroupConverter.class);
         //Frontend User
@@ -69,10 +78,20 @@ public class BaseConverterModule extends AbstractModule {
         converterBinder.addBinding().to(LifecycleComponentConverter.class);
         // Location
         converterBinder.addBinding().to(LocationConverter.class);
+        // MonitorInstance
+        converterBinder.addBinding().to(MonitorInstanceConverter.class);
         //Operating System
         converterBinder.addBinding().to(OperatingSystemConverter.class);
         //Operating System Vendor
         converterBinder.addBinding().to(OperatingSystemVendorConverter.class);
+        // RawMonitor
+        converterBinder.addBinding().to(RawMonitorConverter.class);
+        // Schedule
+        converterBinder.addBinding().to(ScheduleConverter.class);
+        // SensorDescription
+        converterBinder.addBinding().to(SensorDescriptionConverter.class);
+        // TimeWindow
+        converterBinder.addBinding().to(TimeWindowConverter.class);
         // Virtual Machine
         converterBinder.addBinding().to(VirtualMachineConverter.class);
         // Virtual Machine Template

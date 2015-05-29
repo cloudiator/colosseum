@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.ImageInCloudAndLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
@@ -38,15 +38,15 @@ public class ConnectImageToLocation implements Solution {
         ImageInCloudAndLocation imageInCloudAndLocation =
             ((ImageProblems.ImageMissesLocation) problem).getImageInCloudAndLocation();
 
-        ScopedId scopedId =
-            ScopedId.of(imageInCloudAndLocation.id());
+        CloudScopedId cloudScopedId =
+            CloudScopedId.of(imageInCloudAndLocation.id());
 
         Image modelImage = this.imageModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(scopedId.baseId(),
-                scopedId.cloud());
+            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(cloudScopedId.baseId(),
+                cloudScopedId.cloud());
         Location location = this.locationModelService
-            .getByUuidInCloudAndUuidOfCloud(scopedId.location(),
-                scopedId.cloud());
+            .getByUuidInCloudAndUuidOfCloud(cloudScopedId.location(),
+                cloudScopedId.cloud());
         if (modelImage == null || location == null) {
             throw new SolutionException();
         }

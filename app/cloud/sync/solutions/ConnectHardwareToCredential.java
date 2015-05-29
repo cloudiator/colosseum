@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.HardwareInCloudAndLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
@@ -37,8 +37,8 @@ public class ConnectHardwareToCredential implements Solution {
         checkArgument(isSolutionFor(problem));
         HardwareInCloudAndLocation hardwareInCloudAndLocation =
             ((HardwareProblems.HardwareMissesCredential) problem).getHardwareInCloudAndLocation();
-        ScopedId scopedId =
-            ScopedId.of(hardwareInCloudAndLocation.id());
+        CloudScopedId scopedId =
+            CloudScopedId.of(hardwareInCloudAndLocation.id());
 
         Hardware modelHardware = hardwareModelService
             .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(scopedId.baseId(),

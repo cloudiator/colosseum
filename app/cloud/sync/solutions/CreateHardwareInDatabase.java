@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -42,15 +42,15 @@ public class CreateHardwareInDatabase implements Solution {
         HardwareProblems.BaseHardwareNotInDatabase baseHardwareNotInDatabase =
             (HardwareProblems.BaseHardwareNotInDatabase) problem;
 
-        ScopedId scopedId = ScopedId
+        CloudScopedId cloudScopedId = CloudScopedId
             .of(baseHardwareNotInDatabase.getHardwareInCloudAndLocation().id());
 
-        Cloud cloud = cloudModelService.getByUuid(scopedId.cloud());
+        Cloud cloud = cloudModelService.getByUuid(cloudScopedId.cloud());
         if (cloud == null) {
             throw new SolutionException();
         }
 
-        Hardware hardware = new Hardware(scopedId.baseId(), cloud,
+        Hardware hardware = new Hardware(cloudScopedId.baseId(), cloud,
             getHardwareOffer(
                 baseHardwareNotInDatabase.getHardwareInCloudAndLocation().numberOfCores(),
                 baseHardwareNotInDatabase.getHardwareInCloudAndLocation().mbRam(), null));

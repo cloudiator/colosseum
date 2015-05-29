@@ -1,9 +1,6 @@
 package cloud;
 
-import cloud.sword.SwordComputeService;
-import cloud.sword.SwordHardware;
-import cloud.sword.SwordImage;
-import cloud.sword.SwordVirtualMachine;
+import cloud.util.CloudScopedId;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
 import com.google.common.net.HostAndPort;
@@ -15,7 +12,8 @@ import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by daniel on 17.04.15.
@@ -121,7 +119,6 @@ public class CompositeComputeService implements ComputeService {
 
 
 
-
     private static class CloudAndCredentialAwareComputeService implements ComputeService {
 
         private final String cloud;
@@ -137,24 +134,26 @@ public class CompositeComputeService implements ComputeService {
 
         @Nullable @Override public ImageInCloudAndLocation getImage(String id) {
             return new ImageInCloudAndLocation(
-                this.swordComputeService.getImage(ScopedId.of(id).swordId()),
-                cloud, credential);
+                this.swordComputeService.getImage(CloudScopedId.of(id).swordId()), cloud,
+                credential);
         }
 
         @Nullable @Override public VirtualMachineInCloudAndLocation getVirtualMachine(String id) {
-            return new VirtualMachineInCloudAndLocation(this.swordComputeService
-                .getVirtualMachine(ScopedId.of(id).swordId()), cloud, credential);
+            return new VirtualMachineInCloudAndLocation(
+                this.swordComputeService.getVirtualMachine(CloudScopedId.of(id).swordId()), cloud,
+                credential);
         }
 
         @Nullable @Override public LocationInCloud getLocation(String id) {
             return new LocationInCloud(
-                this.swordComputeService.getLocation(ScopedId.of(id).swordId()),
-                cloud, credential);
+                this.swordComputeService.getLocation(CloudScopedId.of(id).swordId()), cloud,
+                credential);
         }
 
         @Nullable @Override public HardwareInCloudAndLocation getHardwareFlavor(String id) {
-            return new HardwareInCloudAndLocation(this.swordComputeService
-                .getHardwareFlavor(ScopedId.of(id).swordId()), cloud, credential);
+            return new HardwareInCloudAndLocation(
+                this.swordComputeService.getHardwareFlavor(CloudScopedId.of(id).swordId()), cloud,
+                credential);
         }
 
         @Override public Iterable<HardwareFlavor> listHardwareFlavors() {
@@ -197,8 +196,7 @@ public class CompositeComputeService implements ComputeService {
         }
 
         @Override public void deleteVirtualMachine(String id) {
-            this.swordComputeService
-                .deleteVirtualMachine(ScopedId.of(id).swordId());
+            this.swordComputeService.deleteVirtualMachine(CloudScopedId.of(id).swordId());
         }
 
         @Override

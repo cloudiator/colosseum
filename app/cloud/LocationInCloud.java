@@ -21,6 +21,7 @@ package cloud;
 
 
 import cloud.resources.CloudScoped;
+import cloud.util.CloudScopedId;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 
 /**
@@ -43,7 +44,7 @@ public class LocationInCloud implements Location, CloudScoped {
     }
 
     @Override public String id() {
-        return ScopedId.of(location.id(), cloud, credential).id();
+        return CloudScopedId.of(location.id(), cloud, credential).id();
     }
 
     @Override public String name() {

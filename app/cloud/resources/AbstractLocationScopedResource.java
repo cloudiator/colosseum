@@ -20,8 +20,4 @@ public class AbstractLocationScopedResource<T extends Resource>
     @Override public String location() {
         return location;
     }
-
-    @Override public String id() {
-
-    }
 }

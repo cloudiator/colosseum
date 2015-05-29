@@ -1,6 +1,6 @@
 package cloud.sync.watchdogs;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.HardwareInCloudAndLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
@@ -34,12 +34,12 @@ public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
     @Override protected void watch(ComputeService computeService) {
         for (HardwareFlavor hardwareFlavor : computeService.listHardwareFlavors()) {
             if (hardwareFlavor instanceof HardwareInCloudAndLocation) {
-                final ScopedId scopedId =
-                    ScopedId.of(hardwareFlavor.id());
+                final CloudScopedId cloudScopedId =
+                    CloudScopedId.of(hardwareFlavor.id());
 
                 Hardware modelHardware = hardwareModelService
                     .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(
-                        scopedId.baseId(), scopedId.cloud());
+                        cloudScopedId.baseId(), cloudScopedId.cloud());
 
                 if (modelHardware == null) {
                     report(new HardwareProblems.BaseHardwareNotInDatabase(
@@ -48,7 +48,7 @@ public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
                     CloudCredential credentialToSearchFor = null;
                     for (CloudCredential cloudCredential : modelHardware.getCloudCredentials()) {
                         if (cloudCredential.getUuid()
-                            .equals(scopedId.credential())) {
+                            .equals(cloudScopedId.credential())) {
                             credentialToSearchFor = cloudCredential;
                             break;
                         }
@@ -61,9 +61,9 @@ public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
 
                     Location locationToSearchFor = null;
                     for (Location location : modelHardware.getLocations()) {
-                        if (location.getCloud().getUuid().equals(scopedId.cloud())
+                        if (location.getCloud().getUuid().equals(cloudScopedId.cloud())
                             && location.getCloudUuid()
-                            .equals(scopedId.location())) {
+                            .equals(cloudScopedId.location())) {
                             locationToSearchFor = location;
                             break;
                         }

@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -35,8 +35,8 @@ public class CreateLocationInDatabase implements Solution {
         LocationProblems.BaseLocationNotInDatabase baseLocationNotInDatabase =
             (LocationProblems.BaseLocationNotInDatabase) problem;
 
-        ScopedId cloudCredentialLocationId =
-            ScopedId.of(baseLocationNotInDatabase.getLocationInCloud().id());
+        CloudScopedId cloudCredentialLocationId =
+            CloudScopedId.of(baseLocationNotInDatabase.getLocationInCloud().id());
         Cloud cloud = cloudModelRepository.findByUuid(cloudCredentialLocationId.cloud());
 
         String cloudUuid = cloudCredentialLocationId.baseId();

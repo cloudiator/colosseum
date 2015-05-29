@@ -1,6 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.ScopedId;
+import cloud.util.CloudScopedId;
 import cloud.ImageInCloudAndLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
@@ -37,14 +37,14 @@ public class ConnectImageToCredential implements Solution {
         checkArgument(isSolutionFor(problem));
         ImageInCloudAndLocation imageInCloudAndLocation =
             ((ImageProblems.ImageMissesCredential) problem).getImageInCloudAndLocation();
-        ScopedId scopedId =
-            ScopedId.of(imageInCloudAndLocation.id());
+        CloudScopedId cloudScopedId =
+            CloudScopedId.of(imageInCloudAndLocation.id());
 
         Image modelImage = imageModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(scopedId.baseId(),
-                scopedId.cloud());
+            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(cloudScopedId.baseId(),
+                cloudScopedId.cloud());
         CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(scopedId.credential());
+            cloudCredentialModelService.getByUuid(cloudScopedId.credential());
 
         if (modelImage == null || cloudCredential == null) {
             throw new SolutionException();

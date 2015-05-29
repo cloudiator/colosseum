@@ -6,7 +6,7 @@
 The VirtualMachineTemplate represents a template for creating virtual machines. It describes the resources need to start a virtual machine for the application component it is attached to.
 ***
 
-## GET /api/virtualMachineTemplate
+## GET /api/vmt
 
 ###Description
 Returns a list of virtual machine templates supported by the system.
@@ -23,7 +23,7 @@ A list of all virtual machine template entities stored in the database.
    {
       "links":[
          {
-            "href":"http://example.com:9000/api/virtualMachineTemplate/1",
+            "href":"http://example.com:9000/api/vmt/1",
             "rel":"self"
          }
       ],
@@ -38,7 +38,7 @@ A list of all virtual machine template entities stored in the database.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 ***
-## GET /api/virtualMachineTemplate/{vmt_id}
+## GET /api/vmt/{vmt_id}
 
 ###Description
 Returns the virtual machine template identified by the given {vmt_id}.
@@ -57,7 +57,7 @@ Shows the selected virtual machine template entity.
 {
   "links":[
      {
-        "href":"http://example.com:9000/api/virtualMachineTemplate/1",
+        "href":"http://example.com:9000/api/vmt/1",
         "rel":"self"
      }s
   ],
@@ -72,7 +72,7 @@ Shows the selected virtual machine template entity.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 ***
-## POST /api/virtualMachineTemplate
+## POST /api/vmt
 
 ###Description
 Creates a new virtual machine template entity. The new entity will be returned.
@@ -96,14 +96,14 @@ hardware | The cloud hardware that will be used to start the machine.
 }
 ```
 ###Response
-The created entity. See GET /api/virtualMachineTemplate/{vmt_id}
+The created entity. See GET /api/vmt/{vmt_id}
 
 ###Response Codes
 **Normal Response Code** 200
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 400 (bad request)
 ***
-## PUT /api/virtualMachineTemplate/{vmt_id}
+## PUT /api/vmt/{vmt_id}
 
 ###Description
 Updates the virtual machine template identified by the given id.
@@ -120,7 +120,7 @@ hardware | The cloud hardware that will be used to start the machine.
 
 ###Request Example
 ```
-PUT /api/virtualMachineTemplate/1
+PUT /api/vmt/1
 ```
 ```
 {
@@ -131,7 +131,7 @@ PUT /api/virtualMachineTemplate/1
 }
 ```
 ###Response
-The updated entity. See GET /api/virtualMachineTemplate/{vmt_id}
+The updated entity. See GET /api/vmt/{vmt_id}
 
 ###Response Codes
 
@@ -139,7 +139,7 @@ The updated entity. See GET /api/virtualMachineTemplate/{vmt_id}
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found), 400 (bad request)
 ***
-## DELETE /api/virtualMachineTemplate/{vmt_id}
+## DELETE /api/vmt/{vmt_id}
 
 ###Description
 Deletes the virtual machine template identified by the given {vmt_id}.

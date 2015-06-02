@@ -1,6 +1,9 @@
 package cloud;
 
 import cloud.resources.HardwareInLocation;
+import cloud.resources.ImageInLocation;
+import cloud.resources.LocationInCloud;
+import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
@@ -14,6 +17,9 @@ import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
 
 import javax.annotation.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 28.05.15.
  */
@@ -26,6 +32,13 @@ public class DecoratingComputeService implements ComputeService {
 
     public DecoratingComputeService(ComputeService delegate, String cloudId,
         String cloudCredential) {
+
+        checkNotNull(delegate);
+        checkNotNull(cloudId);
+        checkArgument(!cloudId.isEmpty());
+        checkNotNull(cloudCredential);
+        checkArgument(!cloudCredential.isEmpty());
+
         this.delegate = delegate;
         this.cloudCredential = cloudCredential;
         this.cloudId = cloudId;
@@ -50,23 +63,37 @@ public class DecoratingComputeService implements ComputeService {
     @Override public Iterable<HardwareFlavor> listHardwareFlavors() {
         return Iterables.transform(delegate.listHardwareFlavors(),
             new Function<HardwareFlavor, HardwareInLocation>() {
-                @Nullable @Override public HardwareInLocation apply(HardwareFlavor hardwareFlavor) {
+                @Nullable @Override
+                public HardwareInLocation apply(@Nullable HardwareFlavor hardwareFlavor) {
+                    checkNotNull(hardwareFlavor);
                     String location = IdScopeByLocations.from(hardwareFlavor.id()).getLocationId();
-                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential);
+                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential,
+                        location);
                 }
             });
     }
 
     @Override public Iterable<Image> listImages() {
-        return null;
+        return Iterables.transform(delegate.listImages(), new Function<Image, Image>() {
+            @Nullable @Override public Image apply(@Nullable Image image) {
+                checkNotNull(image);
+                String location = IdScopeByLocations.from(image.id()).getLocationId();
+                return new ImageInLocation(image, cloudId, cloudCredential, location);
+            }
+        });
     }
 
     @Override public Iterable<Location> listLocations() {
-        return null;
+        return Iterables.transform(delegate.listLocations(), new Function<Location, Location>() {
+            @Nullable @Override public Location apply(@Nullable Location location) {
+                checkNotNull(location);
+                return new LocationInCloud(location, cloudId, cloudCredential);
+            }
+        });
     }
 
     @Override public Iterable<VirtualMachine> listVirtualMachines() {
-        return null;
+        return Iterables.transform(delegate.listVirtualMachines(), new VirtualMachineDecorator());
     }
 
     @Override public void deleteVirtualMachine(String s) {
@@ -75,18 +102,28 @@ public class DecoratingComputeService implements ComputeService {
 
     @Override
     public VirtualMachine createVirtualMachine(VirtualMachineTemplate virtualMachineTemplate) {
-        return null;
+        VirtualMachine virtualMachine = delegate.createVirtualMachine(virtualMachineTemplate);
+        return new VirtualMachineDecorator().apply(virtualMachine);
     }
 
     @Override public SshConnection getSshConnection(HostAndPort hostAndPort) {
-        return null;
+        return delegate.getSshConnection(hostAndPort);
     }
 
     @Override public Optional<PublicIpService> getPublicIpService() {
-        return null;
+        return delegate.getPublicIpService();
     }
 
     @Override public Optional<KeyPairService> getKeyPairService() {
-        return null;
+        return delegate.getKeyPairService();
+    }
+
+
+    private class VirtualMachineDecorator implements Function<VirtualMachine, VirtualMachine> {
+        @Nullable @Override public VirtualMachine apply(@Nullable VirtualMachine virtualMachine) {
+            checkNotNull(virtualMachine);
+            String location = IdScopeByLocations.from(virtualMachine.id()).getLocationId();
+            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredential, location);
+        }
     }
 }

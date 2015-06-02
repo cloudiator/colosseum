@@ -114,10 +114,6 @@ public class LocationDto extends ValidatableDto {
         this.locationScope = locationScope;
     }
 
-    public Boolean isAssignable() {
-        return isAssignable;
-    }
-
     public void setIsAssignable(Boolean isAssignable) {
         this.isAssignable = isAssignable;
     }

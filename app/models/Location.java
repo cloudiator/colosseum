@@ -54,7 +54,7 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private Location() {
+    protected Location() {
     }
 
     public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,

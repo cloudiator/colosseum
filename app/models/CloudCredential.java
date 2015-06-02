@@ -52,7 +52,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private CloudCredential() {
+    protected CloudCredential() {
     }
 
     public CloudCredential(Cloud cloud, FrontendGroup frontendGroup, String user, String secret) {

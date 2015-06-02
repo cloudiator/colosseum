@@ -47,7 +47,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private VirtualMachine() {
+    protected VirtualMachine() {
     }
 
     public VirtualMachine(String name, Cloud cloud, String cloudUuid, @Nullable Hardware hardware,

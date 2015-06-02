@@ -39,7 +39,7 @@ import java.util.List;
     @OneToMany(mappedBy = "hardwareOffer", cascade = CascadeType.REMOVE) private List<Hardware>
         hardware;
 
-    private HardwareOffer() {
+    protected HardwareOffer() {
     }
 
     public HardwareOffer(Integer numberOfCores, Long mbOfRam, @Nullable Long localDiskSpace) {

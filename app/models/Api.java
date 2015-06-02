@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private Api() {
+    protected Api() {
     }
 
     public Api(String name, String internalProviderName) {

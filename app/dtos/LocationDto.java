@@ -20,16 +20,17 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
+import dtos.validation.IterableValidator;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
-import models.Cloud;
-import models.GeoLocation;
-import models.Location;
-import models.LocationScope;
+import models.*;
 import models.service.api.generic.ModelService;
 import models.service.impl.generic.BaseModelService;
+
+import java.util.List;
 
 /**
  * Created by daniel on 09.04.15.
@@ -42,6 +43,7 @@ public class LocationDto extends ValidatableDto {
     private LocationScope locationScope;
     private Boolean isAssignable;
     private Long geoLocation;
+    private List<Long> cloudCredentials;
 
     public LocationDto() {
         super();
@@ -68,12 +70,16 @@ public class LocationDto extends ValidatableDto {
             .withValidator(new NotNullValidator());
         validator(Long.class).validate(parent)
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(cloudCredentials).withValidator(new IterableValidator<>(
+            new ModelIdValidator<>(References.cloudCredentialService.get())));
     }
 
     public static class References {
         @Inject public static Provider<BaseModelService<Cloud>> cloudService;
         @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
         @Inject public static Provider<ModelService<Location>> locationService;
+        @Inject public static Provider<ModelService<CloudCredential>> cloudCredentialService;
     }
 
     public Long getCloud() {
@@ -122,5 +128,17 @@ public class LocationDto extends ValidatableDto {
 
     public void setGeoLocation(Long geoLocation) {
         this.geoLocation = geoLocation;
+    }
+
+    public Boolean getIsAssignable() {
+        return isAssignable;
+    }
+
+    public List<Long> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<Long> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
     }
 }

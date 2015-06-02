@@ -23,10 +23,7 @@ import dtos.ImageDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.Cloud;
-import models.Image;
-import models.Location;
-import models.OperatingSystem;
+import models.*;
 import models.service.api.generic.ModelService;
 
 /**
@@ -37,14 +34,17 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<OperatingSystem> operatingSystemModelService;
     private final ModelService<Location> locationModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
 
     @Inject protected ImageConverter(ModelService<Cloud> cloudModelService,
         ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<Location> locationModelService) {
+        ModelService<Location> locationModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
         super(Image.class, ImageDto.class);
         this.cloudModelService = cloudModelService;
         this.operatingSystemModelService = operatingSystemModelService;
         this.locationModelService = locationModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Override public void configure() {
@@ -56,5 +56,7 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
             .withTransformation(new IdToModelTransformer<>(operatingSystemModelService));
         builder().from("locations").to("locations").withUnsafeTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
+        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

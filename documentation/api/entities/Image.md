@@ -38,6 +38,9 @@ A list of all image entities stored in the database.
       "locations": [
         1
       ],
+      "cloudCredentials": [
+        1
+      ],      
       "operatingSystem": 1
    },
    {  
@@ -55,6 +58,9 @@ A list of all image entities stored in the database.
         1,
         2
       ],
+      "cloudCredentials": [
+        1
+      ],  
       "operatingSystem": 2
    }
 ]
@@ -103,6 +109,9 @@ The image entity identified by the given id.
      1,
      2
    ],
+   "cloudCredentials": [
+     1
+   ],     
    "operatingSystem": 1
 }
 ```
@@ -130,6 +139,7 @@ cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 cloudUuid        | The UUID of the image.
 locations        | The locations at which the image is available.
+cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
 
 ###Request Example
@@ -141,8 +151,11 @@ operatingSystem  | The operating system used by the image.
    "imageOffer":2,
    "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
    "locations": [
-    1
+     1
    ],
+   "cloudCredentials": [
+     1
+   ],     
    "operatingSystem": 1
 }   
 ```
@@ -175,6 +188,7 @@ cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 cloudUuid        | The UUID of the image.
 locations        | The locations at which the image is available.
+cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
 
 ###Request Example
@@ -190,6 +204,9 @@ PUT /api/image/1
    "locations" : [
      1,
      2
+   ],
+   "cloudCredentials": [
+     1
    ],
    "operatingSystem": 1
 }

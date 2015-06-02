@@ -27,10 +27,10 @@ import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import dtos.validation.NotNullValidator;
 import models.Cloud;
+import models.CloudCredential;
 import models.Location;
 import models.OperatingSystem;
 import models.service.api.generic.ModelService;
-import models.service.impl.generic.BaseModelService;
 
 import java.util.List;
 
@@ -41,6 +41,7 @@ public class ImageDto extends ValidatableDto {
     private Long cloud;
     private List<Long> locations;
     private Long operatingSystem;
+    private List<Long> cloudCredentials;
 
     public ImageDto() {
         super();
@@ -53,6 +54,9 @@ public class ImageDto extends ValidatableDto {
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(cloudCredentials).withValidator(new IterableValidator<>(
+            new ModelIdValidator<>(References.cloudCredentialService.get())));
         validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
     }
@@ -97,9 +101,18 @@ public class ImageDto extends ValidatableDto {
         this.locations = locations;
     }
 
+    public List<Long> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<Long> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
     public static class References {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
         @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
+        @Inject public static Provider<ModelService<OperatingSystem>> operatingSystemService;
+        @Inject public static Provider<ModelService<CloudCredential>> cloudCredentialService;
     }
 }

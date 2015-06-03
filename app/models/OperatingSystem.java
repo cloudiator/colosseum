@@ -39,7 +39,7 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private OperatingSystem() {
+    protected OperatingSystem() {
     }
 
     public OperatingSystemArchitecture getOperatingSystemArchitecture() {

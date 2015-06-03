@@ -40,7 +40,7 @@ import javax.persistence.*;
     /**
      * Empty constructor for hibernate.
      */
-    private ApiAccessToken() {
+    protected ApiAccessToken() {
     }
 
     public ApiAccessToken(final FrontendUser frontendUser, final String token) {

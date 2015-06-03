@@ -34,12 +34,12 @@ import java.util.List;
     @ManyToOne(optional = false) private ApplicationComponent provider;
     @ManyToOne(optional = false) private ApplicationComponent consumer;
     @OneToMany(mappedBy = "communication") private List<CommunicationChannel> communicationChannels;
-    @Column(nullable = false) private int port;
+    @Column(nullable = false) private Integer port;
 
     /**
      * Empty constructor for hibernate.
      */
-    private Communication() {
+    protected Communication() {
     }
 
     public ApplicationComponent getProvider() {

@@ -37,7 +37,7 @@ public class InstanceDto extends ValidatableDto {
     private Long applicationInstance;
     private Long virtualMachine;
 
-    protected InstanceDto() {
+    public InstanceDto() {
         super();
     }
 

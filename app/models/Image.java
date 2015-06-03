@@ -47,7 +47,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private Image() {
+    protected Image() {
     }
 
     public Image(String cloudUuid, @Nullable String name, Cloud cloud,

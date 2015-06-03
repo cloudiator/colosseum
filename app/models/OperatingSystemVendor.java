@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private OperatingSystemVendor() {
+    protected OperatingSystemVendor() {
     }
 
     public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType) {

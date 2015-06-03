@@ -44,7 +44,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor. Needed by hibernate.
      */
-    private Cloud() {
+    protected Cloud() {
     }
 
     public Cloud(String name, String endpoint, Api api) {

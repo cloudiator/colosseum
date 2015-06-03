@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private IpAddress() {
+    protected IpAddress() {
     }
 
     public IpAddress(VirtualMachine virtualMachine, String ip, IpType ipType) {

@@ -22,7 +22,9 @@ import com.google.inject.Inject;
 import dtos.LocationDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Cloud;
+import models.CloudCredential;
 import models.GeoLocation;
 import models.Location;
 import models.service.api.generic.ModelService;
@@ -35,13 +37,16 @@ public class LocationConverter extends AbstractConverter<Location, LocationDto> 
     private final ModelService<Location> locationModelService;
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<GeoLocation> geoLocationModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
 
     @Inject protected LocationConverter(ModelService<Location> locationModelService,
-        ModelService<Cloud> cloudModelService, ModelService<GeoLocation> geoLocationModelService) {
+        ModelService<Cloud> cloudModelService, ModelService<GeoLocation> geoLocationModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
         super(Location.class, LocationDto.class);
         this.locationModelService = locationModelService;
         this.cloudModelService = cloudModelService;
         this.geoLocationModelService = geoLocationModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Override public void configure() {
@@ -59,5 +64,8 @@ public class LocationConverter extends AbstractConverter<Location, LocationDto> 
 
         builder().from(Long.class, "geoLocation").to(GeoLocation.class, "geoLocation")
             .withTransformation(new IdToModelTransformer<>(geoLocationModelService));
+
+        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

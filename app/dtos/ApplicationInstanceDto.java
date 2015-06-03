@@ -3,8 +3,8 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Application;
 import models.service.impl.generic.BaseModelService;
 

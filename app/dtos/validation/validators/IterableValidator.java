@@ -16,32 +16,37 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation.validators;
 
-import dtos.validation.api.ReferenceValidator;
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.LinkedList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 20.03.15.
+ * Created by daniel on 19.03.15.
  */
-public class GenericReferenceValidator<T> implements ReferenceValidator {
+public class IterableValidator<T> implements Validator<Iterable<T>> {
 
-    private final Validator<T> validator;
-    @Nullable private final T t;
+    private Validator<T> validator;
 
-    public GenericReferenceValidator(@Nullable T t, Validator<T> validator) {
-        checkNotNull(validator);
-        this.validator = validator;
-        this.t = t;
+    public IterableValidator(Validator<T> tValidator) {
+        this.validator = tValidator;
     }
 
-    @Override public Collection<ValidationError> validate() throws ValidationException {
-        return this.validator.validate(t);
+    @Override public Collection<ValidationErrorMessage> validate(Iterable<T> ts)
+        throws ValidationException {
+
+        checkNotNull(ts);
+
+        Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
+        for (T t : ts) {
+            validationErrorMessages.addAll(this.validator.validate(t));
+        }
+        return validationErrorMessages;
     }
 }

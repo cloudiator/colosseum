@@ -21,9 +21,9 @@ package dtos.generic;
 import com.google.inject.TypeLiteral;
 import dtos.api.Dto;
 import dtos.api.Validatable;
-import dtos.validation.api.ValidateBuilder;
-import dtos.validation.api.ValidationException;
-import dtos.validation.generic.ValidationHolder;
+import dtos.validation.ValidateBuilder;
+import dtos.validation.ValidationException;
+import dtos.validation.ValidationHolder;
 import play.data.validation.ValidationError;
 
 import javax.annotation.Nullable;
@@ -59,7 +59,7 @@ public abstract class ValidatableDto implements Dto, Validatable {
         List<ValidationError> errors = new LinkedList<>();
         try {
             errors.addAll(validationHolder.validate().stream()
-                .map(dtos.validation.generic.ValidationError::toPlayError)
+                .map(dtos.validation.ValidationError::toPlayError)
                 .collect(Collectors.toList()));
         } catch (ValidationException e) {
             if (errors.isEmpty()) {

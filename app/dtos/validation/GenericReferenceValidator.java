@@ -18,35 +18,36 @@
 
 package dtos.validation;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
-import dtos.validation.generic.ValidationError;
-
+import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.LinkedList;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 19.03.15.
+ * Created by daniel on 20.03.15.
  */
-public class IterableValidator<T> implements Validator<Iterable<T>> {
+public class GenericReferenceValidator<T> implements ReferenceValidator {
 
-    private Validator<T> validator;
+    private static final String DEFAULT_FIELD = "Unknown";
 
-    public IterableValidator(Validator<T> tValidator) {
-        this.validator = tValidator;
+    private final String field;
+    private final Validator<T> validator;
+    @Nullable private final T t;
+
+    public GenericReferenceValidator(@Nullable String field, @Nullable T value, Validator<T> validator) {
+
+        checkNotNull(validator);
+
+        if(field == null || field.isEmpty()) {
+            this.field = DEFAULT_FIELD;
+        } else {
+            this.field = field;
+        }
+        this.validator = validator;
+        this.t = value;
     }
 
-    @Override public Collection<ValidationError> validate(Iterable<T> ts)
-        throws ValidationException {
-
-        checkNotNull(ts);
-
-        Collection<ValidationError> validationErrorList = new LinkedList<>();
-        for (T t : ts) {
-            validationErrorList.addAll(this.validator.validate(t));
-        }
-        return validationErrorList;
+    @Override public Collection<ValidationError> validate() throws ValidationException {
+        return this.validator.validate(t);
     }
 }

@@ -19,8 +19,8 @@
 package dtos;
 
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ExpressionValidator;
+import dtos.validation.validators.NotNullValidator;
 
 public class HardwareOfferDto extends ValidatableDto {
 

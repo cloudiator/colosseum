@@ -16,12 +16,10 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation;
 
 import com.google.common.collect.ImmutableList;
 import com.google.inject.TypeLiteral;
-import dtos.validation.api.ReferenceValidator;
-import dtos.validation.api.ValidationException;
 
 import java.util.Collection;
 import java.util.LinkedList;

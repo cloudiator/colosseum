@@ -19,7 +19,7 @@
 package dtos;
 
 import dtos.generic.ValidatableDto;
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
 
 /**
  * Created by daniel seybold on 11.12.2014.

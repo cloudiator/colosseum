@@ -16,17 +16,26 @@
  * under the License.
  */
 
-package dtos.validation.api;
+package dtos.validation.validators;
 
-import dtos.validation.generic.ValidationError;
-
-import java.util.Collection;
+import dtos.validation.AbstractValidator;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
 
 /**
- * Created by daniel on 20.03.15.
+ * Created by daniel on 14.04.15.
  */
-public interface ReferenceValidator {
+public class ExpressionValidator extends AbstractValidator<Object> {
 
-    public Collection<ValidationError> validate() throws ValidationException;
+    private boolean expression;
 
+    public ExpressionValidator(boolean expression) {
+        this.expression = expression;
+    }
+
+    @Override protected void validation(Object o) throws ValidationException {
+        if (!expression) {
+            addError(ValidationErrorMessage.of("The expression did not match."));
+        }
+    }
 }

@@ -47,7 +47,7 @@ If you want to start a new virtual machine, create it: [POST /api/virtualMachine
 
 ### 7. Instantiate the application.
 
-Create a new application instance [GET /api/applicationInstance](entities/ApplicationInstance.md).
+Create a new application instance [POST /api/applicationInstance](entities/ApplicationInstance.md).
 
 ### 8. Install the application component on the virtual machine
 

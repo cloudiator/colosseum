@@ -8,7 +8,6 @@ Query if the application does already exist: [GET /api/application](entities/App
 
 If the application does not already exist, create a new one: [POST /api/application](entities/Application.md)
 
-
 ### 2. Query or create the component
 
 > Note: The only supported component currently is the [LifecycleComponent](entities/LifecycleComponent.md)
@@ -52,3 +51,7 @@ Create a new application instance [POST /api/applicationInstance](entities/Appli
 ### 8. Install the application component on the virtual machine
 
 Create a new instance entity: [POST /api/instance](entities/Instance.md).
+
+### 9. Create a communication channel between the instances of the application component.
+
+Create a new communication channel entity: [POST /api/communicationChannel][entities/CommunicationChannel]

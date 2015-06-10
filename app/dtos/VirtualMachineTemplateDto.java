@@ -94,6 +94,9 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public static class References {
 
+        private References() {
+        }
+
         @Inject private static Provider<ModelService<Cloud>> cloudService;
 
         @Inject private static Provider<ModelService<Image>> imageService;

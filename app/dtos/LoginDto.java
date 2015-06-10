@@ -70,6 +70,10 @@ public class LoginDto {
 
 
     public static class References {
+
+        private References() {
+        }
+
         @Inject private static Provider<FrontendUserService> frontendUserService;
     }
 }

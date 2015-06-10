@@ -83,6 +83,9 @@ public class ApplicationComponentDto extends ValidatableDto {
 
     public static class References {
 
+        private References() {
+        }
+
         @Inject private static Provider<BaseModelService<Application>> applicationService;
 
         @Inject private static Provider<BaseModelService<Component>> componentService;

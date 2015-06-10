@@ -63,6 +63,10 @@ public class ImageOfferDto extends ValidatableDto {
     }
 
     public static class References {
+
+        private References() {
+        }
+
         @Inject private static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
     }
 }

@@ -18,13 +18,13 @@ public class ApplicationInstanceDto extends ValidatableDto {
     public ApplicationInstanceDto() {
     }
 
+    public ApplicationInstanceDto(Long application) {
+        this.application = application;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(this.application).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.applicationService.get()));
-    }
-
-    public ApplicationInstanceDto(Long application) {
-        this.application = application;
     }
 
     public Long getApplication() {

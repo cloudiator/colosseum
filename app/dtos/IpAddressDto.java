@@ -42,18 +42,18 @@ public class IpAddressDto extends ValidatableDto {
         super();
     }
 
+    public IpAddressDto(String ip, IpType ipType, Long virtualMachine) {
+        this.ip = ip;
+        this.ipType = ipType;
+        this.virtualMachine = virtualMachine;
+    }
+
     @Override public void validation() {
         validator(String.class).validate(ip).withValidator(new NotNullOrEmptyValidator())
             .withValidator(new IpAddressValidator());
         validator(IpType.class).validate(ipType).withValidator(new NotNullValidator());
         validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
-    }
-
-    public IpAddressDto(String ip, IpType ipType, Long virtualMachine) {
-        this.ip = ip;
-        this.ipType = ipType;
-        this.virtualMachine = virtualMachine;
     }
 
     public String getIp() {

@@ -19,12 +19,10 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
-import dtos.ApplicationComponentDto;
 import dtos.ApplicationInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Application;
-import models.ApplicationComponent;
 import models.ApplicationInstance;
 import models.service.api.generic.ModelService;
 

@@ -107,7 +107,7 @@ import java.util.List;
         this.children = children;
     }
 
-    public @Nullable LocationScope getLocationScope() {
+    @Nullable public LocationScope getLocationScope() {
         return locationScope;
     }
 

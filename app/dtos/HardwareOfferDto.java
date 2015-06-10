@@ -32,6 +32,12 @@ public class HardwareOfferDto extends ValidatableDto {
         super();
     }
 
+    public HardwareOfferDto(Integer numberOfCores, Long mbOfRam, Long localDiskSpace) {
+        this.numberOfCores = numberOfCores;
+        this.mbOfRam = mbOfRam;
+        this.localDiskSpace = localDiskSpace;
+    }
+
     @Override public void validation() {
         validator(Integer.class).validate(numberOfCores).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(numberOfCores > 0));
@@ -39,12 +45,6 @@ public class HardwareOfferDto extends ValidatableDto {
             .withValidator(new ExpressionValidator(mbOfRam > 0));
         validator(Long.class).validate(localDiskSpace).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(localDiskSpace > 0));
-    }
-
-    public HardwareOfferDto(Integer numberOfCores, Long mbOfRam, Long localDiskSpace) {
-        this.numberOfCores = numberOfCores;
-        this.mbOfRam = mbOfRam;
-        this.localDiskSpace = localDiskSpace;
     }
 
     public Integer getNumberOfCores() {

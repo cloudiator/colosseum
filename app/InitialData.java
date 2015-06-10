@@ -29,6 +29,7 @@ public class InitialData {
 
     private final FrontendUserService frontendUserService;
     private final ModelService<FrontendGroup> frontendGroupModelService;
+    private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<FrontendGroup> frontendGroupModelService) {
@@ -43,13 +44,13 @@ public class InitialData {
         if (frontendUserService.getAll().isEmpty()) {
             FrontendGroup frontendGroup = null;
             for (FrontendGroup storedFrontendGroup : frontendGroupModelService.getAll()) {
-                if (storedFrontendGroup.getName().equals("admin")) {
+                if (DEFAULT_GROUP.equals(storedFrontendGroup.getName())) {
                     frontendGroup = storedFrontendGroup;
                     break;
                 }
             }
             if (frontendGroup == null) {
-                frontendGroup = new FrontendGroup("admin");
+                frontendGroup = new FrontendGroup(DEFAULT_GROUP);
                 frontendGroupModelService.save(frontendGroup);
             }
 

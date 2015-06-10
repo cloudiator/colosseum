@@ -65,4 +65,16 @@ import java.util.List;
     public void setPort(int port) {
         this.port = port;
     }
+
+    public List<CommunicationChannel> getCommunicationChannels() {
+        return communicationChannels;
+    }
+
+    public void setCommunicationChannels(List<CommunicationChannel> communicationChannels) {
+        this.communicationChannels = communicationChannels;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 }

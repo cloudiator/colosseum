@@ -40,6 +40,12 @@ public class CommunicationChannelDto extends ValidatableDto {
         super();
     }
 
+    public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
+        this.communication = communication;
+        this.provider = provider;
+        this.consumer = consumer;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(communication).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.communicationService.get()));
@@ -47,12 +53,6 @@ public class CommunicationChannelDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.instanceService.get()));
         validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.instanceService.get()));
-    }
-
-    public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
-        this.communication = communication;
-        this.provider = provider;
-        this.consumer = consumer;
     }
 
     public Long getCommunication() {

@@ -68,8 +68,9 @@ public class Global extends GlobalSettings {
 
         //create guice injector
         this.injector = Guice
-            .createInjector(new JPAModule(), new BaseConverterModule(app.classloader()), new DatabaseServiceModule(),
-                new CloudModule(), new SolutionModule(), new JobModule());
+            .createInjector(new JPAModule(), new BaseConverterModule(app.classloader()),
+                new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
+                new JobModule());
 
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
@@ -89,13 +90,6 @@ public class Global extends GlobalSettings {
 
         // register formatters
         this.registerFormatters();
-    }
-
-    /**
-     * On stop hook
-     */
-    public void onStop(Application app) {
-        super.onStop(app);
     }
 
     /**

@@ -80,7 +80,7 @@ public class CommunicationDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<ApplicationComponent>>
+        @Inject private static Provider<ModelService<ApplicationComponent>>
             applicationComponentService;
     }
 }

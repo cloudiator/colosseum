@@ -102,9 +102,9 @@ public class HardwareDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-        @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
-        @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<ModelService<CloudCredential>> cloudCredentialService;
+        @Inject private static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject private static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
     }
 }

@@ -63,8 +63,8 @@ public class CloudCredentialDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Cloud>> cloudService;
 
-        @Inject public static Provider<ModelService<FrontendGroup>> frontendGroupService;
+        @Inject private static Provider<ModelService<FrontendGroup>> frontendGroupService;
     }
 }

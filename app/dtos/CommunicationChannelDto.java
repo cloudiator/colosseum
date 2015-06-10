@@ -81,8 +81,8 @@ public class CommunicationChannelDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<ModelService<Instance>> instanceService;
+        @Inject private static Provider<ModelService<Instance>> instanceService;
 
-        @Inject public static Provider<ModelService<Communication>> communicationService;
+        @Inject private static Provider<ModelService<Communication>> communicationService;
     }
 }

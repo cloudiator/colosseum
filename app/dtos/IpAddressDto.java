@@ -81,6 +81,6 @@ public class IpAddressDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+        @Inject private static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
     }
 }

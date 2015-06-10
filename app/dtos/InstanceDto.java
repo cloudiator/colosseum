@@ -76,10 +76,10 @@ public class InstanceDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<BaseModelService<ApplicationComponent>>
+        @Inject private static Provider<BaseModelService<ApplicationComponent>>
             applicationComponentService;
-        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
-        @Inject public static Provider<BaseModelService<ApplicationInstance>>
+        @Inject private static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+        @Inject private static Provider<BaseModelService<ApplicationInstance>>
             applicationInstanceService;
     }
 }

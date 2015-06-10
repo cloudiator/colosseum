@@ -83,11 +83,11 @@ public class ApplicationComponentDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<BaseModelService<Application>> applicationService;
+        @Inject private static Provider<BaseModelService<Application>> applicationService;
 
-        @Inject public static Provider<BaseModelService<Component>> componentService;
+        @Inject private static Provider<BaseModelService<Component>> componentService;
 
-        @Inject public static Provider<BaseModelService<VirtualMachineTemplate>>
+        @Inject private static Provider<BaseModelService<VirtualMachineTemplate>>
             virtualMachineTemplateService;
     }
 }

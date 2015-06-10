@@ -16,11 +16,11 @@
  * under the License.
  */
 
-package dtos.validation;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
-import dtos.validation.generic.ValidationError;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
+import dtos.validation.ValidationError;
 
 import java.util.Collection;
 import java.util.LinkedList;

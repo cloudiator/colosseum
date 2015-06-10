@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation;
 
 /**
  * Created by daniel on 20.03.15.

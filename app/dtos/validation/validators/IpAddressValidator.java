@@ -16,28 +16,43 @@
  * under the License.
  */
 
-package dtos.validation;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
-import dtos.validation.generic.ValidationError;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
+import dtos.validation.ValidationError;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
-public class IpV6AddressValidator implements Validator<String> {
+public class IpAddressValidator implements Validator<String> {
 
-    private final static String IPV6Regex =
-        "^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]).){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))$";
+    private final List<Validator<String>> ipValidators;
+
+    public IpAddressValidator() {
+        this.ipValidators = new ArrayList<>(2);
+        ipValidators.add(new IpV4AddressValidator());
+        ipValidators.add(new IpV6AddressValidator());
+    }
 
     @Override public Collection<ValidationError> validate(String s) throws ValidationException {
         if (s == null) {
             throw new ValidationException("Given ip address must not be null.");
         }
+
+        boolean isValid = false;
+        for (Validator<String> ipValidator : ipValidators) {
+            if (ipValidator.validate(s).isEmpty()) {
+                isValid = true;
+            }
+        }
+
         Collection<ValidationError> validationErrors = new LinkedList<>();
-        if (!s.matches(IPV6Regex)) {
+        if (!isValid) {
             validationErrors
-                .add(ValidationError.of(String.format("%s is not a valid ipv6 address", s)));
+                .add(ValidationError.of(String.format("%s is not a valid ip address", s)));
         }
         return validationErrors;
     }

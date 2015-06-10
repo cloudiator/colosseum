@@ -16,12 +16,7 @@
  * under the License.
  */
 
-package dtos.validation.generic;
-
-import dtos.validation.api.ReferenceValidator;
-import dtos.validation.api.ValidateBuilder;
-import dtos.validation.api.Validator;
-import dtos.validation.api.ValidatorBuilder;
+package dtos.validation;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;

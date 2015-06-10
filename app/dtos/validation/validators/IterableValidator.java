@@ -16,36 +16,37 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
+import dtos.validation.ValidationError;
 
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 20.03.15.
+ * Created by daniel on 19.03.15.
  */
-public abstract class AbstractValidator<T> implements Validator<T> {
+public class IterableValidator<T> implements Validator<Iterable<T>> {
 
-    private Collection<ValidationError> validationErrors;
+    private Validator<T> validator;
 
-    public AbstractValidator() {
-
+    public IterableValidator(Validator<T> tValidator) {
+        this.validator = tValidator;
     }
 
-    protected void addError(ValidationError validationError) {
-        this.validationErrors.add(validationError);
-    }
+    @Override public Collection<ValidationError> validate(Iterable<T> ts)
+        throws ValidationException {
 
-    protected abstract void validation(T t) throws ValidationException;
+        checkNotNull(ts);
 
-    @Override public Collection<ValidationError> validate(T t) throws ValidationException {
-        this.validationErrors = new LinkedList<>();
-        this.validation(t);
-        return validationErrors;
+        Collection<ValidationError> validationErrorList = new LinkedList<>();
+        for (T t : ts) {
+            validationErrorList.addAll(this.validator.validate(t));
+        }
+        return validationErrorList;
     }
 }

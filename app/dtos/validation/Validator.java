@@ -16,32 +16,14 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation;
 
-import dtos.validation.api.ReferenceValidator;
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
 
-import javax.annotation.Nullable;
 import java.util.Collection;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
- * Created by daniel on 20.03.15.
+ * Created by daniel on 13.03.15.
  */
-public class GenericReferenceValidator<T> implements ReferenceValidator {
-
-    private final Validator<T> validator;
-    @Nullable private final T t;
-
-    public GenericReferenceValidator(@Nullable T t, Validator<T> validator) {
-        checkNotNull(validator);
-        this.validator = validator;
-        this.t = t;
-    }
-
-    @Override public Collection<ValidationError> validate() throws ValidationException {
-        return this.validator.validate(t);
-    }
+public interface Validator<T> {
+    public Collection<ValidationError> validate(T t) throws ValidationException;
 }

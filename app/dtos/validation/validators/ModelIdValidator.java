@@ -16,11 +16,11 @@
  * under the License.
  */
 
-package dtos.validation;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.generic.AbstractValidator;
-import dtos.validation.generic.ValidationError;
+import dtos.validation.ValidationException;
+import dtos.validation.AbstractValidator;
+import dtos.validation.ValidationError;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
 

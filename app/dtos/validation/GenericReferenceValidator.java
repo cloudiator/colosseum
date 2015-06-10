@@ -18,24 +18,26 @@
 
 package dtos.validation;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.generic.AbstractValidator;
-import dtos.validation.generic.ValidationError;
+import javax.annotation.Nullable;
+import java.util.Collection;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 14.04.15.
+ * Created by daniel on 20.03.15.
  */
-public class ExpressionValidator extends AbstractValidator<Object> {
+public class GenericReferenceValidator<T> implements ReferenceValidator {
 
-    private boolean expression;
+    private final Validator<T> validator;
+    @Nullable private final T t;
 
-    public ExpressionValidator(boolean expression) {
-        this.expression = expression;
+    public GenericReferenceValidator(@Nullable T t, Validator<T> validator) {
+        checkNotNull(validator);
+        this.validator = validator;
+        this.t = t;
     }
 
-    @Override protected void validation(Object o) throws ValidationException {
-        if (!expression) {
-            addError(ValidationError.of("The expression did not match."));
-        }
+    @Override public Collection<ValidationError> validate() throws ValidationException {
+        return this.validator.validate(t);
     }
 }

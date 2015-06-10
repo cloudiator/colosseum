@@ -16,35 +16,20 @@
  * under the License.
  */
 
-package dtos;
+package dtos.validation.validators;
 
-import dtos.generic.ValidatableDto;
-import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.ValidationException;
+import dtos.validation.AbstractValidator;
+import dtos.validation.ValidationError;
 
 /**
- * Created by daniel seybold on 16.12.2014.
+ * Created by daniel on 13.03.15.
  */
-public class ApplicationDto extends ValidatableDto {
+public class NotNullValidator extends AbstractValidator<Object> {
 
-    private String name;
-
-    public ApplicationDto() {
-        super();
-    }
-
-    public ApplicationDto(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override public void validation() {
-        validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
+    @Override protected void validation(Object o) throws ValidationException {
+        if (o == null) {
+            addError(ValidationError.of("This field is required."));
+        }
     }
 }

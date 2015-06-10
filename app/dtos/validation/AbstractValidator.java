@@ -16,14 +16,33 @@
  * under the License.
  */
 
-package dtos.validation.api;
+package dtos.validation;
+
+import java.util.Collection;
+import java.util.LinkedList;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 20.03.15.
  */
-public interface ValidateBuilder<T> {
+public abstract class AbstractValidator<T> implements Validator<T> {
 
-    public ValidatorBuilder<T> validate(T t);
+    private Collection<ValidationError> validationErrors;
 
+    public AbstractValidator() {
 
+    }
+
+    protected void addError(ValidationError validationError) {
+        this.validationErrors.add(validationError);
+    }
+
+    protected abstract void validation(T t) throws ValidationException;
+
+    @Override public Collection<ValidationError> validate(T t) throws ValidationException {
+        this.validationErrors = new LinkedList<>();
+        this.validation(t);
+        return validationErrors;
+    }
 }

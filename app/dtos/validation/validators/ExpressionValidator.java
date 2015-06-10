@@ -16,20 +16,26 @@
  * under the License.
  */
 
-package dtos.validation;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.generic.AbstractValidator;
-import dtos.validation.generic.ValidationError;
+import dtos.validation.ValidationException;
+import dtos.validation.AbstractValidator;
+import dtos.validation.ValidationError;
 
 /**
- * Created by daniel on 19.03.15.
+ * Created by daniel on 14.04.15.
  */
-public class NotNullOrEmptyValidator extends AbstractValidator<String> {
+public class ExpressionValidator extends AbstractValidator<Object> {
 
-    @Override protected void validation(String s) throws ValidationException {
-        if (s == null || s.isEmpty()) {
-            addError(ValidationError.of("The given value must not be empty."));
+    private boolean expression;
+
+    public ExpressionValidator(boolean expression) {
+        this.expression = expression;
+    }
+
+    @Override protected void validation(Object o) throws ValidationException {
+        if (!expression) {
+            addError(ValidationError.of("The expression did not match."));
         }
     }
 }

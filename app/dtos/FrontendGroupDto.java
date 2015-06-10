@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IterableValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
 import models.FrontendUser;
 import models.service.api.generic.ModelService;
 

@@ -16,17 +16,13 @@
  * under the License.
  */
 
-package dtos.validation.api;
-
-import dtos.validation.generic.ValidationError;
-
-import java.util.Collection;
+package dtos.validation;
 
 /**
  * Created by daniel on 20.03.15.
  */
-public interface ReferenceValidator {
+public interface ValidatorBuilder<T> {
 
-    public Collection<ValidationError> validate() throws ValidationException;
+    public ValidatorBuilder<T> withValidator(Validator<? super T> validator);
 
 }

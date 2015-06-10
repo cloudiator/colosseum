@@ -18,9 +18,10 @@
 
 package dtos.validation.validators;
 
+
+import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
-import dtos.validation.ValidationError;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -38,15 +39,16 @@ public class IpV4AddressValidator implements Validator<String> {
     private final static String IPV4Regex =
         "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
-    @Override public Collection<ValidationError> validate(String s) throws ValidationException {
+    @Override public Collection<ValidationErrorMessage> validate(String s)
+        throws ValidationException {
         if (s == null) {
             throw new ValidationException("Given ip address must not be null.");
         }
-        Collection<ValidationError> validationErrors = new LinkedList<>();
+        Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
         if (!s.matches(IPV4Regex)) {
-            validationErrors
-                .add(ValidationError.of(String.format("%s is not a valid ipv4 address", s)));
+            validationErrorMessages
+                .add(ValidationErrorMessage.of(String.format("%s is not a valid ipv4 address", s)));
         }
-        return validationErrors;
+        return validationErrorMessages;
     }
 }

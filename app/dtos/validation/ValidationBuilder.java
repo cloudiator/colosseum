@@ -29,11 +29,17 @@ import java.util.List;
 public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilder<S> {
 
     @Nullable private S s;
+    @Nullable private String field;
     private List<Validator<? super S>> validators = new LinkedList<>();
 
     @Override public ValidatorBuilder<S> validate(@Nullable S s) {
         this.s = s;
         return this;
+    }
+
+    @Override public ValidateBuilder<S> validate(S s, String field) {
+        this.s = s;
+        this.field = field;
     }
 
     @Override public ValidatorBuilder<S> withValidator(Validator<? super S> validator) {
@@ -44,7 +50,7 @@ public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilde
     public List<ReferenceValidator> build() {
         List<ReferenceValidator> referenceValidators = new ArrayList<>(validators.size());
         for (Validator<? super S> validator : validators) {
-            referenceValidators.add(new GenericReferenceValidator<>(s, validator));
+            referenceValidators.add(new GenericReferenceValidator<>(field, s, validator));
         }
         return referenceValidators;
     }

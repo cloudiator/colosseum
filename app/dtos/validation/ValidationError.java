@@ -23,8 +23,6 @@ package dtos.validation;
  */
 public class ValidationError {
 
-    private static final String DEFAULT_FIELD = "Unknown";
-
     private final String message;
     private final String field;
 
@@ -35,10 +33,6 @@ public class ValidationError {
 
     public static ValidationError of(String field, String message) {
         return new ValidationError(field, message);
-    }
-
-    public static ValidationError of(String message) {
-        return new ValidationError(DEFAULT_FIELD, message);
     }
 
     public static ValidationError of(String field, ValidationError validationError) {

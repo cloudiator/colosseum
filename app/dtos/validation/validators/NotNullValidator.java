@@ -18,9 +18,11 @@
 
 package dtos.validation.validators;
 
-import dtos.validation.ValidationException;
+
+
 import dtos.validation.AbstractValidator;
-import dtos.validation.ValidationError;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
 
 /**
  * Created by daniel on 13.03.15.
@@ -29,7 +31,7 @@ public class NotNullValidator extends AbstractValidator<Object> {
 
     @Override protected void validation(Object o) throws ValidationException {
         if (o == null) {
-            addError(ValidationError.of("This field is required."));
+            addError(ValidationErrorMessage.of("This field is required."));
         }
     }
 }

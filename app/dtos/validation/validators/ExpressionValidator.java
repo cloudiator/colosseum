@@ -18,9 +18,11 @@
 
 package dtos.validation.validators;
 
-import dtos.validation.ValidationException;
+
 import dtos.validation.AbstractValidator;
-import dtos.validation.ValidationError;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
+
 
 /**
  * Created by daniel on 14.04.15.
@@ -35,7 +37,7 @@ public class ExpressionValidator extends AbstractValidator<Object> {
 
     @Override protected void validation(Object o) throws ValidationException {
         if (!expression) {
-            addError(ValidationError.of("The expression did not match."));
+            addError(ValidationErrorMessage.of("The expression did not match."));
         }
     }
 }

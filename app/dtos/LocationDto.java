@@ -137,4 +137,9 @@ public class LocationDto extends ValidatableDto {
     public void setCloudCredentials(List<Long> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
     }
+<<<<<<< HEAD
+
+
+=======
+>>>>>>> 81f7630461056e7de18367449ad5862d8fbebd18
 }

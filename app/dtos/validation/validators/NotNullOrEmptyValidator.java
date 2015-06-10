@@ -18,9 +18,10 @@
 
 package dtos.validation.validators;
 
-import dtos.validation.ValidationException;
+
 import dtos.validation.AbstractValidator;
-import dtos.validation.ValidationError;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
 
 /**
  * Created by daniel on 19.03.15.
@@ -29,7 +30,7 @@ public class NotNullOrEmptyValidator extends AbstractValidator<String> {
 
     @Override protected void validation(String s) throws ValidationException {
         if (s == null || s.isEmpty()) {
-            addError(ValidationError.of("The given value must not be empty."));
+            addError(ValidationErrorMessage.of("The given value must not be empty."));
         }
     }
 }

@@ -23,7 +23,9 @@ package dtos.validation;
  */
 public interface ValidateBuilder<T> {
 
-    public ValidatorBuilder<T> validate(T t);
+    ValidatorBuilder<T> validate(T t);
+
+    ValidateBuilder<T> validate(T t, String field);
 
 
 }

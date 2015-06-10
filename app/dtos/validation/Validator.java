@@ -25,5 +25,7 @@ import java.util.Collection;
  * Created by daniel on 13.03.15.
  */
 public interface Validator<T> {
-    public Collection<ValidationError> validate(T t) throws ValidationException;
+
+    Collection<ValidationErrorMessage> validate(T t) throws ValidationException;
+
 }

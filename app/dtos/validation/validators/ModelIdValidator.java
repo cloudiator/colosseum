@@ -18,9 +18,9 @@
 
 package dtos.validation.validators;
 
-import dtos.validation.ValidationException;
 import dtos.validation.AbstractValidator;
-import dtos.validation.ValidationError;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
 
@@ -42,8 +42,8 @@ public class ModelIdValidator<T extends Model> extends AbstractValidator<Long> {
             return;
         }
         if (modelService.getById(id) == null) {
-            this.addError(
-                ValidationError.of(String.format("Could not find the Model with id %s.", id)));
+            this.addError(ValidationErrorMessage
+                .of(String.format("Could not find the Model with id %s.", id)));
         }
     }
 }

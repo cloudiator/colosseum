@@ -18,9 +18,10 @@
 
 package dtos.validation.validators;
 
+
+import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
-import dtos.validation.ValidationError;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +38,8 @@ public class IpAddressValidator implements Validator<String> {
         ipValidators.add(new IpV6AddressValidator());
     }
 
-    @Override public Collection<ValidationError> validate(String s) throws ValidationException {
+    @Override public Collection<ValidationErrorMessage> validate(String s)
+        throws ValidationException {
         if (s == null) {
             throw new ValidationException("Given ip address must not be null.");
         }
@@ -49,11 +51,11 @@ public class IpAddressValidator implements Validator<String> {
             }
         }
 
-        Collection<ValidationError> validationErrors = new LinkedList<>();
+        Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
         if (!isValid) {
-            validationErrors
-                .add(ValidationError.of(String.format("%s is not a valid ip address", s)));
+            validationErrorMessages
+                .add(ValidationErrorMessage.of(String.format("%s is not a valid ip address", s)));
         }
-        return validationErrors;
+        return validationErrorMessages;
     }
 }

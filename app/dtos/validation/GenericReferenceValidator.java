@@ -28,13 +28,23 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class GenericReferenceValidator<T> implements ReferenceValidator {
 
+    private static final String DEFAULT_FIELD = "Unknown";
+
+    private final String field;
     private final Validator<T> validator;
     @Nullable private final T t;
 
-    public GenericReferenceValidator(@Nullable T t, Validator<T> validator) {
+    public GenericReferenceValidator(@Nullable String field, @Nullable T value, Validator<T> validator) {
+
         checkNotNull(validator);
+
+        if(field == null || field.isEmpty()) {
+            this.field = DEFAULT_FIELD;
+        } else {
+            this.field = field;
+        }
         this.validator = validator;
-        this.t = t;
+        this.t = value;
     }
 
     @Override public Collection<ValidationError> validate() throws ValidationException {

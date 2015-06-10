@@ -25,6 +25,6 @@ import java.util.Collection;
  */
 public interface ReferenceValidator {
 
-    public Collection<ValidationError> validate() throws ValidationException;
+    Collection<ValidationError> validate() throws ValidationException;
 
 }

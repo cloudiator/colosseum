@@ -72,10 +72,10 @@ public class OperatingSystemDto extends ValidatableDto {
 
     public static class References {
 
-        private References() {
-        }
-
         @Inject private static Provider<ModelService<OperatingSystemVendor>>
             operatingSystemVendorValidator;
+
+        private References() {
+        }
     }
 }

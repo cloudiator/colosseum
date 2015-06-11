@@ -111,12 +111,12 @@ public class ImageDto extends ValidatableDto {
 
     public static class References {
 
-        private References() {
-        }
-
         @Inject private static Provider<ModelService<Cloud>> cloudService;
         @Inject private static Provider<ModelService<Location>> locationService;
         @Inject private static Provider<ModelService<OperatingSystem>> operatingSystemService;
         @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
+
+        private References() {
+        }
     }
 }

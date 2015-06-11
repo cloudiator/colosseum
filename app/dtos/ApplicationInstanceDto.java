@@ -37,10 +37,10 @@ public class ApplicationInstanceDto extends ValidatableDto {
 
     public static class References {
 
+        @Inject private static Provider<BaseModelService<Application>> applicationService;
+
         private References() {
         }
-
-        @Inject private static Provider<BaseModelService<Application>> applicationService;
     }
 
 }

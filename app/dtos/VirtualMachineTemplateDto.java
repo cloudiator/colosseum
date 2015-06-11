@@ -94,16 +94,13 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public static class References {
 
+        @Inject private static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Image>> imageService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<Hardware>> hardwareService;
+
         private References() {
         }
-
-        @Inject private static Provider<ModelService<Cloud>> cloudService;
-
-        @Inject private static Provider<ModelService<Image>> imageService;
-
-        @Inject private static Provider<ModelService<Location>> locationService;
-
-        @Inject private static Provider<ModelService<Hardware>> hardwareService;
     }
 
 }

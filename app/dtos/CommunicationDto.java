@@ -81,10 +81,10 @@ public class CommunicationDto extends ValidatableDto {
 
     public static class References {
 
-        private References() {
-        }
-
         @Inject private static Provider<ModelService<ApplicationComponent>>
             applicationComponentService;
+
+        private References() {
+        }
     }
 }

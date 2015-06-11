@@ -71,9 +71,9 @@ public class FrontendGroupDto extends ValidatableDto {
 
     public static class References {
 
+        @Inject private static Provider<ModelService<FrontendUser>> frontendUserService;
+
         private References() {
         }
-
-        @Inject private static Provider<ModelService<FrontendUser>> frontendUserService;
     }
 }

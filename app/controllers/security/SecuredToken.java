@@ -97,9 +97,7 @@ public class SecuredToken extends Security.Authenticator {
 
 
     public static class References {
-
-        @Inject public static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
-
-        @Inject public static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
+        @Inject private static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
+        @Inject private static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
     }
 }

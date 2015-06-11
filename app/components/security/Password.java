@@ -44,15 +44,15 @@ public class Password {
     /**
      * Iterations for pbkdef2
      */
-    private static final int iterations = 10 * 1024;
+    private static final int ITERATIONS = 10 * 1024;
     /**
      * length of the generated salt
      */
-    private static final int saltLength = 32;
+    private static final int SALT_LENGTH = 32;
     /**
      * key length for pbkdef2
      */
-    private static final int desiredKeyLength = 512;
+    private static final int DESIRED_KEY_LENGTH = 512;
     /**
      * Instance of the class (singleton)
      */
@@ -93,7 +93,7 @@ public class Password {
      * @return the generated salt.
      */
     public byte[] generateSalt() {
-        byte[] salt = new byte[saltLength];
+        byte[] salt = new byte[SALT_LENGTH];
         random.nextBytes(salt);
         return salt;
     }
@@ -123,7 +123,7 @@ public class Password {
         try {
             SecretKeyFactory f = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
             SecretKey key =
-                f.generateSecret(new PBEKeySpec(password, salt, iterations, desiredKeyLength));
+                f.generateSecret(new PBEKeySpec(password, salt, ITERATIONS, DESIRED_KEY_LENGTH));
             return Base64.encodeBase64String(key.getEncoded()).toCharArray();
         } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
             Logger.error("Problem during password hashing", e);

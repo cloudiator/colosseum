@@ -27,7 +27,7 @@ import javax.persistence.*;
  */
 @Entity public class ApiAccessToken extends Model {
 
-    private static final long VALIDITY = 5 * 60 * 1000;
+    private static final long VALIDITY = (long) 5 * 60 * 1000;
 
     @Column(nullable = false) private long createdOn;
 

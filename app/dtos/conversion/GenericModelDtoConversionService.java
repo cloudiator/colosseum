@@ -100,7 +100,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * A storage for the registered converters.
      */
-    final static class Converters {
+    static final class Converters {
 
         /**
          * A table storing the different converters.

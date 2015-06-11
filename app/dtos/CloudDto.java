@@ -75,6 +75,10 @@ public class CloudDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<Api>> apiService;
+
+        @Inject private static Provider<ModelService<Api>> apiService;
+
+        private References() {
+        }
     }
 }

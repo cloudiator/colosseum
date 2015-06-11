@@ -41,6 +41,12 @@ public class ApplicationComponentDto extends ValidatableDto {
         super();
     }
 
+    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate) {
+        this.application = application;
+        this.component = component;
+        this.virtualMachineTemplate = virtualMachineTemplate;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(this.application).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.applicationService.get()));
@@ -49,12 +55,6 @@ public class ApplicationComponentDto extends ValidatableDto {
         validator(Long.class).validate(this.virtualMachineTemplate)
             .withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.virtualMachineTemplateService.get()));
-    }
-
-    public ApplicationComponentDto(Long application, Long component, Long virtualMachineTemplate) {
-        this.application = application;
-        this.component = component;
-        this.virtualMachineTemplate = virtualMachineTemplate;
     }
 
     public Long getApplication() {
@@ -83,11 +83,12 @@ public class ApplicationComponentDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<BaseModelService<Application>> applicationService;
-
-        @Inject public static Provider<BaseModelService<Component>> componentService;
-
-        @Inject public static Provider<BaseModelService<VirtualMachineTemplate>>
+        @Inject private static Provider<BaseModelService<Application>> applicationService;
+        @Inject private static Provider<BaseModelService<Component>> componentService;
+        @Inject private static Provider<BaseModelService<VirtualMachineTemplate>>
             virtualMachineTemplateService;
+
+        private References() {
+        }
     }
 }

@@ -23,6 +23,6 @@ package dtos.validation;
  */
 public interface ValidatorBuilder<T> {
 
-    public ValidatorBuilder<T> withValidator(Validator<? super T> validator);
+    ValidatorBuilder<T> withValidator(Validator<? super T> validator);
 
 }

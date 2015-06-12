@@ -19,8 +19,10 @@
 package dtos.validation;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.Collection;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -28,26 +30,32 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class GenericReferenceValidator<T> implements ReferenceValidator {
 
-    private static final String DEFAULT_FIELD = "Unknown";
-
     private final String field;
     private final Validator<T> validator;
     @Nullable private final T t;
 
-    public GenericReferenceValidator(@Nullable String field, @Nullable T value, Validator<T> validator) {
+    public GenericReferenceValidator(@Nullable String field, @Nullable T value,
+        Validator<T> validator) {
 
         checkNotNull(validator);
-
-        if(field == null || field.isEmpty()) {
-            this.field = DEFAULT_FIELD;
-        } else {
-            this.field = field;
+        if (field != null) {
+            checkArgument(!field.isEmpty());
         }
+
+        this.field = field;
         this.validator = validator;
         this.t = value;
     }
 
     @Override public Collection<ValidationError> validate() throws ValidationException {
-        return this.validator.validate(t);
+        Collection<ValidationErrorMessage> validationErrorMessages = this.validator.validate(t);
+        Collection<ValidationError> validationErrors =
+            new ArrayList<>(validationErrorMessages.size());
+
+        for (ValidationErrorMessage validationErrorMessage : validationErrorMessages) {
+            validationErrors.add(ValidationError.of(field, validationErrorMessage));
+        }
+
+        return validationErrors;
     }
 }

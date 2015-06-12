@@ -37,9 +37,10 @@ public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilde
         return this;
     }
 
-    @Override public ValidateBuilder<S> validate(S s, String field) {
+    @Override public ValidatorBuilder<S> validate(@Nullable S s, String field) {
         this.s = s;
         this.field = field;
+        return this;
     }
 
     @Override public ValidatorBuilder<S> withValidator(Validator<? super S> validator) {

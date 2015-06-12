@@ -18,14 +18,16 @@
 
 package dtos.validation;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 20.03.15.
  */
 public interface ValidateBuilder<T> {
 
-    ValidatorBuilder<T> validate(T t);
+    ValidatorBuilder<T> validate(@Nullable T t);
 
-    ValidateBuilder<T> validate(T t, String field);
+    ValidatorBuilder<T> validate(@Nullable T t, @Nullable String field);
 
 
 }

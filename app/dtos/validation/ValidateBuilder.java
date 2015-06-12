@@ -16,16 +16,18 @@
  * under the License.
  */
 
-package dtos.validation.api;
+package dtos.validation;
 
-
-import dtos.validation.generic.ValidationError;
-
-import java.util.Collection;
+import javax.annotation.Nullable;
 
 /**
- * Created by daniel on 13.03.15.
+ * Created by daniel on 20.03.15.
  */
-public interface Validator<T> {
-    public Collection<ValidationError> validate(T t) throws ValidationException;
+public interface ValidateBuilder<T> {
+
+    ValidatorBuilder<T> validate(@Nullable T t);
+
+    ValidatorBuilder<T> validate(@Nullable T t, @Nullable String field);
+
+
 }

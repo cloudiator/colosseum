@@ -16,14 +16,21 @@
  * under the License.
  */
 
-package dtos.validation.api;
+package dtos.validation.validators;
+
+
+import dtos.validation.AbstractValidator;
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
 
 /**
- * Created by daniel on 20.03.15.
+ * Created by daniel on 19.03.15.
  */
-public interface ValidateBuilder<T> {
+public class NotNullOrEmptyValidator extends AbstractValidator<String> {
 
-    public ValidatorBuilder<T> validate(T t);
-
-
+    @Override protected void validation(String s) throws ValidationException {
+        if (s == null || s.isEmpty()) {
+            addError(ValidationErrorMessage.of("The given value must not be empty."));
+        }
+    }
 }

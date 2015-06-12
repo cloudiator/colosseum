@@ -22,11 +22,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IterableValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
+import models.CloudCredential;
 import models.HardwareOffer;
 import models.Location;
 import models.service.api.generic.ModelService;
@@ -40,6 +41,7 @@ public class HardwareDto extends ValidatableDto {
     private Long hardwareOffer;
     private String cloudUuid;
     private List<Long> locations;
+    private List<Long> cloudCredentials;
 
     public HardwareDto() {
         super();
@@ -54,6 +56,9 @@ public class HardwareDto extends ValidatableDto {
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(cloudCredentials).withValidator(new IterableValidator<>(
+            new ModelIdValidator<>(References.cloudCredentialService.get())));
     }
 
     public Long getCloud() {
@@ -88,9 +93,22 @@ public class HardwareDto extends ValidatableDto {
         this.locations = locations;
     }
 
+    public List<Long> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<Long> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
     public static class References {
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-        @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
-        @Inject public static Provider<ModelService<Location>> locationService;
+
+        @Inject private static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject private static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
+
+        private References() {
+        }
     }
 }

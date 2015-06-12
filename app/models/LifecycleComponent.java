@@ -43,7 +43,7 @@ import javax.persistence.Entity;
     /**
      * Empty constructor for hibernate.
      */
-    private LifecycleComponent() {
+    protected LifecycleComponent() {
     }
 
     public LifecycleComponent(@Nullable String init, @Nullable String preInstall,

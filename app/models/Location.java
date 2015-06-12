@@ -54,7 +54,7 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private Location() {
+    protected Location() {
     }
 
     public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,
@@ -107,7 +107,7 @@ import java.util.List;
         this.children = children;
     }
 
-    public @Nullable LocationScope getLocationScope() {
+    @Nullable public LocationScope getLocationScope() {
         return locationScope;
     }
 

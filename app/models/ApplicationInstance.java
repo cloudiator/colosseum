@@ -18,7 +18,7 @@ import java.util.List;
     /**
      * No-args constructor for hibernate.
      */
-    private ApplicationInstance() {
+    protected ApplicationInstance() {
 
     }
 

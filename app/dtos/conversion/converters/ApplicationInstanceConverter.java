@@ -19,25 +19,25 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
-import dtos.ApplicationComponentDto;
+import dtos.ApplicationInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Application;
-import models.ApplicationComponent;
+import models.ApplicationInstance;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 10.04.15.
  */
 public class ApplicationInstanceConverter
-    extends AbstractConverter<ApplicationComponent, ApplicationComponentDto> {
+    extends AbstractConverter<ApplicationInstance, ApplicationInstanceDto> {
 
     private final ModelService<Application> applicationModelService;
 
 
     @Inject
     protected ApplicationInstanceConverter(ModelService<Application> applicationModelService) {
-        super(ApplicationComponent.class, ApplicationComponentDto.class);
+        super(ApplicationInstance.class, ApplicationInstanceDto.class);
         this.applicationModelService = applicationModelService;
     }
 

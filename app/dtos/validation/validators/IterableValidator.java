@@ -16,11 +16,13 @@
  * under the License.
  */
 
-package dtos.validation;
+package dtos.validation.validators;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
-import dtos.validation.generic.ValidationError;
+
+
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -38,15 +40,15 @@ public class IterableValidator<T> implements Validator<Iterable<T>> {
         this.validator = tValidator;
     }
 
-    @Override public Collection<ValidationError> validate(Iterable<T> ts)
+    @Override public Collection<ValidationErrorMessage> validate(Iterable<T> ts)
         throws ValidationException {
 
         checkNotNull(ts);
 
-        Collection<ValidationError> validationErrorList = new LinkedList<>();
+        Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
         for (T t : ts) {
-            validationErrorList.addAll(this.validator.validate(t));
+            validationErrorMessages.addAll(this.validator.validate(t));
         }
-        return validationErrorList;
+        return validationErrorMessages;
     }
 }

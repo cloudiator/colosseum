@@ -36,7 +36,10 @@ A list of all location entities stored in the database.
       "parent":null,
       "locationScope": "REGION",
       "isAssignable":"false",
-      "geoLocation":1      
+      "geoLocation":1,
+      "cloudCredentials": [
+        1
+      ]
    },
    {  
       "links":[  
@@ -50,7 +53,10 @@ A list of all location entities stored in the database.
       "parent":1,
       "locationScope": "ZONE",
       "isAssignable":"true",
-      "geoLocation":1      
+      "geoLocation":1,  
+      "cloudCredentials": [
+        1
+      ]
    }
 ]
 ```
@@ -94,7 +100,10 @@ The location entity identified by the given id.
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1   
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 
@@ -122,6 +131,7 @@ parent           | The parent location (hierachical)
 locationScope    | The scope of the location (REGION,ZONE,HOST)
 isAssignable     | If the location can be assigned to a virtual machine.
 geoLocation      | The id of the geographical location assigned to this offer.
+cloudCredentials | The cloud credentials used to retrieve this location.
 
 ###Request Example
 
@@ -132,7 +142,10 @@ geoLocation      | The id of the geographical location assigned to this offer.
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1 
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 
@@ -165,6 +178,7 @@ parent              | The parent location (hierachical)
 locationScope       | The scope of the location (REGION,ZONE,HOST)
 isAssignable        | If the location can be assigned to a virtual machine.
 geoLocation         | The id of the geographical location assigned to this offer.
+cloudCredentials    | The cloud credentials used to retrieve this location.
 
 ###Request Example 
 ```
@@ -177,7 +191,10 @@ PUT /location/1
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1 
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 

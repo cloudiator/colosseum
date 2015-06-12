@@ -17,9 +17,10 @@
  */
 
 import com.google.inject.Inject;
+import models.FrontendGroup;
 import models.FrontendUser;
 import models.service.api.FrontendUserService;
-import models.service.impl.DefaultFrontendUserService;
+import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 25.11.14.
@@ -27,16 +28,37 @@ import models.service.impl.DefaultFrontendUserService;
 public class InitialData {
 
     private final FrontendUserService frontendUserService;
+    private final ModelService<FrontendGroup> frontendGroupModelService;
+    private static final String DEFAULT_GROUP = "admin";
 
-    @Inject public InitialData(DefaultFrontendUserService frontendUserService) {
+    @Inject public InitialData(FrontendUserService frontendUserService,
+        ModelService<FrontendGroup> frontendGroupModelService) {
         this.frontendUserService = frontendUserService;
+        this.frontendGroupModelService = frontendGroupModelService;
     }
 
     public void loadInitialData() {
+        /**
+         * Creates a default system user and a default group.
+         */
         if (frontendUserService.getAll().isEmpty()) {
+            FrontendGroup frontendGroup = null;
+            for (FrontendGroup storedFrontendGroup : frontendGroupModelService.getAll()) {
+                if (DEFAULT_GROUP.equals(storedFrontendGroup.getName())) {
+                    frontendGroup = storedFrontendGroup;
+                    break;
+                }
+            }
+            if (frontendGroup == null) {
+                frontendGroup = new FrontendGroup(DEFAULT_GROUP);
+                frontendGroupModelService.save(frontendGroup);
+            }
+
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
             frontendUserService.save(frontendUser);
+            frontendGroup.getFrontendUsers().add(frontendUser);
+            frontendGroupModelService.save(frontendGroup);
         }
     }
 }

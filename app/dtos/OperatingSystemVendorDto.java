@@ -19,8 +19,8 @@
 package dtos;
 
 import dtos.generic.ValidatableDto;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.OperatingSystemVendorType;
 
 /**

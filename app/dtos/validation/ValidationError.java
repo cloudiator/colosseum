@@ -16,33 +16,40 @@
  * under the License.
  */
 
-package dtos.validation.generic;
+package dtos.validation;
+
+import javax.annotation.Nullable;
+
+import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Created by daniel on 20.03.15.
  */
 public class ValidationError {
 
-    private static final String DEFAULT_FIELD = "Unknown";
+    private static final String DEFAULT_FIELD = "general";
 
     private final String message;
     private final String field;
 
-    private ValidationError(String field, String message) {
+    private ValidationError(@Nullable String field, String message) {
+
+        if (field == null) {
+            this.field = DEFAULT_FIELD;
+        } else {
+            checkArgument(!field.isEmpty());
+            this.field = field;
+        }
         this.message = message;
-        this.field = field;
     }
 
-    public static ValidationError of(String field, String message) {
-        return new ValidationError(field, message);
+    public static ValidationError of(@Nullable String field,
+        ValidationErrorMessage validationErrorMessage) {
+        return new ValidationError(field, validationErrorMessage.getMessage());
     }
 
-    public static ValidationError of(String message) {
-        return new ValidationError(DEFAULT_FIELD, message);
-    }
-
-    public static ValidationError of(String field, ValidationError validationError) {
-        return new ValidationError(field, validationError.message);
+    public static ValidationError of(ValidationErrorMessage validationErrorMessage) {
+        return new ValidationError(null, validationErrorMessage.getMessage());
     }
 
     public play.data.validation.ValidationError toPlayError() {

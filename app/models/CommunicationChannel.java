@@ -35,7 +35,7 @@ import javax.persistence.ManyToOne;
     /**
      * Empty constructor for hibernate.
      */
-    private CommunicationChannel() {
+    protected CommunicationChannel() {
     }
 
     public Communication getCommunication() {

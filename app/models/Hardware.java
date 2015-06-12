@@ -41,7 +41,7 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private Hardware() {
+    protected Hardware() {
     }
 
     public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {

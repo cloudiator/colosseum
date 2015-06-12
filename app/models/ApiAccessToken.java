@@ -27,7 +27,7 @@ import javax.persistence.*;
  */
 @Entity public class ApiAccessToken extends Model {
 
-    private static final long VALIDITY = 5 * 60 * 1000;
+    private static final long VALIDITY = (long) 5 * 60 * 1000;
 
     @Column(nullable = false) private long createdOn;
 
@@ -40,7 +40,7 @@ import javax.persistence.*;
     /**
      * Empty constructor for hibernate.
      */
-    private ApiAccessToken() {
+    protected ApiAccessToken() {
     }
 
     public ApiAccessToken(final FrontendUser frontendUser, final String token) {

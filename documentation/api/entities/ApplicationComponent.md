@@ -7,7 +7,7 @@ An ApplicationComponent represents an entity which is associated with an applica
 and a component.
 ***
 
-## GET /api/applicationComponent
+## GET /api/ac
 
 ### Description
 Returns a list of all application components.
@@ -24,7 +24,7 @@ A list of all application component entities stored in the database.
    {
       "links":[
          {
-            "href":"http://example.com:9000/api/applicationComponent/1",
+            "href":"http://example.com:9000/api/ac/1",
             "rel":"self"
          }
       ],
@@ -35,7 +35,7 @@ A list of all application component entities stored in the database.
    {
       "links":[
          {
-            "href":"http://example.com:9000/api/applicationComponent/2",
+            "href":"http://example.com:9000/api/ac/2",
             "rel":"self"
          }
       ],
@@ -51,7 +51,7 @@ A list of all application component entities stored in the database.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 ***
-## GET /api/applicationComponent/{applicationComponent_id}
+## GET /api/ac/{applicationComponent_id}
 
 ### Description
 Returns the ApplicationComponent entity identified by the given {applicationComponent_id}.
@@ -71,7 +71,7 @@ Shows the selected ApplicationComponent entity.
 {
    "links":[
       {
-         "href":"http://example.com:9000/api/applicationComponent/1",
+         "href":"http://example.com:9000/api/ac/1",
          "rel":"self"
       }
    ],
@@ -87,7 +87,7 @@ Shows the selected ApplicationComponent entity.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 ***
-## POST /api/applicationComponent
+## POST /api/ac
 
 ### Description
 Creates a new ApplicationComponent entity. The new entity will be returned.
@@ -119,7 +119,7 @@ The created entity. See GET /api/applicationComponent/{applicationComponent_id}
 
 ***
 
-## PUT /api/applicationComponent/{applicationComponent_id}
+## PUT /api/ac/{applicationComponent_id}
 
 ### Description
 Updates the ApplicationComponent entity identified by the given id.
@@ -136,7 +136,7 @@ virtualMachineTemplate   | The associated virtual machine template.
 
 ### Request Example
 ```
-PUT /api/applicationComponent/1
+PUT /api/ac/1
 ```
 ```
 {  
@@ -146,7 +146,7 @@ PUT /api/applicationComponent/1
 }
 ```
 ### Response
-The updated entity. See GET /api/applicationComponent/{applicationComponent_id}
+The updated entity. See GET /api/ac/{applicationComponent_id}
 
 ###Response Codes
 **Normal Response Code** 200
@@ -155,7 +155,7 @@ The updated entity. See GET /api/applicationComponent/{applicationComponent_id}
 
 ***
 
-## DELETE /api/applicationComponent/{applicationComponent_id}
+## DELETE /api/ac/{applicationComponent_id}
 
 ### Description
 Deletes the ApplicationComponent entity identified by the given {applicationComponent_id}.

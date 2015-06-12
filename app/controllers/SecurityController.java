@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SecurityController extends Controller {
 
-    private final static Form<LoginDto> loginForm = Form.form(LoginDto.class);
+    private static final Form<LoginDto> loginForm = Form.form(LoginDto.class);
     private final FrontendUserService frontendUserService;
     private final ApiAccessTokenService apiAccessTokenService;
 

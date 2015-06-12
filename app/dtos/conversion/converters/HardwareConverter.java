@@ -23,10 +23,7 @@ import dtos.HardwareDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.Cloud;
-import models.Hardware;
-import models.HardwareOffer;
-import models.Location;
+import models.*;
 import models.service.api.generic.ModelService;
 
 /**
@@ -37,13 +34,16 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<Location> locationModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
 
     @Inject protected HardwareConverter(ModelService<HardwareOffer> hardwareOfferModelService,
-        ModelService<Cloud> cloudModelService, ModelService<Location> locationModelService) {
+        ModelService<Cloud> cloudModelService, ModelService<Location> locationModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
         super(Hardware.class, HardwareDto.class);
         this.hardwareOfferModelService = hardwareOfferModelService;
         this.cloudModelService = cloudModelService;
         this.locationModelService = locationModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Override public void configure() {
@@ -54,5 +54,7 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from("locations").to("locations").withUnsafeTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
+        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

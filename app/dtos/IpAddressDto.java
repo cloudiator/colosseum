@@ -21,10 +21,10 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IpAddressValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.IpAddressValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.IpType;
 import models.VirtualMachine;
 import models.service.impl.generic.BaseModelService;
@@ -42,18 +42,18 @@ public class IpAddressDto extends ValidatableDto {
         super();
     }
 
+    public IpAddressDto(String ip, IpType ipType, Long virtualMachine) {
+        this.ip = ip;
+        this.ipType = ipType;
+        this.virtualMachine = virtualMachine;
+    }
+
     @Override public void validation() {
         validator(String.class).validate(ip).withValidator(new NotNullOrEmptyValidator())
             .withValidator(new IpAddressValidator());
         validator(IpType.class).validate(ipType).withValidator(new NotNullValidator());
         validator(Long.class).validate(virtualMachine).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.virtualMachineService.get()));
-    }
-
-    public IpAddressDto(String ip, IpType ipType, Long virtualMachine) {
-        this.ip = ip;
-        this.ipType = ipType;
-        this.virtualMachine = virtualMachine;
     }
 
     public String getIp() {
@@ -81,6 +81,10 @@ public class IpAddressDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+
+        @Inject private static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+
+        private References() {
+        }
     }
 }

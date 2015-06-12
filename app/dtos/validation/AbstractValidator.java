@@ -16,10 +16,7 @@
  * under the License.
  */
 
-package dtos.validation.generic;
-
-import dtos.validation.api.ValidationException;
-import dtos.validation.api.Validator;
+package dtos.validation;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -31,21 +28,20 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public abstract class AbstractValidator<T> implements Validator<T> {
 
-    private Collection<ValidationError> validationErrors;
+    private Collection<ValidationErrorMessage> validationErrorMessages;
 
     public AbstractValidator() {
-
     }
 
-    protected void addError(ValidationError validationError) {
-        this.validationErrors.add(validationError);
+    protected void addError(ValidationErrorMessage validationErrorMessage) {
+        this.validationErrorMessages.add(validationErrorMessage);
     }
 
     protected abstract void validation(T t) throws ValidationException;
 
-    @Override public Collection<ValidationError> validate(T t) throws ValidationException {
-        this.validationErrors = new LinkedList<>();
+    @Override public Collection<ValidationErrorMessage> validate(T t) throws ValidationException {
+        this.validationErrorMessages = new LinkedList<>();
         this.validation(t);
-        return validationErrors;
+        return validationErrorMessages;
     }
 }

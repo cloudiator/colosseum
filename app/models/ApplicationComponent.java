@@ -46,7 +46,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private ApplicationComponent() {
+    protected ApplicationComponent() {
     }
 
     public Application getApplication() {

@@ -18,18 +18,13 @@
 
 package dtos.validation;
 
-import dtos.validation.api.ValidationException;
-import dtos.validation.generic.AbstractValidator;
-import dtos.validation.generic.ValidationError;
+import java.util.Collection;
 
 /**
- * Created by daniel on 19.03.15.
+ * Created by daniel on 20.03.15.
  */
-public class NotNullOrEmptyValidator extends AbstractValidator<String> {
+public interface ReferenceValidator {
 
-    @Override protected void validation(String s) throws ValidationException {
-        if (s == null || s.isEmpty()) {
-            addError(ValidationError.of("The given value must not be empty."));
-        }
-    }
+    Collection<ValidationError> validate() throws ValidationException;
+
 }

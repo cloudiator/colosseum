@@ -21,8 +21,8 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Communication;
 import models.Instance;
 import models.service.api.generic.ModelService;
@@ -40,6 +40,12 @@ public class CommunicationChannelDto extends ValidatableDto {
         super();
     }
 
+    public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
+        this.communication = communication;
+        this.provider = provider;
+        this.consumer = consumer;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(communication).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.communicationService.get()));
@@ -47,12 +53,6 @@ public class CommunicationChannelDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.instanceService.get()));
         validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.instanceService.get()));
-    }
-
-    public CommunicationChannelDto(Long communication, Long provider, Long consumer) {
-        this.communication = communication;
-        this.provider = provider;
-        this.consumer = consumer;
     }
 
     public Long getCommunication() {
@@ -81,8 +81,10 @@ public class CommunicationChannelDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<ModelService<Instance>> instanceService;
+        @Inject private static Provider<ModelService<Instance>> instanceService;
+        @Inject private static Provider<ModelService<Communication>> communicationService;
 
-        @Inject public static Provider<ModelService<Communication>> communicationService;
+        private References() {
+        }
     }
 }

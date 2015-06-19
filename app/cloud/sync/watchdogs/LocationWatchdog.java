@@ -43,7 +43,7 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
 
                 if (modelLocation == null) {
                     this.report(
-                        new LocationProblems.BaseLocationNotInDatabase((LocationInCloud) location));
+                        new LocationProblems.LocationNotInDatabase((LocationInCloud) location));
                 } else {
                     CloudCredential credentialToSearchFor = null;
                     for (CloudCredential cloudCredential : modelLocation.getCloudCredentials()) {

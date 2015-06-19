@@ -6,7 +6,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Location;
  * Created by daniel on 28.05.15.
  */
 public class LocationInCloud extends AbstractCredentialScopedResource<Location>
-    implements Location, CloudScoped {
+    implements Location {
 
     private final Location location;
 

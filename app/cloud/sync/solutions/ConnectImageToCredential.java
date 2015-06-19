@@ -36,7 +36,7 @@ public class ConnectImageToCredential implements Solution {
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
         ImageInCloudAndLocation imageInCloudAndLocation =
-            ((ImageProblems.ImageMissesCredential) problem).getImageInCloudAndLocation();
+            ((ImageProblems.ImageMissesCredential) problem).getImageInLocation();
         CloudScopedId cloudScopedId =
             CloudScopedId.of(imageInCloudAndLocation.id());
 

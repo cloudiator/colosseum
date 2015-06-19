@@ -1,6 +1,6 @@
 package cloud.sync.problems;
 
-import cloud.LocationInCloud;
+import cloud.resources.LocationInCloud;
 import cloud.sync.Problem;
 
 /**
@@ -45,8 +45,8 @@ public class LocationProblems {
     }
 
 
-    public static class BaseLocationNotInDatabase extends BaseLocationProblem {
-        public BaseLocationNotInDatabase(LocationInCloud locationInCloud) {
+    public static class LocationNotInDatabase extends BaseLocationProblem {
+        public LocationNotInDatabase(LocationInCloud locationInCloud) {
             super(locationInCloud);
         }
     }

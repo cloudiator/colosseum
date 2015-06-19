@@ -33,17 +33,17 @@ public class CreateHardwareInDatabase implements Solution {
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
-        return problem instanceof HardwareProblems.BaseHardwareNotInDatabase;
+        return problem instanceof HardwareProblems.HardwareNotInDatabase;
     }
 
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
-        HardwareProblems.BaseHardwareNotInDatabase baseHardwareNotInDatabase =
-            (HardwareProblems.BaseHardwareNotInDatabase) problem;
+        HardwareProblems.HardwareNotInDatabase hardwareNotInDatabase =
+            (HardwareProblems.HardwareNotInDatabase) problem;
 
         CloudScopedId cloudScopedId = CloudScopedId
-            .of(baseHardwareNotInDatabase.getHardwareInCloudAndLocation().id());
+            .of(hardwareNotInDatabase.getHardwareInLocation().id());
 
         Cloud cloud = cloudModelService.getByUuid(cloudScopedId.cloud());
         if (cloud == null) {
@@ -52,8 +52,8 @@ public class CreateHardwareInDatabase implements Solution {
 
         Hardware hardware = new Hardware(cloudScopedId.baseId(), cloud,
             getHardwareOffer(
-                baseHardwareNotInDatabase.getHardwareInCloudAndLocation().numberOfCores(),
-                baseHardwareNotInDatabase.getHardwareInCloudAndLocation().mbRam(), null));
+                hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
+                hardwareNotInDatabase.getHardwareInLocation().mbRam(), null));
 
         hardwareModelService.save(hardware);
 

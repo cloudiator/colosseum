@@ -6,7 +6,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
  * Created by daniel on 28.05.15.
  */
 public class HardwareInLocation extends AbstractLocationScopedResource<HardwareFlavor>
-    implements HardwareFlavor, LocationScoped {
+    implements HardwareFlavor {
 
     private final HardwareFlavor hardwareFlavor;
 

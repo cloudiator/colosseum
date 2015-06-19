@@ -42,7 +42,7 @@ public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
                         cloudScopedId.baseId(), cloudScopedId.cloud());
 
                 if (modelHardware == null) {
-                    report(new HardwareProblems.BaseHardwareNotInDatabase(
+                    report(new HardwareProblems.HardwareNotInDatabase(
                         (HardwareInCloudAndLocation) hardwareFlavor));
                 } else {
                     CloudCredential credentialToSearchFor = null;

@@ -10,7 +10,7 @@ import java.util.Set;
  * Created by daniel on 28.05.15.
  */
 public class VirtualMachineInLocation extends AbstractLocationScopedResource<VirtualMachine>
-    implements VirtualMachine, CredentialScoped {
+    implements VirtualMachine {
 
     private final VirtualMachine virtualMachine;
 

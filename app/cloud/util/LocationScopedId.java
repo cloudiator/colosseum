@@ -17,7 +17,6 @@ public class LocationScopedId extends CloudScopedId {
     }
 
     @Override public String id() {
-        return cloud() + ScopedIds.DELIMITER + credential() + ScopedIds.DELIMITER + location
-            + ScopedIds.DELIMITER + baseId();
+        return location + ScopedIds.DELIMITER + super.id();
     }
 }

@@ -42,7 +42,7 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
 
                 if (modelImage == null) {
                     report(
-                        new ImageProblems.BaseImageNotInDatabase((ImageInCloudAndLocation) image));
+                        new ImageProblems.ImageNotInDatabase((ImageInCloudAndLocation) image));
                 } else {
                     CloudCredential credentialToSearchFor = null;
                     for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {

@@ -27,21 +27,21 @@ public class CreateLocationInDatabase implements Solution {
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
-        return problem instanceof LocationProblems.BaseLocationNotInDatabase;
+        return problem instanceof LocationProblems.LocationNotInDatabase;
     }
 
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
-        LocationProblems.BaseLocationNotInDatabase baseLocationNotInDatabase =
-            (LocationProblems.BaseLocationNotInDatabase) problem;
+        LocationProblems.LocationNotInDatabase locationNotInDatabase =
+            (LocationProblems.LocationNotInDatabase) problem;
 
         CloudScopedId cloudCredentialLocationId =
-            CloudScopedId.of(baseLocationNotInDatabase.getLocationInCloud().id());
+            CloudScopedId.of(locationNotInDatabase.getLocationInCloud().id());
         Cloud cloud = cloudModelRepository.findByUuid(cloudCredentialLocationId.cloud());
 
         String cloudUuid = cloudCredentialLocationId.baseId();
         Location location = new Location(cloud, cloudUuid, null, null, null,
-            baseLocationNotInDatabase.getLocationInCloud().isAssignable());
+            locationNotInDatabase.getLocationInCloud().isAssignable());
 
         this.locationModelRepository.save(location);
     }

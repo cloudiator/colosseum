@@ -36,7 +36,7 @@ public class ConnectHardwareToLocation implements Solution {
         checkArgument(isSolutionFor(problem));
 
         HardwareInCloudAndLocation hardwareInCloudAndLocation =
-            ((HardwareProblems.HardwareMissesLocation) problem).getHardwareInCloudAndLocation();
+            ((HardwareProblems.HardwareMissesLocation) problem).getHardwareInLocation();
 
         CloudScopedId cloudScopedId =
             CloudScopedId.of(hardwareInCloudAndLocation.id());

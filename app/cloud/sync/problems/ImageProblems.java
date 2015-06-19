@@ -1,6 +1,6 @@
 package cloud.sync.problems;
 
-import cloud.ImageInCloudAndLocation;
+import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,19 +16,19 @@ public class ImageProblems {
 
     private abstract static class BaseImageProblem implements Problem {
 
-        private final ImageInCloudAndLocation imageInCloudAndLocation;
+        private final ImageInLocation imageInLocation;
 
-        public BaseImageProblem(ImageInCloudAndLocation imageInCloudAndLocation) {
-            checkNotNull(imageInCloudAndLocation);
-            this.imageInCloudAndLocation = imageInCloudAndLocation;
+        public BaseImageProblem(ImageInLocation imageInLocation) {
+            checkNotNull(imageInLocation);
+            this.imageInLocation = imageInLocation;
         }
 
         @Override public int getPriority() {
             return Priority.MEDIUM;
         }
 
-        public ImageInCloudAndLocation getImageInCloudAndLocation() {
-            return imageInCloudAndLocation;
+        public ImageInLocation getImageInLocation() {
+            return imageInLocation;
         }
 
         @Override public boolean equals(Object o) {
@@ -39,36 +39,34 @@ public class ImageProblems {
 
             BaseImageProblem that = (BaseImageProblem) o;
 
-            return imageInCloudAndLocation.equals(that.imageInCloudAndLocation);
+            return imageInLocation.equals(that.imageInLocation);
 
         }
 
         @Override public int hashCode() {
-            return imageInCloudAndLocation.hashCode();
+            return imageInLocation.hashCode();
         }
     }
 
 
-    public static class BaseImageNotInDatabase extends BaseImageProblem {
+    public static class ImageNotInDatabase extends BaseImageProblem {
 
-        public BaseImageNotInDatabase(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageNotInDatabase(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 
 
     public static class ImageMissesCredential extends BaseImageProblem {
-
-        public ImageMissesCredential(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageMissesCredential(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 
 
     public static class ImageMissesLocation extends BaseImageProblem {
-
-        public ImageMissesLocation(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageMissesLocation(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 

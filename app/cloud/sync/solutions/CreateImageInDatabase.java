@@ -27,17 +27,17 @@ public class CreateImageInDatabase implements Solution {
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
-        return problem instanceof ImageProblems.BaseImageNotInDatabase;
+        return problem instanceof ImageProblems.ImageNotInDatabase;
     }
 
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
-        ImageProblems.BaseImageNotInDatabase baseImageNotInDatabase =
-            (ImageProblems.BaseImageNotInDatabase) problem;
+        ImageProblems.ImageNotInDatabase imageNotInDatabase =
+            (ImageProblems.ImageNotInDatabase) problem;
 
         CloudScopedId cloudScopedId =
-            CloudScopedId.of(baseImageNotInDatabase.getImageInCloudAndLocation().id());
+            CloudScopedId.of(imageNotInDatabase.getImageInLocation().id());
 
         Cloud cloud = cloudModelService.getByUuid(cloudScopedId.cloud());
         if (cloud == null) {
@@ -45,7 +45,7 @@ public class CreateImageInDatabase implements Solution {
         }
 
         Image image = new Image(cloudScopedId.baseId(),
-            baseImageNotInDatabase.getImageInCloudAndLocation().name(), cloud, null);
+            imageNotInDatabase.getImageInLocation().name(), cloud, null);
         imageModelService.save(image);
     }
 }

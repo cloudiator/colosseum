@@ -55,7 +55,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @param <T> The type of the model the controller uses.
  * @param <U> The type of the DTO the controller uses for get operations (display)
- * @param <V> The type of the DTO the controller uses for post operations (create)
+ * @param <V> The type of the DTO the controller uses for post operations (computeService)
  * @param <W> The type of the DTO the controller uses for put operations (update)
  * @author Daniel Baur
  */

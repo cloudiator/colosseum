@@ -36,7 +36,7 @@ public class ConnectImageToLocation implements Solution {
         checkArgument(isSolutionFor(problem));
 
         ImageInCloudAndLocation imageInCloudAndLocation =
-            ((ImageProblems.ImageMissesLocation) problem).getImageInCloudAndLocation();
+            ((ImageProblems.ImageMissesLocation) problem).getImageInLocation();
 
         CloudScopedId cloudScopedId =
             CloudScopedId.of(imageInCloudAndLocation.id());

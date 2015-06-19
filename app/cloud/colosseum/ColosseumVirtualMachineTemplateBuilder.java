@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package cloud;
+package cloud.colosseum;
 
 import models.*;
 
@@ -163,7 +163,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
     }
 
     public ColosseumVirtualMachineTemplate build() {
-        return new ColosseumVirtualMachineTemplate(cloud, getCloudCredential(), getImage(),
+        return new BaseColosseumVirtualMachineTemplate(cloud, getCloudCredential(), getImage(),
             getHardware(), getLocation());
     }
 

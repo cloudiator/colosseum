@@ -16,9 +16,10 @@
  * under the License.
  */
 
-package cloud;
+package cloud.colosseum;
 
-import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
+import cloud.colosseum.ColosseumVirtualMachineTemplate;
+import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
 import models.*;
 
@@ -28,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.02.15.
  */
-public class ColosseumVirtualMachineTemplate implements VirtualMachineTemplate {
+public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMachineTemplate {
 
     private final Image image;
     private final Hardware hardware;
@@ -36,7 +37,7 @@ public class ColosseumVirtualMachineTemplate implements VirtualMachineTemplate {
     private final Cloud cloud;
     private final CloudCredential cloudCredential;
 
-    ColosseumVirtualMachineTemplate(Cloud cloud, CloudCredential cloudCredential, Image image,
+    BaseColosseumVirtualMachineTemplate(Cloud cloud, CloudCredential cloudCredential, Image image,
         Hardware hardware, Location location) {
 
         // everything needs to be not null.
@@ -87,11 +88,11 @@ public class ColosseumVirtualMachineTemplate implements VirtualMachineTemplate {
         return location.getCloudUuid();
     }
 
-    public String getCloudUuid() {
+    @Override public String getCloudUuid() {
         return cloud.getUuid();
     }
 
-    public String getCloudCredentialUuid() {
+    @Override public String getCloudCredentialUuid() {
         return cloudCredential.getUuid();
     }
 }

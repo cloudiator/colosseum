@@ -1,5 +1,6 @@
 package cloud.sync.solutions;
 
+import cloud.resources.HardwareInLocation;
 import cloud.util.CloudScopedId;
 import cloud.HardwareInCloudAndLocation;
 import cloud.sync.Problem;
@@ -24,7 +25,6 @@ public class ConnectHardwareToCredential implements Solution {
 
     @Inject public ConnectHardwareToCredential(HardwareModelService hardwareModelService,
         ModelService<CloudCredential> cloudCredentialModelService) {
-
         this.hardwareModelService = hardwareModelService;
         this.cloudCredentialModelService = cloudCredentialModelService;
     }
@@ -35,13 +35,11 @@ public class ConnectHardwareToCredential implements Solution {
 
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
-        HardwareInCloudAndLocation hardwareInCloudAndLocation =
-            ((HardwareProblems.HardwareMissesCredential) problem).getHardwareInCloudAndLocation();
-        CloudScopedId scopedId =
-            CloudScopedId.of(hardwareInCloudAndLocation.id());
+        HardwareInLocation hardwareInLocation =
+            ((HardwareProblems.HardwareMissesCredential) problem).getHardwareInLocation();
 
         Hardware modelHardware = hardwareModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(scopedId.baseId(),
+            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(hardwareInLocation.id(),
                 scopedId.cloud());
         CloudCredential cloudCredential =
             cloudCredentialModelService.getByUuid(scopedId.credential());

@@ -16,7 +16,7 @@
  * under the License.
  */
 
-import cloud.CloudModule;
+import cloud.config.CloudModule;
 import cloud.sync.Solver;
 import cloud.sync.config.SolutionModule;
 import cloud.sync.watchdogs.HardwareWatchdog;
@@ -66,7 +66,7 @@ public class Global extends GlobalSettings {
     public void onStart(final Application app) {
         super.onStart(app);
 
-        //create guice injector
+        //computeService guice injector
         this.injector = Guice
             .createInjector(new JPAModule(), new BaseConverterModule(app.classloader()),
                 new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
@@ -95,8 +95,8 @@ public class Global extends GlobalSettings {
     /**
      * Overridden to allow dependency injection with Google Guice.
      *
-     * @param aClass The controller class to create
-     * @param <A>    The controller to create
+     * @param aClass The controller class to computeService
+     * @param <A>    The controller to computeService
      * @return An instance of the given class, with injected dependencies.
      * @throws Exception if creating the controller fails.
      */

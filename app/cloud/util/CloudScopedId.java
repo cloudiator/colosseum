@@ -32,9 +32,8 @@ public class CloudScopedId {
     }
 
     public String id() {
-        return cloud + ScopedIds.DELIMITER + credential + ScopedIds.DELIMITER + baseId;
+        return credential + ScopedIds.DELIMITER + cloud + ScopedIds.DELIMITER + baseId;
     }
-
 
 
 

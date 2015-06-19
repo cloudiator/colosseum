@@ -1,8 +1,8 @@
 package components.job;
 
 import cloud.util.CloudScopedId;
-import cloud.ColosseumVirtualMachineTemplate;
-import cloud.ColosseumVirtualMachineTemplateBuilder;
+import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
+import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.IpAddress;
 import models.IpType;
@@ -22,7 +22,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
     @Override
     protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
         ComputeService computeService) {
-        ColosseumVirtualMachineTemplateBuilder builder = ColosseumVirtualMachineTemplate.builder();
+        ColosseumVirtualMachineTemplateBuilder builder = BaseColosseumVirtualMachineTemplate
+            .builder();
         de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine cloudVirtualMachine =
             computeService
                 .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());

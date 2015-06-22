@@ -18,14 +18,12 @@
 
 package models;
 
-import models.generic.Model;
+import models.generic.RemoteModel;
 
 import javax.persistence.*;
 import java.util.List;
 
-@Entity public class Hardware extends Model {
-
-    @Column(updatable = false) private String cloudUuid;
+@Entity public class Hardware extends RemoteModel {
 
     @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
 
@@ -45,17 +43,9 @@ import java.util.List;
     }
 
     public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
-        this.cloudUuid = cloudUuid;
+        super(cloudUuid);
         this.cloud = cloud;
         this.hardwareOffer = hardwareOffer;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 
     public HardwareOffer getHardwareOffer() {

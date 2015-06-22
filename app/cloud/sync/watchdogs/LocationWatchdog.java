@@ -1,14 +1,13 @@
 package cloud.sync.watchdogs;
 
-import cloud.util.CloudScopedId;
-import cloud.LocationInCloud;
+import cloud.CloudService;
+import cloud.resources.LocationInCloud;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
-import components.execution.SimpleBlockingQueue;
 import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import components.execution.SimpleBlockingQueue;
 import models.CloudCredential;
 import models.Location;
 import models.service.api.LocationModelService;
@@ -20,46 +19,36 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
 
     private final LocationModelService locationModelService;
 
-    @Inject protected LocationWatchdog(ComputeService computeService,
+    @Inject protected LocationWatchdog(CloudService cloudService,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
         LocationModelService locationModelService) {
-        super(computeService, simpleBlockingQueue);
+        super(cloudService, simpleBlockingQueue);
         this.locationModelService = locationModelService;
     }
 
 
 
-    @Override protected void watch(ComputeService computeService) {
+    @Override protected void watch(CloudService cloudService) {
 
-        for (de.uniulm.omi.cloudiator.sword.api.domain.Location location : computeService
-            .listLocations()) {
-            if (location instanceof LocationInCloud) {
-                final CloudScopedId cloudScopedId =
-                    CloudScopedId.of(location.id());
+        for (LocationInCloud location : cloudService.getDiscoveryService().listLocations()) {
+            Location modelLocation = locationModelService.getByRemoteId(location.id());
 
-                Location modelLocation = locationModelService
-                    .getByUuidInCloudAndUuidOfCloud(cloudScopedId.baseId(),
-                        cloudScopedId.cloud());
-
-                if (modelLocation == null) {
-                    this.report(
-                        new LocationProblems.LocationNotInDatabase((LocationInCloud) location));
-                } else {
-                    CloudCredential credentialToSearchFor = null;
-                    for (CloudCredential cloudCredential : modelLocation.getCloudCredentials()) {
-                        if (cloudCredential.getUuid()
-                            .equals(cloudScopedId.credential())) {
-                            credentialToSearchFor = cloudCredential;
-                            break;
-                        }
-                    }
-
-                    if (credentialToSearchFor == null) {
-                        this.report(new LocationProblems.LocationMissesCredential(
-                            (LocationInCloud) location));
+            if (modelLocation == null) {
+                this.report(new LocationProblems.LocationNotInDatabase(location));
+            } else {
+                CloudCredential credentialToSearchFor = null;
+                for (CloudCredential cloudCredential : modelLocation.getCloudCredentials()) {
+                    if (cloudCredential.getUuid().equals(location.credential())) {
+                        credentialToSearchFor = cloudCredential;
+                        break;
                     }
                 }
+
+                if (credentialToSearchFor == null) {
+                    this.report(new LocationProblems.LocationMissesCredential(location));
+                }
             }
+
         }
     }
 

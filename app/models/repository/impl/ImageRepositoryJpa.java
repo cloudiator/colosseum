@@ -22,12 +22,13 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.Image;
 import models.repository.api.ImageRepository;
-import models.repository.impl.generic.BaseModelRepositoryJpa;
+import models.repository.impl.generic.BaseRemoteModelRepositoryJpa;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public class ImageRepositoryJpa extends BaseModelRepositoryJpa<Image> implements ImageRepository {
+public class ImageRepositoryJpa extends BaseRemoteModelRepositoryJpa<Image>
+    implements ImageRepository {
 
     @Inject public ImageRepositoryJpa(TypeLiteral<Image> type) {
         super(type);

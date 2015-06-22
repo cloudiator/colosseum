@@ -20,11 +20,12 @@ package models.service.api;
 
 import models.Location;
 import models.service.api.generic.ModelService;
+import models.service.api.generic.RemoteModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public interface LocationModelService extends ModelService<Location> {
+public interface LocationModelService extends RemoteModelService<Location> {
 
     Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud);
 

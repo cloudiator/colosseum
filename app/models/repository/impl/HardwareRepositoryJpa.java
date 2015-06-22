@@ -22,12 +22,12 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.Hardware;
 import models.repository.api.HardwareRepository;
-import models.repository.impl.generic.BaseModelRepositoryJpa;
+import models.repository.impl.generic.BaseRemoteModelRepositoryJpa;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public class HardwareRepositoryJpa extends BaseModelRepositoryJpa<Hardware>
+public class HardwareRepositoryJpa extends BaseRemoteModelRepositoryJpa<Hardware>
     implements HardwareRepository {
 
     @Inject public HardwareRepositoryJpa(TypeLiteral<Hardware> type) {

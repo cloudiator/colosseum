@@ -1,7 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.util.CloudScopedId;
-import cloud.HardwareInCloudAndLocation;
+import cloud.resources.HardwareInLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -35,22 +34,14 @@ public class ConnectHardwareToLocation implements Solution {
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
-        HardwareInCloudAndLocation hardwareInCloudAndLocation =
+        HardwareInLocation hardwareInLocation =
             ((HardwareProblems.HardwareMissesLocation) problem).getHardwareInLocation();
 
-        CloudScopedId cloudScopedId =
-            CloudScopedId.of(hardwareInCloudAndLocation.id());
-
-        Hardware modelHardware = this.hardwareModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(cloudScopedId.baseId(),
-                cloudScopedId.cloud());
-        Location location = this.locationModelService
-            .getByUuidInCloudAndUuidOfCloud(cloudScopedId.location(),
-                cloudScopedId.cloud());
+        Hardware modelHardware = this.hardwareModelService.getByRemoteId(hardwareInLocation.id());
+        Location location = this.locationModelService.getByRemoteId(hardwareInLocation.location());
         if (modelHardware == null || location == null) {
             throw new SolutionException();
         }
-
         modelHardware.getLocations().add(location);
         hardwareModelService.save(modelHardware);
     }

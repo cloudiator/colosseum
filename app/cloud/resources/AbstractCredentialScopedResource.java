@@ -19,7 +19,6 @@
 package cloud.resources;
 
 
-import cloud.util.CloudScopedId;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
 /**
@@ -30,11 +29,13 @@ public class AbstractCredentialScopedResource<T extends Resource>
 
     private final String cloud;
     private final String credential;
+    private final String id;
     private final T resource;
 
 
     public AbstractCredentialScopedResource(T resource, String cloud, String credential) {
         this.resource = resource;
+        this.id = resource.id();
         this.cloud = cloud;
         this.credential = credential;
     }
@@ -48,7 +49,7 @@ public class AbstractCredentialScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return CloudScopedId.of(resource.id(), cloud, credential).id();
+        return credential + cloud + id;
     }
 
     @Override public String name() {

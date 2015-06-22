@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.KeyPairDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.KeyPair;
 import models.service.api.generic.ModelService;
 

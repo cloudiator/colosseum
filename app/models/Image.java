@@ -18,7 +18,7 @@
 
 package models;
 
-import models.generic.Model;
+import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -27,11 +27,9 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Image extends Model {
+@Entity public class Image extends RemoteModel {
 
     @Nullable @Column(updatable = false, nullable = true) private String name;
-
-    @Column(updatable = false) private String cloudUuid;
 
     @Nullable @ManyToOne(optional = true) private OperatingSystem operatingSystem;
 
@@ -52,26 +50,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public Image(String cloudUuid, @Nullable String name, Cloud cloud,
         @Nullable OperatingSystem operatingSystem) {
-
-        checkNotNull(cloudUuid);
+        super(cloudUuid);
         checkNotNull(cloud);
 
         if (name != null) {
             checkArgument(!name.isEmpty());
         }
 
-        this.cloudUuid = cloudUuid;
+
         this.name = name;
         this.cloud = cloud;
         this.operatingSystem = operatingSystem;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 
     public Cloud getCloud() {

@@ -1,6 +1,7 @@
 package components.job;
 
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import cloud.CloudService;
+import cloud.colosseum.ColosseumComputeService;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
 
@@ -11,11 +12,11 @@ public abstract class GenericJob<T extends Model> implements Job {
 
     private final String resourceUuid;
     private final ModelService<T> modelService;
-    private final ComputeService computeService;
+    private final CloudService cloudService;
     private JobState jobState;
 
-    public GenericJob(T t, ModelService<T> modelService, ComputeService computeService) {
-        this.computeService = computeService;
+    public GenericJob(T t, ModelService<T> modelService, CloudService cloudService) {
+        this.cloudService = cloudService;
         this.resourceUuid = t.getUuid();
         this.modelService = modelService;
     }
@@ -38,10 +39,10 @@ public abstract class GenericJob<T extends Model> implements Job {
 
     @Override public void execute() throws JobException {
         T t = this.modelService.getByUuid(resourceUuid);
-        this.doWork(t, modelService, computeService);
+        this.doWork(t, modelService, cloudService.computeService());
         this.modelService.save(t);
     }
 
-    protected abstract void doWork(T t, ModelService<T> modelService, ComputeService computeService)
-        throws JobException;
+    protected abstract void doWork(T t, ModelService<T> modelService,
+        ColosseumComputeService computeService) throws JobException;
 }

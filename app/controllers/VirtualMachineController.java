@@ -18,6 +18,7 @@
 
 package controllers;
 
+import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import com.google.inject.name.Named;
@@ -25,7 +26,6 @@ import components.execution.SimpleBlockingQueue;
 import components.job.CreateVirtualMachineJob;
 import components.job.Job;
 import controllers.generic.GenericApiController;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.VirtualMachine;
@@ -37,7 +37,7 @@ import models.service.api.generic.ModelService;
 public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
-    private final ComputeService computeService;
+    private final CloudService cloudService;
     private final SimpleBlockingQueue<Job> jobQueue;
 
     /**
@@ -46,15 +46,15 @@ public class VirtualMachineController extends
      * @param modelService      the model service for retrieving the models.
      * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
-     * @param computeService
+     * @param cloudService
      * @param jobQueue
      * @throws NullPointerException if any of the above parameters is null.
      */
     @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
-        ComputeService computeService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
+        CloudService cloudService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
         super(modelService, typeLiteral, conversionService);
-        this.computeService = computeService;
+        this.cloudService = cloudService;
         this.jobQueue = jobQueue;
     }
 
@@ -64,7 +64,7 @@ public class VirtualMachineController extends
 
     @Override protected void postPost(VirtualMachine entity) {
         CreateVirtualMachineJob createVirtualMachineJob =
-            new CreateVirtualMachineJob(entity, getModelService(), computeService);
+            new CreateVirtualMachineJob(entity, getModelService(), cloudService);
         jobQueue.add(createVirtualMachineJob);
     }
 }

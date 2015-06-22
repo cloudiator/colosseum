@@ -1,8 +1,6 @@
 package cloud.sync.solutions;
 
 import cloud.resources.HardwareInLocation;
-import cloud.util.CloudScopedId;
-import cloud.HardwareInCloudAndLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -38,19 +36,15 @@ public class ConnectHardwareToCredential implements Solution {
         HardwareInLocation hardwareInLocation =
             ((HardwareProblems.HardwareMissesCredential) problem).getHardwareInLocation();
 
-        Hardware modelHardware = hardwareModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(hardwareInLocation.id(),
-                scopedId.cloud());
+        Hardware modelHardware = hardwareModelService.getByRemoteId(hardwareInLocation.id());
         CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(scopedId.credential());
+            cloudCredentialModelService.getByUuid(hardwareInLocation.credential());
 
         if (modelHardware == null || cloudCredential == null) {
             throw new SolutionException();
         }
-
         modelHardware.getCloudCredentials().add(cloudCredential);
         hardwareModelService.save(modelHardware);
-
     }
 
 

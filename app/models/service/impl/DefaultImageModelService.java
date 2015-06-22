@@ -20,18 +20,19 @@ package models.service.impl;
 
 import com.google.inject.Inject;
 import models.Image;
-import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 import models.service.api.ImageModelService;
-import models.service.impl.generic.BaseModelService;
+import models.service.impl.generic.BaseRemoteModelService;
 
 import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class DefaultImageModelService extends BaseModelService<Image> implements ImageModelService {
+public class DefaultImageModelService extends BaseRemoteModelService<Image>
+    implements ImageModelService {
 
-    @Inject public DefaultImageModelService(ModelRepository<Image> imageRepository) {
+    @Inject public DefaultImageModelService(RemoteModelRepository<Image> imageRepository) {
         super(imageRepository);
     }
 
@@ -39,7 +40,7 @@ public class DefaultImageModelService extends BaseModelService<Image> implements
     public Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud) {
         for (Image image : getAll()) {
-            if (image.getCloudUuid().equals(cloudUuid) && image.getCloud().getUuid()
+            if (image.getRemoteId().equals(cloudUuid) && image.getCloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return image;
             }

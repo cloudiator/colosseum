@@ -10,9 +10,8 @@ public class HardwareInLocation extends AbstractLocationScopedResource<HardwareF
 
     private final HardwareFlavor hardwareFlavor;
 
-    public HardwareInLocation(HardwareFlavor resource, String cloud, String credential,
-        String location) {
-        super(resource, cloud, credential, location);
+    public HardwareInLocation(HardwareFlavor resource, String cloud, String credential) {
+        super(resource, cloud, credential);
         this.hardwareFlavor = resource;
     }
 

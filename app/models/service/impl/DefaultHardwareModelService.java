@@ -23,13 +23,14 @@ import models.Hardware;
 import models.repository.api.HardwareRepository;
 import models.service.api.HardwareModelService;
 import models.service.impl.generic.BaseModelService;
+import models.service.impl.generic.BaseRemoteModelService;
 
 import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public class DefaultHardwareModelService extends BaseModelService<Hardware>
+public class DefaultHardwareModelService extends BaseRemoteModelService<Hardware>
     implements HardwareModelService {
 
     @Inject public DefaultHardwareModelService(HardwareRepository hardwareRepository) {
@@ -40,7 +41,7 @@ public class DefaultHardwareModelService extends BaseModelService<Hardware>
     public Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud) {
         for (Hardware hardware : getAll()) {
-            if (hardware.getCloudUuid().equals(cloudUuid) && hardware.getCloud().getUuid()
+            if (hardware.getRemoteId().equals(cloudUuid) && hardware.getCloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return hardware;
             }

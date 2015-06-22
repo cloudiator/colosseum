@@ -19,11 +19,11 @@
 package models.repository.api;
 
 import models.Image;
-import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 
 /**
  * Created by daniel on 31.10.14.
  */
-public interface ImageRepository extends ModelRepository<Image> {
+public interface ImageRepository extends RemoteModelRepository<Image> {
 
 }

@@ -19,8 +19,8 @@
 package models.repository.api;
 
 import models.Hardware;
-import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 
-public interface HardwareRepository extends ModelRepository<Hardware> {
+public interface HardwareRepository extends RemoteModelRepository<Hardware> {
 
 }

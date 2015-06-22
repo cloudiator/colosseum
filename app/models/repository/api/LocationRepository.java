@@ -20,10 +20,11 @@ package models.repository.api;
 
 import models.Location;
 import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public interface LocationRepository extends ModelRepository<Location> {
+public interface LocationRepository extends RemoteModelRepository<Location> {
 
 }

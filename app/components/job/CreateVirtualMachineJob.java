@@ -1,9 +1,10 @@
 package components.job;
 
-import cloud.util.CloudScopedId;
+import cloud.CloudService;
 import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
+import cloud.colosseum.ColosseumComputeService;
 import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import cloud.resources.VirtualMachineInLocation;
 import models.IpAddress;
 import models.IpType;
 import models.VirtualMachine;
@@ -15,21 +16,18 @@ import models.service.api.generic.ModelService;
 public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
 
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
-        ModelService<VirtualMachine> modelService, ComputeService computeService) {
-        super(virtualMachine, modelService, computeService);
+        ModelService<VirtualMachine> modelService, CloudService cloudService) {
+        super(virtualMachine, modelService, cloudService);
     }
 
     @Override
     protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
-        ComputeService computeService) {
-        ColosseumVirtualMachineTemplateBuilder builder = BaseColosseumVirtualMachineTemplate
-            .builder();
-        de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine cloudVirtualMachine =
-            computeService
-                .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
-        final CloudScopedId cloudScopedId =
-            CloudScopedId.of(cloudVirtualMachine.id());
-        virtualMachine.setCloudUuid(cloudScopedId.baseId());
+        ColosseumComputeService computeService) {
+        ColosseumVirtualMachineTemplateBuilder builder =
+            BaseColosseumVirtualMachineTemplate.builder();
+        VirtualMachineInLocation cloudVirtualMachine = computeService
+            .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+        virtualMachine.setRemoteId(cloudVirtualMachine.id());
         for (String ip : cloudVirtualMachine.privateAddresses()) {
             virtualMachine.getIpAddresses().add(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
         }

@@ -22,16 +22,15 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.Location;
 import models.repository.api.LocationRepository;
-import models.repository.impl.generic.BaseModelRepositoryJpa;
+import models.repository.impl.generic.BaseRemoteModelRepositoryJpa;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class LocationRepositoryJpa extends BaseModelRepositoryJpa<Location>
+public class LocationRepositoryJpa extends BaseRemoteModelRepositoryJpa<Location>
     implements LocationRepository {
 
-    @Inject
-    public LocationRepositoryJpa(TypeLiteral<Location> type) {
+    @Inject public LocationRepositoryJpa(TypeLiteral<Location> type) {
         super(type);
     }
 }

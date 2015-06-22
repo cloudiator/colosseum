@@ -18,8 +18,6 @@
 
 package cloud.colosseum;
 
-import cloud.colosseum.ColosseumVirtualMachineTemplate;
-import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
 import models.*;
 
@@ -75,17 +73,17 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public String getImageId() {
-        return IdScopeByLocations.from(location.getCloudUuid(), image.getCloudUuid())
+        return IdScopeByLocations.from(location.getRemoteId(), image.getRemoteId())
             .getIdWithLocation();
     }
 
     @Override public String getHardwareFlavorId() {
-        return IdScopeByLocations.from(location.getCloudUuid(), hardware.getCloudUuid())
+        return IdScopeByLocations.from(location.getRemoteId(), hardware.getRemoteId())
             .getIdWithLocation();
     }
 
     @Override public String getLocationId() {
-        return location.getCloudUuid();
+        return location.getRemoteId();
     }
 
     @Override public String getCloudUuid() {

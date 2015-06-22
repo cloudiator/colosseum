@@ -21,22 +21,24 @@ package models.service.impl;
 import com.google.inject.Inject;
 import models.Location;
 import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 import models.service.api.LocationModelService;
 import models.service.impl.generic.BaseModelService;
+import models.service.impl.generic.BaseRemoteModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
  */
-public class DefaultLocationModelService extends BaseModelService<Location>
+public class DefaultLocationModelService extends BaseRemoteModelService<Location>
     implements LocationModelService {
 
-    @Inject public DefaultLocationModelService(ModelRepository<Location> locationRepository) {
+    @Inject public DefaultLocationModelService(RemoteModelRepository<Location> locationRepository) {
         super(locationRepository);
     }
 
     @Override public Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud) {
         for (Location location : getAll()) {
-            if (location.getCloudUuid().equals(cloudUuid) && location.getCloud().getUuid()
+            if (location.getRemoteId().equals(cloudUuid) && location.getCloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return location;
             }

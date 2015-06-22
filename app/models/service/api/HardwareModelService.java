@@ -20,13 +20,14 @@ package models.service.api;
 
 import models.Hardware;
 import models.service.api.generic.ModelService;
+import models.service.api.generic.RemoteModelService;
 
 import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 03.11.14.
  */
-public interface HardwareModelService extends ModelService<Hardware> {
+public interface HardwareModelService extends RemoteModelService<Hardware> {
     @Nullable Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud);
 }

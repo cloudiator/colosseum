@@ -14,9 +14,8 @@ public class VirtualMachineInLocation extends AbstractLocationScopedResource<Vir
 
     private final VirtualMachine virtualMachine;
 
-    public VirtualMachineInLocation(VirtualMachine resource, String cloud, String credential,
-        String location) {
-        super(resource, cloud, credential, location);
+    public VirtualMachineInLocation(VirtualMachine resource, String cloud, String credential) {
+        super(resource, cloud, credential);
         this.virtualMachine = resource;
     }
 

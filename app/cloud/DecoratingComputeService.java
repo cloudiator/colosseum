@@ -13,7 +13,6 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
-import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
 
 import javax.annotation.Nullable;
 
@@ -26,15 +25,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DecoratingComputeService implements
     ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> {
 
-    private final ComputeService<HardwareFlavor, Image, Location, VirtualMachine>
-        delegate;
+    private final ComputeService<HardwareFlavor, Image, Location, VirtualMachine> delegate;
     private final String cloudId;
     private final String cloudCredential;
 
 
     public DecoratingComputeService(
-        ComputeService<HardwareFlavor, Image, Location, VirtualMachine> delegate,
-        String cloudId, String cloudCredential) {
+        ComputeService<HardwareFlavor, Image, Location, VirtualMachine> delegate, String cloudId,
+        String cloudCredential) {
 
         checkNotNull(delegate);
         checkNotNull(cloudId);
@@ -73,9 +71,7 @@ public class DecoratingComputeService implements
                 @Nullable @Override
                 public HardwareInLocation apply(@Nullable HardwareFlavor hardwareFlavor) {
                     checkNotNull(hardwareFlavor);
-                    String location = IdScopeByLocations.from(hardwareFlavor.id()).getLocationId();
-                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential,
-                        location);
+                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential);
                 }
             });
     }
@@ -84,8 +80,7 @@ public class DecoratingComputeService implements
         return Iterables.transform(delegate.listImages(), new Function<Image, ImageInLocation>() {
             @Nullable @Override public ImageInLocation apply(@Nullable Image image) {
                 checkNotNull(image);
-                String location = IdScopeByLocations.from(image.id()).getLocationId();
-                return new ImageInLocation(image, cloudId, cloudCredential, location);
+                return new ImageInLocation(image, cloudId, cloudCredential);
             }
         });
     }
@@ -133,8 +128,7 @@ public class DecoratingComputeService implements
         @Nullable @Override
         public VirtualMachineInLocation apply(@Nullable VirtualMachine virtualMachine) {
             checkNotNull(virtualMachine);
-            String location = IdScopeByLocations.from(virtualMachine.id()).getLocationId();
-            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredential, location);
+            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredential);
         }
     }
 }

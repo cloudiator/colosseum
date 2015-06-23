@@ -3,7 +3,6 @@ package dtos.conversion.converters;
 import com.google.inject.Inject;
 import dtos.KeyPairDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.generic.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
 import models.FrontendGroup;

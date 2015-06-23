@@ -5,6 +5,7 @@ import models.generic.RemoteModel;
 import models.repository.api.generic.RemoteModelRepository;
 
 import javax.annotation.Nullable;
+import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
@@ -16,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class BaseRemoteModelRepositoryJpa<T extends RemoteModel> extends BaseModelRepositoryJpa<T>
     implements RemoteModelRepository<T> {
 
-    public BaseRemoteModelRepositoryJpa(TypeLiteral<T> type) {
+    @Inject public BaseRemoteModelRepositoryJpa(TypeLiteral<T> type) {
         super(type);
     }
 

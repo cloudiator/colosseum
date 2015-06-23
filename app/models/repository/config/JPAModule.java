@@ -25,10 +25,12 @@ import models.repository.api.ApiAccessTokenRepository;
 import models.repository.api.FrontendUserRepository;
 import models.repository.api.HardwareRepository;
 import models.repository.api.generic.ModelRepository;
+import models.repository.api.generic.RemoteModelRepository;
 import models.repository.impl.ApiAccessTokenRepositoryJpa;
 import models.repository.impl.FrontendUserRepositoryJpa;
 import models.repository.impl.HardwareRepositoryJpa;
 import models.repository.impl.generic.BaseModelRepositoryJpa;
+import models.repository.impl.generic.BaseRemoteModelRepositoryJpa;
 
 /**
  * Created by daniel on 18.03.15.
@@ -100,6 +102,9 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Image>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Image>>() {
         });
+        bind(new TypeLiteral<RemoteModelRepository<Image>>() {
+        }).to(new TypeLiteral<BaseRemoteModelRepositoryJpa<Image>>() {
+        });
         //Instance
         bind(new TypeLiteral<ModelRepository<Instance>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Instance>>() {
@@ -119,6 +124,9 @@ public class JPAModule extends AbstractModule {
         //Location
         bind(new TypeLiteral<ModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
+        });
+        bind(new TypeLiteral<RemoteModelRepository<Location>>() {
+        }).to(new TypeLiteral<BaseRemoteModelRepositoryJpa<Location>>() {
         });
         //Operating System
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {

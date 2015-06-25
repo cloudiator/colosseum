@@ -14,6 +14,11 @@ Entity                                                       | URL
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [Communication](entities/Communication.md)                   | /api/communication
 [CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
+[ComponentHorizontalInScalingAction](entities/ComponentHorizontalInScalingAction.md)     | /api/componentHorizontalInScalingAction
+[ComponentHorizontalOutScalingAction](entities/ComponentHorizontalOutScalingAction.md)     | /api/componentHorizontalOutScalingAction
+[ComposedMonitor](entities/ComposedMonitor.md)               | /api/composedMonitor
+[ConstantMonitor](entities/ConstantMonitor.md)               | /api/constantMonitor
+[FormulaQuantifier](entities/FormulaQuantifier.md)           | /api/formulaQuantifier
 [FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo
@@ -24,8 +29,13 @@ Entity                                                       | URL
 [IpAddress](entities/IpAddress.md)                           | /api/ip
 [Location](entities/Location.md)                             | /api/location
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
+[MonitorInstance](entities/MonitorInstance.md)               | /api/monitorInstance
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
+[RawMonitor](entities/RawMonitor.md)                         | /api/rawMonitor
+[Schedule](entities/Schedule.md)                             | /api/schedule
+[SensorDescription](entities/SensorDescription.md)           | /api/sensorDescription
+[TimeWindow](entities/TimeWindow.md)                         | /api/timeWindow
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 

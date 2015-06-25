@@ -20,12 +20,8 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
-import models.generic.ExternalReference;
+import dtos.validation.validators.ModelIdValidator;
+import models.ApplicationComponent;
 import models.service.api.generic.ModelService;
 
 import java.util.List;
@@ -42,7 +38,8 @@ public class ComponentHorizontalOutScalingActionDto extends ModelWithExternalRef
         super();
     }
 
-    public ComponentHorizontalOutScalingActionDto(List<String> externalReferences, Long amount, Long min, Long max, Long count, Long applicationComponent) {
+    public ComponentHorizontalOutScalingActionDto(List<String> externalReferences, Long amount,
+        Long min, Long max, Long count, Long applicationComponent) {
         super(externalReferences);
         this.amount = amount;
         this.min = min;
@@ -53,11 +50,12 @@ public class ComponentHorizontalOutScalingActionDto extends ModelWithExternalRef
 
     @Override public void validation() {
         validator(Long.class).validate(applicationComponent)
-                .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
+            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
     }
 
     public static class References extends ModelWithExternalReferenceDto.References {
-        @Inject public static Provider<ModelService<ApplicationComponent>> applicationComponentService;
+        @Inject public static Provider<ModelService<ApplicationComponent>>
+            applicationComponentService;
     }
 
     public Long getAmount() {

@@ -19,9 +19,8 @@
 package dtos;
 
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ExpressionValidator;
+import dtos.validation.validators.NotNullValidator;
 
 import java.util.concurrent.TimeUnit;
 
@@ -40,8 +39,7 @@ public class ScheduleDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(TimeUnit.class).validate(this.timeUnit)
-            .withValidator(new NotNullValidator());
+        validator(TimeUnit.class).validate(this.timeUnit).withValidator(new NotNullValidator());
         validator(Long.class).validate(this.interval).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(this.interval > 0));
     }

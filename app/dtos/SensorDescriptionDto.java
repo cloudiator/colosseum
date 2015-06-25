@@ -18,14 +18,9 @@
 
 package dtos;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
-import models.service.api.generic.ModelService;
+import dtos.validation.validators.ExpressionValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
 
 public class SensorDescriptionDto extends ValidatableDto {
 
@@ -44,12 +39,14 @@ public class SensorDescriptionDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(String.class).validate(this.className).withValidator(new NotNullOrEmptyValidator());
-        validator(String.class).validate(this.metricName).withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.className)
-                .withValidator(new ExpressionValidator(!this.className.equals("")));
+            .withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.metricName)
-                .withValidator(new ExpressionValidator(!this.className.equals("")));
+            .withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(this.className)
+            .withValidator(new ExpressionValidator(!this.className.equals("")));
+        validator(String.class).validate(this.metricName)
+            .withValidator(new ExpressionValidator(!this.className.equals("")));
     }
 
     public static class References {

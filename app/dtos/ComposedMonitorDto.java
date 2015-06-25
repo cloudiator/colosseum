@@ -21,9 +21,7 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
@@ -46,7 +44,8 @@ public class ComposedMonitorDto extends ValidatableDto {
         super();
     }
 
-    public ComposedMonitorDto(FlowOperator flowOperator, FormulaOperator function, Long quantifier, Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
+    public ComposedMonitorDto(FlowOperator flowOperator, FormulaOperator function, Long quantifier,
+        Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
         this.flowOperator = flowOperator;
         this.function = function;
         this.quantifier = quantifier;
@@ -63,11 +62,11 @@ public class ComposedMonitorDto extends ValidatableDto {
         //validator(Long.class).validate(scalingActions)
         //        .withValidator(new ModelIdValidator<>(References.scalingActionService.get()));
         validator(Long.class).validate(quantifier)
-                .withValidator(new ModelIdValidator<>(References.formulaQuantifierService.get()));
+            .withValidator(new ModelIdValidator<>(References.formulaQuantifierService.get()));
         validator(Long.class).validate(window)
-                .withValidator(new ModelIdValidator<>(References.windowService.get()));
+            .withValidator(new ModelIdValidator<>(References.windowService.get()));
         validator(Long.class).validate(schedule)
-                .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
+            .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
     }
 
     public static class References {

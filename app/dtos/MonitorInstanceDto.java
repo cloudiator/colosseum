@@ -20,11 +20,10 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
+import models.Component;
+import models.IpAddress;
+import models.Monitor;
+import models.VirtualMachine;
 import models.service.api.generic.ModelService;
 
 import java.util.List;
@@ -40,7 +39,8 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
         super();
     }
 
-    public MonitorInstanceDto(List<String> externalReferences, Long monitor, Long ipAddress, Long virtualMachine, Long component) {
+    public MonitorInstanceDto(List<String> externalReferences, Long monitor, Long ipAddress,
+        Long virtualMachine, Long component) {
         super(externalReferences);
         this.monitor = monitor;
         this.ipAddress = ipAddress;

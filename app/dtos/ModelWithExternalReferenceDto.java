@@ -21,8 +21,6 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import models.ApplicationComponent;
 import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
 

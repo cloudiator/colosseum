@@ -21,9 +21,7 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.service.api.generic.ModelService;
 
@@ -40,7 +38,8 @@ public class RawMonitorDto extends ValidatableDto {
         super();
     }
 
-    public RawMonitorDto(Long application, Long component, Long componentInstance, Long cloud, Long sensorDescription, Long schedule) {
+    public RawMonitorDto(Long application, Long component, Long componentInstance, Long cloud,
+        Long sensorDescription, Long schedule) {
         this.application = application;
         this.component = component;
         this.componentInstance = componentInstance;
@@ -51,9 +50,9 @@ public class RawMonitorDto extends ValidatableDto {
 
     @Override public void validation() {
         validator(Long.class).validate(sensorDescription)
-                .withValidator(new ModelIdValidator<>(References.sensorDescriptionService.get()));
+            .withValidator(new ModelIdValidator<>(References.sensorDescriptionService.get()));
         validator(Long.class).validate(schedule)
-                .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
+            .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
     }
 
     public static class References {

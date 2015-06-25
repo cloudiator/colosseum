@@ -17,7 +17,18 @@ A list of all ConstantMonitor entities stored in the database.
 
 ###Response Example
 ```
-TODO
+[
+    {
+        "value":20.0,
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/constantMonitor/131074",
+                "rel":"self"
+            }
+        ]
+    }
+]
 ```
 
 ###Response Codes
@@ -45,7 +56,16 @@ The ConstantMonitor entity identified by the given id.
 
 ###Response Example
 ```
-TODO
+{
+    "value":20.0,
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/constantMonitor/131074",
+            "rel":"self"
+        }
+    ]
+}
 ```
 
 ###Response Codes
@@ -65,11 +85,13 @@ Creates a new ConstantMonitor entity. The new entity will be returned.
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-TODO
+value   | The value of the constant monitor.
 
 ###Request Example
 ```
-TODO
+{
+    "value":20.0
+}
 ```
 
 ###Response Codes
@@ -92,14 +114,17 @@ Updates the ConstantMonitor entity identified by the given id.
 
 Parameter     | Description
 ------------- | -------------
-TODO
+id   | The id of the constant monitor.
+value   | The value of the constant monitor.
 
 ###Request Example
 ```
 PUT /api/constantMonitor/1
 ```
 ```
-TODO
+{
+    "value":20.0
+}
 ```
 
 ###Response

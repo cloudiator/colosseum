@@ -20,14 +20,35 @@ package models;
 
 import models.generic.ModelWithExternalReference;
 
-import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by Frank on 20.05.2015.
  */
 @Entity
 public abstract class Monitor extends ModelWithExternalReference {
+//
+//    @OneToMany(mappedBy = "monitor") private List<MonitorInstance>
+//        monitorInstances;
+//
+//    public List<MonitorInstance> getMonitorInstances() {
+//        return monitorInstances;
+//    }
+//
+//    public void setMonitorInstances(List<MonitorInstance> monitorInstances) {
+//        this.monitorInstances = monitorInstances;
+//    }
+//
+//    @ManyToMany(mappedBy = "monitors") private List<ComposedMonitor>
+//        composedMonitors;
+//
+//    public List<ComposedMonitor> getComposedMonitors() {
+//        return composedMonitors;
+//    }
+//
+//    public void setComposedMonitors(List<ComposedMonitor> composedMonitors) {
+//        this.composedMonitors = composedMonitors;
+//    }
+
 }

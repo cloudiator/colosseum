@@ -17,7 +17,25 @@ A list of all ComposedMonitor entities stored in the database.
 
 ###Response Example
 ```
-TODO
+[
+    {
+        "flowOperator":"MAP",
+        "function":"AVG",
+        "quantifier":1,
+        "schedule":1,
+        "window":1,
+        "monitors":[1],
+        "scalingActions":[131073],
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/composedMonitor/8",
+                "rel":"self"
+            }
+        ]
+    }
+]
+
 ```
 
 ###Response Codes
@@ -45,7 +63,22 @@ The ComposedMonitor entity identified by the given id.
 
 ###Response Example
 ```
-TODO
+{
+    "flowOperator":"MAP",
+    "function":"AVG",
+    "quantifier":1,
+    "schedule":1,
+    "window":1,
+    "monitors":[1],
+    "scalingActions":[131073],
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/composedMonitor/8",
+            "rel":"self"
+        }
+    ]
+}
 ```
 
 ###Response Codes
@@ -65,12 +98,26 @@ Creates a new ComposedMonitor entity. The new entity will be returned.
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-TODO
+flowOperator | The Flow Operator for the monitor. Values: [MAP, REDUCE]
+function    | The function for the monitor. Values: [AVG, SUM,...]
+quantifier | The id of the Formula Quantifier.
+schedule | The id of the schedule.
+window | The id of the window.
+monitors | A list of ids of the scaling monitors.
+scalingActions | A list of ids of the scaling actions.
 
 
 ###Request Example
 ```
-TODO
+{
+    "flowOperator":"MAP",
+    "function":"AVG",
+    "quantifier":1,
+    "schedule":1,
+    "window":1,
+    "monitors":[1],
+    "scalingActions":[131073]
+}
 ```
 
 ###Response Codes
@@ -94,6 +141,13 @@ Updates the ComposedMonitor entity identified by the given id.
 Parameter     | Description
 ------------- | -------------
 id            | The id of the ComposedMonitor to update.
+flowOperator | The Flow Operator for the monitor. Values: [MAP, REDUCE]
+function    | The function for the monitor. Values: [AVG, SUM,...]
+quantifier | The id of the Formula Quantifier.
+schedule | The id of the schedule.
+window | The id of the window.
+monitors | A list of ids of the scaling monitors.
+scalingActions | A list of ids of the scaling actions.
 
 
 ###Request Example
@@ -101,7 +155,15 @@ id            | The id of the ComposedMonitor to update.
 PUT /api/composedMonitor/1
 ```
 ```
-TODO
+{
+    "flowOperator":"MAP",
+    "function":"AVG",
+    "quantifier":1,
+    "schedule":1,
+    "window":1,
+    "monitors":[1],
+    "scalingActions":[131073]
+}
 ```
 
 ###Response

@@ -28,7 +28,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public abstract class MetricMonitor extends Monitor {
 
-    @ManyToOne(optional = false) private Schedule schedule;
+    /* Actually is not optional but due to a inheritance bug this is now optional */
+    @ManyToOne(optional = true) private Schedule schedule;
 
     /**
      * Empty constructor for hibernate.

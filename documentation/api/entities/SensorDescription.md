@@ -1,45 +1,35 @@
-﻿# Cloud Actions
+﻿# SensorDescription Actions
 ***
 
 ##Description
-The Clound entity represents possible cloud providers like amazon or flexiant.
+The SensorDescription entity represents the SensorDescription.
 
-## GET /api/cloud
+## GET /api/sensorDescription
 
 ###Description
-Returns a list of Cloud types supported by the system.
+Returns a list of SensorDescription types supported by the system.
 
 ###Request Parameters
 None
 
 ###Response
-A list of all cloud entities stored in the database.
+A list of all sensorDescription entities stored in the database.
 
 ###Response Example
 ```
 [
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/1",
-            "rel":"self"
-         }
-      ],
-      "name":"amazon",
-      "endpoint":"https://amazon.de:9696",
-      "api":2
-   },
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/2",
-            "rel":"self"
-         }
-      ],
-      "name":"flexiant",
-      "endpoint":"https://flexiant.net:8774",
-      "api":1
-   }
+    {
+        "className":"de.uniulm.omi.cloudiator.visor.monitoring.sensors.CpuUsageSensor",
+        "metricName":"cpu_usage",
+        "isVmSensor":true,
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/sensorDescription/1",
+                "rel":"self"
+            }
+        ]
+    }
 ]
 ```
 
@@ -51,33 +41,34 @@ A list of all cloud entities stored in the database.
 
 ***
 
-## GET /api/cloud/{cloud_id}
+## GET /api/sensorDescription/{sensorDescription_id}
 
 ###Description
 
-Returns the Cloud entity identified by the given {cloud_id}.
+Returns the SensorDescription entity identified by the given {sensorDescription_id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud.
+sensorDescription_id      | The id of the sensorDescription.
 
 ###Response 
-The Cloud entity identified by the given id.
+The SensorDescription entity identified by the given id.
 
 ###Response Example
 ```
-{  
-   "links":[  
-      {  
-         "href":"http://example.com:9000/cloud/1",
-         "rel":"self"
-      }
-   ],
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "className":"de.uniulm.omi.cloudiator.visor.monitoring.sensors.CpuUsageSensor",
+    "metricName":"cpu_usage",
+    "isVmSensor":true,
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/sensorDescription/1",
+            "rel":"self"
+        }
+    ]
 }
 ```
 
@@ -89,25 +80,25 @@ The Cloud entity identified by the given id.
 
 ***
 
-## POST /api/cloud
+## POST /api/sensorDescription
 
 ###Description
 
-Creates a new Cloud entity. The new entity will be returned.
+Creates a new SensorDescription entity. The new entity will be returned.
 
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-name          | The name of the cloud.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+className          | The name of the class for deploying the sensor.
+metricName          | The name of the metric.
+isVmSensor          | Determines if the sensor is bound to the VM or component.
 
 ###Request Example
 ```
-{  
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "className":"de.uniulm.omi.cloudiator.visor.monitoring.sensors.CpuUsageSensor",
+    "metricName":"cpu_usage",
+    "isVmSensor":true
 }
 ```
 
@@ -121,35 +112,36 @@ api           | The api used for requests to this clouds.
 
 ***
 
-## PUT /api/cloud/{cloud_id}
+## PUT /api/sensorDescription/{sensorDescription_id}
 
 ###Description
 
-Updates the Cloud entity identified by the given id.
+Updates the SensorDescription entity identified by the given id.
 
 **Request Parameters** 
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to update.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+sensorDescription_id      | The id of the sensorDescription to update.
+className          | The name of the class for deploying the sensor.
+metricName          | The name of the metric.
+isVmSensor          | Determines if the sensor is bound to the VM or component.
 
 ###Request Example
 ```
-PUT /api/cloud/1
+PUT /api/sensorDescription/1
 ```
 ```
-{  
-   "name":"Flexiant",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "className":"de.uniulm.omi.cloudiator.visor.monitoring.sensors.CpuUsageSensor",
+    "metricName":"cpu_usage",
+    "isVmSensor":true
 }
 ```
 
 ###Response
 
-The updated entity. See GET /api/cloud/{cloud_id}
+The updated entity. See GET /api/sensorDescription/{sensorDescription_id}
 
 ###Response Codes
 
@@ -159,17 +151,17 @@ The updated entity. See GET /api/cloud/{cloud_id}
 
 ***
 
-## DELETE /api/cloud/{cloud_id}
+## DELETE /api/sensorDescription/{sensorDescription_id}
 
 ###Description
 
-Deletes the Cloud entity identified by the given {cloud_id}.
+Deletes the SensorDescription entity identified by the given {sensorDescription_id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to delete.
+sensorDescription_id      | The id of the sensorDescription to delete.
 
 ###Response
 No data.

@@ -72,12 +72,12 @@ POST          /api/communicationChannel            @controllers.CommunicationCha
 PUT           /api/communicationChannel/:id        @controllers.CommunicationChannelController.put(id: Long)
 DELETE        /api/communicationChannel/:id        @controllers.CommunicationChannelController.delete(id: Long)
 
-#Component Horizontal In Scaling Action
-GET           /api/componentHorizontalInScalingAction       @controllers.ComponentHorizontalOutScalingActionController.list()
-GET           /api/componentHorizontalInScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.get(id: Long)
-POST          /api/componentHorizontalInScalingAction       @controllers.ComponentHorizontalOutScalingActionController.post()
-PUT           /api/componentHorizontalInScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.put(id: Long)
-DELETE        /api/componentHorizontalInScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.delete(id: Long)
+#Component Horizontal Out Scaling Action
+GET           /api/componentHorizontalOutScalingAction       @controllers.ComponentHorizontalOutScalingActionController.list()
+GET           /api/componentHorizontalOutScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.get(id: Long)
+POST          /api/componentHorizontalOutScalingAction       @controllers.ComponentHorizontalOutScalingActionController.post()
+PUT           /api/componentHorizontalOutScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.put(id: Long)
+DELETE        /api/componentHorizontalOutScalingAction/:id   @controllers.ComponentHorizontalOutScalingActionController.delete(id: Long)
 
 #Composed Monitor
 GET           /api/composedMonitor                 @controllers.ComposedMonitorController.list()

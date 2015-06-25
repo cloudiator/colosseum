@@ -23,8 +23,11 @@ import com.google.inject.Singleton;
 import dtos.ComposedMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
 import models.service.api.generic.ModelService;
+
+import java.util.List;
 
 
 @Singleton public class ComposedMonitorConverter
@@ -52,14 +55,17 @@ import models.service.api.generic.ModelService;
     @Override public void configure() {
         builder().from("flowOperator").to("flowOperator");
         builder().from("function").to("function");
-        builder().from("quantifier").to("quantifier");
+        builder().from(Long.class, "quantifier").to(FormulaQuantifier.class, "quantifier")
+            .withTransformation(new IdToModelTransformer<>(formulaQuantifierModelService));
         builder().from(Long.class, "schedule").to(Schedule.class, "schedule")
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
         builder().from(Long.class, "window").to(Window.class, "window")
             .withTransformation(new IdToModelTransformer<>(windowModelService));
-        builder().from(Long.class, "monitors").to(Monitor.class, "monitors")
-            .withTransformation(new IdToModelTransformer<>(monitorModelService));
-        builder().from(Long.class, "scalingActions").to(ScalingAction.class, "scalingActions")
-            .withTransformation(new IdToModelTransformer<>(scalingActionModelService));
+        builder().from(List.class, "monitors").to(List.class, "monitors")
+            .withUnsafeTransformation(new ModelToListIdTransformer<>(
+                new IdToModelTransformer<>(monitorModelService)));
+        builder().from(List.class, "scalingActions").to(List.class, "scalingActions")
+            .withUnsafeTransformation(new ModelToListIdTransformer<>(
+                new IdToModelTransformer<>(scalingActionModelService)));
     }
 }

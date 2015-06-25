@@ -16,41 +16,26 @@
  * under the License.
  */
 
-package dtos;
+package dtos.conversion.converters;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
-import models.service.api.generic.ModelService;
+import com.google.inject.Singleton;
+import dtos.ConstantMonitorDto;
+import dtos.ExternalReferenceDto;
+import dtos.conversion.AbstractConverter;
+import models.ConstantMonitor;
+import models.generic.ExternalReference;
 
-public class ConstantMonitorDto extends ValidatableDto {
 
-    private Double value;
+@Singleton public class ExternalReferenceConverter
+    extends AbstractConverter<ExternalReference, ExternalReferenceDto> {
 
-    public ConstantMonitorDto() {
-        super();
+
+    @Inject protected ExternalReferenceConverter() {
+        super(ExternalReference.class, ExternalReferenceDto.class);
     }
 
-    public ConstantMonitorDto(Double value) {
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public void configure() {
+        builder().from("reference").to("reference");
     }
 }

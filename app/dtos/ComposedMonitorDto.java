@@ -25,14 +25,16 @@ import dtos.validation.ExpressionValidator;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import models.*;
+import models.scalability.FlowOperator;
+import models.scalability.FormulaOperator;
 import models.service.api.generic.ModelService;
 
 import java.util.List;
 
 public class ComposedMonitorDto extends ValidatableDto {
 
-    private String flowOperator;
-    private String function;
+    private FlowOperator flowOperator;
+    private FormulaOperator function;
     private Long quantifier;
     private Long schedule;
     private Long window;
@@ -44,7 +46,7 @@ public class ComposedMonitorDto extends ValidatableDto {
         super();
     }
 
-    public ComposedMonitorDto(String flowOperator, String function, Long quantifier, Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
+    public ComposedMonitorDto(FlowOperator flowOperator, FormulaOperator function, Long quantifier, Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
         this.flowOperator = flowOperator;
         this.function = function;
         this.quantifier = quantifier;
@@ -76,19 +78,19 @@ public class ComposedMonitorDto extends ValidatableDto {
         @Inject public static Provider<ModelService<FormulaQuantifier>> formulaQuantifierService;
     }
 
-    public String getFlowOperator() {
+    public FlowOperator getFlowOperator() {
         return flowOperator;
     }
 
-    public void setFlowOperator(String flowOperator) {
+    public void setFlowOperator(FlowOperator flowOperator) {
         this.flowOperator = flowOperator;
     }
 
-    public String getFunction() {
+    public FormulaOperator getFunction() {
         return function;
     }
 
-    public void setFunction(String function) {
+    public void setFunction(FormulaOperator function) {
         this.function = function;
     }
 

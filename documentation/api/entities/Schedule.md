@@ -1,45 +1,34 @@
-﻿# Cloud Actions
+﻿# Schedule Actions
 ***
 
 ##Description
-The Clound entity represents possible cloud providers like amazon or flexiant.
+The Schedule entity represents a schedule.
 
-## GET /api/cloud
+## GET /api/schedule
 
 ###Description
-Returns a list of Cloud types supported by the system.
+Returns a list of Schedule types supported by the system.
 
 ###Request Parameters
 None
 
 ###Response
-A list of all cloud entities stored in the database.
+A list of all schedule entities stored in the database.
 
 ###Response Example
 ```
 [
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/1",
-            "rel":"self"
-         }
-      ],
-      "name":"amazon",
-      "endpoint":"https://amazon.de:9696",
-      "api":2
-   },
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/2",
-            "rel":"self"
-         }
-      ],
-      "name":"flexiant",
-      "endpoint":"https://flexiant.net:8774",
-      "api":1
-   }
+    {
+        "interval":1,
+        "timeUnit":"MINUTES",
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/schedule/1",
+                "rel":"self"
+            }
+        ]
+    }
 ]
 ```
 
@@ -51,33 +40,33 @@ A list of all cloud entities stored in the database.
 
 ***
 
-## GET /api/cloud/{cloud_id}
+## GET /api/schedule/{schedule_id}
 
 ###Description
 
-Returns the Cloud entity identified by the given {cloud_id}.
+Returns the Schedule entity identified by the given {schedule_id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud.
+schedule_id      | The id of the Schedule.
 
 ###Response 
 The Cloud entity identified by the given id.
 
 ###Response Example
 ```
-{  
-   "links":[  
-      {  
-         "href":"http://example.com:9000/cloud/1",
-         "rel":"self"
-      }
-   ],
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "interval":1,
+    "timeUnit":"MINUTES",
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/schedule/1",
+            "rel":"self"
+        }
+    ]
 }
 ```
 
@@ -89,25 +78,23 @@ The Cloud entity identified by the given id.
 
 ***
 
-## POST /api/cloud
+## POST /api/schedule
 
 ###Description
 
-Creates a new Cloud entity. The new entity will be returned.
+Creates a new Schedule entity. The new entity will be returned.
 
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-name          | The name of the cloud.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+interval      | The amount of time units.
+timeUnit      | The actual unit.
 
 ###Request Example
 ```
-{  
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "interval":1,
+    "timeUnit":"MINUTES"
 }
 ```
 
@@ -121,7 +108,7 @@ api           | The api used for requests to this clouds.
 
 ***
 
-## PUT /api/cloud/{cloud_id}
+## PUT /api/schedule/{schedule_id}
 
 ###Description
 
@@ -131,25 +118,24 @@ Updates the Cloud entity identified by the given id.
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to update.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+schedule_id      | The id of the schedule to update.
+interval      | The amount of time units.
+timeUnit      | The actual unit.
 
 ###Request Example
 ```
-PUT /api/cloud/1
+PUT /api/schedule/1
 ```
 ```
-{  
-   "name":"Flexiant",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "interval":1,
+    "timeUnit":"MINUTES"
 }
 ```
 
 ###Response
 
-The updated entity. See GET /api/cloud/{cloud_id}
+The updated entity. See GET /api/schedule/{schedule_id}
 
 ###Response Codes
 
@@ -159,17 +145,17 @@ The updated entity. See GET /api/cloud/{cloud_id}
 
 ***
 
-## DELETE /api/cloud/{cloud_id}
+## DELETE /api/schedule/{schedule_id}
 
 ###Description
 
-Deletes the Cloud entity identified by the given {cloud_id}.
+Deletes the Cloud entity identified by the given {Schedule_id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to delete.
+schedule_id   | The id of the schedule to delete.
 
 ###Response
 No data.

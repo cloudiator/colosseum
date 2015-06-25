@@ -22,6 +22,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import dtos.OperatingSystemDto;
 import models.*;
+import models.generic.ExternalReference;
 import models.service.api.*;
 import models.service.api.generic.ModelService;
 import models.service.impl.*;
@@ -89,6 +90,10 @@ public class DatabaseServiceModule extends AbstractModule {
         // Component
         bind(new TypeLiteral<ModelService<Component>>() {
         }).to(new TypeLiteral<BaseModelService<Component>>() {
+        });
+        // ExternalReference
+        bind(new TypeLiteral<ModelService<ExternalReference>>() {
+        }).to(new TypeLiteral<BaseModelService<ExternalReference>>() {
         });
         // Frontend User
         bind(FrontendUserService.class).to(DefaultFrontendUserService.class);

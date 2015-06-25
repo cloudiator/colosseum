@@ -23,8 +23,12 @@ import com.google.inject.Singleton;
 import dtos.MonitorInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.*;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
+
+import java.util.List;
 
 
 @Singleton public class MonitorInstanceConverter
@@ -34,16 +38,19 @@ import models.service.api.generic.ModelService;
     private final ModelService<IpAddress> ipAddressModelService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Component> componentModelService;
+    private final ModelService<ExternalReference> externalReferenceModelService;
 
     @Inject protected MonitorInstanceConverter(ModelService<Monitor> monitorModelService,
         ModelService<IpAddress> ipAddressModelService,
         ModelService<VirtualMachine> virtualMachineModelService,
-        ModelService<Component> componentModelService) {
+        ModelService<Component> componentModelService,
+        ModelService<ExternalReference> externalReferenceModelService) {
         super(MonitorInstance.class, MonitorInstanceDto.class);
         this.monitorModelService = monitorModelService;
         this.ipAddressModelService = ipAddressModelService;
         this.virtualMachineModelService = virtualMachineModelService;
         this.componentModelService = componentModelService;
+        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -55,5 +62,7 @@ import models.service.api.generic.ModelService;
             .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
         builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
+        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
+            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
     }
 }

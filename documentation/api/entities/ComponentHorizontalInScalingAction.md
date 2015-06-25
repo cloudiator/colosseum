@@ -2,12 +2,12 @@
 ***
 
 ##Description
-The ComponentHorizontalInScalingAction entity represents the action to execute once a scaling rule has been activated.
+The ComponentHorizontalInScalingAction entity represents the scaling action.
 
 ## GET /api/componentHorizontalInScalingAction
 
 ###Description
-Returns a list of ComponentHorizontalInScalingAction.
+Returns a list of ComponentHorizontalInScalingAction types supported by the system.
 
 ###Request Parameters
 None
@@ -17,12 +17,24 @@ A list of all ComponentHorizontalInScalingAction entities stored in the database
 
 ###Response Example
 ```
-
-
-TODO
-COPY FROM BROWSER
-
-
+[
+    {
+        "externalReferences":[
+            "some_external_reference"
+        ],
+        "amount":1,
+        "min":2,
+        "max":3,
+        "count":4,
+        "applicationComponent":1,
+        "link":[
+            {
+                "href":"http://localhost:9000/api/componentHorizontalInScalingAction/131073",
+                "rel":"self"
+            }
+        ]
+    }
+]
 ```
 
 ###Response Codes
@@ -37,24 +49,35 @@ COPY FROM BROWSER
 
 ###Description
 
-Returns the ComponentHorizontalInScalingAction entity identified by the given {componentHorizontalInScalingAction_id}.
+Returns the ComponentHorizontalInScalingAction entity identified by the given {id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-id            | The id of the ComponentHorizontalInScalingAction.
+id      | The id of the ComponentHorizontalInScalingAction.
 
 ###Response 
 The ComponentHorizontalInScalingAction entity identified by the given id.
 
 ###Response Example
 ```
-
-
-TODO
-
-
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1,
+    "link":[
+        {
+            "href":"http://localhost:9000/api/componentHorizontalInScalingAction/131073",
+            "rel":"self"
+        }
+    ]
+}
 ```
 
 ###Response Codes
@@ -74,15 +97,25 @@ Creates a new ComponentHorizontalInScalingAction entity. The new entity will be 
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-TODO
+externalReferences | List of strings as external references.
+amount | Amount of instances to scale.
+min | Minimum instances of applicationComponent for this action.
+max | Maximum instances of applicationComponent for this action.
+count | Count variable to show how often this action has been triggered.
+applicationComponent | The id of the applicationComponent that is referenced in this action.
 
 ###Request Example
 ```
-
-
-TODO
-
-
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1
+}
 ```
 
 ###Response Codes
@@ -105,18 +138,29 @@ Updates the ComponentHorizontalInScalingAction entity identified by the given id
 
 Parameter     | Description
 ------------- | -------------
-id            | The id of the ComponentHorizontalInScalingAction to update.
-TODO
+id      | The id of the ComponentHorizontalInScalingAction to update.
+externalReferences | List of strings as external references.
+amount | Amount of instances to scale.
+min | Minimum instances of applicationComponent for this action.
+max | Maximum instances of applicationComponent for this action.
+count | Count variable to show how often this action has been triggered.
+applicationComponent | The id of the applicationComponent that is referenced in this action.
 
 ###Request Example
 ```
 PUT /api/componentHorizontalInScalingAction/1
 ```
 ```
-
-TODO
-
-
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1
+}
 ```
 
 ###Response
@@ -141,7 +185,7 @@ Deletes the ComponentHorizontalInScalingAction entity identified by the given {i
 
 Parameter     | Description
 ------------- | -------------
-id            | The id of the ComponentHorizontalInScalingAction to delete.
+id      | The id of the ComponentHorizontalInScalingAction to delete.
 
 ###Response
 No data.

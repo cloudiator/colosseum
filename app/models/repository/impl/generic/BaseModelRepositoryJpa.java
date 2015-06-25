@@ -28,7 +28,9 @@ import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.Parameter;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -89,6 +91,7 @@ public class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<
     @Override public List<T> findAll() {
         String queryString = String.format("from %s", type.getName());
         Query query = em().createQuery(queryString);
+        Set<Parameter<?>> params = query.getParameters();
         //noinspection unchecked
         return query.getResultList();
     }

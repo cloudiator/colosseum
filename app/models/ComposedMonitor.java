@@ -21,10 +21,7 @@ package models;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,13 +30,14 @@ import java.util.List;
  */
 @Entity public class ComposedMonitor extends MetricMonitor {
 
-    @Column(nullable = false, updatable = false) private FlowOperator flowOperator;
-    @Column(nullable = false, updatable = false) private FormulaOperator function;
+    @Enumerated(EnumType.STRING) private FlowOperator flowOperator;
+    @Enumerated(EnumType.STRING) private FormulaOperator function;
 
-    @ManyToOne(optional = false) private FormulaQuantifier quantifier;
-    @ManyToOne(optional = false) private Window window;
-    @ManyToMany private List<Monitor> monitors;
-    @ManyToMany private List<ScalingAction> scalingActions = new ArrayList<ScalingAction>();
+    /* Actually is not optional but due to a inheritance bug this is now optional */
+    @ManyToOne(optional = true) private FormulaQuantifier quantifier;
+    @ManyToOne(optional = true) private Window window;
+    @ManyToMany private List<Monitor> monitors = new ArrayList<>();
+    @ManyToMany private List<ScalingAction> scalingActions = new ArrayList<>();
 
     /**
      * Empty constructor for hibernate.

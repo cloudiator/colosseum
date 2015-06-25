@@ -36,6 +36,10 @@ public class ModelToListIdTransformer<T extends Model>
     }
 
     @Override public Collection<T> transform(Collection<Long> longs) {
+        if(longs == null){
+            return new ArrayList<T>();
+        }
+
         Collection<T> list = new ArrayList<>(longs.size());
         for (Long id : longs) {
             list.add(idToModelTransformer.transform(id));

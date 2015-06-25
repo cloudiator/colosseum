@@ -1,45 +1,38 @@
-﻿# Cloud Actions
+﻿# RawMonitor Actions
 ***
 
 ##Description
-The Clound entity represents possible cloud providers like amazon or flexiant.
+The RawMonitor entity represents the raw monitors.
 
-## GET /api/cloud
+## GET /api/rawMonitor
 
 ###Description
-Returns a list of Cloud types supported by the system.
+Returns a list of raw monitor types supported by the system.
 
 ###Request Parameters
 None
 
 ###Response
-A list of all cloud entities stored in the database.
+A list of all raw monitor entities stored in the database.
 
 ###Response Example
 ```
 [
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/1",
-            "rel":"self"
-         }
-      ],
-      "name":"amazon",
-      "endpoint":"https://amazon.de:9696",
-      "api":2
-   },
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/2",
-            "rel":"self"
-         }
-      ],
-      "name":"flexiant",
-      "endpoint":"https://flexiant.net:8774",
-      "api":1
-   }
+    {
+        "application":1,
+        "component":1,
+        "componentInstance":null,
+        "cloud":null,
+        "sensorDescription":1,
+        "schedule":2,
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/rawMonitor/1",
+                "rel":"self"
+            }
+        ]
+    }
 ]
 ```
 
@@ -51,33 +44,37 @@ A list of all cloud entities stored in the database.
 
 ***
 
-## GET /api/cloud/{cloud_id}
+## GET /api/rawMonitor/{rawMonitor_id}
 
 ###Description
 
-Returns the Cloud entity identified by the given {cloud_id}.
+Returns the Cloud entity identified by the given {rawMonitor_id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud.
+rawMonitor_id      | The id of the raw monitor.
 
 ###Response 
-The Cloud entity identified by the given id.
+The raw monitor entity identified by the given id.
 
 ###Response Example
 ```
-{  
-   "links":[  
-      {  
-         "href":"http://example.com:9000/cloud/1",
-         "rel":"self"
-      }
-   ],
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "application":1,
+    "component":1,
+    "componentInstance":null,
+    "cloud":null,
+    "sensorDescription":1,
+    "schedule":2,
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/rawMonitor/1",
+            "rel":"self"
+        }
+    ]
 }
 ```
 
@@ -89,25 +86,32 @@ The Cloud entity identified by the given id.
 
 ***
 
-## POST /api/cloud
+## POST /api/rawMonitor
 
 ###Description
 
-Creates a new Cloud entity. The new entity will be returned.
+Creates a new RawMonitor entity. The new entity will be returned.
 
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-name          | The name of the cloud.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+rawMonitor_id | The id of the raw monitor.
+application | The id of application that is defined as filter.
+component | The id of the component that is defined as filter.
+componentInstance | The id of the componentInstance that is defined as filter.
+cloud | The id of the cloud that is defined as filter.
+sensorDescription | The id of the sensor description.
+schedule | The id of the schedule.
 
 ###Request Example
 ```
-{  
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "application":1,
+    "component":1,
+    "componentInstance":null,
+    "cloud":null,
+    "sensorDescription":1,
+    "schedule":2
 }
 ```
 
@@ -121,7 +125,7 @@ api           | The api used for requests to this clouds.
 
 ***
 
-## PUT /api/cloud/{cloud_id}
+## PUT /api/rawMonitor/{rawMonitor_id}
 
 ###Description
 
@@ -131,25 +135,31 @@ Updates the Cloud entity identified by the given id.
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to update.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+application | The id of application that is defined as filter.
+component | The id of the component that is defined as filter.
+componentInstance | The id of the componentInstance that is defined as filter.
+cloud | The id of the cloud that is defined as filter.
+sensorDescription | The id of the sensor description.
+schedule | The id of the schedule.
 
 ###Request Example
 ```
-PUT /api/cloud/1
+PUT /api/rawMonitor/1
 ```
 ```
-{  
-   "name":"Flexiant",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "application":1,
+    "component":1,
+    "componentInstance":null,
+    "cloud":null,
+    "sensorDescription":1,
+    "schedule":2
 }
 ```
 
 ###Response
 
-The updated entity. See GET /api/cloud/{cloud_id}
+The updated entity. See GET /api/rawMonitor/{rawMonitor_id}
 
 ###Response Codes
 
@@ -159,11 +169,11 @@ The updated entity. See GET /api/cloud/{cloud_id}
 
 ***
 
-## DELETE /api/cloud/{cloud_id}
+## DELETE /api/cloud/{rawMonitor_id}
 
 ###Description
 
-Deletes the Cloud entity identified by the given {cloud_id}.
+Deletes the RawMonitor entity identified by the given {rawMonitor_id}.
 
 ###Request Parameters
 

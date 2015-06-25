@@ -21,6 +21,7 @@ package models.repository.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import models.*;
+import models.generic.ExternalReference;
 import models.repository.api.ApiAccessTokenRepository;
 import models.repository.api.FrontendUserRepository;
 import models.repository.api.HardwareRepository;
@@ -85,6 +86,10 @@ public class JPAModule extends AbstractModule {
         //ConstantMonitor
         bind(new TypeLiteral<ModelRepository<ConstantMonitor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ConstantMonitor>>() {
+        });
+        //ConstantMonitor
+        bind(new TypeLiteral<ModelRepository<ExternalReference>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ExternalReference>>() {
         });
         //FormulaQuantifier
         bind(new TypeLiteral<ModelRepository<FormulaQuantifier>>() {

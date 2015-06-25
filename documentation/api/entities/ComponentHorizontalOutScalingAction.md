@@ -1,45 +1,39 @@
-﻿# Cloud Actions
+﻿# ComponentHorizontalOutScalingAction Actions
 ***
 
 ##Description
-The Clound entity represents possible cloud providers like amazon or flexiant.
+The ComponentHorizontalOutScalingAction entity represents the scaling action.
 
-## GET /api/cloud
+## GET /api/componentHorizontalOutScalingAction
 
 ###Description
-Returns a list of Cloud types supported by the system.
+Returns a list of ComponentHorizontalOutScalingAction types supported by the system.
 
 ###Request Parameters
 None
 
 ###Response
-A list of all cloud entities stored in the database.
+A list of all ComponentHorizontalOutScalingAction entities stored in the database.
 
 ###Response Example
 ```
 [
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/1",
-            "rel":"self"
-         }
-      ],
-      "name":"amazon",
-      "endpoint":"https://amazon.de:9696",
-      "api":2
-   },
-   {
-      "links":[
-         {
-            "href":"http://example.com:9000/cloud/2",
-            "rel":"self"
-         }
-      ],
-      "name":"flexiant",
-      "endpoint":"https://flexiant.net:8774",
-      "api":1
-   }
+    {
+        "externalReferences":[
+            "some_external_reference"
+        ],
+        "amount":1,
+        "min":2,
+        "max":3,
+        "count":4,
+        "applicationComponent":1,
+        "link":[
+            {
+                "href":"http://localhost:9000/api/componentHorizontalInScalingAction/131073",
+                "rel":"self"
+            }
+        ]
+    }
 ]
 ```
 
@@ -51,33 +45,38 @@ A list of all cloud entities stored in the database.
 
 ***
 
-## GET /api/cloud/{cloud_id}
+## GET /api/componentHorizontalOutScalingAction/{id}
 
 ###Description
 
-Returns the Cloud entity identified by the given {cloud_id}.
+Returns the ComponentHorizontalOutScalingAction entity identified by the given {id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud.
+id      | The id of the ComponentHorizontalOutScalingAction.
 
 ###Response 
-The Cloud entity identified by the given id.
+The ComponentHorizontalOutScalingAction entity identified by the given id.
 
 ###Response Example
 ```
-{  
-   "links":[  
-      {  
-         "href":"http://example.com:9000/cloud/1",
-         "rel":"self"
-      }
-   ],
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1,
+    "link":[
+        {
+            "href":"http://localhost:9000/api/componentHorizontalOutScalingAction/131073",
+            "rel":"self"
+        }
+    ]
 }
 ```
 
@@ -89,25 +88,33 @@ The Cloud entity identified by the given id.
 
 ***
 
-## POST /api/cloud
+## POST /api/componentHorizontalOutScalingAction
 
 ###Description
 
-Creates a new Cloud entity. The new entity will be returned.
+Creates a new ComponentHorizontalOutScalingAction entity. The new entity will be returned.
 
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-name          | The name of the cloud.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+externalReferences | List of strings as external references.
+amount | Amount of instances to scale.
+min | Minimum instances of applicationComponent for this action.
+max | Maximum instances of applicationComponent for this action.
+count | Count variable to show how often this action has been triggered.
+applicationComponent | The id of the applicationComponent that is referenced in this action.
 
 ###Request Example
 ```
-{  
-   "name":"amazon",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1
 }
 ```
 
@@ -121,35 +128,44 @@ api           | The api used for requests to this clouds.
 
 ***
 
-## PUT /api/cloud/{cloud_id}
+## PUT /api/componentHorizontalOutScalingAction/{id}
 
 ###Description
 
-Updates the Cloud entity identified by the given id.
+Updates the ComponentHorizontalOutScalingAction entity identified by the given id.
 
 **Request Parameters** 
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to update.
-endpoint      | The endpoint of the api
-api           | The api used for requests to this clouds.
+id      | The id of the ComponentHorizontalOutScalingAction to update.
+externalReferences | List of strings as external references.
+amount | Amount of instances to scale.
+min | Minimum instances of applicationComponent for this action.
+max | Maximum instances of applicationComponent for this action.
+count | Count variable to show how often this action has been triggered.
+applicationComponent | The id of the applicationComponent that is referenced in this action.
 
 ###Request Example
 ```
-PUT /api/cloud/1
+PUT /api/componentHorizontalOutScalingAction/1
 ```
 ```
-{  
-   "name":"Flexiant",
-   "endpoint":"https://amazon.de:9696",
-   "api":2
+{
+    "externalReferences":[
+        "some_external_reference"
+    ],
+    "amount":1,
+    "min":2,
+    "max":3,
+    "count":4,
+    "applicationComponent":1
 }
 ```
 
 ###Response
 
-The updated entity. See GET /api/cloud/{cloud_id}
+The updated entity. See GET /api/componentHorizontalOutScalingAction/{id}
 
 ###Response Codes
 
@@ -159,17 +175,17 @@ The updated entity. See GET /api/cloud/{cloud_id}
 
 ***
 
-## DELETE /api/cloud/{cloud_id}
+## DELETE /api/componentHorizontalOutScalingAction/{id}
 
 ###Description
 
-Deletes the Cloud entity identified by the given {cloud_id}.
+Deletes the ComponentHorizontalOutScalingAction entity identified by the given {id}.
 
 ###Request Parameters
 
 Parameter     | Description
 ------------- | -------------
-cloud_id      | The id of the cloud to delete.
+id      | The id of the ComponentHorizontalOutScalingAction to delete.
 
 ###Response
 No data.

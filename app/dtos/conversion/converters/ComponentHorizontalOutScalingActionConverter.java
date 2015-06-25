@@ -23,21 +23,28 @@ import com.google.inject.Singleton;
 import dtos.ComponentHorizontalOutScalingActionDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.ApplicationComponent;
 import models.ComponentHorizontalOutScalingAction;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
+
+import java.util.List;
 
 
 @Singleton public class ComponentHorizontalOutScalingActionConverter extends
     AbstractConverter<ComponentHorizontalOutScalingAction, ComponentHorizontalOutScalingActionDto> {
 
     private final ModelService<ApplicationComponent> applicationComponentModelService;
+    private final ModelService<ExternalReference> externalReferenceModelService;
 
     @Inject protected ComponentHorizontalOutScalingActionConverter(
-        ModelService<ApplicationComponent> applicationComponentModelService) {
+        ModelService<ApplicationComponent> applicationComponentModelService,
+        ModelService<ExternalReference> externalReferenceModelService) {
         super(ComponentHorizontalOutScalingAction.class,
             ComponentHorizontalOutScalingActionDto.class);
         this.applicationComponentModelService = applicationComponentModelService;
+        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -45,7 +52,10 @@ import models.service.api.generic.ModelService;
         builder().from("min").to("min");
         builder().from("max").to("max");
         builder().from("count").to("count");
-        builder().from(Long.class, "component").to(ApplicationComponent.class, "component")
+        builder().from(Long.class, "applicationComponent").to(ApplicationComponent.class, "applicationComponent")
             .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
+        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
+            .withUnsafeTransformation(
+                new StringToExternalReferenceTransformer());
     }
 }

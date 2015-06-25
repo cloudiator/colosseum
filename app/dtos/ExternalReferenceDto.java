@@ -18,25 +18,18 @@
 
 package dtos;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
-import models.service.api.generic.ModelService;
 
-public class ConstantMonitorDto extends ValidatableDto {
+public class ExternalReferenceDto extends ValidatableDto {
 
-    private Double value;
+    private String reference;
 
-    public ConstantMonitorDto() {
+    public ExternalReferenceDto() {
         super();
     }
 
-    public ConstantMonitorDto(Double value) {
-        this.value = value;
+    public ExternalReferenceDto(String reference) {
+        this.reference = reference;
     }
 
     @Override public void validation() {
@@ -44,13 +37,5 @@ public class ConstantMonitorDto extends ValidatableDto {
     }
 
     public static class References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
     }
 }

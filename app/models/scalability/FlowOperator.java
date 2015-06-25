@@ -5,6 +5,16 @@ package models.scalability;
  */
 public enum FlowOperator {
 
-    MAP,
-    REDUCE
+    MAP("MAP"),
+    REDUCE("REDUCE");
+
+    private final String text;
+
+    private FlowOperator(final String text) {
+        this.text = text;
+    }
+
+    @Override public String toString() {
+        return text;
+    }
 }

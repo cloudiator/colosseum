@@ -25,35 +25,39 @@ import dtos.validation.ExpressionValidator;
 import dtos.validation.ModelIdValidator;
 import dtos.validation.NotNullOrEmptyValidator;
 import models.*;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
 
-public class ComponentHorizontalOutScalingActionDto extends ValidatableDto {
+import java.util.List;
+
+public class ComponentHorizontalOutScalingActionDto extends ModelWithExternalReferenceDto {
 
     private Long amount;
     private Long min;
     private Long max;
     private Long count;
-    private Long component;
+    private Long applicationComponent;
 
     public ComponentHorizontalOutScalingActionDto() {
         super();
     }
 
-    public ComponentHorizontalOutScalingActionDto(Long amount, Long min, Long max, Long count, Long component) {
+    public ComponentHorizontalOutScalingActionDto(List<String> externalReferences, Long amount, Long min, Long max, Long count, Long applicationComponent) {
+        super(externalReferences);
         this.amount = amount;
         this.min = min;
         this.max = max;
         this.count = count;
-        this.component = component;
+        this.applicationComponent = applicationComponent;
     }
 
     @Override public void validation() {
-        validator(Long.class).validate(component)
-                .withValidator(new ModelIdValidator<>(References.componentService.get()));
+        validator(Long.class).validate(applicationComponent)
+                .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
     }
 
-    public static class References {
-        @Inject public static Provider<ModelService<Component>> componentService;
+    public static class References extends ModelWithExternalReferenceDto.References {
+        @Inject public static Provider<ModelService<ApplicationComponent>> applicationComponentService;
     }
 
     public Long getAmount() {
@@ -88,11 +92,11 @@ public class ComponentHorizontalOutScalingActionDto extends ValidatableDto {
         this.count = count;
     }
 
-    public Long getComponent() {
-        return component;
+    public Long getApplicationComponent() {
+        return applicationComponent;
     }
 
-    public void setComponent(Long component) {
-        this.component = component;
+    public void setApplicationComponent(Long applicationComponent) {
+        this.applicationComponent = applicationComponent;
     }
 }

@@ -7,9 +7,9 @@ import java.util.List;
  * Created by Frank on 20.05.2015.
  */
 @Entity @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public class ModelWithExternalReference extends Model {
+public abstract class ModelWithExternalReference extends Model {
 
-    @OneToMany(mappedBy = "modelWithExternalReference") private List<ExternalReference>
+    @OneToMany(cascade = CascadeType.ALL) private List<ExternalReference>
         externalReferences;
 
     public List<ExternalReference> getExternalReferences() {

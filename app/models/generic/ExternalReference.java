@@ -11,7 +11,7 @@ import javax.persistence.ManyToOne;
 public class ExternalReference extends Model {
 
     @Column(nullable = false, updatable = false) private String reference;
-    @ManyToOne private ModelWithExternalReference modelWithExternalReference;
+    //@ManyToOne private ModelWithExternalReference modelWithExternalReference;
 
     /**
      * no-args constructor for hibernate.

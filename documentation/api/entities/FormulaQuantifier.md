@@ -17,7 +17,19 @@ A list of all FormulaQuantifier entities stored in the database.
 
 ###Response Example
 ```
-TODO
+[
+    {
+        "relative":true,
+        "value":1.0,
+        "link":
+        [
+            {
+                "href":"http://localhost:9000/api/formulaQuantifier/1",
+                "rel":"self"
+            }
+        ]
+    }
+]
 ```
 
 ###Response Codes
@@ -45,7 +57,17 @@ The FormulaQuantifier entity identified by the given id.
 
 ###Response Example
 ```
-TODO
+{
+    "relative":true,
+    "value":1.0,
+    "link":
+    [
+        {
+            "href":"http://localhost:9000/api/formulaQuantifier/1",
+            "rel":"self"
+        }
+    ]
+}
 ```
 
 ###Response Codes
@@ -65,12 +87,15 @@ Creates a new FormulaQuantifier entity. The new entity will be returned.
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-name          | TODO
-TODO
+relative            | Determines if the value is relative.
+value            | The value.
 
 ###Request Example
 ```
-TODO
+{
+    "relative":true,
+    "value":1.0
+}
 ```
 
 ###Response Codes
@@ -93,14 +118,19 @@ Updates the FormulaQuantifier entity identified by the given id.
 
 Parameter     | Description
 ------------- | -------------
-TODO
+id            | The id of the FormulaQuantifier.
+relative            | Determines if the value is relative.
+value            | The value.
 
 ###Request Example
 ```
 PUT /api/formulaQuantifier/1
 ```
 ```
-TODO
+{
+    "relative":true,
+    "value":1.0
+}
 ```
 
 ###Response

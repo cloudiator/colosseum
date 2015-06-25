@@ -21,36 +21,40 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ExpressionValidator;
 import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import models.*;
+import models.ApplicationComponent;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
 
-public class ConstantMonitorDto extends ValidatableDto {
+import java.util.List;
 
-    private Double value;
+/**
+ * Created by Frank on 05.06.2015.
+ */
+public class ModelWithExternalReferenceDto extends ValidatableDto {
 
-    public ConstantMonitorDto() {
+    private List<String> externalReferences;
+
+    public ModelWithExternalReferenceDto() {
         super();
     }
 
-    public ConstantMonitorDto(Double value) {
-        this.value = value;
+    public ModelWithExternalReferenceDto(List<String> externalReferences) {
+        this.externalReferences = externalReferences;
     }
 
     @Override public void validation() {
-        //TODO
     }
 
     public static class References {
+        @Inject public static Provider<ModelService<ExternalReference>> externalReferenceService;
     }
 
-    public Double getValue() {
-        return value;
+    public List<String> getExternalReferences() {
+        return externalReferences;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setExternalReferences(List<String> externalReferences) {
+        this.externalReferences = externalReferences;
     }
 }

@@ -27,7 +27,9 @@ import dtos.validation.NotNullOrEmptyValidator;
 import models.*;
 import models.service.api.generic.ModelService;
 
-public class MonitorInstanceDto extends ValidatableDto {
+import java.util.List;
+
+public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     private Long monitor;
     private Long ipAddress;
@@ -38,7 +40,8 @@ public class MonitorInstanceDto extends ValidatableDto {
         super();
     }
 
-    public MonitorInstanceDto(Long monitor, Long ipAddress, Long virtualMachine, Long component) {
+    public MonitorInstanceDto(List<String> externalReferences, Long monitor, Long ipAddress, Long virtualMachine, Long component) {
+        super(externalReferences);
         this.monitor = monitor;
         this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
@@ -46,14 +49,46 @@ public class MonitorInstanceDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(Long.class).validate(monitor)
-                .withValidator(new ModelIdValidator<>(References.monitorAddressService.get()));
+        //validator(Long.class).validate(monitor)
+        //        .withValidator(new ModelIdValidator<>(References.monitorService.get()));
     }
 
-    public static class References {
-        @Inject public static Provider<ModelService<Monitor>> monitorAddressService;
-        @Inject public static Provider<ModelService<IpAddress>> ipAddressService;
-        @Inject public static Provider<ModelService<VirtualMachine>> virtualMachineService;
-        @Inject public static Provider<ModelService<Component>> componentService;
+    public static class References extends ModelWithExternalReferenceDto.References {
+        @Inject public static Provider<ModelService<Monitor>> monitorModelService;
+        @Inject public static Provider<ModelService<IpAddress>> ipAddressModelService;
+        @Inject public static Provider<ModelService<VirtualMachine>> virtualMachineModelService;
+        @Inject public static Provider<ModelService<Component>> componentModelService;
+    }
+
+    public Long getMonitor() {
+        return monitor;
+    }
+
+    public void setMonitor(Long monitor) {
+        this.monitor = monitor;
+    }
+
+    public Long getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(Long ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public Long getVirtualMachine() {
+        return virtualMachine;
+    }
+
+    public void setVirtualMachine(Long virtualMachine) {
+        this.virtualMachine = virtualMachine;
+    }
+
+    public Long getComponent() {
+        return component;
+    }
+
+    public void setComponent(Long component) {
+        this.component = component;
     }
 }

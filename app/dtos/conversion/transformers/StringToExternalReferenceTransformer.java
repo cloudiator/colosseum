@@ -14,18 +14,18 @@ import java.util.stream.Collectors;
 public class StringToExternalReferenceTransformer
     implements Transformer<List<String>, List<ExternalReference>> {
 
-    private final ModelService<ExternalReference> externalReferenceModelService;
+    //private final ModelService<ExternalReference> externalReferenceModelService;
 
-    @Inject public StringToExternalReferenceTransformer(
-        ModelService<ExternalReference> externalReferenceModelService) {
-        this.externalReferenceModelService = externalReferenceModelService;
-    }
+//    public StringToExternalReferenceTransformer(
+//        ModelService<ExternalReference> externalReferenceModelService) {
+//        this.externalReferenceModelService = externalReferenceModelService;
+//    }
 
     @Override public List<ExternalReference> transform(List<String> strings) {
         List<ExternalReference> externalReferences = new ArrayList<>(strings.size());
         for (String s : strings) {
             ExternalReference externalReference = new ExternalReference(s);
-            externalReferenceModelService.save(externalReference);
+            //externalReferenceModelService.save(externalReference);
             externalReferences.add(externalReference);
         }
         return externalReferences;

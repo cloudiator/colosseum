@@ -8,6 +8,7 @@ Query if the application does already exist: [GET /api/application](entities/App
 
 If the application does not already exist, create a new one: [POST /api/application](entities/Application.md)
 
+
 ### 2. Query or create the component
 
 > Note: The only supported component currently is the [LifecycleComponent](entities/LifecycleComponent.md)
@@ -44,6 +45,10 @@ If you want to use an existing virtual machine query for it: [GET /api/virtualMa
 
 If you want to start a new virtual machine, create it: [POST /api/virtualMachine](entities/VirtualMachine.md)
 
-### 7. Install the application component on the virtual machine
+### 7. Instantiate the application.
+
+Create a new application instance [GET /api/applicationInstance](entities/ApplicationInstance.md).
+
+### 8. Install the application component on the virtual machine
 
 Create a new instance entity: [POST /api/instance](entities/Instance.md).

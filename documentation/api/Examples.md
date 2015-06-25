@@ -21,15 +21,15 @@ If it does not exist yet, create it: [POST /api/lifecycleComponent](entities/Lif
 
 > Note: This step is only necessary if you created a new application or a new component.
 
-Query if a matching virtual machine template already exists: [GET /api/virtualMachineTemplate](entities/VirtualMachineTemplate.md).
+Query if a matching virtual machine template already exists: [GET /api/vmt](entities/VirtualMachineTemplate.md).
 
-If it does not exist yet, create it: [POST /api/virtualMachineTemplate](entities/VirtualMachineTemplate.md)
+If it does not exist yet, create it: [POST /api/vmt](entities/VirtualMachineTemplate.md)
 
 ### 4. Connect the newly created application with its components (or vice versa)
 
 > Note: This step is only necessary if you created a new application or a new component.
 
-Create a new application component entity, using the ids retrieved from the previous steps: [POST /api/applicationComponent](entities/ApplicationComponent.md)
+Create a new application component entity, using the ids retrieved from the previous steps: [POST /api/ac](entities/ApplicationComponent.md)
 
 Repeat this until all components are added to the application.
 
@@ -47,8 +47,12 @@ If you want to start a new virtual machine, create it: [POST /api/virtualMachine
 
 ### 7. Instantiate the application.
 
-Create a new application instance [GET /api/applicationInstance](entities/ApplicationInstance.md).
+Create a new application instance [POST /api/applicationInstance](entities/ApplicationInstance.md).
 
 ### 8. Install the application component on the virtual machine
 
 Create a new instance entity: [POST /api/instance](entities/Instance.md).
+
+### 9. Create a communication channel between the instances of the application component.
+
+Create a new communication channel entity: [POST /api/communicationChannel][entities/CommunicationChannel]

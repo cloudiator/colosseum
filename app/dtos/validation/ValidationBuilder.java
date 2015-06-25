@@ -16,12 +16,7 @@
  * under the License.
  */
 
-package dtos.validation.generic;
-
-import dtos.validation.api.ReferenceValidator;
-import dtos.validation.api.ValidateBuilder;
-import dtos.validation.api.Validator;
-import dtos.validation.api.ValidatorBuilder;
+package dtos.validation;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -34,10 +29,17 @@ import java.util.List;
 public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilder<S> {
 
     @Nullable private S s;
+    @Nullable private String field;
     private List<Validator<? super S>> validators = new LinkedList<>();
 
     @Override public ValidatorBuilder<S> validate(@Nullable S s) {
         this.s = s;
+        return this;
+    }
+
+    @Override public ValidatorBuilder<S> validate(@Nullable S s, String field) {
+        this.s = s;
+        this.field = field;
         return this;
     }
 
@@ -49,7 +51,7 @@ public class ValidationBuilder<S> implements ValidateBuilder<S>, ValidatorBuilde
     public List<ReferenceValidator> build() {
         List<ReferenceValidator> referenceValidators = new ArrayList<>(validators.size());
         for (Validator<? super S> validator : validators) {
-            referenceValidators.add(new GenericReferenceValidator<>(s, validator));
+            referenceValidators.add(new GenericReferenceValidator<>(field, s, validator));
         }
         return referenceValidators;
     }

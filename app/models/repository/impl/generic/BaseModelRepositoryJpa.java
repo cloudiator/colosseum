@@ -37,7 +37,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-public class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
+public class
+    BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
 
     protected final Class<T> type;
 

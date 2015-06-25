@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IterableValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.*;
 import models.service.api.generic.ModelService;
 import models.service.impl.generic.BaseModelService;
@@ -76,10 +76,10 @@ public class LocationDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
-        @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<ModelService<CloudCredential>> cloudCredentialService;
+        @Inject private static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<GeoLocation>> geoLocationService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
     }
 
     public Long getCloud() {

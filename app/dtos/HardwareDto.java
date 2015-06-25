@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IterableValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.CloudCredential;
 import models.HardwareOffer;
@@ -102,9 +102,13 @@ public class HardwareDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-        @Inject public static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
-        @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<ModelService<CloudCredential>> cloudCredentialService;
+
+        @Inject private static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject private static Provider<BaseModelService<HardwareOffer>> hardwareOfferService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
+
+        private References() {
+        }
     }
 }

@@ -8,7 +8,7 @@ Entity                                                       | URL
 ------------------------------------------------------------ | ---------------------------
 [API](entities/Api.md)                                       | /api/api
 [Application](entities/Application.md)                       | /api/application
-[ApplicationComponent](entities/ApplicationComponent.md)     | /api/applicationComponent
+[ApplicationComponent](entities/ApplicationComponent.md)     | /api/ac
 [ApplicationInstance](entities/ApplicationInstance.md)       | /api/applicationInstance
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential

@@ -16,14 +16,13 @@
  * under the License.
  */
 
-package dtos.validation.api;
+package dtos.validation;
 
 /**
- * Created by daniel on 13.03.15.
+ * Created by daniel on 20.03.15.
  */
-public class ValidationException extends Exception {
+public interface ValidatorBuilder<T> {
 
-    public ValidationException(String message) {
-        super(message);
-    }
+    ValidatorBuilder<T> withValidator(Validator<? super T> validator);
+
 }

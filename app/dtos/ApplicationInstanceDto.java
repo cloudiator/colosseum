@@ -3,8 +3,8 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Application;
 import models.service.impl.generic.BaseModelService;
 
@@ -18,13 +18,13 @@ public class ApplicationInstanceDto extends ValidatableDto {
     public ApplicationInstanceDto() {
     }
 
+    public ApplicationInstanceDto(Long application) {
+        this.application = application;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(this.application).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.applicationService.get()));
-    }
-
-    public ApplicationInstanceDto(Long application) {
-        this.application = application;
     }
 
     public Long getApplication() {
@@ -36,7 +36,11 @@ public class ApplicationInstanceDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<Application>> applicationService;
+
+        @Inject private static Provider<BaseModelService<Application>> applicationService;
+
+        private References() {
+        }
     }
 
 }

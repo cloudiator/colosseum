@@ -21,9 +21,9 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.Hardware;
 import models.Image;
@@ -111,9 +111,13 @@ public class VirtualMachineDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<Image>> imageService;
-        @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<ModelService<Hardware>> hardwareService;
+
+        @Inject private static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Image>> imageService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<Hardware>> hardwareService;
+
+        private References() {
+        }
     }
 }

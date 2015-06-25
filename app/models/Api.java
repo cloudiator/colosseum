@@ -71,4 +71,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
         checkArgument(!name.isEmpty());
         this.name = name;
     }
+
+    public List<Cloud> getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(List<Cloud> clouds) {
+        this.clouds = clouds;
+    }
 }

@@ -49,7 +49,7 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
 
     @Override public void configure() {
         builder().from("name").to("name");
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "operatingSystem").to(OperatingSystem.class, "operatingSystem")

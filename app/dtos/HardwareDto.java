@@ -39,7 +39,7 @@ public class HardwareDto extends ValidatableDto {
 
     private Long cloud;
     private Long hardwareOffer;
-    private String cloudUuid;
+    private String remoteId;
     private List<Long> locations;
     private List<Long> cloudCredentials;
 
@@ -52,7 +52,7 @@ public class HardwareDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
-        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
@@ -77,12 +77,12 @@ public class HardwareDto extends ValidatableDto {
         this.hardwareOffer = hardwareOffer;
     }
 
-    public String getCloudUuid() {
-        return cloudUuid;
+    public String getRemoteId() {
+        return remoteId;
     }
 
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
     }
 
     public List<Long> getLocations() {

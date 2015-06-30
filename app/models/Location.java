@@ -18,12 +18,13 @@
 
 package models;
 
-import models.generic.Model;
 import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity public class Location extends RemoteModel {
 
@@ -56,9 +57,11 @@ import java.util.List;
     protected Location() {
     }
 
-    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,
+    public Location(Cloud cloud, String remoteId, @Nullable GeoLocation geoLocation,
         @Nullable Location parent, @Nullable LocationScope locationScope, boolean isAssignable) {
-        super(cloudUuid);
+        super(remoteId);
+
+        checkNotNull(cloud);
         this.cloud = cloud;
         this.geoLocation = geoLocation;
         this.parent = parent;

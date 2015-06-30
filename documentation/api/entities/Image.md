@@ -34,7 +34,7 @@ A list of all image entities stored in the database.
       "name":"Ubuntu Server 14.04",
       "cloud":1,
       "imageOffer":2,
-      "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
+      "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
       "locations": [
         1
       ],
@@ -53,7 +53,7 @@ A list of all image entities stored in the database.
       "name": "CentOS",
       "cloud":1,
       "imageOffer":3,
-      "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
+      "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
       "locations": [
         1,
         2
@@ -104,7 +104,7 @@ The image entity identified by the given id.
    "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
-   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
+   "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
    "locations": [
      1,
      2
@@ -137,7 +137,7 @@ Parameter        | Description
 name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
-cloudUuid        | The UUID of the image.
+remoteId        | The UUID of the image.
 locations        | The locations at which the image is available.
 cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
@@ -149,7 +149,7 @@ operatingSystem  | The operating system used by the image.
    "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
-   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
+   "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
    "locations": [
      1
    ],
@@ -186,7 +186,7 @@ image_id         | The id of the image to update.
 name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
-cloudUuid        | The UUID of the image.
+remoteId        | The UUID of the image.
 locations        | The locations at which the image is available.
 cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
@@ -200,7 +200,7 @@ PUT /api/image/1
    "name":"Ubuntu Server 14.04",
    "cloud":1,
    "imageOffer":2,
-   "cloudUuid":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
+   "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
    "locations" : [
      1,
      2

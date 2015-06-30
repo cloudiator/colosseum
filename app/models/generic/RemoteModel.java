@@ -12,7 +12,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @MappedSuperclass public abstract class RemoteModel extends Model {
 
     private RemoteState remoteState;
-    @Column(updatable = false, unique = true) private String remoteId;
+    @Column(updatable = false, unique = true, nullable = true) private String remoteId;
 
     public RemoteState getRemoteState() {
         return remoteState;

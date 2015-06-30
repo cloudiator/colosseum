@@ -38,7 +38,7 @@ import java.util.List;
 public class LocationDto extends ValidatableDto {
 
     protected Long cloud;
-    protected String cloudUuid;
+    protected String remoteId;
     private Long parent;
     private LocationScope locationScope;
     private Boolean isAssignable;
@@ -49,10 +49,10 @@ public class LocationDto extends ValidatableDto {
         super();
     }
 
-    public LocationDto(Long cloud, String cloudUuid, Long parent, LocationScope locationScope,
+    public LocationDto(Long cloud, String remoteId, Long parent, LocationScope locationScope,
         Boolean isAssignable, Long geoLocation) {
         this.cloud = cloud;
-        this.cloudUuid = cloudUuid;
+        this.remoteId = remoteId;
         this.parent = parent;
         this.locationScope = locationScope;
         this.isAssignable = isAssignable;
@@ -62,7 +62,7 @@ public class LocationDto extends ValidatableDto {
     @Override public void validation() {
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(geoLocation).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.geoLocationService.get()));
         validator(Boolean.class).validate(isAssignable).withValidator(new NotNullValidator());
@@ -90,12 +90,12 @@ public class LocationDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public String getCloudUuid() {
-        return cloudUuid;
+    public String getRemoteId() {
+        return remoteId;
     }
 
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
     }
 
     public Long getParent() {

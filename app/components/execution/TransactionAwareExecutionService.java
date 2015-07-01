@@ -18,7 +18,10 @@ public class TransactionAwareExecutionService implements ExecutionService {
     private Runnable decorateRunnableIfTransaction(Runnable runnable) {
         try {
             if (runnable.getClass().getMethod("run").isAnnotationPresent(Transactional.class)) {
-                return new RunWithTransaction(runnable);
+                boolean readOnly =
+                    runnable.getClass().getMethod("run").getDeclaredAnnotation(Transactional.class)
+                        .readOnly();
+                return new RunWithTransaction(runnable, readOnly);
             }
         } catch (NoSuchMethodException shouldNeverOccur) {
             throw new AssertionError("Runnable without run method", shouldNeverOccur);

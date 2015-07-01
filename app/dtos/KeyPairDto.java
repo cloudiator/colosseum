@@ -26,7 +26,7 @@ public class KeyPairDto extends ValidatableDto {
         validator(Long.class).validate(frontendGroup).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.frontendGroupService.get()));
         //TODO: validate if valid ssh keys?
-        //TODO: validate with respect to public key or cloudUuid needs to be present?
+        //TODO: validate with respect to public key or remoteId needs to be present?
     }
 
     public static class References {

@@ -37,7 +37,7 @@ import java.util.List;
 public class ImageDto extends ValidatableDto {
 
     private String name;
-    private String cloudUuid;
+    private String remoteId;
     private Long cloud;
     private List<Long> locations;
     private Long operatingSystem;
@@ -48,7 +48,7 @@ public class ImageDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(new TypeLiteral<List<Long>>() {
@@ -67,14 +67,6 @@ public class ImageDto extends ValidatableDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 
     public Long getCloud() {
@@ -107,6 +99,14 @@ public class ImageDto extends ValidatableDto {
 
     public void setCloudCredentials(List<Long> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
+    }
+
+    public String getRemoteId() {
+        return remoteId;
+    }
+
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
     }
 
     public static class References {

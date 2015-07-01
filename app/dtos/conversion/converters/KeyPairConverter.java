@@ -31,6 +31,6 @@ public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
         builder().from("privateKey").to("privateKey");
         builder().from("publicKey").to("publicKey");
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
     }
 }

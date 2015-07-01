@@ -22,10 +22,10 @@ public class AbstractLocationScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return location + credential() + cloud() + id;
+        return location() + SEPARATOR + id;
     }
 
     @Override public String location() {
-        return location + credential() + cloud();
+        return credential() + SEPARATOR + cloud() + SEPARATOR + location;
     }
 }

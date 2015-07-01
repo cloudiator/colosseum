@@ -53,7 +53,7 @@ public class LocationConverter extends AbstractConverter<Location, LocationDto> 
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
 
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
 
         builder().from(Long.class, "parent").to(Location.class, "parent")
             .withTransformation(new IdToModelTransformer<>(locationModelService));

@@ -48,9 +48,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Image() {
     }
 
-    public Image(String cloudUuid, @Nullable String name, Cloud cloud,
+    public Image(String remoteId, @Nullable String name, Cloud cloud,
         @Nullable OperatingSystem operatingSystem) {
-        super(cloudUuid);
+        super(remoteId);
         checkNotNull(cloud);
 
         if (name != null) {

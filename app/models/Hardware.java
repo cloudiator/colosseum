@@ -23,6 +23,8 @@ import models.generic.RemoteModel;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Entity public class Hardware extends RemoteModel {
 
     @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
@@ -42,8 +44,10 @@ import java.util.List;
     protected Hardware() {
     }
 
-    public Hardware(String cloudUuid, Cloud cloud, HardwareOffer hardwareOffer) {
-        super(cloudUuid);
+    public Hardware(String remoteId, Cloud cloud, HardwareOffer hardwareOffer) {
+        super(remoteId);
+        checkNotNull(cloud);
+        checkNotNull(hardwareOffer);
         this.cloud = cloud;
         this.hardwareOffer = hardwareOffer;
     }

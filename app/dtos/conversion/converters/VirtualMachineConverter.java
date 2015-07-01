@@ -47,7 +47,7 @@ public class VirtualMachineConverter extends AbstractConverter<VirtualMachine, V
 
     @Override public void configure() {
         builder().from("name").to("name");
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "image").to(Image.class, "image")

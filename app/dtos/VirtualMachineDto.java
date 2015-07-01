@@ -40,18 +40,20 @@ public class VirtualMachineDto extends ValidatableDto {
     private Long image;
     private Long hardware;
     private Long location;
-    private String cloudUuid;
+    private String remoteId;
 
     public VirtualMachineDto() {
         super();
     }
 
-    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location, String cloudUuid) {
+    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location,
+        String remoteId) {
         this.name = name;
         this.cloud = cloud;
         this.image = image;
         this.hardware = hardware;
         this.location = location;
+        this.remoteId = remoteId;
     }
 
     public String getName() {
@@ -94,8 +96,8 @@ public class VirtualMachineDto extends ValidatableDto {
         this.location = location;
     }
 
-    public String getCloudUuid() {
-        return cloudUuid;
+    public String getRemoteId() {
+        return remoteId;
     }
 
     @Override public void validation() {

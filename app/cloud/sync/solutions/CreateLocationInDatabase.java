@@ -35,10 +35,10 @@ public class CreateLocationInDatabase implements Solution {
             (LocationProblems.LocationNotInDatabase) problem;
 
         Cloud cloud =
-            cloudModelRepository.findByUuid(locationNotInDatabase.getLocationInCloud().id());
+            cloudModelRepository.findByUuid(locationNotInDatabase.getLocationInCloud().cloud());
 
-        String cloudUuid = locationNotInDatabase.getLocationInCloud().id();
-        Location location = new Location(cloud, cloudUuid, null, null, null,
+        String remoteId = locationNotInDatabase.getLocationInCloud().id();
+        Location location = new Location(cloud, remoteId, null, null, null,
             locationNotInDatabase.getLocationInCloud().isAssignable());
 
         this.locationModelRepository.save(location);

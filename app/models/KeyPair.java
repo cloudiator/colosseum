@@ -1,6 +1,6 @@
 package models;
 
-import models.generic.Model;
+import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -14,28 +14,27 @@ import javax.persistence.*;
  * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
  */
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "frontendGroup_id"}))
-@Entity public class KeyPair extends Model {
+@Entity public class KeyPair extends RemoteModel {
 
     @ManyToOne(optional = false) private Cloud cloud;
     @ManyToOne(optional = false) private FrontendGroup frontendGroup;
 
     private String privateKey;
     @Nullable @Column(nullable = true) private String publicKey;
-    @Nullable @Column(nullable = true) private String cloudUuid;
 
     /**
      * No-args constructor for hibernate
      */
-    private KeyPair() {
+    protected KeyPair() {
     }
 
     public KeyPair(Cloud cloud, FrontendGroup frontendGroup, String privateKey,
-        @Nullable String publicKey, @Nullable String cloudUuid) {
+        @Nullable String publicKey, @Nullable String remoteId) {
+        super(remoteId);
         this.cloud = cloud;
         this.frontendGroup = frontendGroup;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
-        this.cloudUuid = cloudUuid;
     }
 
     public Cloud getCloud() {
@@ -68,13 +67,5 @@ import javax.persistence.*;
 
     public void setPublicKey(@Nullable String publicKey) {
         this.publicKey = publicKey;
-    }
-
-    @Nullable public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(@Nullable String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 }

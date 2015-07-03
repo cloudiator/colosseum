@@ -13,6 +13,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     private RemoteState remoteState;
     @Column(updatable = false, unique = true, nullable = true) private String remoteId;
+    @Column(updatable = false) private String cloudProviderId;
 
     public RemoteState getRemoteState() {
         return remoteState;
@@ -26,8 +27,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return remoteId;
     }
 
-    public void setRemoteId(String cloudUuid) {
-        this.remoteId = cloudUuid;
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
     }
 
     /**
@@ -40,5 +41,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
         checkNotNull(remoteId);
         checkArgument(!remoteId.isEmpty());
         this.remoteId = remoteId;
+    }
+
+    public String getCloudProviderId() {
+        return cloudProviderId;
+    }
+
+    public void setCloudProviderId(String cloudProviderId) {
+        this.cloudProviderId = cloudProviderId;
     }
 }

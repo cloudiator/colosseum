@@ -21,23 +21,23 @@ package controllers.security;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import models.FrontendUser;
+import models.Tenant;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
 import play.db.jpa.JPA;
 import play.mvc.Http;
 import play.mvc.Result;
-import play.mvc.Security;
 
+import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 
 /**
  * Created by daniel on 19.12.14.
  */
 
-public class SecuredToken extends Security.Authenticator {
+public class SecuredToken extends TenantAwareAuthenticator {
 
-    @Override public String getUsername(final Http.Context context) {
-
+    @Nullable private FrontendUser getFrontendUser(Http.Context context) {
         final String token = context.request().getHeader("X-Auth-Token");
 
         long userId;
@@ -57,7 +57,7 @@ public class SecuredToken extends Security.Authenticator {
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
         final EntityManager em = JPA.em();
-        final FrontendUser frontendUser;
+        FrontendUser frontendUser;
         try {
             frontendUser = JPA.withTransaction(
                 () -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
@@ -67,20 +67,14 @@ public class SecuredToken extends Security.Authenticator {
         //workaround continue. Bind the old one.
         JPA.bindForCurrentThread(em);
 
-        if (frontendUser == null) {
-            return null;
-        }
-
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
         final EntityManager em1 = JPA.em();
-        final String mail;
         try {
-            if (JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get()
-                .isValid(token, frontendUser))) {
-                mail = frontendUser.getMail();
-            } else {
-                mail = null;
+            final FrontendUser finalFrontendUser = frontendUser;
+            if (!JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get()
+                .isValid(token, finalFrontendUser))) {
+                frontendUser = null;
             }
         } catch (Throwable t) {
             throw new RuntimeException(t);
@@ -88,7 +82,39 @@ public class SecuredToken extends Security.Authenticator {
         //workaround continue. Bind the old one.
         JPA.bindForCurrentThread(em1);
 
-        return mail;
+        return frontendUser;
+    }
+
+    @Override public String getUser(Http.Context context) {
+        FrontendUser frontendUser = this.getFrontendUser(context);
+        if (frontendUser == null) {
+            return null;
+        } else {
+            return frontendUser.getMail();
+        }
+    }
+
+    @Override public String getTenant(Http.Context context) {
+        FrontendUser frontendUser = this.getFrontendUser(context);
+
+        if (frontendUser == null) {
+            return null;
+        }
+
+        String tenant = context.request().getHeader("X-Tenant");
+
+        Tenant foundTenant = null;
+        for (Tenant searchTenant : frontendUser.getTenants()) {
+            if (searchTenant.getUuid().equals(tenant)) {
+                foundTenant = searchTenant;
+                break;
+            }
+        }
+
+        if (foundTenant != null) {
+            return foundTenant.getUuid();
+        }
+        return null;
     }
 
     @Override public Result onUnauthorized(Http.Context context) {

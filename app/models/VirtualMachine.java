@@ -18,6 +18,8 @@
 
 package models;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
@@ -44,8 +46,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Nullable @ManyToOne(optional = true) private Location location;
 
 
-
-    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private List<IpAddress>
+    /**
+     * Use cascade type merge due to bug in all
+     * https://hibernate.atlassian.net/browse/HHH-7404
+     */
+    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.MERGE) private List<IpAddress>
         ipAddresses;
 
     /**
@@ -109,6 +114,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setIpAddresses(List<IpAddress> ipAddresses) {
         this.ipAddresses = ipAddresses;
+    }
+
+    @Nullable public IpAddress getPublicIpAddress() {
+        final Iterable<IpAddress> ipAddresses =
+            Iterables.filter(this.getIpAddresses(), new Predicate<IpAddress>() {
+                @Override public boolean apply(IpAddress ipAddress) {
+                    return ipAddress.getIpType().equals(IpType.PUBLIC);
+                }
+            });
+        if (ipAddresses.iterator().hasNext()) {
+            return ipAddresses.iterator().next();
+        }
+        return null;
     }
 
     public List<CloudCredential> getCloudCredentials() {

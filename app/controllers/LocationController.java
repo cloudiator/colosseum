@@ -26,7 +26,7 @@ import controllers.generic.GenericApiController;
 import dtos.LocationDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
-import models.FrontendGroup;
+import models.Tenant;
 import models.FrontendUser;
 import models.Location;
 import models.service.api.FrontendUserService;
@@ -68,8 +68,8 @@ public class LocationController
                 String userName = request().username();
 
                 FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
-                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
-                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
+                for (Tenant tenant : frontendUser.getTenants()) {
+                    for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
                         if (location.getCloudCredentials().contains(cloudCredential)) {
                             return true;
                         }

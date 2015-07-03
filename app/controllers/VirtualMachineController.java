@@ -18,13 +18,9 @@
 
 package controllers;
 
-import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import com.google.inject.name.Named;
-import components.execution.SimpleBlockingQueue;
-import components.job.CreateVirtualMachineJob;
-import components.job.Job;
+import components.job.JobService;
 import controllers.generic.GenericApiController;
 import dtos.VirtualMachineDto;
 import dtos.conversion.ModelDtoConversionService;
@@ -37,8 +33,7 @@ import models.service.api.generic.ModelService;
 public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
-    private final CloudService cloudService;
-    private final SimpleBlockingQueue<Job> jobQueue;
+    private final JobService jobService;
 
     /**
      * Constructs a GenericApiController.
@@ -46,25 +41,21 @@ public class VirtualMachineController extends
      * @param modelService      the model service for retrieving the models.
      * @param typeLiteral       a type literal for the model type
      * @param conversionService the conversion service for converting models and dtos.
-     * @param cloudService
-     * @param jobQueue
+     * @param jobService
      * @throws NullPointerException if any of the above parameters is null.
      */
     @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
-        CloudService cloudService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
+        JobService jobService) {
         super(modelService, typeLiteral, conversionService);
-        this.cloudService = cloudService;
-        this.jobQueue = jobQueue;
+        this.jobService = jobService;
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
     }
 
-    @Override protected void postPost(VirtualMachine entity) {
-        CreateVirtualMachineJob createVirtualMachineJob =
-            new CreateVirtualMachineJob(entity, getModelService(), cloudService);
-        jobQueue.add(createVirtualMachineJob);
+    @Override protected void postPost(VirtualMachine virtualMachine) {
+        this.jobService.newVirtualMachineJob(virtualMachine);
     }
 }

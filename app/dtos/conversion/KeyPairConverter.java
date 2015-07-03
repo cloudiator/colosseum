@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 import dtos.KeyPairDto;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
-import models.FrontendGroup;
+import models.Tenant;
 import models.KeyPair;
 import models.service.api.generic.ModelService;
 
@@ -14,10 +14,10 @@ import models.service.api.generic.ModelService;
 public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
 
     private final ModelService<Cloud> cloudModelService;
-    private final ModelService<FrontendGroup> frontendGroupModelService;
+    private final ModelService<Tenant> frontendGroupModelService;
 
     @Inject protected KeyPairConverter(ModelService<Cloud> cloudModelService,
-        ModelService<FrontendGroup> frontendGroupModelService) {
+        ModelService<Tenant> frontendGroupModelService) {
         super(KeyPair.class, KeyPairDto.class);
         this.cloudModelService = cloudModelService;
         this.frontendGroupModelService = frontendGroupModelService;
@@ -26,7 +26,7 @@ public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
     @Override public void configure() {
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "frontendGroup").to(FrontendGroup.class, "frontendGroup")
+        builder().from(Long.class, "frontendGroup").to(Tenant.class, "frontendGroup")
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
         builder().from("privateKey").to("privateKey");
         builder().from("publicKey").to("publicKey");

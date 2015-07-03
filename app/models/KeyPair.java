@@ -13,11 +13,11 @@ import javax.persistence.*;
 /**
  * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
  */
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "frontendGroup_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "tenant_id"}))
 @Entity public class KeyPair extends RemoteModel {
 
     @ManyToOne(optional = false) private Cloud cloud;
-    @ManyToOne(optional = false) private FrontendGroup frontendGroup;
+    @ManyToOne(optional = false) private Tenant tenant;
 
     private String privateKey;
     @Nullable @Column(nullable = true) private String publicKey;
@@ -28,11 +28,11 @@ import javax.persistence.*;
     protected KeyPair() {
     }
 
-    public KeyPair(Cloud cloud, FrontendGroup frontendGroup, String privateKey,
+    public KeyPair(Cloud cloud, Tenant tenant, String privateKey,
         @Nullable String publicKey, @Nullable String remoteId) {
         super(remoteId);
         this.cloud = cloud;
-        this.frontendGroup = frontendGroup;
+        this.tenant = tenant;
         this.privateKey = privateKey;
         this.publicKey = publicKey;
     }
@@ -45,12 +45,12 @@ import javax.persistence.*;
         this.cloud = cloud;
     }
 
-    public FrontendGroup getFrontendGroup() {
-        return frontendGroup;
+    public Tenant getTenant() {
+        return tenant;
     }
 
-    public void setFrontendGroup(FrontendGroup frontendGroup) {
-        this.frontendGroup = frontendGroup;
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     public String getPrivateKey() {

@@ -17,8 +17,8 @@
  */
 
 import com.google.inject.Inject;
-import models.FrontendGroup;
 import models.FrontendUser;
+import models.Tenant;
 import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
@@ -28,37 +28,37 @@ import models.service.api.generic.ModelService;
 public class InitialData {
 
     private final FrontendUserService frontendUserService;
-    private final ModelService<FrontendGroup> frontendGroupModelService;
+    private final ModelService<Tenant> tenantModelService;
     private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
-        ModelService<FrontendGroup> frontendGroupModelService) {
+        ModelService<Tenant> tenantModelService) {
         this.frontendUserService = frontendUserService;
-        this.frontendGroupModelService = frontendGroupModelService;
+        this.tenantModelService = tenantModelService;
     }
 
     public void loadInitialData() {
         /**
-         * Creates a default system user and a default group.
+         * Creates a default system user and a default tenant.
          */
         if (frontendUserService.getAll().isEmpty()) {
-            FrontendGroup frontendGroup = null;
-            for (FrontendGroup storedFrontendGroup : frontendGroupModelService.getAll()) {
-                if (DEFAULT_GROUP.equals(storedFrontendGroup.getName())) {
-                    frontendGroup = storedFrontendGroup;
+            Tenant tenant = null;
+            for (Tenant storedTenant : tenantModelService.getAll()) {
+                if (DEFAULT_GROUP.equals(storedTenant.getName())) {
+                    tenant = storedTenant;
                     break;
                 }
             }
-            if (frontendGroup == null) {
-                frontendGroup = new FrontendGroup(DEFAULT_GROUP);
-                frontendGroupModelService.save(frontendGroup);
+            if (tenant == null) {
+                tenant = new Tenant(DEFAULT_GROUP);
+                tenantModelService.save(tenant);
             }
 
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
             frontendUserService.save(frontendUser);
-            frontendGroup.getFrontendUsers().add(frontendUser);
-            frontendGroupModelService.save(frontendGroup);
+            tenant.getFrontendUsers().add(frontendUser);
+            tenantModelService.save(tenant);
         }
     }
 }

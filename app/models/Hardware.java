@@ -20,12 +20,15 @@ package models;
 
 import models.generic.RemoteModel;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity public class Hardware extends RemoteModel {
+
+    @Nullable @Column(updatable = false, nullable = true) private String name;
 
     @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
 
@@ -44,12 +47,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Hardware() {
     }
 
-    public Hardware(String remoteId, Cloud cloud, HardwareOffer hardwareOffer) {
+    public Hardware(String remoteId, Cloud cloud, HardwareOffer hardwareOffer, @Nullable String name) {
         super(remoteId);
         checkNotNull(cloud);
         checkNotNull(hardwareOffer);
         this.cloud = cloud;
         this.hardwareOffer = hardwareOffer;
+        this.name = name;
     }
 
     public HardwareOffer getHardwareOffer() {
@@ -90,5 +94,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
         this.virtualMachineTemplates = virtualMachineTemplates;
+    }
+
+    @Nullable public String getName() {
+        return name;
+    }
+
+    public void setName(@Nullable String name) {
+        this.name = name;
     }
 }

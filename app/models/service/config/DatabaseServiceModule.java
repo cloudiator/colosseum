@@ -80,8 +80,8 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<FrontendUser>>() {
         });
         // Frontend User Group
-        bind(new TypeLiteral<ModelService<FrontendGroup>>() {
-        }).to(new TypeLiteral<BaseModelService<FrontendGroup>>() {
+        bind(new TypeLiteral<ModelService<Tenant>>() {
+        }).to(new TypeLiteral<BaseModelService<Tenant>>() {
         });
         //Geo Location
         bind(new TypeLiteral<ModelService<GeoLocation>>() {

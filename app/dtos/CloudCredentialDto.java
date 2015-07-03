@@ -7,7 +7,7 @@ import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
-import models.FrontendGroup;
+import models.Tenant;
 import models.service.api.generic.ModelService;
 
 /**
@@ -64,7 +64,7 @@ public class CloudCredentialDto extends ValidatableDto {
     public static class References {
 
         @Inject private static Provider<ModelService<Cloud>> cloudService;
-        @Inject private static Provider<ModelService<FrontendGroup>> frontendGroupService;
+        @Inject private static Provider<ModelService<Tenant>> frontendGroupService;
 
         private References() {
         }

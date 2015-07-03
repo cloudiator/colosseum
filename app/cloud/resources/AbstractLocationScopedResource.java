@@ -9,7 +9,7 @@ import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
  */
 public class AbstractLocationScopedResource<T extends Resource>
     extends AbstractCredentialScopedResource<T>
-    implements CredentialScoped, LocationScoped, Resource {
+    implements CredentialScoped, LocationScoped, RemoteResource {
 
     private final String location;
     private final String id;

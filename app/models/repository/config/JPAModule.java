@@ -82,8 +82,8 @@ public class JPAModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<FrontendUser>>() {
         });
         // Frontend User Group
-        bind(new TypeLiteral<ModelRepository<FrontendGroup>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<FrontendGroup>>() {
+        bind(new TypeLiteral<ModelRepository<Tenant>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Tenant>>() {
         });
         //Geo Location
         bind(new TypeLiteral<ModelRepository<GeoLocation>>() {

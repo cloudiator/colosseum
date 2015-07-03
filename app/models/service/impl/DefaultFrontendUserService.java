@@ -21,6 +21,7 @@ package models.service.impl;
 import com.google.inject.Inject;
 import components.security.Password;
 import models.FrontendUser;
+import models.Tenant;
 import models.repository.api.FrontendUserRepository;
 import models.service.impl.generic.BaseModelService;
 import org.apache.commons.codec.binary.Base64;
@@ -40,17 +41,29 @@ public class DefaultFrontendUserService extends BaseModelService<FrontendUser>
         return ((FrontendUserRepository) this.modelRepository).findByMail(mail);
     }
 
-    @Override public FrontendUser authenticate(String mail, String password) {
-        Logger.info(String.format("Trying to authenticate %s using password ****", mail));
+    @Override public FrontendUser authenticate(String mail, String password, String tenant) {
+        Logger.info(String
+            .format("Trying to authenticate %s in tenant %s using password ****", mail, tenant));
         FrontendUser fe = this.getByMail(mail);
         if (fe == null) {
             Logger.warn("Authentication failed, could not retrieve user from db");
             return null;
         }
 
+        Tenant validTenant = null;
+        for (Tenant tenantInDb : fe.getTenants()) {
+            if (tenantInDb.getUuid().equals(tenant)) {
+                validTenant = tenantInDb;
+            }
+        }
+
+        if (validTenant == null) {
+            Logger.info("Authentication failed. User not in tenant.");
+        }
+
         if (Password.getInstance().check(password.toCharArray(), fe.getPassword().toCharArray(),
             Base64.decodeBase64(fe.getSalt()))) {
-            Logger.info("Authetication success. Authenticated as user with id=" + fe.getId());
+            Logger.info("Authentication success. Authenticated as user with id=" + fe.getId());
             return fe;
         } else {
             Logger.warn("Authentication failed. Could not match password");

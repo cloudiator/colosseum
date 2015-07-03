@@ -8,7 +8,7 @@ import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
-import models.FrontendGroup;
+import models.Tenant;
 import models.FrontendUser;
 import models.Hardware;
 import models.service.api.FrontendUserService;
@@ -50,8 +50,8 @@ public class HardwareController
             @Override public boolean apply(Hardware hardware) {
                 String userName = request().username();
                 FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
-                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
-                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
+                for (Tenant tenant : frontendUser.getTenants()) {
+                    for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
                         if (hardware.getCloudCredentials().contains(cloudCredential)) {
                             return true;
                         }

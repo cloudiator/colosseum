@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
  */
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "frontendGroup_id"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "tenant_id"}))
 @Entity public class CloudCredential extends Model {
 
     @Column(nullable = false) private String user;
@@ -38,7 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
-    @ManyToOne(optional = false) private FrontendGroup frontendGroup;
+    @ManyToOne(optional = false) private Tenant tenant;
 
     @ManyToMany(mappedBy = "cloudCredentials") private List<Image> images;
 
@@ -54,17 +54,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected CloudCredential() {
     }
 
-    public CloudCredential(Cloud cloud, FrontendGroup frontendGroup, String user, String secret) {
+    public CloudCredential(Cloud cloud, Tenant tenant, String user, String secret) {
 
         checkNotNull(cloud);
-        checkNotNull(frontendGroup);
+        checkNotNull(tenant);
         checkNotNull(user);
         checkArgument(!user.isEmpty());
         checkNotNull(secret);
         checkArgument(!secret.isEmpty());
 
         this.cloud = cloud;
-        this.frontendGroup = frontendGroup;
+        this.tenant = tenant;
         this.user = user;
         this.secret = secret;
     }
@@ -93,12 +93,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.cloud = cloud;
     }
 
-    public FrontendGroup getFrontendGroup() {
-        return frontendGroup;
+    public Tenant getTenant() {
+        return tenant;
     }
 
-    public void setFrontendGroup(FrontendGroup frontendGroup) {
-        this.frontendGroup = frontendGroup;
+    public void setTenant(Tenant tenant) {
+        this.tenant = tenant;
     }
 
     public List<Image> getImages() {

@@ -26,15 +26,16 @@ import models.service.api.generic.ModelService;
  */
 public interface FrontendUserService extends ModelService<FrontendUser> {
 
-    public FrontendUser getByMail(String mail);
+    FrontendUser getByMail(String mail);
 
     /**
      * Tries to authenticate the user.
      *
      * @param mail     the mail address given by the user
      * @param password the plain text given by the user.
+     * @param tenant   the tenant of the user.
      * @return the user object if auth was successful, null if not.
      */
-    public FrontendUser authenticate(String mail, String password);
+    FrontendUser authenticate(String mail, String password, String tenant);
 
 }

@@ -40,6 +40,7 @@ public class CreateLocationInDatabase implements Solution {
         String remoteId = locationNotInDatabase.getLocationInCloud().id();
         Location location = new Location(cloud, remoteId, null, null, null,
             locationNotInDatabase.getLocationInCloud().isAssignable());
+        location.setCloudProviderId(locationNotInDatabase.getLocationInCloud().cloudProviderId());
 
         this.locationModelRepository.save(location);
     }

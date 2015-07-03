@@ -1,5 +1,6 @@
 package cloud;
 
+import cloud.colosseum.BaseColosseumComputeService;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
@@ -35,7 +36,7 @@ public class DefaultCloudService implements CloudService {
     }
 
     @Override public ColosseumComputeService computeService() {
-        //TODO: implement
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new BaseColosseumComputeService(
+            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService));
     }
 }

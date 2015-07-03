@@ -102,13 +102,13 @@ public class VirtualMachineDto extends ValidatableDto {
 
     @Override public void validation() {
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
-        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+        validator(Long.class).validate(cloud, "cloud").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(image).withValidator(new NotNullValidator())
+        validator(Long.class).validate(image, "image").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.imageService.get()));
-        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+        validator(Long.class).validate(location, "location").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
-        validator(Long.class).validate(hardware).withValidator(new NotNullValidator())
+        validator(Long.class).validate(hardware, "hardware").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
     }
 

@@ -29,22 +29,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.03.15.
  */
-@Entity public class FrontendGroup extends Model {
+@Entity public class Tenant extends Model {
 
     @ManyToMany private List<FrontendUser> frontendUsers;
     @Column(unique = true, nullable = false) private String name;
 
-    @OneToMany(mappedBy = "frontendGroup", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
     private List<CloudCredential> cloudCredentials;
 
     /**
      * Empty constructor for hibernate.
      */
-    protected FrontendGroup() {
+    protected Tenant() {
 
     }
 
-    public FrontendGroup(String name) {
+    public Tenant(String name) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;

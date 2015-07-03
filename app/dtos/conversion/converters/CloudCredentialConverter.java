@@ -24,7 +24,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
 import models.CloudCredential;
-import models.FrontendGroup;
+import models.Tenant;
 import models.service.api.generic.ModelService;
 
 /**
@@ -34,10 +34,10 @@ public class CloudCredentialConverter
     extends AbstractConverter<CloudCredential, CloudCredentialDto> {
 
     private final ModelService<Cloud> cloudModelService;
-    private final ModelService<FrontendGroup> frontendGroupModelService;
+    private final ModelService<Tenant> frontendGroupModelService;
 
     @Inject protected CloudCredentialConverter(ModelService<Cloud> cloudModelService,
-        ModelService<FrontendGroup> frontendGroupModelService) {
+        ModelService<Tenant> frontendGroupModelService) {
         super(CloudCredential.class, CloudCredentialDto.class);
         this.cloudModelService = cloudModelService;
         this.frontendGroupModelService = frontendGroupModelService;
@@ -48,7 +48,7 @@ public class CloudCredentialConverter
         builder().from("secret").to("secret");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "frontendGroup").to(FrontendGroup.class, "frontendGroup")
+        builder().from(Long.class, "frontendGroup").to(Tenant.class, "frontendGroup")
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
     }
 }

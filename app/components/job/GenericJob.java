@@ -1,6 +1,5 @@
 package components.job;
 
-import cloud.CloudService;
 import cloud.colosseum.ColosseumComputeService;
 import models.generic.Model;
 import models.service.api.generic.ModelService;
@@ -12,11 +11,12 @@ public abstract class GenericJob<T extends Model> implements Job {
 
     private final String resourceUuid;
     private final ModelService<T> modelService;
-    private final CloudService cloudService;
+    private final ColosseumComputeService colosseumComputeService;
     private JobState jobState;
 
-    public GenericJob(T t, ModelService<T> modelService, CloudService cloudService) {
-        this.cloudService = cloudService;
+    public GenericJob(T t, ModelService<T> modelService,
+        ColosseumComputeService colosseumComputeService) {
+        this.colosseumComputeService = colosseumComputeService;
         this.resourceUuid = t.getUuid();
         this.modelService = modelService;
     }
@@ -38,8 +38,21 @@ public abstract class GenericJob<T extends Model> implements Job {
     }
 
     @Override public void execute() throws JobException {
-        T t = this.modelService.getByUuid(resourceUuid);
-        this.doWork(t, modelService, cloudService.computeService());
+        T t = null;
+        /**
+
+         * todo: find a better way for waiting for the database
+         */
+        while (t == null) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            System.out.println(resourceUuid);
+            t = this.modelService.getByUuid(resourceUuid);
+        }
+        this.doWork(t, modelService, colosseumComputeService);
         this.modelService.save(t);
     }
 

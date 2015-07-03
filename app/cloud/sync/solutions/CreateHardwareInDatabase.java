@@ -49,7 +49,10 @@ public class CreateHardwareInDatabase implements Solution {
 
         Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud,
             getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
-                hardwareNotInDatabase.getHardwareInLocation().mbRam(), null));
+                hardwareNotInDatabase.getHardwareInLocation().mbRam(), null),
+            hardwareNotInDatabase.getHardwareInLocation().name());
+        hardware
+            .setCloudProviderId(hardwareNotInDatabase.getHardwareInLocation().cloudProviderId());
 
         hardwareModelService.save(hardware);
 

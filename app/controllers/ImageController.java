@@ -26,7 +26,7 @@ import controllers.generic.GenericApiController;
 import dtos.ImageDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
-import models.FrontendGroup;
+import models.Tenant;
 import models.FrontendUser;
 import models.Image;
 import models.service.api.FrontendUserService;
@@ -66,8 +66,8 @@ public class ImageController extends GenericApiController<Image, ImageDto, Image
             @Override public boolean apply(Image image) {
                 String userName = request().username();
                 FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
-                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
-                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
+                for (Tenant tenant : frontendUser.getTenants()) {
+                    for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
                         if (image.getCloudCredentials().contains(cloudCredential)) {
                             return true;
                         }

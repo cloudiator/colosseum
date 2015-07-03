@@ -23,14 +23,14 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.FrontendGroupDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.FrontendGroup;
+import models.Tenant;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 19.03.15.
  */
 public class FrontendGroupController extends
-    GenericApiController<FrontendGroup, FrontendGroupDto, FrontendGroupDto, FrontendGroupDto> {
+    GenericApiController<Tenant, FrontendGroupDto, FrontendGroupDto, FrontendGroupDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -40,8 +40,8 @@ public class FrontendGroupController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public FrontendGroupController(ModelService<FrontendGroup> modelService,
-        TypeLiteral<FrontendGroup> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public FrontendGroupController(ModelService<Tenant> modelService,
+        TypeLiteral<Tenant> typeLiteral, ModelDtoConversionService conversionService) {
         super(modelService, typeLiteral, conversionService);
     }
 

@@ -25,7 +25,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
  * Created by daniel on 12.03.15.
  */
 public class AbstractCredentialScopedResource<T extends Resource>
-    implements CredentialScoped, Resource {
+    implements CredentialScoped, RemoteResource {
 
     protected final static String SEPARATOR = "/";
 
@@ -56,5 +56,9 @@ public class AbstractCredentialScopedResource<T extends Resource>
 
     @Override public String name() {
         return resource.name();
+    }
+
+    @Override public String cloudProviderId() {
+        return id;
     }
 }

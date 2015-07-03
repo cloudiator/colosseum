@@ -6,7 +6,7 @@ import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
-import models.FrontendGroup;
+import models.Tenant;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,7 +31,7 @@ public class KeyPairDto extends ValidatableDto {
 
     public static class References {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<FrontendGroup>> frontendGroupService;
+        @Inject public static Provider<ModelService<Tenant>> frontendGroupService;
     }
 
     public Long getCloud() {

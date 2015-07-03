@@ -63,6 +63,7 @@ public class SecurityController extends Controller {
         } else {
             session().clear();
             session("email", filledForm.get().getEmail());
+            session("tenant", filledForm.get().getTenant());
             return redirect(routes.SiteController.index());
         }
     }

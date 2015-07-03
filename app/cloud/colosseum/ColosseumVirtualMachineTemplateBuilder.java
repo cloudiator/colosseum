@@ -22,6 +22,8 @@ import models.*;
 
 import javax.annotation.Nullable;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 12.02.15.
  */
@@ -90,6 +92,8 @@ public class ColosseumVirtualMachineTemplateBuilder {
 
     public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
         VirtualMachine virtualMachine) {
+
+        checkNotNull(virtualMachine);
         this.cloud = virtualMachine.getCloud();
         this.image = virtualMachine.getImage();
         this.location = virtualMachine.getLocation();

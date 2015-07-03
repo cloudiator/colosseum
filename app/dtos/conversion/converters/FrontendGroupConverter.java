@@ -23,7 +23,7 @@ import dtos.FrontendGroupDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.FrontendGroup;
+import models.Tenant;
 import models.service.api.FrontendUserService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -31,12 +31,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 19.03.15.
  */
-public class FrontendGroupConverter extends AbstractConverter<FrontendGroup, FrontendGroupDto> {
+public class FrontendGroupConverter extends AbstractConverter<Tenant, FrontendGroupDto> {
 
     private final FrontendUserService frontendUserModelService;
 
     @Inject protected FrontendGroupConverter(FrontendUserService frontendUserModelService) {
-        super(FrontendGroup.class, FrontendGroupDto.class);
+        super(Tenant.class, FrontendGroupDto.class);
         checkNotNull(frontendUserModelService);
         this.frontendUserModelService = frontendUserModelService;
     }

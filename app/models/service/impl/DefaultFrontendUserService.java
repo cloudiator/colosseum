@@ -59,6 +59,7 @@ public class DefaultFrontendUserService extends BaseModelService<FrontendUser>
 
         if (validTenant == null) {
             Logger.info("Authentication failed. User not in tenant.");
+            return null;
         }
 
         if (Password.getInstance().check(password.toCharArray(), fe.getPassword().toCharArray(),

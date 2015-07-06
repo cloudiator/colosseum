@@ -6,6 +6,8 @@ import controllers.generic.GenericApiController;
 import dtos.ApplicationComponentDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.ApplicationComponent;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -13,18 +15,13 @@ import models.service.api.generic.ModelService;
  */
 public class ApplicationComponentController extends
     GenericApiController<ApplicationComponent, ApplicationComponentDto, ApplicationComponentDto, ApplicationComponentDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public ApplicationComponentController(ModelService<ApplicationComponent> modelService,
+    
+    @Inject public ApplicationComponentController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<ApplicationComponent> modelService,
         TypeLiteral<ApplicationComponent> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

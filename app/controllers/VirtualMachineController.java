@@ -24,7 +24,9 @@ import components.job.JobService;
 import controllers.generic.GenericApiController;
 import dtos.VirtualMachineDto;
 import dtos.conversion.ModelDtoConversionService;
+import models.Tenant;
 import models.VirtualMachine;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -35,19 +37,11 @@ public class VirtualMachineController extends
 
     private final JobService jobService;
 
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @param jobService
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
+    @Inject public VirtualMachineController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
         JobService jobService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
         this.jobService = jobService;
     }
 

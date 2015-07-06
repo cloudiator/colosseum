@@ -24,6 +24,8 @@ import controllers.generic.GenericApiController;
 import dtos.CommunicationChannelDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CommunicationChannel;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,18 +33,13 @@ import models.service.api.generic.ModelService;
  */
 public class CommunicationChannelController extends
     GenericApiController<CommunicationChannel, CommunicationChannelDto, CommunicationChannelDto, CommunicationChannelDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public CommunicationChannelController(ModelService<CommunicationChannel> modelService,
+
+    @Inject public CommunicationChannelController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<CommunicationChannel> modelService,
         TypeLiteral<CommunicationChannel> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

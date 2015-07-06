@@ -20,7 +20,7 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(CommunicationDto.References.class);
         requestStaticInjection(CommunicationChannelDto.References.class);
         requestStaticInjection(LoginDto.References.class);
-        requestStaticInjection(FrontendGroupDto.References.class);
+        requestStaticInjection(TenantDto.References.class);
         requestStaticInjection(HardwareDto.References.class);
         requestStaticInjection(ImageDto.References.class);
         requestStaticInjection(InstanceDto.References.class);

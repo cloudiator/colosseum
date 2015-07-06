@@ -8,7 +8,7 @@ import play.mvc.Security;
  */
 public abstract class TenantAwareAuthenticator extends Security.Authenticator {
 
-    public final String SEPARATOR = ":";
+    public static final String SEPARATOR = ":";
 
     public abstract String getUser(Http.Context context);
 

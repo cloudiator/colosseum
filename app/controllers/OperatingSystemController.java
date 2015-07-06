@@ -24,6 +24,8 @@ import controllers.generic.GenericApiController;
 import dtos.OperatingSystemDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.OperatingSystem;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,17 +33,12 @@ import models.service.api.generic.ModelService;
  */
 public class OperatingSystemController extends
     GenericApiController<OperatingSystem, OperatingSystemDto, OperatingSystemDto, OperatingSystemDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public OperatingSystemController(ModelService<OperatingSystem> modelService,
+    
+    @Inject public OperatingSystemController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<OperatingSystem> modelService,
         TypeLiteral<OperatingSystem> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

@@ -33,15 +33,15 @@ import java.util.List;
 /**
  * Created by daniel on 19.03.15.
  */
-public class FrontendGroupDto extends ValidatableDto {
+public class TenantDto extends ValidatableDto {
 
     private String name;
     private List<Long> frontendUsers;
 
-    public FrontendGroupDto() {
+    public TenantDto() {
     }
 
-    public FrontendGroupDto(String name, List<Long> frontendUsers) {
+    public TenantDto(String name, List<Long> frontendUsers) {
         this.name = name;
         this.frontendUsers = frontendUsers;
     }

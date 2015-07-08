@@ -34,12 +34,12 @@ import models.service.api.generic.ModelService;
 public class VirtualMachineTemplateController extends
     GenericApiController<VirtualMachineTemplate, VirtualMachineTemplateDto, VirtualMachineTemplateDto, VirtualMachineTemplateDto> {
 
-    @Inject
-    public VirtualMachineTemplateController(FrontendUserService frontendUserService,
+    @Inject public VirtualMachineTemplateController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachineTemplate> modelService,
         TypeLiteral<VirtualMachineTemplate> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

@@ -41,7 +41,8 @@ public class VirtualMachineController extends
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
         JobService jobService) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
         this.jobService = jobService;
     }
 
@@ -50,6 +51,7 @@ public class VirtualMachineController extends
     }
 
     @Override protected void postPost(VirtualMachine virtualMachine) {
+        virtualMachine.getCloudCredentials().add(getCloudCredential(virtualMachine.getCloud()));
         this.jobService.newVirtualMachineJob(virtualMachine);
     }
 }

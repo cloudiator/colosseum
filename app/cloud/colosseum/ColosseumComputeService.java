@@ -13,7 +13,7 @@ public interface ColosseumComputeService {
     VirtualMachineInLocation createVirtualMachine(
         ColosseumVirtualMachineTemplate virtualMachineTemplate);
     
-    Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid);
+    Optional<KeyPairService> getKeyPairService(String cloudUuid, String cloudCredentialUuid);
 
     Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid);
 }

@@ -19,6 +19,7 @@
 package cloud.resources;
 
 
+import cloud.DecoratedId;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 
 /**
@@ -26,8 +27,6 @@ import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
  */
 public class AbstractCredentialScopedResource<T extends Resource>
     implements CredentialScoped, RemoteResource {
-
-    protected final static String SEPARATOR = "/";
 
     private final String cloud;
     private final String credential;
@@ -51,7 +50,7 @@ public class AbstractCredentialScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return credential + SEPARATOR + cloud + SEPARATOR + id;
+        return DecoratedId.of(credential, cloud, id).colosseumId();
     }
 
     @Override public String name() {

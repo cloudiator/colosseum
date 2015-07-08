@@ -24,7 +24,9 @@ import models.FrontendUser;
 import models.Tenant;
 import models.service.api.ApiAccessTokenService;
 import models.service.api.FrontendUserService;
+import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
+import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
 
@@ -64,7 +66,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
-        //workaround continue. Bind the old one.
+        // workaround continue. Bind the old one.
         JPA.bindForCurrentThread(em);
 
         //remember the entity manager
@@ -95,7 +97,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
     }
 
     @Override public String getTenant(Http.Context context) {
-        FrontendUser frontendUser = this.getFrontendUser(context);
+        final FrontendUser frontendUser = this.getFrontendUser(context);
 
         if (frontendUser == null) {
             return null;
@@ -103,18 +105,38 @@ public class SecuredToken extends TenantAwareAuthenticator {
 
         String tenant = context.request().getHeader("X-Tenant");
 
-        Tenant foundTenant = null;
-        for (Tenant searchTenant : frontendUser.getTenants()) {
-            if (searchTenant.getUuid().equals(tenant)) {
-                foundTenant = searchTenant;
-                break;
-            }
-        }
+        final EntityManager em = JPA.em();
 
-        if (foundTenant != null) {
-            return foundTenant.getUuid();
+        try {
+            Tenant foundTenant = JPA.withTransaction(new F.Function0<Tenant>() {
+                @Override public Tenant apply() throws Throwable {
+                    FrontendUser frontendUser1 =
+                        References.frontendUserServiceInterfaceProvider.get()
+                            .getById(frontendUser.getId());
+                    if (frontendUser1 == null) {
+                        return null;
+                    }
+                    for (Tenant searchTenant : frontendUser1.getTenants()) {
+                        if (searchTenant.getName().equals(tenant)) {
+                            return searchTenant;
+                        }
+                    }
+                    return null;
+                }
+            });
+            if (foundTenant != null) {
+                return foundTenant.getName();
+            }
+            return null;
+        } catch (Throwable t) {
+            throw new RuntimeException(t);
+        } finally {
+            // workaround initialize the frontend user so we can use him later, after we are
+            // loosing the em....
+            Hibernate.initialize(frontendUser);
+            // workaround continue. Bind the old one.
+            JPA.bindForCurrentThread(em);
         }
-        return null;
     }
 
     @Override public Result onUnauthorized(Http.Context context) {

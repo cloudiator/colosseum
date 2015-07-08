@@ -11,6 +11,7 @@ import play.mvc.Controller;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -35,21 +36,31 @@ public class AuthenticationController extends Controller {
 
     private String[] getAuth() {
         String[] auth = request().username().split(TenantAwareAuthenticator.SEPARATOR);
-        checkState(auth.length == 2);
+        checkState(auth.length == 2, "Received illegal auth information.");
         return auth;
     }
 
     protected FrontendUser getUser() {
         String mail = getAuth()[1];
         FrontendUser frontendUser = frontendUserService.getByMail(mail);
-        checkState(frontendUser != null);
+        checkState(frontendUser != null, "The logged-in user does not exist in the db.");
         return frontendUser;
     }
 
     protected Tenant getActiveTenant() {
         String tenantString = getAuth()[0];
-        Tenant tenant = tenantModelService.getByUuid(tenantString);
-        checkState(tenant != null);
+
+        Tenant tenant = null;
+        //todo: replace with method in service.
+        List<Tenant> tenants = tenantModelService.getAll();
+        for (Tenant tenantInDb : tenants) {
+            if (tenantInDb.getName().equals(tenantString)) {
+                tenant = tenantInDb;
+                break;
+            }
+        }
+
+        checkState(tenant != null, "The used tenant does not exist in the db.");
         return tenant;
     }
 

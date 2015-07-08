@@ -37,16 +37,15 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         for (String ip : cloudVirtualMachine.publicAddresses()) {
             virtualMachine.getIpAddresses().add(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
         }
-
         modelService.save(virtualMachine);
 
         if (virtualMachine.getPublicIpAddress() == null) {
-            final Optional<PublicIpService> publicIpService =
-                computeService.getPublicIpService(virtualMachine.getCloud().getUuid());
+            final Optional<PublicIpService> publicIpService = computeService
+                .getPublicIpService(virtualMachine.getCloudCredentials().get(0).getUuid());
             if (publicIpService.isPresent()) {
                 try {
                     final String publicIp =
-                        publicIpService.get().addPublicIp(virtualMachine.getCloudProviderId());
+                        publicIpService.get().addPublicIp(virtualMachine.getRemoteId());
                     virtualMachine.getIpAddresses()
                         .add(new IpAddress(virtualMachine, publicIp, IpType.PUBLIC));
                 } catch (PublicIpException e) {

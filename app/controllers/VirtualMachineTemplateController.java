@@ -23,7 +23,9 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.VirtualMachineTemplateDto;
 import dtos.conversion.ModelDtoConversionService;
+import models.Tenant;
 import models.VirtualMachineTemplate;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -31,19 +33,13 @@ import models.service.api.generic.ModelService;
  */
 public class VirtualMachineTemplateController extends
     GenericApiController<VirtualMachineTemplate, VirtualMachineTemplateDto, VirtualMachineTemplateDto, VirtualMachineTemplateDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject
-    public VirtualMachineTemplateController(ModelService<VirtualMachineTemplate> modelService,
+
+    @Inject public VirtualMachineTemplateController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<VirtualMachineTemplate> modelService,
         TypeLiteral<VirtualMachineTemplate> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

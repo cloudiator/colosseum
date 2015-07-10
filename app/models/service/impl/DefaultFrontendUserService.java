@@ -52,13 +52,14 @@ public class DefaultFrontendUserService extends BaseModelService<FrontendUser>
 
         Tenant validTenant = null;
         for (Tenant tenantInDb : fe.getTenants()) {
-            if (tenantInDb.getUuid().equals(tenant)) {
+            if (tenantInDb.getName().equals(tenant)) {
                 validTenant = tenantInDb;
             }
         }
 
         if (validTenant == null) {
             Logger.info("Authentication failed. User not in tenant.");
+            return null;
         }
 
         if (Password.getInstance().check(password.toCharArray(), fe.getPassword().toCharArray(),

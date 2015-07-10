@@ -24,6 +24,8 @@ import controllers.generic.GenericApiController;
 import dtos.CloudDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Cloud;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -33,17 +35,10 @@ import models.service.api.generic.ModelService;
  */
 public class CloudController extends GenericApiController<Cloud, CloudDto, CloudDto, CloudDto> {
 
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public CloudController(ModelService<Cloud> modelService, TypeLiteral<Cloud> typeLiteral,
+    @Inject public CloudController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<Cloud> modelService, TypeLiteral<Cloud> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

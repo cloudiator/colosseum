@@ -22,6 +22,7 @@ import models.*;
 
 import javax.annotation.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -83,21 +84,19 @@ public class ColosseumVirtualMachineTemplateBuilder {
 
     public ColosseumVirtualMachineTemplateBuilder virtualMachineTemplateModel(
         models.VirtualMachineTemplate virtualMachineTemplateModel) {
-        this.cloud = virtualMachineTemplateModel.getCloud();
-        this.image = virtualMachineTemplateModel.getImage();
-        this.location = virtualMachineTemplateModel.getLocation();
-        this.hardware = virtualMachineTemplateModel.getHardware();
-        return this;
+        //todo: implement
+        throw new UnsupportedOperationException();
     }
 
     public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
         VirtualMachine virtualMachine) {
-
         checkNotNull(virtualMachine);
+        checkArgument(virtualMachine.getCloudCredentials().size() == 1);
         this.cloud = virtualMachine.getCloud();
         this.image = virtualMachine.getImage();
         this.location = virtualMachine.getLocation();
         this.hardware = virtualMachine.getHardware();
+        this.cloudCredential = virtualMachine.getCloudCredentials().get(0);
         return this;
     }
 
@@ -145,29 +144,8 @@ public class ColosseumVirtualMachineTemplateBuilder {
         return null;
     }
 
-    @Nullable protected CloudCredential getCloudCredential() {
-        if (cloudCredential != null) {
-            return cloudCredential;
-        }
-        if (cloud != null && image != null && location != null && hardware != null) {
-            for (CloudCredential inCloud : cloud.getCloudCredentials()) {
-                for (CloudCredential inImage : image.getCloudCredentials()) {
-                    for (CloudCredential inLocation : location.getCloudCredentials()) {
-                        for (CloudCredential inHardware : hardware.getCloudCredentials()) {
-                            if (inCloud.equals(inImage) && inCloud.equals(inLocation) && inCloud
-                                .equals(inHardware)) {
-                                return inCloud;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return null;
-    }
-
     public ColosseumVirtualMachineTemplate build() {
-        return new BaseColosseumVirtualMachineTemplate(cloud, getCloudCredential(), getImage(),
+        return new BaseColosseumVirtualMachineTemplate(cloud, cloudCredential, getImage(),
             getHardware(), getLocation());
     }
 

@@ -24,23 +24,21 @@ import controllers.generic.GenericApiController;
 import dtos.HardwareOfferDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.HardwareOffer;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
-public class HardwareOfferController extends GenericApiController<HardwareOffer, HardwareOfferDto, HardwareOfferDto, HardwareOfferDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public HardwareOfferController(ModelService<HardwareOffer> modelService,
+public class HardwareOfferController extends
+    GenericApiController<HardwareOffer, HardwareOfferDto, HardwareOfferDto, HardwareOfferDto> {
+
+    @Inject public HardwareOfferController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<HardwareOffer> modelService,
         TypeLiteral<HardwareOffer> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

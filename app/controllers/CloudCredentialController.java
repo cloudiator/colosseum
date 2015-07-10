@@ -6,6 +6,8 @@ import controllers.generic.GenericApiController;
 import dtos.CloudCredentialDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
+import models.Tenant;
+import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
 
 /**
@@ -13,17 +15,12 @@ import models.service.api.generic.ModelService;
  */
 public class CloudCredentialController extends
     GenericApiController<CloudCredential, CloudCredentialDto, CloudCredentialDto, CloudCredentialDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public CloudCredentialController(ModelService<CloudCredential> modelService,
+
+    @Inject public CloudCredentialController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<CloudCredential> modelService,
         TypeLiteral<CloudCredential> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

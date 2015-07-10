@@ -1,5 +1,6 @@
 package cloud.resources;
 
+import cloud.DecoratedId;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 import de.uniulm.omi.cloudiator.sword.api.util.IdScopedByLocation;
 import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
@@ -22,10 +23,10 @@ public class AbstractLocationScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return location() + SEPARATOR + id;
+        return DecoratedId.of(credential(), cloud(), location, id).colosseumId();
     }
 
     @Override public String location() {
-        return credential() + SEPARATOR + cloud() + SEPARATOR + location;
+        return DecoratedId.of(credential(), cloud(), location, id).colosseumLocation();
     }
 }

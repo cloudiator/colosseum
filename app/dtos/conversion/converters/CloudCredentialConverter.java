@@ -48,7 +48,7 @@ public class CloudCredentialConverter
         builder().from("secret").to("secret");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "frontendGroup").to(Tenant.class, "frontendGroup")
+        builder().from(Long.class, "tenant").to(Tenant.class, "tenant")
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
     }
 }

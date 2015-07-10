@@ -1,6 +1,7 @@
 package cloud.colosseum;
 
 import cloud.ComputeServiceRegistry;
+import cloud.DecoratingPublicIpService;
 import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
@@ -24,13 +25,19 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             .createVirtualMachine(virtualMachineTemplate);
     }
 
-    @Override public Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid) {
+    @Override public Optional<KeyPairService> getKeyPairService(String cloudUuid,
+        String cloudCredentialUuid) {
         //todo: decorate
+
         return this.computeServices.getComputeService(cloudCredentialUuid).getKeyPairService();
     }
 
     @Override public Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid) {
-        //todo: decorate
-        return this.computeServices.getComputeService(cloudCredentialUuid).getPublicIpService();
+        Optional<PublicIpService> publicIpService =
+            computeServices.getComputeService(cloudCredentialUuid).getPublicIpService();
+        if (!publicIpService.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DecoratingPublicIpService(publicIpService.get()));
     }
 }

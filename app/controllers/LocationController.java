@@ -26,36 +26,22 @@ import controllers.generic.GenericApiController;
 import dtos.LocationDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
-import models.Tenant;
-import models.FrontendUser;
 import models.Location;
+import models.Tenant;
 import models.service.api.FrontendUserService;
 import models.service.api.generic.ModelService;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 09.04.15.
  */
 public class LocationController
     extends GenericApiController<Location, LocationDto, LocationDto, LocationDto> {
-    private final FrontendUserService frontendUserModelService;
 
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService             the model service for retrieving the models.
-     * @param typeLiteral              a type literal for the model type
-     * @param conversionService        the conversion service for converting models and dtos.
-     * @param frontendUserModelService service to retrieve frontend users from db.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public LocationController(ModelService<Location> modelService,
-        TypeLiteral<Location> typeLiteral, ModelDtoConversionService conversionService,
-        FrontendUserService frontendUserModelService) {
-        super(modelService, typeLiteral, conversionService);
-        checkNotNull(frontendUserModelService);
-        this.frontendUserModelService = frontendUserModelService;
+    @Inject public LocationController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<Location> modelService,
+        TypeLiteral<Location> typeLiteral, ModelDtoConversionService conversionService) {
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -63,20 +49,15 @@ public class LocationController
     }
 
     @Override protected Optional<Predicate<Location>> filter() {
-        return Optional.of(new Predicate<Location>() {
-            @Override public boolean apply(Location location) {
-                String userName = request().username();
-
-                FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
-                for (Tenant tenant : frontendUser.getTenants()) {
-                    for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
-                        if (location.getCloudCredentials().contains(cloudCredential)) {
-                            return true;
-                        }
+        return Optional.of(location -> {
+            for (Tenant tenant : getUser().getTenants()) {
+                for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
+                    if (location.getCloudCredentials().contains(cloudCredential)) {
+                        return true;
                     }
                 }
-                return false;
             }
+            return false;
         });
     }
 }

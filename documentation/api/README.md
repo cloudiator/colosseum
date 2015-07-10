@@ -14,7 +14,7 @@ Entity                                                       | URL
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [Communication](entities/Communication.md)                   | /api/communication
 [CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
-[FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
+[Tenant](entities/Tenant.md)                                 | /api/tenant
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo
 [Hardware](entities/Hardware.md)                             | /api/hardware

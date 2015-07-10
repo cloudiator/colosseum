@@ -42,7 +42,7 @@ public abstract class GenericJob<T extends Model> implements Job {
         return Priority.HIGH;
     }
 
-    @Override public void execute() throws JobException {
+    @Override public final void execute() throws JobException {
         T t = null;
         /**
 

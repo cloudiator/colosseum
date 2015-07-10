@@ -18,6 +18,8 @@
 
 package cloud.colosseum;
 
+
+import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import models.*;
 
 import javax.annotation.Nullable;
@@ -38,6 +40,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
     private Location location;
     private Image image;
     private Hardware hardware;
+    private TemplateOptions templateOptions;
 
     ColosseumVirtualMachineTemplateBuilder() {
     }
@@ -86,6 +89,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
         models.VirtualMachineTemplate virtualMachineTemplateModel) {
         //todo: implement
         throw new UnsupportedOperationException();
+    }
+
+    public ColosseumVirtualMachineTemplateBuilder templateOptions(TemplateOptions templateOptions) {
+        this.templateOptions = templateOptions;
+        return this;
     }
 
     public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
@@ -146,7 +154,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
 
     public ColosseumVirtualMachineTemplate build() {
         return new BaseColosseumVirtualMachineTemplate(cloud, cloudCredential, getImage(),
-            getHardware(), getLocation());
+            getHardware(), getLocation(), templateOptions);
     }
 
 

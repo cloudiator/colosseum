@@ -7,7 +7,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
  */
 public interface ColosseumVirtualMachineTemplate extends VirtualMachineTemplate {
     
-    String getCloudUuid();
+    String cloudUuid();
 
-    String getCloudCredentialUuid();
+    String cloudCredentialUuid();
 }

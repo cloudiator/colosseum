@@ -1,5 +1,6 @@
 package components.job;
 
+import models.Tenant;
 import models.VirtualMachine;
 
 /**
@@ -7,5 +8,5 @@ import models.VirtualMachine;
  */
 public interface JobService {
 
-    void newVirtualMachineJob(VirtualMachine virtualMachine);
+    void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
 }

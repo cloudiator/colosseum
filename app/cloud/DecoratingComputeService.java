@@ -11,8 +11,8 @@ import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.ssh.SshConnection;
 
 import javax.annotation.Nullable;
 
@@ -110,10 +110,13 @@ public class DecoratingComputeService implements
             .apply(this.delegate.createVirtualMachine(virtualMachineTemplate));
     }
 
-    @Override public SshConnection getSshConnection(HostAndPort hostAndPort,
+    @Override
+    public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily,
         LoginCredential loginCredential) {
-        return this.delegate.getSshConnection(hostAndPort, loginCredential);
+        return this.delegate.getRemoteConnection(hostAndPort, osFamily, loginCredential);
     }
+
+
 
     @Override public Optional<PublicIpService> getPublicIpService() {
         return this.delegate.getPublicIpService();

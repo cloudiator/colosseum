@@ -52,6 +52,6 @@ public class VirtualMachineController extends
 
     @Override protected void postPost(VirtualMachine virtualMachine) {
         virtualMachine.getCloudCredentials().add(getCloudCredential(virtualMachine.getCloud()));
-        this.jobService.newVirtualMachineJob(virtualMachine);
+        this.jobService.newVirtualMachineJob(virtualMachine, getActiveTenant());
     }
 }

@@ -20,6 +20,7 @@ package models;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
@@ -118,10 +119,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @Nullable public IpAddress getPublicIpAddress() {
         final Iterable<IpAddress> ipAddresses =
-            Iterables.filter(this.getIpAddresses(), new Predicate<IpAddress>() {
-                @Override public boolean apply(IpAddress ipAddress) {
-                    return ipAddress.getIpType().equals(IpType.PUBLIC);
-                }
+            Iterables.filter(this.getIpAddresses(), ipAddress -> {
+                return ipAddress.getIpType().equals(IpType.PUBLIC);
             });
         if (ipAddresses.iterator().hasNext()) {
             return ipAddresses.iterator().next();
@@ -160,4 +159,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
         this.generatedLoginPassword = generatedLoginPassword;
     }
+
+
+
 }

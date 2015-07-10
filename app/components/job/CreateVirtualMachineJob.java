@@ -5,11 +5,12 @@ import cloud.colosseum.ColosseumComputeService;
 import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
+import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
+import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import models.IpAddress;
-import models.IpType;
-import models.VirtualMachine;
+import de.uniulm.omi.cloudiator.sword.core.domain.builders.TemplateOptionsBuilder;
+import models.*;
 import models.service.api.generic.ModelService;
 
 /**
@@ -17,17 +18,54 @@ import models.service.api.generic.ModelService;
  */
 public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
 
+    private final ModelService<KeyPair> keyPairModelService;
+
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
-        ModelService<VirtualMachine> modelService,
-        ColosseumComputeService colosseumComputeService) {
-        super(virtualMachine, modelService, colosseumComputeService);
+        ModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
+        ColosseumComputeService colosseumComputeService, Tenant tenant,
+        ModelService<KeyPair> keyPairModelService) {
+        super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        this.keyPairModelService = keyPairModelService;
     }
 
     @Override
     protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
-        ColosseumComputeService computeService) throws JobException {
+        ColosseumComputeService computeService, Tenant tenant) throws JobException {
+
+        //check keypair
+        KeyPair keyPairToUse = null;
+        for (KeyPair keyPair : keyPairModelService.getAll()) {
+            if (keyPair.getCloud().equals(virtualMachine.getCloud()) && keyPair.getTenant()
+                .equals(tenant)) {
+                keyPairToUse = keyPair;
+                break;
+            }
+        }
+
+        if (keyPairToUse == null) {
+            Optional<KeyPairService> keyPairServiceOptional = computeService
+                .getKeyPairService(virtualMachine.getCloudCredentials().get(0).getUuid());
+            if (keyPairServiceOptional.isPresent()) {
+                try {
+                    final de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
+                        keyPairServiceOptional.get().create(tenant.getUuid());
+                    keyPairToUse = new KeyPair(virtualMachine.getCloud(), tenant,
+                        remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey(),
+                        remoteKeyPair.name());
+                    this.keyPairModelService.save(keyPairToUse);
+                } catch (KeyPairException e) {
+                    throw new JobException(e);
+                }
+            }
+        }
+
         ColosseumVirtualMachineTemplateBuilder builder =
             BaseColosseumVirtualMachineTemplate.builder();
+        if (keyPairToUse != null) {
+            builder.templateOptions(
+                TemplateOptionsBuilder.newBuilder().keyPairName(keyPairToUse.getRemoteId())
+                    .build());
+        }
         VirtualMachineInLocation cloudVirtualMachine = computeService
             .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
         virtualMachine.setRemoteId(cloudVirtualMachine.id());
@@ -56,5 +94,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
                     "VirtualMachine started without public IP and IpService is not available.");
             }
         }
+
+        computeService.remoteConnection(tenant, virtualMachine).executeCommand("ls -la /");
+
     }
 }

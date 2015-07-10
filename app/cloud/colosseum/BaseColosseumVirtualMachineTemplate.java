@@ -18,6 +18,7 @@
 
 package cloud.colosseum;
 
+import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import models.*;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -33,9 +34,11 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     private final Location location;
     private final Cloud cloud;
     private final CloudCredential cloudCredential;
+    private final TemplateOptions templateOptions;
 
     BaseColosseumVirtualMachineTemplate(Cloud cloud, CloudCredential cloudCredential, Image image,
-        Hardware hardware, Location location) {
+        Hardware hardware, Location location, TemplateOptions templateOptions) {
+        this.templateOptions = templateOptions;
 
         // everything needs to be not null.
         checkNotNull(image);
@@ -71,23 +74,27 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         return new ColosseumVirtualMachineTemplateBuilder();
     }
 
-    @Override public String getImageId() {
+    @Override public String imageId() {
         return image.getCloudProviderId();
     }
 
-    @Override public String getHardwareFlavorId() {
+    @Override public String hardwareFlavorId() {
         return hardware.getCloudProviderId();
     }
 
-    @Override public String getLocationId() {
+    @Override public String locationId() {
         return location.getCloudProviderId();
     }
 
-    @Override public String getCloudUuid() {
+    @Override public TemplateOptions templateOptions() {
+        return templateOptions;
+    }
+
+    @Override public String cloudUuid() {
         return cloud.getUuid();
     }
 
-    @Override public String getCloudCredentialUuid() {
+    @Override public String cloudCredentialUuid() {
         return cloudCredential.getUuid();
     }
 }

@@ -9,7 +9,7 @@ import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.CloudCredential;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 import java.util.Collections;

@@ -26,7 +26,7 @@ import dtos.validation.validators.NotNullValidator;
 import models.Application;
 import models.Component;
 import models.VirtualMachineTemplate;
-import models.service.impl.generic.BaseModelService;
+import models.service.BaseModelService;
 
 /**
  * Created by daniel seybold on 16.12.2014.

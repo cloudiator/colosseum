@@ -7,8 +7,8 @@ import dtos.CloudCredentialDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 29.03.15.

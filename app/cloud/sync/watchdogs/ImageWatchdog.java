@@ -10,7 +10,7 @@ import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import models.CloudCredential;
 import models.Location;
-import models.service.api.ImageModelService;
+import models.service.ImageModelService;
 
 /**
  * Created by daniel on 07.05.15.

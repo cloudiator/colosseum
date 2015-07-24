@@ -7,7 +7,7 @@ import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import models.Cloud;
 import models.Location;
-import models.repository.api.generic.ModelRepository;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -16,13 +16,13 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class CreateLocationInDatabase implements Solution {
 
-    private final ModelRepository<Location> locationModelRepository;
-    private final ModelRepository<Cloud> cloudModelRepository;
+    private final ModelService<Location> locationModelService;
+    private final ModelService<Cloud> cloudModelService;
 
-    @Inject public CreateLocationInDatabase(ModelRepository<Location> locationModelRepository,
-        ModelRepository<Cloud> cloudModelRepository) {
-        this.locationModelRepository = locationModelRepository;
-        this.cloudModelRepository = cloudModelRepository;
+    @Inject public CreateLocationInDatabase(ModelService<Location> locationModelService,
+        ModelService<Cloud> cloudModelService) {
+        this.locationModelService = locationModelService;
+        this.cloudModelService = cloudModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -35,14 +35,14 @@ public class CreateLocationInDatabase implements Solution {
             (LocationProblems.LocationNotInDatabase) problem;
 
         Cloud cloud =
-            cloudModelRepository.findByUuid(locationNotInDatabase.getLocationInCloud().cloud());
+            cloudModelService.getByUuid(locationNotInDatabase.getLocationInCloud().cloud());
 
         String remoteId = locationNotInDatabase.getLocationInCloud().id();
         Location location = new Location(cloud, remoteId, null, null, null,
             locationNotInDatabase.getLocationInCloud().isAssignable());
         location.setCloudProviderId(locationNotInDatabase.getLocationInCloud().cloudProviderId());
 
-        this.locationModelRepository.save(location);
+        this.locationModelService.save(location);
     }
 
 

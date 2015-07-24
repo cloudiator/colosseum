@@ -8,8 +8,8 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Image;
-import models.service.api.ImageModelService;
-import models.service.api.generic.ModelService;
+import models.service.ImageModelService;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

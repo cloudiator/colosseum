@@ -100,10 +100,10 @@ public class ColosseumVirtualMachineTemplateBuilder {
         VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
         checkArgument(virtualMachine.getCloudCredentials().size() == 1);
-        this.cloud = virtualMachine.getCloud();
-        this.image = virtualMachine.getImage();
-        this.location = virtualMachine.getLocation();
-        this.hardware = virtualMachine.getHardware();
+        this.cloud = virtualMachine.cloud();
+        this.image = virtualMachine.image();
+        this.location = virtualMachine.location();
+        this.hardware = virtualMachine.hardware();
         this.cloudCredential = virtualMachine.getCloudCredentials().get(0);
         return this;
     }

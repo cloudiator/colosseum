@@ -11,7 +11,7 @@ import components.execution.SimpleBlockingQueue;
 import models.CloudCredential;
 import models.Hardware;
 import models.Location;
-import models.service.api.HardwareModelService;
+import models.service.HardwareModelService;
 
 /**
  * Created by daniel on 07.05.15.

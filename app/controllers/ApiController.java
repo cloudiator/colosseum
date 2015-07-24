@@ -7,13 +7,14 @@ import dtos.ApiDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Api;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 29.03.15.
  */
 public class ApiController extends GenericApiController<Api, ApiDto, ApiDto, ApiDto> {
+
     /**
      * Constructs a GenericApiController.
      *

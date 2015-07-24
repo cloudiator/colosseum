@@ -18,9 +18,7 @@
 
 package models;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
@@ -45,7 +43,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
     @Nullable @ManyToOne(optional = true) private Location location;
-
 
     /**
      * Use cascade type merge due to bug in all
@@ -76,52 +73,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.generatedLoginPassword = generatedLoginPassword;
     }
 
-    public Cloud getCloud() {
+    public Cloud cloud() {
         return cloud;
     }
 
-    public void setCloud(Cloud cloud) {
-        checkNotNull(cloud);
-        this.cloud = cloud;
-    }
-
-    @Nullable public Image getImage() {
+    @Nullable public Image image() {
         return image;
     }
 
-    public void setImage(@Nullable Image image) {
-        this.image = image;
-    }
-
-    @Nullable public Hardware getHardware() {
+    @Nullable public Hardware hardware() {
         return hardware;
     }
 
-    public void setHardware(@Nullable Hardware hardware) {
-        this.hardware = hardware;
-    }
-
-    @Nullable public Location getLocation() {
+    @Nullable public Location location() {
         return location;
     }
 
-    public void setLocation(@Nullable Location location) {
-        this.location = location;
+    public void addIpAddress(IpAddress ipAddress) {
+        this.ipAddresses.add(ipAddress);
     }
 
-    public List<IpAddress> getIpAddresses() {
-        return ipAddresses;
-    }
-
-    public void setIpAddresses(List<IpAddress> ipAddresses) {
-        this.ipAddresses = ipAddresses;
-    }
-
-    @Nullable public IpAddress getPublicIpAddress() {
-        final Iterable<IpAddress> ipAddresses =
-            Iterables.filter(this.getIpAddresses(), ipAddress -> {
-                return ipAddress.getIpType().equals(IpType.PUBLIC);
-            });
+    @Nullable public IpAddress publicIpAddress() {
+        final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
+            return ipAddress.getIpType().equals(IpType.PUBLIC);
+        });
         if (ipAddresses.iterator().hasNext()) {
             return ipAddresses.iterator().next();
         }
@@ -132,17 +107,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return cloudCredentials;
     }
 
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    
 
     @Nullable public String getGeneratedLoginUsername() {
         return generatedLoginUsername;

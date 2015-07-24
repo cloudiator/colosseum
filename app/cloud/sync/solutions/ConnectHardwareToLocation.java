@@ -8,8 +8,8 @@ import cloud.sync.problems.HardwareProblems;
 import com.google.inject.Inject;
 import models.Hardware;
 import models.Location;
-import models.service.api.HardwareModelService;
-import models.service.api.LocationModelService;
+import models.service.HardwareModelService;
+import models.service.LocationModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

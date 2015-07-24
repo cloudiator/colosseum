@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 

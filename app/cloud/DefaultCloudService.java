@@ -9,7 +9,7 @@ import cloud.resources.VirtualMachineInLocation;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

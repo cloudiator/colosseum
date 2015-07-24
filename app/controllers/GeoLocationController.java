@@ -25,8 +25,8 @@ import dtos.GeoLocationDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.GeoLocation;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.

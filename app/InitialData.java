@@ -17,10 +17,9 @@
  */
 
 import com.google.inject.Inject;
-import models.FrontendUser;
-import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.*;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 25.11.14.
@@ -29,12 +28,18 @@ public class InitialData {
 
     private final FrontendUserService frontendUserService;
     private final ModelService<Tenant> tenantModelService;
+    private final ModelService<OperatingSystem> operatingSystemModelService;
+    private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
     private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
-        ModelService<Tenant> tenantModelService) {
+        ModelService<Tenant> tenantModelService,
+        ModelService<OperatingSystem> operatingSystemModelService,
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
+        this.operatingSystemModelService = operatingSystemModelService;
+        this.operatingSystemVendorModelService = operatingSystemVendorModelService;
     }
 
     public void loadInitialData() {
@@ -59,6 +64,32 @@ public class InitialData {
             frontendUserService.save(frontendUser);
             tenant.getFrontendUsers().add(frontendUser);
             tenantModelService.save(tenant);
+
+            if (operatingSystemVendorModelService.getAll().isEmpty()) {
+
+                //load ubuntu
+                OperatingSystemVendor ubuntu =
+                    new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu");
+                operatingSystemVendorModelService.save(ubuntu);
+
+                //ubuntu 14.04 amd64
+                OperatingSystem ubuntu1404amd64 =
+                    new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
+                operatingSystemModelService.save(ubuntu1404amd64);
+
+                //load windows
+                OperatingSystemVendor windows =
+                    new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,
+                        "Administrator");
+                operatingSystemVendorModelService.save(windows);
+
+                //Windows Server 2012 R2
+                OperatingSystem windowsServer2012R2 =
+                    new OperatingSystem(windows, OperatingSystemArchitecture.AMD64,
+                        "Server 2012 R2");
+                operatingSystemModelService.save(windowsServer2012R2);
+            }
+
         }
     }
 }

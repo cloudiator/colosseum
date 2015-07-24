@@ -24,8 +24,8 @@ import controllers.generic.GenericApiController;
 import dtos.TenantDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 19.03.15.

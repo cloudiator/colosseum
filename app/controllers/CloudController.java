@@ -25,8 +25,8 @@ import dtos.CloudDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Cloud;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the Cloud model class.

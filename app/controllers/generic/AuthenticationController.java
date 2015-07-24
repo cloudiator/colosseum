@@ -5,8 +5,8 @@ import models.Cloud;
 import models.CloudCredential;
 import models.FrontendUser;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 import play.mvc.Controller;
 
 import javax.annotation.Nullable;

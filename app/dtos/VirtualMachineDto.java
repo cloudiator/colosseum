@@ -28,7 +28,7 @@ import models.Cloud;
 import models.Hardware;
 import models.Image;
 import models.Location;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.

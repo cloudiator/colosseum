@@ -22,7 +22,7 @@ import dtos.validation.AbstractValidator;
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import models.generic.Model;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 

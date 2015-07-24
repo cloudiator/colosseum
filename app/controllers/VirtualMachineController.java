@@ -26,8 +26,8 @@ import dtos.VirtualMachineDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Tenant;
 import models.VirtualMachine;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
@@ -36,6 +36,7 @@ public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
     private final JobService jobService;
+    private final ModelService<VirtualMachine> virtualMachineModelService;
 
     @Inject public VirtualMachineController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
@@ -43,6 +44,7 @@ public class VirtualMachineController extends
         JobService jobService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
+        this.virtualMachineModelService = modelService;
         this.jobService = jobService;
     }
 
@@ -51,7 +53,8 @@ public class VirtualMachineController extends
     }
 
     @Override protected void postPost(VirtualMachine virtualMachine) {
-        virtualMachine.getCloudCredentials().add(getCloudCredential(virtualMachine.getCloud()));
+        virtualMachine.getCloudCredentials().add(getCloudCredential(virtualMachine.cloud()));
+        this.virtualMachineModelService.save(virtualMachine);
         this.jobService.newVirtualMachineJob(virtualMachine, getActiveTenant());
     }
 }

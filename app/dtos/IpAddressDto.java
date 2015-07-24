@@ -27,7 +27,7 @@ import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.IpType;
 import models.VirtualMachine;
-import models.service.impl.generic.BaseModelService;
+import models.service.BaseModelService;
 
 /**
  * Created by daniel on 12.03.15.

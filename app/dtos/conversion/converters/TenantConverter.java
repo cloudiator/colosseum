@@ -24,7 +24,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Tenant;
-import models.service.api.FrontendUserService;
+import models.service.FrontendUserService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

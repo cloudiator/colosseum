@@ -7,7 +7,9 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import models.Cloud;
 import models.Image;
-import models.service.api.generic.ModelService;
+import models.OperatingSystem;
+import models.service.ModelService;
+import models.service.OperatingSystemService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -18,11 +20,13 @@ public class CreateImageInDatabase implements Solution {
 
     private final ModelService<Image> imageModelService;
     private final ModelService<Cloud> cloudModelService;
+    private final OperatingSystemService operatingSystemService;
 
     @Inject public CreateImageInDatabase(ModelService<Image> imageModelService,
-        ModelService<Cloud> cloudModelService) {
+        ModelService<Cloud> cloudModelService, OperatingSystemService operatingSystemService) {
         this.imageModelService = imageModelService;
         this.cloudModelService = cloudModelService;
+        this.operatingSystemService = operatingSystemService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -40,8 +44,11 @@ public class CreateImageInDatabase implements Solution {
             throw new SolutionException();
         }
 
+        OperatingSystem operatingSystem =
+            operatingSystemService.findByImageName(imageNotInDatabase.getImageInLocation().name());
+
         Image image = new Image(imageNotInDatabase.getImageInLocation().id(),
-            imageNotInDatabase.getImageInLocation().name(), cloud, null);
+            imageNotInDatabase.getImageInLocation().name(), cloud, operatingSystem);
         image.setCloudProviderId(imageNotInDatabase.getImageInLocation().cloudProviderId());
         imageModelService.save(image);
     }

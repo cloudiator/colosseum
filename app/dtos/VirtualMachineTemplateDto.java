@@ -27,7 +27,7 @@ import models.Cloud;
 import models.Hardware;
 import models.Image;
 import models.Location;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 12.02.15.

@@ -8,8 +8,8 @@ import cloud.sync.problems.HardwareProblems;
 import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Hardware;
-import models.service.api.HardwareModelService;
-import models.service.api.generic.ModelService;
+import models.service.HardwareModelService;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

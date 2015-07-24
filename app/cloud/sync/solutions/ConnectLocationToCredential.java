@@ -8,8 +8,8 @@ import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Location;
-import models.service.api.LocationModelService;
-import models.service.api.generic.ModelService;
+import models.service.LocationModelService;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

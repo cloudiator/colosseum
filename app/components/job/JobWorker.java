@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.execution.StableRunnable;
+import play.Logger;
 import play.db.jpa.Transactional;
 
 
@@ -27,6 +28,7 @@ public class JobWorker implements Runnable {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (JobException e) {
+                Logger.error("Job Execution got error", e);
             }
         }).run();
     }

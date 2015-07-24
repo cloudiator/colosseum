@@ -26,7 +26,7 @@ import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.OperatingSystemArchitecture;
 import models.OperatingSystemVendor;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 15.04.15.

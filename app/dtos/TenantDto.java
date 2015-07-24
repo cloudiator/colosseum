@@ -26,7 +26,7 @@ import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import models.FrontendUser;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

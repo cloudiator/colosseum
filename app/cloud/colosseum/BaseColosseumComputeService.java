@@ -38,11 +38,11 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
         //todo: maybe the image property should have a login name.
         //todo: ssh connection in sword should be available without a compute service
         final HostAndPort hostAndPort =
-            HostAndPort.fromParts(virtualMachine.getPublicIpAddress().getIp(), 22);
+            HostAndPort.fromParts(virtualMachine.publicIpAddress().getIp(), 22);
 
         KeyPair keyPairToUse = null;
         for (KeyPair possibleMatch : tenant.getKeyPairs()) {
-            if (possibleMatch.getCloud().equals(virtualMachine.getCloud())) {
+            if (possibleMatch.getCloud().equals(virtualMachine.cloud())) {
                 keyPairToUse = possibleMatch;
             }
         }

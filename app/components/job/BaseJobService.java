@@ -9,7 +9,7 @@ import components.execution.SimpleBlockingQueue;
 import models.KeyPair;
 import models.Tenant;
 import models.VirtualMachine;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 03.07.15.

@@ -27,8 +27,8 @@ import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.*;
-import models.service.api.generic.ModelService;
-import models.service.impl.generic.BaseModelService;
+import models.service.ModelService;
+import models.service.BaseModelService;
 
 import java.util.List;
 

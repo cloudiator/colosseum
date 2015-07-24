@@ -6,7 +6,7 @@ import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Application;
-import models.service.impl.generic.BaseModelService;
+import models.service.BaseModelService;
 
 /**
  * Created by daniel on 11.05.15.

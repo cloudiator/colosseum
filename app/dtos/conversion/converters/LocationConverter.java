@@ -27,7 +27,7 @@ import models.Cloud;
 import models.CloudCredential;
 import models.GeoLocation;
 import models.Location;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

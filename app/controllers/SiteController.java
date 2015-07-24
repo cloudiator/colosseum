@@ -20,7 +20,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import controllers.security.SecuredSessionOrToken;
-import models.service.api.FrontendUserService;
+import models.service.FrontendUserService;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;

@@ -24,10 +24,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public String getRemoteId() {
-       return remoteId;
+        return remoteId;
     }
 
     public void setRemoteId(String remoteId) {
+        if (this.remoteId != null) {
+            throw new IllegalStateException(
+                "Changing the remoteId of a RemoteModel is not allowed.");
+        }
         this.remoteId = remoteId;
     }
 

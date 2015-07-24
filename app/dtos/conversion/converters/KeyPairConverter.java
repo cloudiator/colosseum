@@ -7,7 +7,7 @@ import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
 import models.Tenant;
 import models.KeyPair;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 19.05.15.

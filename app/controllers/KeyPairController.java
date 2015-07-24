@@ -7,8 +7,8 @@ import dtos.KeyPairDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.KeyPair;
 import models.Tenant;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 19.05.15.

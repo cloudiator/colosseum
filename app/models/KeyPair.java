@@ -19,8 +19,8 @@ public class KeyPair extends RemoteModel {
     @ManyToOne(optional = false) private Cloud cloud;
     @ManyToOne(optional = false) private Tenant tenant;
 
-    private String privateKey;
-    @Nullable @Column(nullable = true) private String publicKey;
+    @Lob private String privateKey;
+    @Lob @Nullable @Column(nullable = true) private String publicKey;
 
     /**
      * No-args constructor for hibernate

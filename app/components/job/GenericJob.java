@@ -3,7 +3,7 @@ package components.job;
 import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
 import models.generic.Model;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 08.05.15.

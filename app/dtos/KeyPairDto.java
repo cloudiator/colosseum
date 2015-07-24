@@ -7,7 +7,7 @@ import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.Tenant;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 19.05.15.

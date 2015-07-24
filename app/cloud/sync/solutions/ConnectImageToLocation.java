@@ -8,8 +8,8 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import models.Image;
 import models.Location;
-import models.service.api.ImageModelService;
-import models.service.api.LocationModelService;
+import models.service.ImageModelService;
+import models.service.LocationModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

@@ -30,7 +30,7 @@ import models.Cloud;
 import models.CloudCredential;
 import models.Location;
 import models.OperatingSystem;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

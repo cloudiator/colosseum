@@ -3,9 +3,7 @@
 # ~~~~
 
 # Home page
-GET           /                                    @controllers.SiteController.index()
-GET           /manage                              @controllers.SiteController.manage()
-GET           /help                                @controllers.SiteController.help()
+GET           /                                    @controllers.CloudController.list()
 
 #Auth for browser
 GET           /login                               @controllers.SecurityController.login()

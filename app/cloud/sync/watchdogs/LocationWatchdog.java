@@ -12,6 +12,8 @@ import models.CloudCredential;
 import models.Location;
 import models.service.LocationModelService;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by daniel on 05.05.15.
  */
@@ -52,4 +54,15 @@ public class LocationWatchdog extends AbstractCloudServiceWatchdog {
         }
     }
 
+    @Override public long period() {
+        return 1;
+    }
+
+    @Override public long delay() {
+        return 0;
+    }
+
+    @Override public TimeUnit timeUnit() {
+        return TimeUnit.MINUTES;
+    }
 }

@@ -53,18 +53,18 @@ public class SecurityController extends Controller {
     }
 
     public Result login() {
-        return ok(views.html.site.login.render(loginForm));
+        return ok(views.html.login.render(loginForm));
     }
 
     @Transactional(readOnly = true) public Result authenticate() {
         Form<LoginDto> filledForm = loginForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(views.html.site.login.render(filledForm));
+            return badRequest(views.html.login.render(filledForm));
         } else {
             session().clear();
             session("email", filledForm.get().getEmail());
             session("tenant", filledForm.get().getTenant());
-            return redirect(routes.SiteController.index());
+            return redirect(routes.CloudController.list());
         }
     }
 

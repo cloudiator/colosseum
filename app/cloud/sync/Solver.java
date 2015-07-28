@@ -2,6 +2,7 @@ package cloud.sync;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
 import play.db.jpa.Transactional;
 
@@ -19,7 +20,7 @@ public class Solver implements Runnable {
         this.problemQueue = problemQueue;
     }
 
-    @Transactional @Override public void run() {
+    @Transactional @Loop @Override public void run() {
 
         Problem problemToSolve = null;
         try {

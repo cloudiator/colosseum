@@ -28,6 +28,7 @@ import models.Location;
 class LocationRepositoryJpa extends BaseRemoteModelRepositoryJpa<Location>
     implements LocationRepository {
 
+
     @Inject LocationRepositoryJpa(TypeLiteral<Location> type) {
         super(type);
     }

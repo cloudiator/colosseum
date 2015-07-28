@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 /**
  * Created by daniel on 24.07.15.
  */
-@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.METHOD) public @interface Loop {
+@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.METHOD) public @interface Stable {
 }

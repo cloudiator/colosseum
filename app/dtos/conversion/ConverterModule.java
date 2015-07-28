@@ -25,19 +25,25 @@ import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import play.Configuration;
+import play.Play;
 
 import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Base converter module.
  * <p>
  * Registers the basic converters.
  */
-public class BaseConverterModule extends AbstractModule {
+public class ConverterModule extends AbstractModule {
 
+    private final Configuration configuration;
     private final ClassLoader classLoader;
 
-    public BaseConverterModule(ClassLoader classLoader) {
+    public ConverterModule(ClassLoader classLoader) {
+        this.configuration = Play.application().configuration();
         this.classLoader = classLoader;
     }
 
@@ -49,21 +55,24 @@ public class BaseConverterModule extends AbstractModule {
      * we first need to include the complete conversion package.
      * <p>
      * Afterwards we filter the found converters to only find concrete ones....
-     *
-     * @todo make packages configurable?
      */
     @Override protected void configure() {
         Multibinder<DtoConverter> converterBinder =
             Multibinder.newSetBinder(binder(), DtoConverter.class);
-        //todo make package configurable?
+
+        String conversionPackage = configuration.getString("colosseum.conversion.package");
+        String convertersPackage = configuration.getString("colosseum.conversion.converters");
+
+        checkState(conversionPackage != null && convertersPackage != null);
+
         Reflections reflections = new Reflections(
             new ConfigurationBuilder().addClassLoader(classLoader)
-                .setUrls(ClasspathHelper.forPackage("dtos.conversion"))
+                .setUrls(ClasspathHelper.forPackage(conversionPackage))
                 .addScanners(new SubTypesScanner()));
 
         final Set<Class<? extends DtoConverter>> converters =
             Sets.filter(reflections.getSubTypesOf(DtoConverter.class),
-                aClass -> aClass.getName().startsWith("dtos.conversion.converters"));
+                aClass -> aClass.getName().startsWith(convertersPackage));
 
         for (Class<? extends DtoConverter> converter : converters) {
             converterBinder.addBinding().to(converter);

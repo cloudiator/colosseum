@@ -43,7 +43,7 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         this.type = (Class<T>) type.getRawType();
     }
 
-    protected static EntityManager em() {
+    protected EntityManager em() {
         return JPA.em();
     }
 

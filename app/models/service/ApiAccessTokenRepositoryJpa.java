@@ -31,8 +31,7 @@ import java.util.List;
 class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
     implements ApiAccessTokenRepository {
 
-    @Inject
-    public ApiAccessTokenRepositoryJpa(TypeLiteral<ApiAccessToken> type) {
+    @Inject ApiAccessTokenRepositoryJpa(TypeLiteral<ApiAccessToken> type) {
         super(type);
     }
 

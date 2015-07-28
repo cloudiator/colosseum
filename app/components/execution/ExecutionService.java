@@ -3,13 +3,9 @@
  */
 package components.execution;
 
-import java.util.concurrent.TimeUnit;
+interface ExecutionService {
 
-public interface ExecutionService {
-
-    void scheduleAtFixedRate(Runnable runnable, long delay, TimeUnit timeUnit);
+    void schedule(Schedulable schedulable);
 
     void execute(Runnable runnable);
-
-    void executeInLoop(Runnable runnable);
 }

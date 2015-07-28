@@ -28,8 +28,9 @@ import models.Hardware;
 class HardwareRepositoryJpa extends BaseRemoteModelRepositoryJpa<Hardware>
     implements HardwareRepository {
 
+
+
     @Inject HardwareRepositoryJpa(TypeLiteral<Hardware> type) {
         super(type);
     }
-
 }

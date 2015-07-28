@@ -30,6 +30,8 @@ import static models.service.util.JpaResultHelper.getSingleResultOrNull;
 class FrontendUserRepositoryJpa extends BaseModelRepositoryJpa<FrontendUser>
     implements FrontendUserRepository {
 
+
+
     @Inject FrontendUserRepositoryJpa(TypeLiteral<FrontendUser> type) {
         super(type);
     }

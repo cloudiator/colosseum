@@ -3,6 +3,7 @@ package cloud.sync;
 import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.db.jpa.Transactional;
 
@@ -13,7 +14,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 27.04.15.
  */
-public abstract class AbstractCloudServiceWatchdog implements Runnable {
+public abstract class AbstractCloudServiceWatchdog implements Schedulable {
 
     private final CloudService cloudService;
     private final SimpleBlockingQueue<Problem> problemQueue;
@@ -26,7 +27,7 @@ public abstract class AbstractCloudServiceWatchdog implements Runnable {
         this.problemQueue = simpleBlockingQueue;
     }
 
-    @Transactional @Override public void run() {
+    @Transactional(readOnly = true) @Override public void run() {
         watch(this.cloudService);
     }
 

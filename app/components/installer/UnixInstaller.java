@@ -4,9 +4,6 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
 import play.Logger;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 
 /**
  * Created by Daniel Seybold on 19.05.2015.
@@ -88,6 +85,8 @@ public class UnixInstaller extends AbstractInstaller {
     @Override
     public void installAll() {
 
+        Logger.debug("Starting installation of all tools on UNIX...");
+
         this.initSources();
         this.downloadSources();
 
@@ -99,6 +98,8 @@ public class UnixInstaller extends AbstractInstaller {
         //this.installKairosDb();
 
         this.installVisor();
+
+        this.finishInstallation();
 
 
     }

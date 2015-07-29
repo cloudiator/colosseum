@@ -41,6 +41,10 @@ public interface InstallApi {
     public void installAll();
 
 
+    /**
+     * Closes all open remote connections
+     */
+    public void finishInstallation();
 
 }
 

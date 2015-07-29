@@ -91,5 +91,12 @@ abstract class AbstractInstaller implements InstallApi {
         return config;
 
     }
+
+    public void finishInstallation(){
+
+        Logger.debug("Finished installation of all tools, closing remote connection.");
+        this.remoteConnection.close();
+
+    }
 }
 

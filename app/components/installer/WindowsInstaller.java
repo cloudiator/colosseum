@@ -108,6 +108,8 @@ public class WindowsInstaller extends AbstractInstaller {
     @Override
     public void installAll() {
 
+        Logger.debug("Starting installation of all tools on WINDOWS...");
+
         this.initSources();
         this.downloadSources();
 
@@ -119,6 +121,8 @@ public class WindowsInstaller extends AbstractInstaller {
         //this.installKairosDb();
 
         this.installVisor();
+
+        this.finishInstallation();
 
 
     }

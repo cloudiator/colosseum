@@ -19,3 +19,4 @@ start.sh
 /bin
 .cache
 start.sh
+.DS_Store

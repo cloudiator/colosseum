@@ -29,8 +29,11 @@ A list of all hardware entities stored in the database.
       ],
       "cloud":1,
       "hardwareOffer":1,
-      "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433",
+      "remoteId":"939c4993-8562-42af-a80c-d8829863d433",
       "locations": [
+        1
+      ],
+      "cloudCredentials": [
         1
       ]
    },
@@ -43,10 +46,13 @@ A list of all hardware entities stored in the database.
       ],
       "cloud":1,
       "hardwareOffer":2,
-      "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433",
+      "remoteId":"939c4993-8562-42af-a80c-d8829863d433",
       "locations": [
         1,
         2
+      ],
+      "cloudCredentials": [
+        1
       ]
    }
 ]
@@ -87,10 +93,13 @@ The hardware entity identified by the given id.
    ],
    "cloud":1,
    "hardwareOffer":1,
-   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433",
+   "remoteId":"939c4993-8562-42af-a80c-d8829863d433",
    "locations": [
      1,
      2
+   ],
+   "cloudCredentials": [
+     1
    ]
 }
 ```
@@ -115,8 +124,9 @@ Parameter           | Description
 -------------       | -------------
 cloud               | The cloud associated with the hardware.
 hardwareOffer       | The hardwareOffer associated with the hardware.
-cloudUuid           | The UUID of the hardware.
+remoteId           | The UUID of the hardware.
 locations           | The locations where this hardware is available.
+cloudCredentials    | The cloud credentials used for retrieving this image.
 
 ###Request Example 
 
@@ -124,10 +134,13 @@ locations           | The locations where this hardware is available.
 {  
    "cloud":1,
    "hardwareOffer":1,
-   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433",
+   "remoteId":"939c4993-8562-42af-a80c-d8829863d433",
    "locations": [
      1,
      2
+   ],
+   "cloudCredentials": [
+     1
    ]
 }
 ```
@@ -156,8 +169,9 @@ Parameter           | Description
 hardware_id         | The id of the hardware to update.
 cloud               | The cloud associated with the hardware.
 hardwareOffer       | The hardware offer associated with the hardware.
-cloudUuid           | The UUID of the hardware.
+remoteId           | The UUID of the hardware.
 locations           | The locations where this hardware is available.
+cloudCredentials    | The cloud credentials used for retrieving this image.
 
 ###Request Example
 
@@ -167,10 +181,13 @@ PUT /api/hardware/1
 {  
    "cloud":1,
    "hardwareOffer":1,
-   "cloudUuid":"939c4993-8562-42af-a80c-d8829863d433",
+   "remoteId":"939c4993-8562-42af-a80c-d8829863d433",
    "locations": [
      1,
      2
+   ],
+   "cloudCredentials": [
+     1
    ]
 }
 ```

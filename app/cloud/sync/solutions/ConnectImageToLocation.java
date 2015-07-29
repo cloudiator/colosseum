@@ -1,7 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
-import cloud.ImageInCloudAndLocation;
+import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -9,8 +8,8 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import models.Image;
 import models.Location;
-import models.service.api.ImageModelService;
-import models.service.api.LocationModelService;
+import models.service.ImageModelService;
+import models.service.LocationModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -35,18 +34,13 @@ public class ConnectImageToLocation implements Solution {
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
-        ImageInCloudAndLocation imageInCloudAndLocation =
-            ((ImageProblems.ImageMissesLocation) problem).getImageInCloudAndLocation();
 
-        CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(imageInCloudAndLocation.id());
 
-        Image modelImage = this.imageModelService
-            .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(cloudCredentialLocationId.baseId(),
-                cloudCredentialLocationId.cloud());
-        Location location = this.locationModelService
-            .getByUuidInCloudAndUuidOfCloud(cloudCredentialLocationId.location(),
-                cloudCredentialLocationId.cloud());
+        ImageInLocation imageInLocation =
+            ((ImageProblems.ImageMissesLocation) problem).getImageInLocation();
+
+        Image modelImage = imageModelService.getByRemoteId(imageInLocation.id());
+        Location location = this.locationModelService.getByRemoteId(imageInLocation.location());
         if (modelImage == null || location == null) {
             throw new SolutionException();
         }

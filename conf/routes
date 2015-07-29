@@ -3,9 +3,7 @@
 # ~~~~
 
 # Home page
-GET           /                                    @controllers.SiteController.index()
-GET           /manage                              @controllers.SiteController.manage()
-GET           /help                                @controllers.SiteController.help()
+GET           /                                    @controllers.CloudController.list()
 
 #Auth for browser
 GET           /login                               @controllers.SecurityController.login()
@@ -72,12 +70,12 @@ POST          /api/communicationChannel            @controllers.CommunicationCha
 PUT           /api/communicationChannel/:id        @controllers.CommunicationChannelController.put(id: Long)
 DELETE        /api/communicationChannel/:id        @controllers.CommunicationChannelController.delete(id: Long)
 
-#Frontend Group
-GET           /api/fg                              @controllers.FrontendGroupController.list()
-GET           /api/fg/:id                          @controllers.FrontendGroupController.get(id: Long)
-POST          /api/fg                              @controllers.FrontendGroupController.post()
-PUT           /api/fg/:id                          @controllers.FrontendGroupController.put(id: Long)
-DELETE        /api/fg/:id                          @controllers.FrontendGroupController.delete(id: Long)
+#Tenant
+GET           /api/tenant                          @controllers.TenantController.list()
+GET           /api/tenant/:id                      @controllers.TenantController.get(id: Long)
+POST          /api/tenant                          @controllers.TenantController.post()
+PUT           /api/tenant/:id                      @controllers.TenantController.put(id: Long)
+DELETE        /api/tenant/:id                      @controllers.TenantController.delete(id: Long)
 
 #FrontendUser
 GET           /api/frontendUser                    @controllers.FrontendUserController.list()
@@ -127,6 +125,13 @@ GET           /api/ip/:id                          @controllers.IpAddressControl
 POST          /api/ip                              @controllers.IpAddressController.post()
 PUT           /api/ip/:id                          @controllers.IpAddressController.put(id: Long)
 DELETE        /api/ip/:id                          @controllers.IpAddressController.delete(id: Long)
+
+#KeyPairs
+GET           /api/keyPair                         @controllers.KeyPairController.list()
+GET           /api/keyPair/:id                     @controllers.KeyPairController.get(id: Long)
+POST          /api/keyPair                         @controllers.KeyPairController.post()
+PUT           /api/keyPair/:id                     @controllers.KeyPairController.put(id: Long)
+DELETE        /api/keyPair/:id                     @controllers.KeyPairController.delete(id: Long)
 
 #LifecycleComponent
 GET           /api/lifecycleComponent              @controllers.LifecycleComponentController.list()

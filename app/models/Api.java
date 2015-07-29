@@ -40,7 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate.
      */
-    private Api() {
+    protected Api() {
     }
 
     public Api(String name, String internalProviderName) {
@@ -70,5 +70,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
+    }
+
+    public List<Cloud> getClouds() {
+        return clouds;
+    }
+
+    public void setClouds(List<Cloud> clouds) {
+        this.clouds = clouds;
     }
 }

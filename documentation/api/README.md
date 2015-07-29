@@ -8,13 +8,13 @@ Entity                                                       | URL
 ------------------------------------------------------------ | ---------------------------
 [API](entities/Api.md)                                       | /api/api
 [Application](entities/Application.md)                       | /api/application
-[ApplicationComponent](entities/ApplicationComponent.md)     | /api/applicationComponent
+[ApplicationComponent](entities/ApplicationComponent.md)     | /api/ac
 [ApplicationInstance](entities/ApplicationInstance.md)       | /api/applicationInstance
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [Communication](entities/Communication.md)                   | /api/communication
 [CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
-[FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
+[Tenant](entities/Tenant.md)                                 | /api/tenant
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo
 [Hardware](entities/Hardware.md)                             | /api/hardware
@@ -27,7 +27,7 @@ Entity                                                       | URL
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
-[VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/virtualMachineTemplate
+[VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 
 ## Examples
 [Examples](Examples.md)

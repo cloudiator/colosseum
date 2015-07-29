@@ -23,8 +23,8 @@ import com.google.inject.Inject;
 import components.security.Password;
 import dtos.LoginDto;
 import models.ApiAccessToken;
-import models.service.api.ApiAccessTokenService;
-import models.service.api.FrontendUserService;
+import models.service.ApiAccessTokenService;
+import models.service.FrontendUserService;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class SecurityController extends Controller {
 
-    private final static Form<LoginDto> loginForm = Form.form(LoginDto.class);
+    private static final Form<LoginDto> loginForm = Form.form(LoginDto.class);
     private final FrontendUserService frontendUserService;
     private final ApiAccessTokenService apiAccessTokenService;
 
@@ -53,17 +53,18 @@ public class SecurityController extends Controller {
     }
 
     public Result login() {
-        return ok(views.html.site.login.render(loginForm));
+        return ok(views.html.login.render(loginForm));
     }
 
     @Transactional(readOnly = true) public Result authenticate() {
         Form<LoginDto> filledForm = loginForm.bindFromRequest();
         if (filledForm.hasErrors()) {
-            return badRequest(views.html.site.login.render(filledForm));
+            return badRequest(views.html.login.render(filledForm));
         } else {
             session().clear();
             session("email", filledForm.get().getEmail());
-            return redirect(routes.SiteController.index());
+            session("tenant", filledForm.get().getTenant());
+            return redirect(routes.CloudController.list());
         }
     }
 

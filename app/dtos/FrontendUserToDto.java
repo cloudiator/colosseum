@@ -24,8 +24,7 @@ import dtos.generic.ValidatableDto;
  * Created by daniel on 14.04.15.
  */
 public class FrontendUserToDto extends ValidatableDto {
-
     @Override public void validation() {
-
+        //todo implement
     }
 }

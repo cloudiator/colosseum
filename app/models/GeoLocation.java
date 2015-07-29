@@ -46,7 +46,7 @@ import java.util.List;
     /**
      * No-args constructor used by hibernate.
      */
-    private GeoLocation() {
+    protected GeoLocation() {
     }
 
     public GeoLocation(String region, String city, String country, String iso3166,

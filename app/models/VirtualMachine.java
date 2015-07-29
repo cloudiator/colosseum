@@ -18,7 +18,8 @@
 
 package models;
 
-import models.generic.Model;
+import com.google.common.collect.Iterables;
+import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -30,103 +31,104 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends Model {
+@Entity public class VirtualMachine extends RemoteModel {
 
     @ManyToOne(optional = true) private Cloud cloud;
     @Column(unique = true, nullable = false) private String name;
     @ManyToMany private List<CloudCredential> cloudCredentials;
 
-    @Column(nullable = true) private String cloudUuid;
+    @Nullable @Column(nullable = true) private String generatedLoginUsername;
+    @Nullable @Column(nullable = true) private String generatedLoginPassword;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
     @Nullable @ManyToOne(optional = true) private Location location;
 
-    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private List<IpAddress> ipAddresses;
+    /**
+     * Use cascade type merge due to bug in all
+     * https://hibernate.atlassian.net/browse/HHH-7404
+     */
+    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.MERGE) private List<IpAddress>
+        ipAddresses;
 
     /**
      * Empty constructor for hibernate.
      */
-    private VirtualMachine() {
+    protected VirtualMachine() {
     }
 
-    public VirtualMachine(String name, Cloud cloud, String cloudUuid, @Nullable Hardware hardware,
-        @Nullable Image image, @Nullable Location location) {
+    public VirtualMachine(String name, Cloud cloud, @Nullable String cloudUuid,
+        @Nullable Hardware hardware, @Nullable Image image, @Nullable Location location,
+        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword) {
+        super(cloudUuid);
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
         checkNotNull(cloud);
         this.cloud = cloud;
-        checkNotNull(cloudUuid);
-        checkArgument(!cloudUuid.isEmpty());
-        this.cloudUuid = cloudUuid;
         this.hardware = hardware;
         this.image = image;
         this.location = location;
+        this.generatedLoginUsername = generatedLoginUsername;
+        this.generatedLoginPassword = generatedLoginPassword;
     }
 
-    public Cloud getCloud() {
+    public Cloud cloud() {
         return cloud;
     }
 
-    public void setCloud(Cloud cloud) {
-        checkNotNull(cloud);
-        this.cloud = cloud;
-    }
-
-    @Nullable public Image getImage() {
+    @Nullable public Image image() {
         return image;
     }
 
-    public void setImage(@Nullable Image image) {
-        this.image = image;
-    }
-
-    @Nullable public Hardware getHardware() {
+    @Nullable public Hardware hardware() {
         return hardware;
     }
 
-    public void setHardware(@Nullable Hardware hardware) {
-        this.hardware = hardware;
-    }
-
-    @Nullable public Location getLocation() {
+    @Nullable public Location location() {
         return location;
     }
 
-    public void setLocation(@Nullable Location location) {
-        this.location = location;
+    public void addIpAddress(IpAddress ipAddress) {
+        this.ipAddresses.add(ipAddress);
     }
 
-    public List<IpAddress> getIpAddresses() {
-        return ipAddresses;
-    }
-
-    public void setIpAddresses(List<IpAddress> ipAddresses) {
-        this.ipAddresses = ipAddresses;
+    @Nullable public IpAddress publicIpAddress() {
+        final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
+            return ipAddress.getIpType().equals(IpType.PUBLIC);
+        });
+        if (ipAddresses.iterator().hasNext()) {
+            return ipAddresses.iterator().next();
+        }
+        return null;
     }
 
     public List<CloudCredential> getCloudCredentials() {
         return cloudCredentials;
     }
 
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
-    }
-
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    
+
+    @Nullable public String getGeneratedLoginUsername() {
+        return generatedLoginUsername;
     }
+
+    public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
+        this.generatedLoginUsername = generatedLoginUsername;
+    }
+
+    @Nullable public String getGeneratedLoginPassword() {
+        return generatedLoginPassword;
+    }
+
+    public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
+        this.generatedLoginPassword = generatedLoginPassword;
+    }
+
+
+
 }

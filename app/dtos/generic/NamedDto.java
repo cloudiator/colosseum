@@ -18,7 +18,7 @@
 
 package dtos.generic;
 
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
 
 /**
  * A Dto for named entities.

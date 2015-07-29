@@ -20,6 +20,7 @@ package models;
 
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
@@ -32,23 +33,28 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class OperatingSystemVendor extends Model {
 
     @OneToMany(mappedBy = "operatingSystemVendor") private List<OperatingSystem> operatingSystems;
-    @Column(unique = true, nullable = false) private String name;
 
+    @Column(unique = true, nullable = false) private String name;
     @Enumerated(EnumType.STRING) @Column(nullable = false) private OperatingSystemVendorType
         operatingSystemVendorType;
+    @Nullable private String defaultUserName;
 
     /**
      * Empty constructor for hibernate.
      */
-    private OperatingSystemVendor() {
+    protected OperatingSystemVendor() {
     }
 
-    public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType) {
+    public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType, @Nullable String defaultUserName) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
         checkNotNull(operatingSystemVendorType);
         this.operatingSystemVendorType = operatingSystemVendorType;
+        if(defaultUserName != null) {
+            checkArgument(!defaultUserName.isEmpty());
+        }
+        this.defaultUserName = defaultUserName;
     }
 
     public OperatingSystemVendorType getOperatingSystemVendorType() {
@@ -73,5 +79,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Nullable public String getDefaultUserName() {
+        return defaultUserName;
     }
 }

@@ -33,6 +33,7 @@ public class GeoLocationDto extends ValidatableDto {
     private Float LocationLongitude;
 
     @Override public void validation() {
+        //todo implement validation
     }
 
     public String getRegion() {

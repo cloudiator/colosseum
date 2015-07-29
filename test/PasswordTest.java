@@ -45,7 +45,7 @@ public class PasswordTest {
     @Test public void testGenerateSalt() {
         //check if length is ok
         assertEquals(Password.getInstance().generateSalt().length, 32);
-        //check that two calls do not create the same salt
+        //check that two calls do not computeService the same salt
         //TODO more sophisticated testing of rng
         assertThat(Password.getInstance().generateSalt(),
             not(equalTo(Password.getInstance().generateSalt())));

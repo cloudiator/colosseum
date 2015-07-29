@@ -20,16 +20,17 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
-import models.Cloud;
-import models.GeoLocation;
-import models.Location;
-import models.LocationScope;
-import models.service.api.generic.ModelService;
-import models.service.impl.generic.BaseModelService;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
+import models.*;
+import models.service.ModelService;
+import models.service.BaseModelService;
+
+import java.util.List;
 
 /**
  * Created by daniel on 09.04.15.
@@ -37,20 +38,21 @@ import models.service.impl.generic.BaseModelService;
 public class LocationDto extends ValidatableDto {
 
     protected Long cloud;
-    protected String cloudUuid;
+    protected String remoteId;
     private Long parent;
     private LocationScope locationScope;
     private Boolean isAssignable;
     private Long geoLocation;
+    private List<Long> cloudCredentials;
 
     public LocationDto() {
         super();
     }
 
-    public LocationDto(Long cloud, String cloudUuid, Long parent, LocationScope locationScope,
+    public LocationDto(Long cloud, String remoteId, Long parent, LocationScope locationScope,
         Boolean isAssignable, Long geoLocation) {
         this.cloud = cloud;
-        this.cloudUuid = cloudUuid;
+        this.remoteId = remoteId;
         this.parent = parent;
         this.locationScope = locationScope;
         this.isAssignable = isAssignable;
@@ -60,7 +62,7 @@ public class LocationDto extends ValidatableDto {
     @Override public void validation() {
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(geoLocation).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.geoLocationService.get()));
         validator(Boolean.class).validate(isAssignable).withValidator(new NotNullValidator());
@@ -68,12 +70,16 @@ public class LocationDto extends ValidatableDto {
             .withValidator(new NotNullValidator());
         validator(Long.class).validate(parent)
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(cloudCredentials).withValidator(new IterableValidator<>(
+            new ModelIdValidator<>(References.cloudCredentialService.get())));
     }
 
     public static class References {
-        @Inject public static Provider<BaseModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<GeoLocation>> geoLocationService;
-        @Inject public static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<BaseModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<GeoLocation>> geoLocationService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
     }
 
     public Long getCloud() {
@@ -84,12 +90,12 @@ public class LocationDto extends ValidatableDto {
         this.cloud = cloud;
     }
 
-    public String getCloudUuid() {
-        return cloudUuid;
+    public String getRemoteId() {
+        return remoteId;
     }
 
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
     }
 
     public Long getParent() {
@@ -108,10 +114,6 @@ public class LocationDto extends ValidatableDto {
         this.locationScope = locationScope;
     }
 
-    public Boolean isAssignable() {
-        return isAssignable;
-    }
-
     public void setIsAssignable(Boolean isAssignable) {
         this.isAssignable = isAssignable;
     }
@@ -122,5 +124,17 @@ public class LocationDto extends ValidatableDto {
 
     public void setGeoLocation(Long geoLocation) {
         this.geoLocation = geoLocation;
+    }
+
+    public Boolean getIsAssignable() {
+        return isAssignable;
+    }
+
+    public List<Long> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<Long> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
     }
 }

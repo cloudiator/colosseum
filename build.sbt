@@ -6,11 +6,13 @@ name := "colosseum"
 
 version := "1.2.0-SNAPSHOT"
 
+
 resolvers := ("Local Maven Repository" at "file:///C:/Users/bwpc/.m2/repository") +: resolvers.value
 
 externalResolvers += "OMI Snapshots" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/snapshots/"
 
 externalResolvers += "OMI Releases" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/releases/"
+
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -24,7 +26,8 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT"
+  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
+  "org.reflections" % "reflections" % "0.9.10"
 )
 
 TwirlKeys.templateImports += "dtos._"

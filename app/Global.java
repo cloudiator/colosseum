@@ -16,22 +16,15 @@
  * under the License.
  */
 
-import cloud.CloudModule;
-import cloud.sync.Solver;
+import cloud.config.CloudModule;
 import cloud.sync.config.SolutionModule;
-import cloud.sync.watchdogs.HardwareWatchdog;
-import cloud.sync.watchdogs.ImageWatchdog;
-import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import components.execution.DefaultExecutionService;
-import components.execution.ExecutionService;
-import components.execution.TransactionAwareExecutionService;
-import components.job.JobWorker;
+import components.execution.ExecutionModule;
 import components.job.config.JobModule;
-import dtos.conversion.config.BaseConverterModule;
-import models.repository.config.JPAModule;
-import models.service.config.DatabaseServiceModule;
+import dtos.conversion.ConverterModule;
+import models.service.DatabaseServiceModule;
+import models.service.JPAModule;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
@@ -39,7 +32,6 @@ import play.db.jpa.JPA;
 
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 /**
  * The Global class.
@@ -66,22 +58,11 @@ public class Global extends GlobalSettings {
     public void onStart(final Application app) {
         super.onStart(app);
 
-        //create guice injector
+
         this.injector = Guice
-            .createInjector(new JPAModule(), new BaseConverterModule(), new DatabaseServiceModule(),
-                new CloudModule(), new SolutionModule(), new JobModule());
-
-        ExecutionService executionService =
-            new TransactionAwareExecutionService(new DefaultExecutionService());
-        LocationWatchdog locationWatchdog = injector.getInstance(LocationWatchdog.class);
-        HardwareWatchdog hardwareWatchdog = injector.getInstance(HardwareWatchdog.class);
-        ImageWatchdog imageWatchdog = injector.getInstance(ImageWatchdog.class);
-
-        executionService.scheduleAtFixedRate(locationWatchdog, 1, TimeUnit.MINUTES);
-        executionService.scheduleAtFixedRate(hardwareWatchdog, 1, TimeUnit.MINUTES);
-        executionService.scheduleAtFixedRate(imageWatchdog, 1, TimeUnit.MINUTES);
-        executionService.executeInLoop(injector.getInstance(Solver.class));
-        executionService.executeInLoop(injector.getInstance(JobWorker.class));
+            .createInjector(new JPAModule(), new ConverterModule(app.classloader()),
+                new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
+                new JobModule(), new ExecutionModule());
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 
@@ -89,13 +70,6 @@ public class Global extends GlobalSettings {
 
         // register formatters
         this.registerFormatters();
-    }
-
-    /**
-     * On stop hook
-     */
-    public void onStop(Application app) {
-        super.onStop(app);
     }
 
     /**

@@ -32,11 +32,14 @@ A list of all location entities stored in the database.
          }
       ],
       "cloud":1,
-      "cloudUuid":"regionOne"
+      "remoteId":"regionOne"
       "parent":null,
       "locationScope": "REGION",
       "isAssignable":"false",
-      "geoLocation":1      
+      "geoLocation":1,
+      "cloudCredentials": [
+        1
+      ]
    },
    {  
       "links":[  
@@ -46,11 +49,14 @@ A list of all location entities stored in the database.
          }
       ],
       "cloud":1,
-      "cloudUuid":"regionOne"
+      "remoteId":"regionOne"
       "parent":1,
       "locationScope": "ZONE",
       "isAssignable":"true",
-      "geoLocation":1      
+      "geoLocation":1,  
+      "cloudCredentials": [
+        1
+      ]
    }
 ]
 ```
@@ -90,11 +96,14 @@ The location entity identified by the given id.
       }
    ],
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1   
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 
@@ -117,22 +126,26 @@ Creates a new location entity. The new entity will be returned.
 Parameter        | Description
 -------------    | -------------
 cloud            | The cloud associated with the location.
-cloudUuid        | The UUID of the location.
+remoteId        | The UUID of the location.
 parent           | The parent location (hierachical)
 locationScope    | The scope of the location (REGION,ZONE,HOST)
 isAssignable     | If the location can be assigned to a virtual machine.
 geoLocation      | The id of the geographical location assigned to this offer.
+cloudCredentials | The cloud credentials used to retrieve this location.
 
 ###Request Example
 
 ```
 {  
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1 
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 
@@ -160,11 +173,12 @@ Parameter           | Description
 -------------       | -------------
 location_id         | The id of the location to update.
 cloud               | The cloud associated with the location.
-cloudUuid           | The UUID of the location.
+remoteId           | The UUID of the location.
 parent              | The parent location (hierachical)
 locationScope       | The scope of the location (REGION,ZONE,HOST)
 isAssignable        | If the location can be assigned to a virtual machine.
 geoLocation         | The id of the geographical location assigned to this offer.
+cloudCredentials    | The cloud credentials used to retrieve this location.
 
 ###Request Example 
 ```
@@ -173,11 +187,14 @@ PUT /location/1
 ```
 {  
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
-   "geoLocation":1 
+   "geoLocation":1,
+   "cloudCredentials": [
+     1
+   ]
 }
 ```
 

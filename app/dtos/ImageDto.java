@@ -22,37 +22,41 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.ValidatableDto;
-import dtos.validation.IterableValidator;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.IterableValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
+import models.CloudCredential;
 import models.Location;
 import models.OperatingSystem;
-import models.service.api.generic.ModelService;
-import models.service.impl.generic.BaseModelService;
+import models.service.ModelService;
 
 import java.util.List;
 
 public class ImageDto extends ValidatableDto {
 
     private String name;
-    private String cloudUuid;
+    private String remoteId;
     private Long cloud;
     private List<Long> locations;
     private Long operatingSystem;
+    private List<Long> cloudCredentials;
 
     public ImageDto() {
         super();
     }
 
     @Override public void validation() {
-        validator(String.class).validate(cloudUuid).withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(new TypeLiteral<List<Long>>() {
+        }).validate(cloudCredentials).withValidator(new IterableValidator<>(
+            new ModelIdValidator<>(References.cloudCredentialService.get())));
         validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
     }
@@ -63,14 +67,6 @@ public class ImageDto extends ValidatableDto {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 
     public Long getCloud() {
@@ -97,9 +93,30 @@ public class ImageDto extends ValidatableDto {
         this.locations = locations;
     }
 
+    public List<Long> getCloudCredentials() {
+        return cloudCredentials;
+    }
+
+    public void setCloudCredentials(List<Long> cloudCredentials) {
+        this.cloudCredentials = cloudCredentials;
+    }
+
+    public String getRemoteId() {
+        return remoteId;
+    }
+
+    public void setRemoteId(String remoteId) {
+        this.remoteId = remoteId;
+    }
+
     public static class References {
-        @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<Location>> locationService;
-        @Inject public static Provider<BaseModelService<OperatingSystem>> operatingSystemService;
+
+        @Inject private static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<OperatingSystem>> operatingSystemService;
+        @Inject private static Provider<ModelService<CloudCredential>> cloudCredentialService;
+
+        private References() {
+        }
     }
 }

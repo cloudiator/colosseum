@@ -21,12 +21,12 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.ApplicationComponent;
 import models.ApplicationInstance;
 import models.VirtualMachine;
-import models.service.impl.generic.BaseModelService;
+import models.service.BaseModelService;
 
 /**
  * Created by daniel seybold on 17.12.2014.
@@ -37,7 +37,7 @@ public class InstanceDto extends ValidatableDto {
     private Long applicationInstance;
     private Long virtualMachine;
 
-    protected InstanceDto() {
+    public InstanceDto() {
         super();
     }
 
@@ -75,11 +75,13 @@ public class InstanceDto extends ValidatableDto {
     }
 
     public static class References {
-
         @Inject public static Provider<BaseModelService<ApplicationComponent>>
             applicationComponentService;
-        @Inject public static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
-        @Inject public static Provider<BaseModelService<ApplicationInstance>>
+        @Inject private static Provider<BaseModelService<VirtualMachine>> virtualMachineService;
+        @Inject private static Provider<BaseModelService<ApplicationInstance>>
             applicationInstanceService;
+
+        private References() {
+        }
     }
 }

@@ -1,6 +1,6 @@
 package cloud.sync.problems;
 
-import cloud.HardwareInCloudAndLocation;
+import cloud.resources.HardwareInLocation;
 import cloud.sync.Problem;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,19 +16,19 @@ public class HardwareProblems {
 
     private abstract static class BaseHardwareProblem implements Problem {
 
-        private final HardwareInCloudAndLocation hardwareInCloudAndLocation;
+        private final HardwareInLocation hardwareInLocation;
 
-        public BaseHardwareProblem(HardwareInCloudAndLocation hardwareInCloudAndLocation) {
-            checkNotNull(hardwareInCloudAndLocation);
-            this.hardwareInCloudAndLocation = hardwareInCloudAndLocation;
+        public BaseHardwareProblem(HardwareInLocation hardwareInLocation) {
+            checkNotNull(hardwareInLocation);
+            this.hardwareInLocation = hardwareInLocation;
         }
 
         @Override public int getPriority() {
             return Priority.MEDIUM;
         }
 
-        public HardwareInCloudAndLocation getHardwareInCloudAndLocation() {
-            return hardwareInCloudAndLocation;
+        public HardwareInLocation getHardwareInLocation() {
+            return hardwareInLocation;
         }
 
         @Override public boolean equals(Object o) {
@@ -39,33 +39,35 @@ public class HardwareProblems {
 
             BaseHardwareProblem that = (BaseHardwareProblem) o;
 
-            return hardwareInCloudAndLocation.equals(that.hardwareInCloudAndLocation);
+            return hardwareInLocation.equals(that.hardwareInLocation);
 
         }
 
         @Override public int hashCode() {
-            return hardwareInCloudAndLocation.hashCode();
+            return hardwareInLocation.hashCode();
         }
     }
 
 
-    public static class BaseHardwareNotInDatabase extends BaseHardwareProblem {
-        public BaseHardwareNotInDatabase(HardwareInCloudAndLocation hardwareInCloudAndLocation) {
-            super(hardwareInCloudAndLocation);
+    public static class HardwareNotInDatabase extends BaseHardwareProblem {
+
+        public HardwareNotInDatabase(HardwareInLocation hardwareInLocation) {
+            super(hardwareInLocation);
         }
     }
 
 
     public static class HardwareMissesCredential extends BaseHardwareProblem {
-        public HardwareMissesCredential(HardwareInCloudAndLocation hardwareInCloudAndLocation) {
-            super(hardwareInCloudAndLocation);
+
+        public HardwareMissesCredential(HardwareInLocation hardwareInLocation) {
+            super(hardwareInLocation);
         }
     }
 
 
     public static class HardwareMissesLocation extends BaseHardwareProblem {
-        public HardwareMissesLocation(HardwareInCloudAndLocation hardwareInCloudAndLocation) {
-            super(hardwareInCloudAndLocation);
+        public HardwareMissesLocation(HardwareInLocation hardwareInLocation) {
+            super(hardwareInLocation);
         }
     }
 

@@ -21,10 +21,11 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Api;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 public class CloudDto extends ValidatableDto {
 
@@ -70,11 +71,15 @@ public class CloudDto extends ValidatableDto {
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.endpoint)
             .withValidator(new NotNullOrEmptyValidator());
-        validator(Long.class).validate(this.api)
+        validator(Long.class).validate(this.api,"api").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.apiService.get()));
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<Api>> apiService;
+
+        @Inject private static Provider<ModelService<Api>> apiService;
+
+        private References() {
+        }
     }
 }

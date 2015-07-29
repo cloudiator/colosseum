@@ -1,6 +1,5 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -9,7 +8,7 @@ import com.google.inject.Inject;
 import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 
@@ -33,27 +32,27 @@ public class CreateHardwareInDatabase implements Solution {
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
-        return problem instanceof HardwareProblems.BaseHardwareNotInDatabase;
+        return problem instanceof HardwareProblems.HardwareNotInDatabase;
     }
 
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
-        HardwareProblems.BaseHardwareNotInDatabase baseHardwareNotInDatabase =
-            (HardwareProblems.BaseHardwareNotInDatabase) problem;
+        HardwareProblems.HardwareNotInDatabase hardwareNotInDatabase =
+            (HardwareProblems.HardwareNotInDatabase) problem;
 
-        CloudCredentialLocationId cloudCredentialLocationId = CloudCredentialLocationId
-            .of(baseHardwareNotInDatabase.getHardwareInCloudAndLocation().id());
-
-        Cloud cloud = cloudModelService.getByUuid(cloudCredentialLocationId.cloud());
+        Cloud cloud =
+            cloudModelService.getByUuid(hardwareNotInDatabase.getHardwareInLocation().cloud());
         if (cloud == null) {
             throw new SolutionException();
         }
 
-        Hardware hardware = new Hardware(cloudCredentialLocationId.baseId(), cloud,
-            getHardwareOffer(
-                baseHardwareNotInDatabase.getHardwareInCloudAndLocation().numberOfCores(),
-                baseHardwareNotInDatabase.getHardwareInCloudAndLocation().mbRam(), null));
+        Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud,
+            getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
+                hardwareNotInDatabase.getHardwareInLocation().mbRam(), null),
+            hardwareNotInDatabase.getHardwareInLocation().name());
+        hardware
+            .setCloudProviderId(hardwareNotInDatabase.getHardwareInLocation().cloudProviderId());
 
         hardwareModelService.save(hardware);
 

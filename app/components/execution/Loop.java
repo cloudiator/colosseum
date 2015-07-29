@@ -1,19 +1,12 @@
 package components.execution;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 /**
- * Created by daniel on 06.05.15.
+ * Created by daniel on 24.07.15.
  */
-public class Loop implements Runnable {
-
-    private final Runnable runnable;
-
-    public Loop(Runnable runnable) {
-        this.runnable = runnable;
-    }
-
-    @Override public void run() {
-        while (!Thread.currentThread().isInterrupted()) {
-            runnable.run();
-        }
-    }
+@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.METHOD) public @interface Loop {
 }

@@ -24,37 +24,23 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.ImageDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.CloudCredential;
-import models.FrontendGroup;
-import models.FrontendUser;
 import models.Image;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
 public class ImageController extends GenericApiController<Image, ImageDto, ImageDto, ImageDto> {
 
-    private final FrontendUserService frontendUserModelService;
-
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService             the model service for retrieving the models.
-     * @param typeLiteral              a type literal for the model type
-     * @param conversionService        the conversion service for converting models and dtos.
-     * @param frontendUserModelService the service to retrieve frontend users.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public ImageController(ModelService<Image> modelService, TypeLiteral<Image> typeLiteral,
-        ModelDtoConversionService conversionService, FrontendUserService frontendUserModelService) {
-        super(modelService, typeLiteral, conversionService);
-        checkNotNull(frontendUserModelService);
-        this.frontendUserModelService = frontendUserModelService;
+    @Inject public ImageController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<Image> modelService,
+        TypeLiteral<Image> typeLiteral, ModelDtoConversionService conversionService) {
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -62,19 +48,15 @@ public class ImageController extends GenericApiController<Image, ImageDto, Image
     }
 
     @Override protected Optional<Predicate<Image>> filter() {
-        return Optional.of(new Predicate<Image>() {
-            @Override public boolean apply(Image image) {
-                String userName = request().username();
-                FrontendUser frontendUser = frontendUserModelService.getByMail(userName);
-                for (FrontendGroup frontendGroup : frontendUser.getFrontendGroups()) {
-                    for (CloudCredential cloudCredential : frontendGroup.getCloudCredentials()) {
-                        if (image.getCloudCredentials().contains(cloudCredential)) {
-                            return true;
-                        }
+        return Optional.of(image -> {
+            for (Tenant tenant : getUser().getTenants()) {
+                for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
+                    if (image.getCloudCredentials().contains(cloudCredential)) {
+                        return true;
                     }
                 }
-                return false;
             }
+            return false;
         });
     }
 }

@@ -1,7 +1,6 @@
 package cloud.sync.solutions;
 
-import cloud.CloudCredentialLocationId;
-import cloud.LocationInCloud;
+import cloud.resources.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -9,8 +8,8 @@ import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Location;
-import models.service.api.LocationModelService;
-import models.service.api.generic.ModelService;
+import models.service.LocationModelService;
+import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -37,14 +36,10 @@ public class ConnectLocationToCredential implements Solution {
 
         LocationInCloud locationInCloud =
             ((LocationProblems.LocationMissesCredential) problem).getLocationInCloud();
-        final CloudCredentialLocationId cloudCredentialLocationId =
-            CloudCredentialLocationId.of(locationInCloud.id());
 
-        Location location = locationModelService
-            .getByUuidInCloudAndUuidOfCloud(cloudCredentialLocationId.baseId(),
-                cloudCredentialLocationId.cloud());
+        Location location = locationModelService.getByRemoteId(locationInCloud.id());
         CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(cloudCredentialLocationId.credential());
+            cloudCredentialModelService.getByUuid(locationInCloud.credential());
 
         if (location == null || cloudCredential == null) {
             throw new SolutionException();

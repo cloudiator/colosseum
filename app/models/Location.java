@@ -18,17 +18,17 @@
 
 package models;
 
-import models.generic.Model;
+import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity public class Location extends Model {
+import static com.google.common.base.Preconditions.checkNotNull;
+
+@Entity public class Location extends RemoteModel {
 
     @ManyToOne(optional = false) private Cloud cloud;
-
-    private String cloudUuid;
 
     @Nullable @ManyToOne(optional = true) private GeoLocation geoLocation;
 
@@ -54,13 +54,15 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private Location() {
+    protected Location() {
     }
 
-    public Location(Cloud cloud, String cloudUuid, @Nullable GeoLocation geoLocation,
+    public Location(Cloud cloud, String remoteId, @Nullable GeoLocation geoLocation,
         @Nullable Location parent, @Nullable LocationScope locationScope, boolean isAssignable) {
+        super(remoteId);
+
+        checkNotNull(cloud);
         this.cloud = cloud;
-        this.cloudUuid = cloudUuid;
         this.geoLocation = geoLocation;
         this.parent = parent;
         this.locationScope = locationScope;
@@ -73,14 +75,6 @@ import java.util.List;
 
     public void setCloud(Cloud cloud) {
         this.cloud = cloud;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
     }
 
     @Nullable public GeoLocation getGeoLocation() {
@@ -107,7 +101,7 @@ import java.util.List;
         this.children = children;
     }
 
-    public @Nullable LocationScope getLocationScope() {
+    @Nullable public LocationScope getLocationScope() {
         return locationScope;
     }
 

@@ -22,26 +22,23 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.GeoLocationDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
 import models.GeoLocation;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
  */
 public class GeoLocationController
     extends GenericApiController<GeoLocation, GeoLocationDto, GeoLocationDto, GeoLocationDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public GeoLocationController(ModelService<GeoLocation> modelService,
+
+    @Inject public GeoLocationController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<GeoLocation> modelService,
         TypeLiteral<GeoLocation> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

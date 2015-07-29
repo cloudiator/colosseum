@@ -21,12 +21,12 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullOrEmptyValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.OperatingSystemArchitecture;
 import models.OperatingSystemVendor;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 15.04.15.
@@ -71,7 +71,11 @@ public class OperatingSystemDto extends ValidatableDto {
     }
 
     public static class References {
-        @Inject public static Provider<ModelService<OperatingSystemVendor>>
+
+        @Inject private static Provider<ModelService<OperatingSystemVendor>>
             operatingSystemVendorValidator;
+
+        private References() {
+        }
     }
 }

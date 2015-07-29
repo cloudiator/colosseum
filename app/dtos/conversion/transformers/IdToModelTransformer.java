@@ -19,7 +19,7 @@
 package dtos.conversion.transformers;
 
 import models.generic.Model;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 

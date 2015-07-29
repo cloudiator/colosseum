@@ -44,7 +44,7 @@ import java.util.List;
     /**
      * Empty constructor for hibernate.
      */
-    private VirtualMachineTemplate() {
+    protected VirtualMachineTemplate() {
     }
 
     public VirtualMachineTemplate(Cloud cloud, Image image, Location location, Hardware hardware) {

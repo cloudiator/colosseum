@@ -1,18 +1,18 @@
 package cloud.sync.watchdogs;
 
-import cloud.CloudCredentialLocationId;
-import cloud.ImageInCloudAndLocation;
+import cloud.CloudService;
+import cloud.resources.ImageInLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
-import components.execution.SimpleBlockingQueue;
 import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import de.uniulm.omi.cloudiator.sword.api.domain.Image;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import components.execution.SimpleBlockingQueue;
 import models.CloudCredential;
 import models.Location;
-import models.service.api.ImageModelService;
+import models.service.ImageModelService;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daniel on 07.05.15.
@@ -21,61 +21,63 @@ public class ImageWatchdog extends AbstractCloudServiceWatchdog {
 
     private final ImageModelService imageModelService;
 
-    @Inject protected ImageWatchdog(ComputeService computeService,
+    @Inject protected ImageWatchdog(CloudService cloudService,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
         ImageModelService imageModelService) {
-        super(computeService, simpleBlockingQueue);
+        super(cloudService, simpleBlockingQueue);
         this.imageModelService = imageModelService;
     }
 
 
 
-    @Override protected void watch(ComputeService computeService) {
-        for (Image image : computeService.listImages()) {
-            if (image instanceof ImageInCloudAndLocation) {
-                final CloudCredentialLocationId cloudCredentialLocationId =
-                    CloudCredentialLocationId.of(image.id());
+    @Override protected void watch(CloudService cloudService) {
+        for (ImageInLocation imageInLocation : cloudService.getDiscoveryService().listImages()) {
 
-                models.Image modelImage = imageModelService
-                    .getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(
-                        cloudCredentialLocationId.baseId(), cloudCredentialLocationId.cloud());
+            models.Image modelImage = imageModelService.getByRemoteId(imageInLocation.id());
 
-                if (modelImage == null) {
-                    report(
-                        new ImageProblems.BaseImageNotInDatabase((ImageInCloudAndLocation) image));
-                } else {
-                    CloudCredential credentialToSearchFor = null;
-                    for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {
-                        if (cloudCredential.getUuid()
-                            .equals(cloudCredentialLocationId.credential())) {
-                            credentialToSearchFor = cloudCredential;
-                            break;
-                        }
-                    }
-
-                    if (credentialToSearchFor == null) {
-                        report(new ImageProblems.ImageMissesCredential(
-                            (ImageInCloudAndLocation) image));
-                    }
-
-                    Location locationToSearchFor = null;
-                    for (Location location : modelImage.getLocations()) {
-                        if (location.getCloud().getUuid().equals(cloudCredentialLocationId.cloud())
-                            && location.getCloudUuid()
-                            .equals(cloudCredentialLocationId.location())) {
-                            locationToSearchFor = location;
-                            break;
-                        }
-                    }
-
-                    if (locationToSearchFor == null) {
-                        report(
-                            new ImageProblems.ImageMissesLocation((ImageInCloudAndLocation) image));
+            if (modelImage == null) {
+                report(new ImageProblems.ImageNotInDatabase(imageInLocation));
+            } else {
+                CloudCredential credentialToSearchFor = null;
+                for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {
+                    if (cloudCredential.getUuid().equals(imageInLocation.credential())) {
+                        credentialToSearchFor = cloudCredential;
+                        break;
                     }
                 }
 
+                if (credentialToSearchFor == null) {
+                    report(new ImageProblems.ImageMissesCredential(imageInLocation));
+                }
 
+                Location locationToSearchFor = null;
+                for (Location location : modelImage.getLocations()) {
+                    if (location.getCloud().getUuid().equals(imageInLocation.cloud()) && location
+                        .getRemoteId().equals(imageInLocation.location())) {
+                        locationToSearchFor = location;
+                        break;
+                    }
+                }
+
+                if (locationToSearchFor == null) {
+                    report(new ImageProblems.ImageMissesLocation(imageInLocation));
+                }
             }
+
+
+
         }
+    }
+
+    @Override public long period() {
+        return 1;
+    }
+
+    @Override public long delay() {
+        return 0;
+    }
+
+    @Override public TimeUnit timeUnit() {
+        return TimeUnit.MINUTES;
     }
 }

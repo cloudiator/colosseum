@@ -20,17 +20,17 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import models.service.api.FrontendUserService;
+import models.service.FrontendUserService;
 import play.Logger;
 
 /**
  * Created by daniel on 10.11.14.
  */
-public class LoginDto {
+final public class LoginDto {
 
-    protected String email;
-    protected String password;
-    protected Boolean rememberMe;
+    private String email;
+    private String password;
+    private String tenant;
 
     public String getEmail() {
         return email;
@@ -48,28 +48,34 @@ public class LoginDto {
         this.password = password;
     }
 
-    public Boolean getRememberMe() {
-        return rememberMe;
+    public String getTenant() {
+        return tenant;
     }
 
-    public void setRememberMe(Boolean rememberMe) {
-        this.rememberMe = rememberMe;
+    public void setTenant(String tenant) {
+        this.tenant = tenant;
     }
 
     public String validate() {
         try {
-            if (References.frontendUserService.get().authenticate(email, password) == null) {
-                return "Invalid user or password";
+            if (References.frontendUserService.get().authenticate(email, password, tenant)
+                == null) {
+                return "Invalid user, password or tenant.";
             }
         } catch (Exception e) {
             Logger.error("Error while authenticating user.", e);
-            return "Invalid user or password";
+            return "Invalid user, password or tenant.";
         }
         return null;
     }
 
 
     public static class References {
-        @Inject public static Provider<FrontendUserService> frontendUserService;
+
+        @Inject private static Provider<FrontendUserService> frontendUserService;
+
+        private References() {
+        }
+
     }
 }

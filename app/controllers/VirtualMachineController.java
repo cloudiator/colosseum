@@ -20,16 +20,14 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import com.google.inject.name.Named;
-import components.execution.SimpleBlockingQueue;
-import components.job.CreateVirtualMachineJob;
-import components.job.Job;
+import components.job.JobService;
 import controllers.generic.GenericApiController;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import dtos.VirtualMachineDto;
-import dtos.conversion.api.ModelDtoConversionService;
+import dtos.conversion.ModelDtoConversionService;
+import models.Tenant;
 import models.VirtualMachine;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
@@ -37,34 +35,26 @@ import models.service.api.generic.ModelService;
 public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
-    private final ComputeService computeService;
-    private final SimpleBlockingQueue<Job> jobQueue;
+    private final JobService jobService;
+    private final ModelService<VirtualMachine> virtualMachineModelService;
 
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @param computeService
-     * @param jobQueue
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public VirtualMachineController(ModelService<VirtualMachine> modelService,
+    @Inject public VirtualMachineController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
         TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
-        ComputeService computeService, @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
-        super(modelService, typeLiteral, conversionService);
-        this.computeService = computeService;
-        this.jobQueue = jobQueue;
+        JobService jobService) {
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
+        this.virtualMachineModelService = modelService;
+        this.jobService = jobService;
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
     }
 
-    @Override protected void postPost(VirtualMachine entity) {
-        CreateVirtualMachineJob createVirtualMachineJob =
-            new CreateVirtualMachineJob(entity, getModelService(), computeService);
-        jobQueue.add(createVirtualMachineJob);
+    @Override protected void postPost(VirtualMachine virtualMachine) {
+        virtualMachine.getCloudCredentials().add(getCloudCredential(virtualMachine.cloud()));
+        this.virtualMachineModelService.save(virtualMachine);
+        this.jobService.newVirtualMachineJob(virtualMachine, getActiveTenant());
     }
 }

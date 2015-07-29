@@ -21,64 +21,63 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.ModelIdValidator;
-import dtos.validation.NotNullValidator;
+import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.Hardware;
 import models.Image;
 import models.Location;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 12.02.15.
  */
 public class VirtualMachineTemplateDto extends ValidatableDto {
 
-    protected long cloud;
-    protected long image;
-    protected long location;
-    protected long hardware;
+    private Long cloud;
+    private Long image;
+    private Long location;
+    private Long hardware;
 
     public VirtualMachineTemplateDto() {
-        super();
     }
 
-    public VirtualMachineTemplateDto(long cloud, long image, long location, long hardware) {
+    public VirtualMachineTemplateDto(Long cloud, Long image, Long location, Long hardware) {
         this.cloud = cloud;
         this.image = image;
         this.location = location;
         this.hardware = hardware;
     }
 
-    public long getCloud() {
+    public Long getCloud() {
         return cloud;
     }
 
-    public void setCloud(long cloud) {
+    public void setCloud(Long cloud) {
         this.cloud = cloud;
     }
 
-    public long getImage() {
+    public Long getImage() {
         return image;
     }
 
-    public void setImage(long image) {
+    public void setImage(Long image) {
         this.image = image;
     }
 
-    public long getLocation() {
+    public Long getLocation() {
         return location;
     }
 
-    public void setLocation(long location) {
+    public void setLocation(Long location) {
         this.location = location;
     }
 
-    public long getHardware() {
+    public Long getHardware() {
         return hardware;
     }
 
-    public void setHardware(long hardware) {
+    public void setHardware(Long hardware) {
         this.hardware = hardware;
     }
 
@@ -95,13 +94,13 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject public static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Cloud>> cloudService;
+        @Inject private static Provider<ModelService<Image>> imageService;
+        @Inject private static Provider<ModelService<Location>> locationService;
+        @Inject private static Provider<ModelService<Hardware>> hardwareService;
 
-        @Inject public static Provider<ModelService<Image>> imageService;
-
-        @Inject public static Provider<ModelService<Location>> locationService;
-
-        @Inject public static Provider<ModelService<Hardware>> hardwareService;
+        private References() {
+        }
     }
 
 }

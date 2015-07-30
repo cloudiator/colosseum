@@ -67,8 +67,10 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected String buildDefaultVisorConfig(){
 
-
+        //KairosServer depends if visor should connect to vm local kairos or to honme domain kairos
+        //get home domain ip
         //TODO: get public ip if running Cloudiator on a VM in e.g. Openstack
+        /*
         InetAddress inetAddress = null;
         try {
             inetAddress=InetAddress.getLocalHost();
@@ -76,16 +78,17 @@ abstract class AbstractInstaller implements InstallApi {
             Logger.error(e.getMessage());
             e.printStackTrace();
         }
-        String localIp = inetAddress.getHostAddress();
+        String homeDomainIp = inetAddress.getHostAddress();
+        */
 
         String config = "executionThreads = 20\n" +
                 "reportingInterval = 10\n" +
                 "telnetPort = 9001\n" +
                 "restHost = http://0.0.0.0\n" +
                 "restPort = 9002\n" +
-                "kairosServer = "+localIp+"\n" +
+                "kairosServer = localhost\n" +
                 "kairosPort = 8080\n" +
-                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.cli.CommandLineReportingModule";
+                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.kairos.KairosReportingModule";
 
 
         return config;

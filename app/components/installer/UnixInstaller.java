@@ -94,8 +94,7 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installLifecycleAgent();
 
-        //not yet needed
-        //this.installKairosDb();
+        this.installKairosDb();
 
         this.installVisor();
 

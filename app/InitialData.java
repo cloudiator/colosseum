@@ -65,31 +65,32 @@ public class InitialData {
             tenant.getFrontendUsers().add(frontendUser);
             tenantModelService.save(tenant);
 
-            if (operatingSystemVendorModelService.getAll().isEmpty()) {
-
-                //load ubuntu
-                OperatingSystemVendor ubuntu =
-                    new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu");
-                operatingSystemVendorModelService.save(ubuntu);
-
-                //ubuntu 14.04 amd64
-                OperatingSystem ubuntu1404amd64 =
-                    new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
-                operatingSystemModelService.save(ubuntu1404amd64);
-
-                //load windows
-                OperatingSystemVendor windows =
-                    new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,
-                        "Administrator");
-                operatingSystemVendorModelService.save(windows);
-
-                //Windows Server 2012 R2
-                OperatingSystem windowsServer2012R2 =
-                    new OperatingSystem(windows, OperatingSystemArchitecture.AMD64,
-                        "Server 2012 R2");
-                operatingSystemModelService.save(windowsServer2012R2);
-            }
-
         }
+
+        if (operatingSystemVendorModelService.getAll().isEmpty()) {
+
+            //load ubuntu
+            OperatingSystemVendor ubuntu =
+                new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu", null);
+            operatingSystemVendorModelService.save(ubuntu);
+
+            //ubuntu 14.04 amd64
+            OperatingSystem ubuntu1404amd64 =
+                new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
+            operatingSystemModelService.save(ubuntu1404amd64);
+
+            //load windows
+            OperatingSystemVendor windows =
+                new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,
+                    "Administrator", null);
+            operatingSystemVendorModelService.save(windows);
+
+            //Windows Server 2012 R2
+            OperatingSystem windowsServer2012R2 =
+                new OperatingSystem(windows, OperatingSystemArchitecture.AMD64, "Server 2012 R2");
+            operatingSystemModelService.save(windowsServer2012R2);
+        }
+
+
     }
 }

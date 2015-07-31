@@ -111,7 +111,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return name;
     }
 
-    
+    @Nullable public String getLoginName() {
+        if (generatedLoginUsername != null) {
+            return generatedLoginUsername;
+        }
+        if (image != null && image.getOperatingSystem() != null
+            && image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName() != null) {
+            return image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName();
+        }
+        return null;
+    }
+
+    @Nullable public String getLoginPassword() {
+        if (generatedLoginPassword != null) {
+            return generatedLoginPassword;
+        }
+        if (image != null && image.getOperatingSystem() != null
+            && image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword() != null) {
+            return image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword();
+        }
+        return null;
+    }
 
     @Nullable public String getGeneratedLoginUsername() {
         return generatedLoginUsername;

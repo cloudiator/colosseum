@@ -32,8 +32,8 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
             .newServiceBuilder(cloudCredential.getCloud().getApi().getInternalProviderName())
             .endpoint(cloudCredential.getCloud().getEndpoint())
             .credentials(cloudCredential.getUser(), cloudCredential.getSecret())
-            .nodeGroup(getNodeGroup()).build(), cloudCredential.getCloud().getUuid(),
-            cloudCredential.getUuid());
+            .loggingModule(new SwordLoggingModule()).nodeGroup(getNodeGroup()).build(),
+            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid());
     }
 
 }

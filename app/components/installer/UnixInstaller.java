@@ -3,6 +3,7 @@ package components.installer;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
 import play.Logger;
+import play.Play;
 
 
 /**
@@ -11,6 +12,9 @@ import play.Logger;
 public class UnixInstaller extends AbstractInstaller {
     private final String homeDir;
     private final String javaArchive = "jre8.tar.gz";
+    private final String javaDownload = Play.application().configuration().getString("colosseum.installer.linux.java.download");
+    private final String dockerDownload = Play.application().configuration().getString("colosseum.installer.linux.lifecycle.docker.download");
+    private final String dockerInstall = "docker_install.sh";
 
     public UnixInstaller(RemoteConnection remoteConnection, String user) {
         super(remoteConnection);
@@ -22,13 +26,13 @@ public class UnixInstaller extends AbstractInstaller {
     public void initSources() {
 
         //java
-        this.sourcesList.add("wget http://javadl.sun.com/webapps/download/AutoDL?BundleId=106240 -O " + this.javaArchive);
+        this.sourcesList.add("wget " + this.javaDownload + " -O " + this.javaArchive);
         //docker
-        this.sourcesList.add("wget https://get.docker.com/ubuntu/ -O " + this.dockerInstall);
+        this.sourcesList.add("wget " + this.dockerDownload + " -O " + this.dockerInstall);
         //kairosDB
-        this.sourcesList.add("wget https://github.com/kairosdb/kairosdb/releases/download/v0.9.4/kairosdb-0.9.4-6.tar.gz -O " + this.kairosDbArchive);
+        this.sourcesList.add("wget " + this.kairosDbDownload + " -O " + this.kairosDbArchive);
         //visor
-        this.sourcesList.add("wget https://omi-dev.e-technik.uni-ulm.de/jenkins/job/cloudiator-visor/lastSuccessfulBuild/artifact/visor-service/target/visor.jar -O " + this.visorJar);
+        this.sourcesList.add("wget " + this.visorDownload + " -O " + this.visorJar);
     }
 
 

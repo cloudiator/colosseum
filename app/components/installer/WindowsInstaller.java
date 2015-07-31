@@ -3,6 +3,7 @@ package components.installer;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
 import play.Logger;
+import play.Play;
 
 /**
  * Created by Daniel Seybold on 20.05.2015.
@@ -13,6 +14,8 @@ public class WindowsInstaller extends AbstractInstaller {
     private final String sevenZipArchive = "7zip.zip";
     private final String sevenZipDir = "7zip";
     private final String visorBat = "startVisor.bat";
+    private final String javaDonwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
+    private final String zip7Donwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
 
 
     public WindowsInstaller(RemoteConnection remoteConnection, String user) {
@@ -25,13 +28,13 @@ public class WindowsInstaller extends AbstractInstaller {
     public void initSources() {
 
         //java
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://javadl.sun.com/webapps/download/AutoDL?BundleId=107100','"+this.homeDir+"\\"+this.javaExe+"')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.javaDonwload + "','"+this.homeDir+"\\"+this.javaExe+"')");
         //7zip
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://7-zip.org/a/7za920.zip','"+this.homeDir+"\\"+this.sevenZipArchive+"')");
         //download visor
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('https://omi-dev.e-technik.uni-ulm.de/jenkins/job/cloudiator-visor/lastSuccessfulBuild/artifact/visor-service/target/visor.jar','" + this.homeDir + "\\" + this.visorJar + "')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('"+this.visorDownload+"','" + this.homeDir + "\\" + this.visorJar + "')");
         //download kairosDB
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('https://github.com/kairosdb/kairosdb/releases/download/v0.9.4/kairosdb-0.9.4-6.tar.gz','"+this.homeDir+"\\"+this.kairosDbArchive+"')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.kairosDbDownload + "','"+this.homeDir+"\\"+this.kairosDbArchive+"')");
 
     }
 

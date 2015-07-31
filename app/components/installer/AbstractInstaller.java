@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 import play.Logger;
+import play.Play;
 
 /**
  * Created by Daniel Seybold on 19.05.2015.
@@ -18,13 +19,17 @@ abstract class AbstractInstaller implements InstallApi {
     protected  final  RemoteConnection remoteConnection;
     protected final List<String> sourcesList = new ArrayList<>();
 
+    //KairosDB
     protected final String kairosDbArchive = "kairosdb.tar.gz";
-    protected final String visorJar = "visor.jar";
+    protected final String kairosDbDir = "kairosdb";
+    protected final String kairosDbDownload = Play.application().configuration().getString("colosseum.installer.abstract.kairosdb.download");
 
-    protected final String dockerInstall = "docker_install.sh ";
+    //Visor
+    protected final String visorJar = "visor.jar";
+    protected final String visorDownload = Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
 
     protected final String javaDir = "jre8";
-    protected final String kairosDbDir = "kairosdb";
+
 
     protected final String visorProperties = "default.properties";
 
@@ -81,14 +86,14 @@ abstract class AbstractInstaller implements InstallApi {
         String homeDomainIp = inetAddress.getHostAddress();
         */
 
-        String config = "executionThreads = 20\n" +
-                "reportingInterval = 10\n" +
-                "telnetPort = 9001\n" +
-                "restHost = http://0.0.0.0\n" +
-                "restPort = 9002\n" +
-                "kairosServer = localhost\n" +
-                "kairosPort = 8080\n" +
-                "reportingModule = de.uniulm.omi.cloudiator.visor.reporting.kairos.KairosReportingModule";
+        String config = "executionThreads = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.executionThreads") +"\n" +
+                "reportingInterval = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.reportingInterval") +"\n" +
+                "telnetPort = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.telnetPort") +"\n" +
+                "restHost = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.restHost") +"\n" +
+                "restPort = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.restPort") +"\n" +
+                "kairosServer = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.kairosServer") +"\n" +
+                "kairosPort = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.kairosPort") +"\n" +
+                "reportingModule = " + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.reportingModule");
 
 
         return config;

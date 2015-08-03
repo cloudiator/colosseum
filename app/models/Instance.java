@@ -22,8 +22,6 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,11 +33,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @ManyToOne(optional = false) private ApplicationComponent applicationComponent;
     @ManyToOne(optional = false) private ApplicationInstance applicationInstance;
-
-    @OneToMany(mappedBy = "provider") private List<CommunicationChannel>
-        providedCommunicationChannels;
-    @OneToMany(mappedBy = "consumer") private List<CommunicationChannel>
-        consumedCommunicationChannels;
 
     @ManyToOne private VirtualMachine virtualMachine;
 
@@ -71,24 +64,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setVirtualMachine(VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
         this.virtualMachine = virtualMachine;
-    }
-
-    public List<CommunicationChannel> getProvidedCommunicationChannels() {
-        return providedCommunicationChannels;
-    }
-
-    public void setProvidedCommunicationChannels(
-        List<CommunicationChannel> providedCommunicationChannels) {
-        this.providedCommunicationChannels = providedCommunicationChannels;
-    }
-
-    public List<CommunicationChannel> getConsumedCommunicationChannels() {
-        return consumedCommunicationChannels;
-    }
-
-    public void setConsumedCommunicationChannels(
-        List<CommunicationChannel> consumedCommunicationChannels) {
-        this.consumedCommunicationChannels = consumedCommunicationChannels;
     }
 
     public ApplicationInstance getApplicationInstance() {

@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -18,31 +18,29 @@
 
 package controllers;
 
-import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.CommunicationChannelDto;
+import dtos.PortInboundDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.CommunicationChannel;
+import models.PortInbound;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 
 /**
- * Created by daniel on 10.04.15.
+ * Created by daniel on 03.08.15.
  */
-public class CommunicationChannelController extends
-    GenericApiController<CommunicationChannel, CommunicationChannelDto, CommunicationChannelDto, CommunicationChannelDto> {
+public class PortInboundController
+    extends GenericApiController<PortInbound, PortInboundDto, PortInboundDto, PortInboundDto> {
 
-    @Inject public CommunicationChannelController(FrontendUserService frontendUserService,
-        ModelService<Tenant> tenantModelService, ModelService<CommunicationChannel> modelService,
-        TypeLiteral<CommunicationChannel> typeLiteral,
-        ModelDtoConversionService conversionService) {
+    public PortInboundController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<PortInbound> modelService,
+        TypeLiteral<PortInbound> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.CommunicationChannelController.get(id).absoluteURL(request());
+        return controllers.routes.PortInboundController.get(id).absoluteURL(request());
     }
 }

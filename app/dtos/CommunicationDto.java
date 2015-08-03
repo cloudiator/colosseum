@@ -21,10 +21,10 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
-import dtos.validation.validators.ExpressionValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.ApplicationComponent;
+import models.PortInbound;
+import models.PortOutbound;
 import models.service.ModelService;
 
 /**
@@ -32,57 +32,44 @@ import models.service.ModelService;
  */
 public class CommunicationDto extends ValidatableDto {
 
-    protected Long provider;
-    protected Long consumer;
-    protected Integer port;
-
-    public CommunicationDto(Long provider, Long consumer, Integer port) {
-        this.provider = provider;
-        this.consumer = consumer;
-        this.port = port;
-    }
+    protected Long inboundPort;
+    protected Long outboundPort;
 
     public CommunicationDto() {
         super();
     }
 
     @Override public void validation() {
-        validator(Long.class).validate(provider).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
-        validator(Long.class).validate(consumer).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
-        validator(Integer.class).validate(port).withValidator(new NotNullValidator())
-            .withValidator(new ExpressionValidator(port.compareTo(0) > 0));
+        validator(Long.class).validate(inboundPort).withValidator(new NotNullValidator())
+            .withValidator(
+                new ModelIdValidator<>(References.inboundPortModelServiceProvider.get()));
+        validator(Long.class).validate(outboundPort).withValidator(new NotNullValidator())
+            .withValidator(
+                new ModelIdValidator<>(References.outboundPortModelServiceProvider.get()));
+
     }
 
-    public Long getProvider() {
-        return provider;
+    public Long getInboundPort() {
+        return inboundPort;
     }
 
-    public void setProvider(Long provider) {
-        this.provider = provider;
+    public void setInboundPort(Long inboundPort) {
+        this.inboundPort = inboundPort;
     }
 
-    public Long getConsumer() {
-        return consumer;
+    public Long getOutboundPort() {
+        return outboundPort;
     }
 
-    public void setConsumer(Long consumer) {
-        this.consumer = consumer;
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setOutboundPort(Long outboundPort) {
+        this.outboundPort = outboundPort;
     }
 
     public static class References {
 
-        @Inject private static Provider<ModelService<ApplicationComponent>>
-            applicationComponentService;
+        @Inject private static Provider<ModelService<PortInbound>> inboundPortModelServiceProvider;
+        @Inject private static Provider<ModelService<PortOutbound>>
+            outboundPortModelServiceProvider;
 
         private References() {
         }

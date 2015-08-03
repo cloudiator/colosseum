@@ -20,7 +20,6 @@ package models.service;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import dtos.OperatingSystemDto;
 import models.*;
 
 /**
@@ -61,10 +60,6 @@ public class DatabaseServiceModule extends AbstractModule {
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {
-        });
-        // Communication Channel
-        bind(new TypeLiteral<ModelService<CommunicationChannel>>() {
-        }).to(new TypeLiteral<BaseModelService<CommunicationChannel>>() {
         });
         // Component
         bind(new TypeLiteral<ModelService<Component>>() {
@@ -123,10 +118,17 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
         });
         bind(OperatingSystemService.class).to(DefaultOperatingSystemService.class);
-        requestStaticInjection(OperatingSystemDto.References.class);
         //Operating System Vendor
         bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
         }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
+        });
+        //PortInbound
+        bind(new TypeLiteral<ModelService<PortInbound>>() {
+        }).to(new TypeLiteral<BaseModelService<PortInbound>>() {
+        });
+        //PortOutbound
+        bind(new TypeLiteral<ModelService<PortOutbound>>() {
+        }).to(new TypeLiteral<BaseModelService<PortOutbound>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {

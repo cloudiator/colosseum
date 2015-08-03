@@ -38,7 +38,7 @@ public abstract class AbstractConverter<T extends Model, S extends Dto>
         sType = s;
     }
 
-    protected FromBindingBuilder builder() {
+    protected final FromBindingBuilder builder() {
         return fieldBindings.builder();
     }
 
@@ -51,27 +51,27 @@ public abstract class AbstractConverter<T extends Model, S extends Dto>
 
     public abstract void configure();
 
-    @Override public T toModel(S dto) {
+    @Override public final T toModel(S dto) {
         configureOnce();
         T model = new TypeBuilder<T>().getInstance(tType);
         this.fieldBindings.bind(dto, model);
         return model;
     }
 
-    @Override public T toModel(S dto, T model) {
+    @Override public final T toModel(S dto, T model) {
         configureOnce();
         this.fieldBindings.bind(dto, model);
         return model;
     }
 
-    @Override public S toDto(T model) {
+    @Override public final S toDto(T model) {
         configureOnce();
         S dto = new TypeBuilder<S>().getInstance(sType);
         this.fieldBindings.bindReverse(dto, model);
         return dto;
     }
 
-    @Override public S toDto(T model, S dto) {
+    @Override public final S toDto(T model, S dto) {
         configureOnce();
         this.fieldBindings.bindReverse(dto, model);
         return dto;

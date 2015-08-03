@@ -38,10 +38,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @OneToMany(mappedBy = "applicationComponent") private List<Instance> instances;
 
-    @OneToMany(mappedBy = "provider") private List<Communication> providedCommunications;
-    @OneToMany(mappedBy = "consumer") private List<Communication> consumedCommunications;
-
     @ManyToOne(optional = false) private VirtualMachineTemplate virtualMachineTemplate;
+
+    @OneToMany(mappedBy = "applicationComponent") private List<Port> ports;
 
     /**
      * Empty constructor for hibernate.
@@ -67,21 +66,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.component = component;
     }
 
-    public List<Communication> getProvidedCommunications() {
-        return providedCommunications;
-    }
-
-    public void setProvidedCommunications(List<Communication> providedCommunications) {
-        this.providedCommunications = providedCommunications;
-    }
-
-    public List<Communication> getConsumedCommunications() {
-        return consumedCommunications;
-    }
-
-    public void setConsumedCommunications(List<Communication> consumedCommunications) {
-        this.consumedCommunications = consumedCommunications;
-    }
 
     public VirtualMachineTemplate getVirtualMachineTemplate() {
         return virtualMachineTemplate;
@@ -97,5 +81,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setInstances(List<Instance> instances) {
         this.instances = instances;
+    }
+
+    public List<Port> getPorts() {
+        return ports;
+    }
+
+    public void setPorts(List<Port> ports) {
+        this.ports = ports;
     }
 }

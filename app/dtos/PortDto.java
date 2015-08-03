@@ -35,6 +35,9 @@ public class PortDto extends ValidatableDto {
     private String name;
     private Long applicationComponent;
 
+    public PortDto() {
+    }
+
     @Override public void validation() {
         validator(String.class).validate(name).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(applicationComponent).withValidator(new NotNullValidator())
@@ -58,7 +61,7 @@ public class PortDto extends ValidatableDto {
         this.applicationComponent = applicationComponent;
     }
 
-    public static class References {
+    public final static class References {
 
         @Inject private static Provider<ModelService<ApplicationComponent>>
             applicationComponentServiceProvider;

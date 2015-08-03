@@ -24,9 +24,12 @@ import dtos.validation.validators.NotNullValidator;
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortOutboundDto extends PortInboundDto {
+public class PortOutboundDto extends PortDto {
 
     private Integer port;
+
+    public PortOutboundDto() {
+    }
 
     @Override public void validation() {
         super.validation();

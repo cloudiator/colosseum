@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.PortInboundDto;
@@ -33,7 +34,7 @@ import models.service.ModelService;
 public class PortInboundController
     extends GenericApiController<PortInbound, PortInboundDto, PortInboundDto, PortInboundDto> {
 
-    public PortInboundController(FrontendUserService frontendUserService,
+    @Inject public PortInboundController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<PortInbound> modelService,
         TypeLiteral<PortInbound> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,

@@ -23,4 +23,6 @@ package dtos;
  */
 public class PortInboundDto extends PortDto {
 
+    public PortInboundDto() {
+    }
 }

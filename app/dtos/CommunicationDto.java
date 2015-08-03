@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.PortRequired;
 import models.PortProvided;
+import models.PortRequired;
 import models.service.ModelService;
 
 /**
@@ -32,44 +32,45 @@ import models.service.ModelService;
  */
 public class CommunicationDto extends ValidatableDto {
 
-    protected Long inboundPort;
-    protected Long outboundPort;
+    protected Long requiredPort;
+    protected Long providedPort;
 
     public CommunicationDto() {
         super();
     }
 
     @Override public void validation() {
-        validator(Long.class).validate(inboundPort).withValidator(new NotNullValidator())
+        validator(Long.class).validate(requiredPort).withValidator(new NotNullValidator())
             .withValidator(
-                new ModelIdValidator<>(References.inboundPortModelServiceProvider.get()));
-        validator(Long.class).validate(outboundPort).withValidator(new NotNullValidator())
+                new ModelIdValidator<>(References.requiredPortModelServiceProvider.get()));
+        validator(Long.class).validate(providedPort).withValidator(new NotNullValidator())
             .withValidator(
-                new ModelIdValidator<>(References.outboundPortModelServiceProvider.get()));
+                new ModelIdValidator<>(References.providedPortModelServiceProvider.get()));
 
     }
 
-    public Long getInboundPort() {
-        return inboundPort;
+    public Long getRequiredPort() {
+        return requiredPort;
     }
 
-    public void setInboundPort(Long inboundPort) {
-        this.inboundPort = inboundPort;
+    public void setRequiredPort(Long requiredPort) {
+        this.requiredPort = requiredPort;
     }
 
-    public Long getOutboundPort() {
-        return outboundPort;
+    public Long getProvidedPort() {
+        return providedPort;
     }
 
-    public void setOutboundPort(Long outboundPort) {
-        this.outboundPort = outboundPort;
+    public void setProvidedPort(Long providedPort) {
+        this.providedPort = providedPort;
     }
 
     public static class References {
 
-        @Inject private static Provider<ModelService<PortRequired>> inboundPortModelServiceProvider;
+        @Inject private static Provider<ModelService<PortRequired>>
+            requiredPortModelServiceProvider;
         @Inject private static Provider<ModelService<PortProvided>>
-            outboundPortModelServiceProvider;
+            providedPortModelServiceProvider;
 
         private References() {
         }

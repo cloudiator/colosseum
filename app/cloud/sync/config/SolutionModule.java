@@ -24,6 +24,8 @@ import cloud.sync.Solution;
 import cloud.sync.Solver;
 import cloud.sync.solutions.*;
 import cloud.sync.watchdogs.HardwareWatchdog;
+import cloud.sync.watchdogs.ImageWatchdog;
+import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
@@ -45,6 +47,8 @@ public class SolutionModule extends AbstractModule {
         Multibinder<Schedulable> schedulableMultibinder =
             Multibinder.newSetBinder(binder(), Schedulable.class);
         schedulableMultibinder.addBinding().to(HardwareWatchdog.class);
+        schedulableMultibinder.addBinding().to(ImageWatchdog.class);
+        schedulableMultibinder.addBinding().to(LocationWatchdog.class);
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);

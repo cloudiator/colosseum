@@ -23,8 +23,8 @@ import dtos.CommunicationDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Communication;
-import models.PortRequired;
 import models.PortProvided;
+import models.PortRequired;
 import models.service.ModelService;
 
 /**
@@ -32,20 +32,20 @@ import models.service.ModelService;
  */
 public class CommunicationConverter extends AbstractConverter<Communication, CommunicationDto> {
 
-    private final ModelService<PortRequired> portInboundModelService;
-    private final ModelService<PortProvided> portOutboundModelService;
+    private final ModelService<PortRequired> portRequiredModelService;
+    private final ModelService<PortProvided> portProvidedModelService;
 
-    @Inject protected CommunicationConverter(ModelService<PortRequired> portInboundModelService,
-        ModelService<PortProvided> portOutboundModelService) {
+    @Inject protected CommunicationConverter(ModelService<PortRequired> portRequiredModelService,
+        ModelService<PortProvided> portProvidedModelService) {
         super(Communication.class, CommunicationDto.class);
-        this.portInboundModelService = portInboundModelService;
-        this.portOutboundModelService = portOutboundModelService;
+        this.portRequiredModelService = portRequiredModelService;
+        this.portProvidedModelService = portProvidedModelService;
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "inboundPort").to(PortRequired.class, "inboundPort")
-            .withTransformation(new IdToModelTransformer<>(portInboundModelService));
-        builder().from(Long.class, "outboundPort").to(PortProvided.class, "outboundPort")
-            .withTransformation(new IdToModelTransformer<>(portOutboundModelService));
+        builder().from(Long.class, "requiredPort").to(PortRequired.class, "requiredPort")
+            .withTransformation(new IdToModelTransformer<>(portRequiredModelService));
+        builder().from(Long.class, "providedPort").to(PortProvided.class, "providedPort")
+            .withTransformation(new IdToModelTransformer<>(portProvidedModelService));
     }
 }

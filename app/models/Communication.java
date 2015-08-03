@@ -28,8 +28,8 @@ import javax.persistence.ManyToOne;
  */
 @Entity public class Communication extends Model {
 
-    @ManyToOne(optional = false) private PortRequired inboundPort;
-    @ManyToOne(optional = false) private PortProvided outboundPort;
+    @ManyToOne(optional = false) private PortRequired requiredPort;
+    @ManyToOne(optional = false) private PortProvided providedPort;
 
     /**
      * Empty constructor for hibernate.
@@ -38,16 +38,16 @@ import javax.persistence.ManyToOne;
 
     }
 
-    public Communication(PortRequired inboundPort, PortProvided outboundPort) {
-        this.inboundPort = inboundPort;
-        this.outboundPort = outboundPort;
+    public Communication(PortRequired requiredPort, PortProvided providedPort) {
+        this.requiredPort = requiredPort;
+        this.providedPort = providedPort;
     }
 
-    public PortRequired getInboundPort() {
-        return inboundPort;
+    public PortRequired getRequiredPort() {
+        return requiredPort;
     }
 
-    public PortProvided getOutboundPort() {
-        return outboundPort;
+    public PortProvided getProvidedPort() {
+        return providedPort;
     }
 }

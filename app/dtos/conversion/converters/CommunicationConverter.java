@@ -23,8 +23,8 @@ import dtos.CommunicationDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Communication;
-import models.PortInbound;
-import models.PortOutbound;
+import models.PortRequired;
+import models.PortProvided;
 import models.service.ModelService;
 
 /**
@@ -32,20 +32,20 @@ import models.service.ModelService;
  */
 public class CommunicationConverter extends AbstractConverter<Communication, CommunicationDto> {
 
-    private final ModelService<PortInbound> portInboundModelService;
-    private final ModelService<PortOutbound> portOutboundModelService;
+    private final ModelService<PortRequired> portInboundModelService;
+    private final ModelService<PortProvided> portOutboundModelService;
 
-    @Inject protected CommunicationConverter(ModelService<PortInbound> portInboundModelService,
-        ModelService<PortOutbound> portOutboundModelService) {
+    @Inject protected CommunicationConverter(ModelService<PortRequired> portInboundModelService,
+        ModelService<PortProvided> portOutboundModelService) {
         super(Communication.class, CommunicationDto.class);
         this.portInboundModelService = portInboundModelService;
         this.portOutboundModelService = portOutboundModelService;
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "inboundPort").to(PortInbound.class, "inboundPort")
+        builder().from(Long.class, "inboundPort").to(PortRequired.class, "inboundPort")
             .withTransformation(new IdToModelTransformer<>(portInboundModelService));
-        builder().from(Long.class, "outboundPort").to(PortOutbound.class, "outboundPort")
+        builder().from(Long.class, "outboundPort").to(PortProvided.class, "outboundPort")
             .withTransformation(new IdToModelTransformer<>(portOutboundModelService));
     }
 }

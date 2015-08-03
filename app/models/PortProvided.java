@@ -16,32 +16,33 @@
  * under the License.
  */
 
-package dtos;
+package models;
 
-import dtos.validation.validators.ExpressionValidator;
-import dtos.validation.validators.NotNullValidator;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortOutboundDto extends PortDto {
+@Entity public class PortProvided extends Port {
 
-    private Integer port;
+    @Column(nullable = false) private Integer port;
 
-    public PortOutboundDto() {
+    /**
+     * Empty constructor for hibernate.
+     */
+    protected PortProvided() {
     }
 
-    @Override public void validation() {
-        super.validation();
-        validator(Integer.class).validate(port).withValidator(new NotNullValidator())
-            .withValidator(new ExpressionValidator(port > 0));
-    }
-
-    public Integer getPort() {
-        return port;
-    }
-
-    public void setPort(Integer port) {
+    public PortProvided(String name, ApplicationComponent applicationComponent, int port) {
+        super(name, applicationComponent);
+        checkNotNull(port);
         this.port = port;
+    }
+
+    public int getPort() {
+        return port;
     }
 }

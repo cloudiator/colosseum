@@ -123,12 +123,12 @@ public class JPAModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystemVendor>>() {
         });
         //PortInbound
-        bind(new TypeLiteral<ModelRepository<PortInbound>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortInbound>>() {
+        bind(new TypeLiteral<ModelRepository<PortRequired>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortRequired>>() {
         });
         //PortOutbound
-        bind(new TypeLiteral<ModelRepository<PortOutbound>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortOutbound>>() {
+        bind(new TypeLiteral<ModelRepository<PortProvided>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortProvided>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelRepository<VirtualMachine>>() {

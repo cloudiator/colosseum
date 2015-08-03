@@ -154,19 +154,19 @@ POST          /api/osVendor                       @controllers.OperatingSystemVe
 PUT           /api/osVendor/:id                   @controllers.OperatingSystemVendorController.put(id: Long)
 DELETE        /api/osVendor/:id                   @controllers.OperatingSystemVendorController.delete(id: Long)
 
-#Port Inbound
-GET           /api/portIn                         @controllers.PortInboundController.list()
-GET           /api/portIn/:id                     @controllers.PortInboundController.get(id: Long)
-POST          /api/portIn                         @controllers.PortInboundController.post()
-PUT           /api/portIn/:id                     @controllers.PortInboundController.put(id: Long)
-DELETE        /api/portIn/:id                     @controllers.PortInboundController.delete(id: Long)
+#Port Required
+GET           /api/portReq                        @controllers.PortRequiredController.list()
+GET           /api/portReq/:id                    @controllers.PortRequiredController.get(id: Long)
+POST          /api/portReq                        @controllers.PortRequiredController.post()
+PUT           /api/portReq/:id                    @controllers.PortRequiredController.put(id: Long)
+DELETE        /api/portReq/:id                    @controllers.PortRequiredController.delete(id: Long)
 
-#Port Outbound
-GET           /api/portOut                        @controllers.PortOutboundController.list()
-GET           /api/portOut/:id                    @controllers.PortOutboundController.get(id: Long)
-POST          /api/portOut                        @controllers.PortOutboundController.post()
-PUT           /api/portOut/:id                    @controllers.PortOutboundController.put(id: Long)
-DELETE        /api/portOut/:id                    @controllers.PortOutboundController.delete(id: Long)
+#Port Provided
+GET           /api/portProv                       @controllers.PortProvidedController.list()
+GET           /api/portProv/:id                   @controllers.PortProvidedController.get(id: Long)
+POST          /api/portProv                       @controllers.PortProvidedController.post()
+PUT           /api/portProv/:id                   @controllers.PortProvidedController.put(id: Long)
+DELETE        /api/portProv/:id                   @controllers.PortProvidedController.delete(id: Long)
 
 #VirtualMachine
 GET           /api/virtualMachine                 @controllers.VirtualMachineController.list()

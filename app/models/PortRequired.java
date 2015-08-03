@@ -16,26 +16,22 @@
  * under the License.
  */
 
-package dtos.conversion.converters;
+package models;
 
-import com.google.inject.Inject;
-import dtos.PortOutboundDto;
-import models.ApplicationComponent;
-import models.PortOutbound;
-import models.service.ModelService;
+import javax.persistence.Entity;
 
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortOutboundConverter extends PortConverter<PortOutbound, PortOutboundDto> {
-
-    @Inject public PortOutboundConverter(
-        ModelService<ApplicationComponent> applicationComponentModelService) {
-        super(PortOutbound.class, PortOutboundDto.class, applicationComponentModelService);
+@Entity public class PortRequired extends Port {
+    /**
+     * Default constructor for hibernate.
+     */
+    protected PortRequired() {
     }
 
-    @Override public void configure() {
-        super.configure();
-        builder().from("port").to("port");
+    public PortRequired(String name, ApplicationComponent applicationComponent) {
+        super(name, applicationComponent);
     }
+
 }

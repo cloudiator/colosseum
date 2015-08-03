@@ -16,33 +16,13 @@
  * under the License.
  */
 
-package models;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+package dtos;
 
 /**
  * Created by daniel on 03.08.15.
  */
-@Entity public class PortOutbound extends Port {
+public class PortRequiredDto extends PortDto {
 
-    @Column(nullable = false) private Integer port;
-
-    /**
-     * Empty constructor for hibernate.
-     */
-    protected PortOutbound() {
-    }
-
-    public PortOutbound(String name, ApplicationComponent applicationComponent, int port) {
-        super(name, applicationComponent);
-        checkNotNull(port);
-        this.port = port;
-    }
-
-    public int getPort() {
-        return port;
+    public PortRequiredDto() {
     }
 }

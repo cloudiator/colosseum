@@ -18,11 +18,30 @@
 
 package dtos;
 
+import dtos.validation.validators.ExpressionValidator;
+import dtos.validation.validators.NotNullValidator;
+
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortInboundDto extends PortDto {
+public class PortProvidedDto extends PortDto {
 
-    public PortInboundDto() {
+    private Integer port;
+
+    public PortProvidedDto() {
+    }
+
+    @Override public void validation() {
+        super.validation();
+        validator(Integer.class).validate(port).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(port > 0));
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }

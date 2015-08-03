@@ -123,12 +123,12 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
         });
         //PortInbound
-        bind(new TypeLiteral<ModelService<PortInbound>>() {
-        }).to(new TypeLiteral<BaseModelService<PortInbound>>() {
+        bind(new TypeLiteral<ModelService<PortRequired>>() {
+        }).to(new TypeLiteral<BaseModelService<PortRequired>>() {
         });
         //PortOutbound
-        bind(new TypeLiteral<ModelService<PortOutbound>>() {
-        }).to(new TypeLiteral<BaseModelService<PortOutbound>>() {
+        bind(new TypeLiteral<ModelService<PortProvided>>() {
+        }).to(new TypeLiteral<BaseModelService<PortProvided>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {

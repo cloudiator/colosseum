@@ -19,18 +19,23 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
-import dtos.PortInboundDto;
+import dtos.PortProvidedDto;
 import models.ApplicationComponent;
-import models.PortInbound;
+import models.PortProvided;
 import models.service.ModelService;
 
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortInboundConverter extends PortConverter<PortInbound, PortInboundDto> {
+public class PortProvidedConverter extends PortConverter<PortProvided, PortProvidedDto> {
 
-    @Inject public PortInboundConverter(
+    @Inject public PortProvidedConverter(
         ModelService<ApplicationComponent> applicationComponentModelService) {
-        super(PortInbound.class, PortInboundDto.class, applicationComponentModelService);
+        super(PortProvided.class, PortProvidedDto.class, applicationComponentModelService);
+    }
+
+    @Override public void configure() {
+        super.configure();
+        builder().from("port").to("port");
     }
 }

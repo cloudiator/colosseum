@@ -23,8 +23,8 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.PortInbound;
-import models.PortOutbound;
+import models.PortRequired;
+import models.PortProvided;
 import models.service.ModelService;
 
 /**
@@ -67,8 +67,8 @@ public class CommunicationDto extends ValidatableDto {
 
     public static class References {
 
-        @Inject private static Provider<ModelService<PortInbound>> inboundPortModelServiceProvider;
-        @Inject private static Provider<ModelService<PortOutbound>>
+        @Inject private static Provider<ModelService<PortRequired>> inboundPortModelServiceProvider;
+        @Inject private static Provider<ModelService<PortProvided>>
             outboundPortModelServiceProvider;
 
         private References() {

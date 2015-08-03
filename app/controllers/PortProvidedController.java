@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.PortInboundDto;
+import dtos.PortProvidedDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.PortInbound;
+import models.PortProvided;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
@@ -31,17 +31,17 @@ import models.service.ModelService;
 /**
  * Created by daniel on 03.08.15.
  */
-public class PortInboundController
-    extends GenericApiController<PortInbound, PortInboundDto, PortInboundDto, PortInboundDto> {
+public class PortProvidedController
+    extends GenericApiController<PortProvided, PortProvidedDto, PortProvidedDto, PortProvidedDto> {
 
-    @Inject public PortInboundController(FrontendUserService frontendUserService,
-        ModelService<Tenant> tenantModelService, ModelService<PortInbound> modelService,
-        TypeLiteral<PortInbound> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public PortProvidedController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<PortProvided> modelService,
+        TypeLiteral<PortProvided> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.PortInboundController.get(id).absoluteURL(request());
+        return controllers.routes.PortProvidedController.get(id).absoluteURL(request());
     }
 }

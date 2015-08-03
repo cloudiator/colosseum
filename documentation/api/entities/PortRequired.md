@@ -1,21 +1,20 @@
-﻿# Communication Actions
+# Required Port Actions
 ***
 
 ## Description
-A communication entity represents a template for a communication between two ports. The communication has
-a direction going from provided port to required port.
+A required Port represents a communication port required by an application component.
 ***
 
-## GET /api/communication
+## GET /api/portReq
 
 ### Description
-Returns a list of all communication entities.
+Returns a list of all required port entities.
 
 ### Request Parameters
 None
 
 ### Response
-A list of all communication entities stored in the database.
+A list of all required port entities stored in the database.
 
 ### Response Example
 ```
@@ -23,22 +22,22 @@ A list of all communication entities stored in the database.
    {
       "links":[
          {
-            "href":"http://example.com:9000/api/communication/1",
+            "href":"http://example.com:9000/api/portReq/1",
             "rel":"self"
          }
       ],
-      "requiredPort":1,
-      "providedPort":2
+      "name":"RequiredDB",
+      "applicationComponent":1
    },
    {
       "links":[
          {
-            "href":"http://example.com:9000/api/communication/2",
+            "href":"http://example.com:9000/api/portReq/2",
             "rel":"self"
          }
       ],
-      "requiredPort":1,
-      "providedPort":2
+      "name":"RequiredTomcat",
+      "applicationComponent":2
    }
 ]
 ```
@@ -48,31 +47,31 @@ A list of all communication entities stored in the database.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized)
 ***
-## GET /api/communication/{communication}
+## GET /api/portReq/{portReq_id}
 
 ### Description
-Returns the communication entity identified by the given {communication_id}.
+Returns the required port entity identified by the given {portReq_id}.
 
 ### Request Parameters
 
 Parameter        | Description
 ---------------- | -----------------------------------
-communication_id | The id of the communication.
+portReq_id | The id of the required port.
 
 ### Response
-Shows the selected comunication entity.
+Shows the selected required port entity.
 
 ### Response Example
 ```
 {
    "links":[
       {
-         "href":"http://example.com:9000/api/communication/1",
+         "href":"http://example.com:9000/api/portReq/1",
          "rel":"self"
       }
    ],
-   "requiredPort":1,
-   "providedPort":2
+   "name":"RequiredDB",
+   "applicationComponent":1
 }
 ```
 
@@ -82,27 +81,27 @@ Shows the selected comunication entity.
 
 **Error Response Code** 500 (server error), 403 (forbidden), 401 (unauthorized), 404 (not found)
 ***
-## POST /api/communication
+## POST /api/portReq
 
 ### Description
-Creates a new communication entity. The created entity will be returned.
+Creates a new required port entity. The created entity will be returned.
 
 ### Request Parameters
 
 Parameter | Description
 --------- | -------------
-requiredPort  | The port on the requiring side.
-providedPort  | The port on the providing side.
+name                  | A unique name for the port.
+applicationComponent  | The application component requiring the port.
 
 ### Request Example
 ```
 {  
-   "requiredPort":1,
-   "providedPort":2
+   "name":"RequiredDB",
+   "applicationComponent":1
 }
 ```
 ### Response
-The created entity. See GET /api/communication/{communication_id}
+The created entity. See GET /api/portReq/{portReq_id}
 
 ### Response Codes
 
@@ -112,31 +111,32 @@ The created entity. See GET /api/communication/{communication_id}
 
 ***
 
-## PUT /api/communication/{communication_id}
+## PUT /api/portReq/{portReq_id}
 
 ### Description
-Updates the communication entity identified by the given id.
+Updates the required port entity identified by the given id.
 
 ### Request Parameters
 
 Parameter        | Description
 ---------------- | ----------------------------------------------------------
-communication_id | The id of the communication.
-requiredPort  | The port on the requiring side.
-providedPort  | The port on the providing side.
+portReq_id | The id of the required port.
+name                  | A unique name for the port.
+applicationComponent  | The application component providing the port.
+port                  | The port number.
 
 ### Request Example
 ```
-PUT /api/communication/1
+PUT /api/portReq/1
 ```
 ```
 {  
-    "requiredPort":1,
-    "providedPort":2
+    "name":"RequiredDB",
+    "applicationComponent":1
 }
 ```
 ### Response
-The updated entity. See GET /api/communication/{communication_id}
+The updated entity. See GET /api/portReq/{portReq_id}
 
 ###Response Codes
 **Normal Response Code** 200
@@ -145,16 +145,16 @@ The updated entity. See GET /api/communication/{communication_id}
 
 ***
 
-## DELETE /api/communication/{communication_id}
+## DELETE /api/portReq/{portReq_id}
 
 ### Description
-Deletes the communication entity identified by the given id.
+Deletes the required port entity identified by the given id.
 
 ### Request Parameters 
 
 Parameter        | Description
 ---------------- | ----------------------------------------------------------
-communication_id | The id of the communication.
+portReq_id | The id of the required port.
 
 ### Response Codes
 

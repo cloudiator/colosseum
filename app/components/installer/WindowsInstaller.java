@@ -32,7 +32,7 @@ public class WindowsInstaller extends AbstractInstaller {
         //7zip
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://7-zip.org/a/7za920.zip','"+this.homeDir+"\\"+this.sevenZipArchive+"')");
         //download visor
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('"+this.visorDownload+"','" + this.homeDir + "\\" + this.visorJar + "')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.visorDownload + "','" + this.homeDir + "\\" + this.visorJar + "')");
         //download kairosDB
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.kairosDbDownload + "','"+this.homeDir+"\\"+this.kairosDbArchive+"')");
 
@@ -42,11 +42,11 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installJava() {
 
         Logger.debug("Installing Java...");
-        this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"\\jre8.exe /s INSTALLDIR="+this.homeDir+"\\"+this.javaDir);
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\jre8.exe /s INSTALLDIR=" + this.homeDir + "\\" + this.javaDir);
 
         //Set JAVA envirnonment vars
         remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+this.javaDir + "\\bin;%PATH%");
-        remoteConnection.executeCommand("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
+        remoteConnection.executeCommand("SET JAVA_HOME=" + this.homeDir + "\\" + this.javaDir);
 
 
     }
@@ -90,7 +90,7 @@ public class WindowsInstaller extends AbstractInstaller {
         //extract kairosdb
         this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\\7za.exe e " + this.homeDir + "\\"+ this.kairosDbArchive + " -o" + this.homeDir);
         String kairosDbTar = this.kairosDbArchive.replace(".gz", "");
-        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\7za.exe x " + this.homeDir + "\\"+ kairosDbTar +" -o" + this.homeDir);
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\" + this.sevenZipDir + "\7za.exe x " + this.homeDir + "\\" + kairosDbTar + " -o" + this.homeDir);
 
         //set firewall rule
         this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Kairos Port 8080' dir = in action = allow protocol=TCP localport=8080");
@@ -107,7 +107,7 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installLifecycleAgent() {
         Logger.error("InstallLifecycleAgent currently not supported...");
     }
-
+    
     @Override
     public void installAll() {
 
@@ -118,10 +118,8 @@ public class WindowsInstaller extends AbstractInstaller {
 
         this.installJava();
 
-
-        //not used yet
-        //this.install7Zip();
-        //this.installKairosDb();
+        this.install7Zip();
+        this.installKairosDb();
 
         this.installVisor();
 

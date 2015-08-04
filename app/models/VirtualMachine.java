@@ -103,6 +103,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return null;
     }
 
+    @Nullable public IpAddress privateIpAddress(boolean fallbackToPublic) {
+        final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
+            return ipAddress.getIpType().equals(IpType.PRIVATE);
+        });
+        if (ipAddresses.iterator().hasNext()) {
+            return ipAddresses.iterator().next();
+        }
+        if (fallbackToPublic) {
+            return publicIpAddress();
+        }
+        return null;
+    }
+
     public List<CloudCredential> getCloudCredentials() {
         return cloudCredentials;
     }

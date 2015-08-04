@@ -23,6 +23,7 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "common" % "1.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

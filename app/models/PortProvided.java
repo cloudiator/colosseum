@@ -20,6 +20,7 @@ package models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -29,6 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class PortProvided extends Port {
 
     @Column(nullable = false) private Integer port;
+    @OneToOne(mappedBy = "providedPort") Communication communication;
 
     /**
      * Empty constructor for hibernate.
@@ -44,5 +46,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public int getPort() {
         return port;
+    }
+
+    public Communication getCommunication() {
+        return communication;
     }
 }

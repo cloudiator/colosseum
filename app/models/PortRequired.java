@@ -19,11 +19,15 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 
 /**
  * Created by daniel on 03.08.15.
  */
 @Entity public class PortRequired extends Port {
+
+    @OneToOne(mappedBy = "requiredPort") Communication communication;
+
     /**
      * Default constructor for hibernate.
      */
@@ -34,4 +38,7 @@ import javax.persistence.Entity;
         super(name, applicationComponent);
     }
 
+    public Communication getCommunication() {
+        return communication;
+    }
 }

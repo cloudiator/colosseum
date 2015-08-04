@@ -21,15 +21,15 @@ package models;
 import models.generic.Model;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  * Created by daniel on 07.01.15.
  */
 @Entity public class Communication extends Model {
 
-    @ManyToOne(optional = false) private PortRequired requiredPort;
-    @ManyToOne(optional = false) private PortProvided providedPort;
+    @OneToOne(optional = false) private PortRequired requiredPort;
+    @OneToOne(optional = false) private PortProvided providedPort;
 
     /**
      * Empty constructor for hibernate.

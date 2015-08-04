@@ -18,11 +18,13 @@
 
 package models;
 
+import com.google.common.collect.Collections2;
 import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -89,5 +91,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setPorts(List<Port> ports) {
         this.ports = ports;
+    }
+
+    public List<PortProvided> getProvidedPorts() {
+
+        //noinspection unchecked
+        final List<Port> ports =
+            new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortProvided));
+        //noinspection unchecked todo
+        return (List<PortProvided>) (Object) ports;
+    }
+
+    public List<PortRequired> getRequiredPorts() {
+        //noinspection unchecked
+        final List<Port> ports =
+            new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortRequired));
+        //noinspection unchecked todo
+        return (List<PortRequired>) (Object) ports;
     }
 }

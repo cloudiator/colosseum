@@ -170,6 +170,13 @@ POST          /api/monitorInstance                 @controllers.MonitorInstanceC
 PUT           /api/monitorInstance/:id             @controllers.MonitorInstanceController.put(id: Long)
 DELETE        /api/monitorInstance/:id             @controllers.MonitorInstanceController.delete(id: Long)
 
+#Monitor Subscription
+GET           /api/monitorSubscription             @controllers.MonitorSubscriptionController.list()
+GET           /api/monitorSubscription/:id         @controllers.MonitorSubscriptionController.get(id: Long)
+POST          /api/monitorSubscription             @controllers.MonitorSubscriptionController.post()
+PUT           /api/monitorSubscription/:id         @controllers.MonitorSubscriptionController.put(id: Long)
+DELETE        /api/monitorSubscription/:id         @controllers.MonitorSubscriptionController.delete(id: Long)
+
 #Location
 GET           /api/location                        @controllers.LocationController.list()
 GET           /api/location/:id                    @controllers.LocationController.get(id: Long)

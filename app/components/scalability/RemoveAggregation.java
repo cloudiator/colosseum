@@ -16,37 +16,25 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
 
-import java.util.List;
+/**
+ * Created by Frank on 30.07.2015.
+ */
+public class RemoveAggregation extends MonitorAggregation {
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
-
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
+    public RemoveAggregation(ComposedMonitor composedMonitor) {
+        super(composedMonitor);
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public void execute(AggregatorService service) {
+        try {
+            service.addAggregator(this.getComposedMonitor());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

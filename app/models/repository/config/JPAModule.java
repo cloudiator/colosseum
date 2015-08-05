@@ -145,6 +145,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<MonitorInstance>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<MonitorInstance>>() {
         });
+        //MonitorSubscription
+        bind(new TypeLiteral<ModelRepository<MonitorSubscription>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MonitorSubscription>>() {
+        });
         //Operating System
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystem>>() {

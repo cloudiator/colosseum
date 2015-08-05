@@ -16,37 +16,28 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
+import de.uniulm.omi.executionware.srl.api.Monitor;
+import models.MonitorSubscription;
+import models.scalability.SubscriptionType;
 
-import java.util.List;
+/**
+ * Created by Frank on 03.08.2015.
+ */
+public class UnsubscribeAggregation extends SubscribeAggregation {
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
-
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
+    public UnsubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {
+        super(monitor, subscription);
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public void execute(AggregatorService service) {
+        try {
+            //TODO remove subscription
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -22,20 +22,19 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.scalability.ScalingEngine;
 import controllers.generic.GenericApiController;
-import dtos.ComposedMonitorDto;
+import dtos.MonitorSubscriptionDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ComposedMonitor;
+import models.MonitorSubscription;
+import models.scalability.SubscriptionType;
 import models.service.api.generic.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
 /**
- * Implementation of the GenericApiController for the ComposedMonitor model class.
- *
- * @author Daniel Baur
+ * Created by Frank on 02.08.2015.
  */
-public class ComposedMonitorController extends
-    GenericApiController<ComposedMonitor, ComposedMonitorDto, ComposedMonitorDto, ComposedMonitorDto> {
+public class MonitorSubscriptionController extends
+    GenericApiController<MonitorSubscription, MonitorSubscriptionDto, MonitorSubscriptionDto, MonitorSubscriptionDto> {
 
     private ScalingEngine se;
 
@@ -47,8 +46,8 @@ public class ComposedMonitorController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ComposedMonitorController(ModelService<ComposedMonitor> modelService,
-        TypeLiteral<ComposedMonitor> typeLiteral, ModelDtoConversionService conversionService,
+    @Inject public MonitorSubscriptionController(ModelService<MonitorSubscription> modelService,
+        TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se) {
         super(modelService, typeLiteral, conversionService);
 
@@ -59,23 +58,20 @@ public class ComposedMonitorController extends
         return controllers.routes.ComposedMonitorController.get(id).absoluteURL(request());
     }
 
-    @Override @Transactional protected void postPost(ComposedMonitor entity) {
+    @Override @Transactional protected void postPost(MonitorSubscription entity) {
         super.postPost(entity);
 
-        se.aggregateMonitors(entity);
+        se.subscribe(entity.getMonitor(), entity);
     }
 
-    @Override @Transactional protected void postPut(ComposedMonitor entity) {
+    @Override @Transactional protected void postPut(MonitorSubscription entity) {
         super.postPut(entity);
 
-        //TODO better update than remove and add?
-        se.removeMonitor(entity.getId());
-
-        se.aggregateMonitors(entity);
+        se.unsubscribe(entity.getMonitor(), entity);
     }
 
-    @Override @Transactional public Result delete(final Long id){
-        se.removeMonitor(id); // moved here because access to monitor is still needed
+    @Override @Transactional public Result delete(final Long id) {
+        // for each mi : se.unsubscribe(id); // moved here because access to monitor is still needed
 
         Result parent = super.delete(id);
 

@@ -23,8 +23,12 @@ import com.google.inject.Singleton;
 import dtos.RawMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.*;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
+
+import java.util.List;
 
 
 @Singleton public class RawMonitorConverter extends AbstractConverter<RawMonitor, RawMonitorDto> {
@@ -35,12 +39,14 @@ import models.service.api.generic.ModelService;
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<SensorDescription> sensorDescriptionModelService;
     private final ModelService<Schedule> scheduleModelService;
+    private final ModelService<ExternalReference> externalReferenceModelService;
 
     @Inject protected RawMonitorConverter(ModelService<Application> applicationModelService,
         ModelService<Component> componentModelService, ModelService<Instance> instanceModelService,
         ModelService<Cloud> cloudModelService,
         ModelService<SensorDescription> sensorDescriptionModelService,
-        ModelService<Schedule> scheduleModelService) {
+        ModelService<Schedule> scheduleModelService,
+        ModelService<ExternalReference> externalReferenceModelService) {
         super(RawMonitor.class, RawMonitorDto.class);
         this.applicationModelService = applicationModelService;
         this.componentModelService = componentModelService;
@@ -48,6 +54,7 @@ import models.service.api.generic.ModelService;
         this.cloudModelService = cloudModelService;
         this.sensorDescriptionModelService = sensorDescriptionModelService;
         this.scheduleModelService = scheduleModelService;
+        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -64,5 +71,7 @@ import models.service.api.generic.ModelService;
             .withTransformation(new IdToModelTransformer<>(sensorDescriptionModelService));
         builder().from(Long.class, "schedule").to(Schedule.class, "schedule")
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
+        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
+            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
     }
 }

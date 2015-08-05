@@ -16,37 +16,16 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import com.google.inject.AbstractModule;
 
-import java.util.List;
-
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
-
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
-    }
-
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+/**
+ * Created by Frank on 20.07.2015.
+ */
+public class ScalingEngineModule extends AbstractModule {
+    @Override protected void configure() {
+        bind(FrontendCommunicator.class).to(FrontendCommunicatorImpl.class);
+        bind(ScalingEngine.class).to(ScalingEngineImpl.class);
     }
 }

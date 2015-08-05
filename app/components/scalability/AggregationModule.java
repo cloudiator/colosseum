@@ -16,37 +16,22 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.name.Names;
+import components.execution.SimpleBlockingQueue;
+import components.job.Job;
+import components.job.JobQueue;
 
-import java.util.List;
+/**
+ * Created by Frank on 30.07.2015.
+ */
+public class AggregationModule  extends AbstractModule {
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
-
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
-    }
-
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override protected void configure() {
+        bind(new TypeLiteral<SimpleBlockingQueue<Aggregation>>() {
+        }).annotatedWith(Names.named("aggregationQueue")).to(AggregationQueue.class);
     }
 }

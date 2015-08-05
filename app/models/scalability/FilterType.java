@@ -16,37 +16,27 @@
  * under the License.
  */
 
-package dtos;
+package models.scalability;
 
-import dtos.generic.ValidatableDto;
+/**
+ * Created by Frank on 02.08.2015.
+ */
+public enum FilterType {
 
-import java.util.List;
+    ANY("ANY"),
+    GTE("GTE"),
+    GT("GT"),
+    E("E"),
+    LT("LT"),
+    LTE("LTE");
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
+    private final String text;
 
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
+    private FilterType(final String text) {
+        this.text = text;
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public String toString() {
+        return text;
     }
 }

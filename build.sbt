@@ -22,7 +22,11 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
+  "de.uniulm.omi.cloudiator" % "visor-rest-client" % "1.0-SNAPSHOT",
+  "de.uniulm.omi.executionware.srl.aggregator" % "SRLAggregator" % "1.0-SNAPSHOT",
+  //"de.uniulm.omi.executionware.srl.api" % "MonitoringAPI" % "1.0-SNAPSHOT",
+ "org.slf4j" % "jul-to-slf4j" % "1.7.12",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

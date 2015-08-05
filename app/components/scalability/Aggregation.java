@@ -16,37 +16,15 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import components.execution.Prioritized;
+import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
 
-import java.util.List;
-
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
-
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
-    }
-
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
-    }
+/**
+ * Created by Frank on 30.07.2015.
+ */
+public interface Aggregation extends Prioritized {
+    void execute(AggregatorService service);
 }

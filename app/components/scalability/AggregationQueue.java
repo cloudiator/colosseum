@@ -16,37 +16,30 @@
  * under the License.
  */
 
-package dtos;
+package components.scalability;
 
-import dtos.generic.ValidatableDto;
+import com.google.inject.Singleton;
+import components.execution.DefaultPriorityQueue;
+import components.execution.PriorityQueue;
+import components.execution.SimpleBlockingQueue;
 
-import java.util.List;
+/**
+ * Created by Frank on 30.07.2015.
+ */
+@Singleton public class AggregationQueue implements PriorityQueue<Aggregation> {
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
+    private SimpleBlockingQueue<Aggregation> aggregationSimpleBlockingQueue;
 
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
+    public AggregationQueue() {
+        this.aggregationSimpleBlockingQueue = new DefaultPriorityQueue<>();
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
+    @Override public void add(Aggregation t) {
+        aggregationSimpleBlockingQueue.add(t);
     }
 
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public Aggregation take() throws InterruptedException {
+        return aggregationSimpleBlockingQueue.take();
     }
 }
+

@@ -29,6 +29,9 @@ import components.execution.ExecutionService;
 import components.execution.TransactionAwareExecutionService;
 import components.job.JobWorker;
 import components.job.config.JobModule;
+import components.scalability.AggregationModule;
+import components.scalability.AggregationWorker;
+import components.scalability.ScalingEngineModule;
 import dtos.conversion.BaseConverterModule;
 import models.repository.config.JPAModule;
 import models.service.config.DatabaseServiceModule;
@@ -70,7 +73,7 @@ public class Global extends GlobalSettings {
         this.injector = Guice
             .createInjector(new JPAModule(), new BaseConverterModule(app.classloader()),
                 new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
-                new JobModule());
+                new JobModule(), new ScalingEngineModule(), new AggregationModule());
 
         ExecutionService executionService =
             new TransactionAwareExecutionService(new DefaultExecutionService());
@@ -83,6 +86,7 @@ public class Global extends GlobalSettings {
         executionService.scheduleAtFixedRate(imageWatchdog, 1, TimeUnit.MINUTES);
         executionService.executeInLoop(injector.getInstance(Solver.class));
         executionService.executeInLoop(injector.getInstance(JobWorker.class));
+        executionService.execute(injector.getInstance(AggregationWorker.class));
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 

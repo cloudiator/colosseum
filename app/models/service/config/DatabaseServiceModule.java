@@ -147,6 +147,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<MonitorInstance>>() {
         }).to(new TypeLiteral<BaseModelService<MonitorInstance>>() {
         });
+        //MonitorSubscription
+        bind(new TypeLiteral<ModelService<MonitorSubscription>>() {
+        }).to(new TypeLiteral<BaseModelService<MonitorSubscription>>() {
+        });
         //Operating System
         bind(new TypeLiteral<ModelService<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {

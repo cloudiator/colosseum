@@ -20,29 +20,32 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.ConstantMonitorDto;
+import dtos.MonitorSubscriptionDto;
 import dtos.conversion.AbstractConverter;
-import dtos.conversion.transformers.StringToExternalReferenceTransformer;
-import models.ConstantMonitor;
-import models.generic.ExternalReference;
+import dtos.conversion.transformers.IdToModelTransformer;
+import models.Monitor;
+import models.MonitorSubscription;
 import models.service.api.generic.ModelService;
 
-import java.util.List;
+/**
+ * Created by Frank on 02.08.2015.
+ */
+@Singleton public class MonitorSubscriptionConverter
+    extends AbstractConverter<MonitorSubscription, MonitorSubscriptionDto> {
 
+    private final ModelService<Monitor> monitorModelService;
 
-@Singleton public class ConstantMonitorConverter
-    extends AbstractConverter<ConstantMonitor, ConstantMonitorDto> {
-
-    private final ModelService<ExternalReference> externalReferenceModelService;
-
-    @Inject protected ConstantMonitorConverter(ModelService<ExternalReference> externalReferenceModelService) {
-        super(ConstantMonitor.class, ConstantMonitorDto.class);
-        this.externalReferenceModelService = externalReferenceModelService;
+    @Inject protected MonitorSubscriptionConverter(ModelService<Monitor> monitorModelService) {
+        super(MonitorSubscription.class, MonitorSubscriptionDto.class);
+        this.monitorModelService = monitorModelService;
     }
 
     @Override public void configure() {
-        builder().from("value").to("value");
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
+        builder().from("type").to("type");
+        builder().from("filterType").to("filterType");
+        builder().from(Long.class, "monitor").to(Monitor.class, "monitor")
+            .withTransformation(new IdToModelTransformer<>(monitorModelService));
+        builder().from("endpoint").to("endpoint");
+        builder().from("filterValue").to("filterValue");
     }
 }

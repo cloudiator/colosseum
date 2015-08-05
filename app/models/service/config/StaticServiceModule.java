@@ -29,6 +29,7 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(IpAddressDto.References.class);
         requestStaticInjection(LocationDto.References.class);
         requestStaticInjection(MonitorInstanceDto.References.class);
+        requestStaticInjection(MonitorSubscriptionDto.References.class);
         requestStaticInjection(RawMonitorDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(VirtualMachineTemplateDto.References.class);

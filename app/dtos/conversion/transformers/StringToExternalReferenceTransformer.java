@@ -22,6 +22,10 @@ public class StringToExternalReferenceTransformer
 //    }
 
     @Override public List<ExternalReference> transform(List<String> strings) {
+        if (strings == null) {
+            return new ArrayList<>();
+        }
+
         List<ExternalReference> externalReferences = new ArrayList<>(strings.size());
         for (String s : strings) {
             ExternalReference externalReference = new ExternalReference(s);

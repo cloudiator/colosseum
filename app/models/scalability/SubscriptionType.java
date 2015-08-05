@@ -16,37 +16,22 @@
  * under the License.
  */
 
-package dtos;
+package models.scalability;
 
-import dtos.generic.ValidatableDto;
+/**
+ * Created by Frank on 02.08.2015.
+ */
+public enum SubscriptionType {
 
-import java.util.List;
+    CDO("CDO");
 
-public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
+    private final String text;
 
-    private Double value;
-
-    public ConstantMonitorDto() {
-        super();
+    private SubscriptionType(final String text) {
+        this.text = text;
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
-    @Override public void validation() {
-        //TODO
-    }
-
-    public static class References extends ModelWithExternalReferenceDto.References {
-    }
-
-    public Double getValue() {
-        return value;
-    }
-
-    public void setValue(Double value) {
-        this.value = value;
+    @Override public String toString() {
+        return text;
     }
 }

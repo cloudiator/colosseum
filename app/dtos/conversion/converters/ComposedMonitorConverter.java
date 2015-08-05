@@ -24,7 +24,9 @@ import dtos.ComposedMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
+import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.*;
+import models.generic.ExternalReference;
 import models.service.api.generic.ModelService;
 
 import java.util.List;
@@ -38,18 +40,21 @@ import java.util.List;
     private final ModelService<ScalingAction> scalingActionModelService;
     private final ModelService<Monitor> monitorModelService;
     private final ModelService<FormulaQuantifier> formulaQuantifierModelService;
+    private final ModelService<ExternalReference> externalReferenceModelService;
 
     @Inject protected ComposedMonitorConverter(ModelService<Schedule> scheduleModelService,
         ModelService<Window> windowModelService,
         ModelService<ScalingAction> scalingActionModelService,
         ModelService<Monitor> monitorModelService,
-        ModelService<FormulaQuantifier> formulaQuantifierModelService) {
+        ModelService<FormulaQuantifier> formulaQuantifierModelService,
+        ModelService<ExternalReference> externalReferenceModelService) {
         super(ComposedMonitor.class, ComposedMonitorDto.class);
         this.scheduleModelService = scheduleModelService;
         this.windowModelService = windowModelService;
         this.scalingActionModelService = scalingActionModelService;
         this.monitorModelService = monitorModelService;
         this.formulaQuantifierModelService = formulaQuantifierModelService;
+        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -62,10 +67,12 @@ import java.util.List;
         builder().from(Long.class, "window").to(Window.class, "window")
             .withTransformation(new IdToModelTransformer<>(windowModelService));
         builder().from(List.class, "monitors").to(List.class, "monitors")
-            .withUnsafeTransformation(new ModelToListIdTransformer<>(
-                new IdToModelTransformer<>(monitorModelService)));
+            .withUnsafeTransformation(
+                new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorModelService)));
         builder().from(List.class, "scalingActions").to(List.class, "scalingActions")
             .withUnsafeTransformation(new ModelToListIdTransformer<>(
                 new IdToModelTransformer<>(scalingActionModelService)));
+        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
+            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
     }
 }

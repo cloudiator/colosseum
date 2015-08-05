@@ -20,13 +20,14 @@ package components.scalability;
 
 import models.*;
 import models.scalability.FormulaOperator;
+import models.scalability.SubscriptionType;
 
 import java.util.List;
 
 /**
  * Created by Frank on 22.06.2015.
  */
-public interface SrlEngine {
+public interface ScalingEngine {
     /** monitor all component instances attached to this application Id */
     public Monitor doMonitorComponents(Application applicationId, Schedule schedule, SensorDescription desc);
     /** monitor all component instances attached to this application Id and component Id*/
@@ -52,13 +53,25 @@ public interface SrlEngine {
     /** most simple map and reduce **/
     public Monitor mapAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
     public Monitor reduceAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
+    public Monitor aggregateMonitors(ComposedMonitor monitor);
 
     /** remove a monitor */
     public void removeMonitor(long monitorId);
+
+    /** update a monitor */
+    public void updateMonitor(RawMonitor monitor);
 
     /** add an external ID to a monitor / monitor instance based on discriminator */
     public void addExternalIdToMonitor(Long monitorId, String externalId);
     public void addExternalId(Long monitorInstanceId, String externalId);
     public void addExternalId(Long monitorId, String externalId, Long virtualMachine);
     public void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId);
+
+    public Monitor _doMonitorComponents(long applicationId, long componentId, long instanceId, long cloudId, Schedule schedule, SensorDescription sensorDescription);
+    public Monitor _doMonitorVms(long applicationId, long componentId, long instanceId, long cloudId, Schedule schedule, SensorDescription sensorDescription);
+
+    public Monitor _doMonitorVms(long applicationId, long componentId, long instanceId, long cloudId, RawMonitor monitor);
+
+    void subscribe(Monitor monitor, MonitorSubscription subscription);
+    void unsubscribe(Monitor monitor, MonitorSubscription subscription);
 }

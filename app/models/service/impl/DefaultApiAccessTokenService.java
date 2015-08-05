@@ -25,7 +25,9 @@ import models.repository.api.ApiAccessTokenRepository;
 import models.service.api.ApiAccessTokenService;
 import models.service.impl.generic.BaseModelService;
 
-import javax.annotation.Nullable;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -39,27 +41,24 @@ public class DefaultApiAccessTokenService extends BaseModelService<ApiAccessToke
         super(apiAccessTokenRepository);
     }
 
-    @Nullable
-    protected ApiAccessToken getNewestNonExpiredTokenForFrontendUser(FrontendUser frontendUser) {
-        ApiAccessToken newest = null;
-        for (ApiAccessToken apiAccessToken : ((ApiAccessTokenRepository) this.modelRepository)
-            .findByFrontendUser(frontendUser)) {
-            if (newest == null || apiAccessToken.getExpiresAt() > newest.getExpiresAt()) {
-                newest = apiAccessToken;
-            }
-        }
-        if (newest != null && newest.getExpiresAt() > System.currentTimeMillis()) {
-            return newest;
-        }
-        return null;
+    protected List<ApiAccessToken> getNonExpiredTokensForFrontendUser(FrontendUser frontendUser) {
+
+        checkNotNull(frontendUser);
+
+        return ((ApiAccessTokenRepository) this.modelRepository).findByFrontendUser(frontendUser)
+            .stream()
+            .filter(apiAccessToken -> apiAccessToken.getExpiresAt() > System.currentTimeMillis())
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override public boolean isValid(String token, FrontendUser frontendUser) {
         checkNotNull(token);
         checkNotNull(frontendUser);
-
-        ApiAccessToken newestToken = this.getNewestNonExpiredTokenForFrontendUser(frontendUser);
-        return newestToken != null && newestToken.getToken().equals(token);
-
+        for (ApiAccessToken apiAccessToken : getNonExpiredTokensForFrontendUser(frontendUser)) {
+            if (apiAccessToken.getToken().equals(token)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

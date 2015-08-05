@@ -29,7 +29,7 @@ import models.service.api.generic.ModelService;
 
 import java.util.List;
 
-public class ComposedMonitorDto extends ValidatableDto {
+public class ComposedMonitorDto extends ModelWithExternalReferenceDto {
 
     private FlowOperator flowOperator;
     private FormulaOperator function;
@@ -44,8 +44,9 @@ public class ComposedMonitorDto extends ValidatableDto {
         super();
     }
 
-    public ComposedMonitorDto(FlowOperator flowOperator, FormulaOperator function, Long quantifier,
+    public ComposedMonitorDto(List<String> externalReferences, FlowOperator flowOperator, FormulaOperator function, Long quantifier,
         Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
+        super(externalReferences);
         this.flowOperator = flowOperator;
         this.function = function;
         this.quantifier = quantifier;
@@ -69,7 +70,7 @@ public class ComposedMonitorDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
     }
 
-    public static class References {
+    public static class References extends ModelWithExternalReferenceDto.References {
         @Inject public static Provider<ModelService<Schedule>> scheduleService;
         @Inject public static Provider<ModelService<Window>> windowService;
         @Inject public static Provider<ModelService<Monitor>> monitorService;

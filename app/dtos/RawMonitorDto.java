@@ -25,7 +25,9 @@ import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.service.api.generic.ModelService;
 
-public class RawMonitorDto extends ValidatableDto {
+import java.util.List;
+
+public class RawMonitorDto extends ModelWithExternalReferenceDto {
 
     private Long application;
     private Long component;
@@ -38,8 +40,9 @@ public class RawMonitorDto extends ValidatableDto {
         super();
     }
 
-    public RawMonitorDto(Long application, Long component, Long componentInstance, Long cloud,
+    public RawMonitorDto(List<String> externalReferences, Long application, Long component, Long componentInstance, Long cloud,
         Long sensorDescription, Long schedule) {
+        super(externalReferences);
         this.application = application;
         this.component = component;
         this.componentInstance = componentInstance;
@@ -55,7 +58,7 @@ public class RawMonitorDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
     }
 
-    public static class References {
+    public static class References extends ModelWithExternalReferenceDto.References {
         @Inject public static Provider<ModelService<Application>> applicationAddressService;
         @Inject public static Provider<ModelService<Component>> componentService;
         @Inject public static Provider<ModelService<Instance>> instanceService;

@@ -30,6 +30,7 @@ Entity                                                       | URL
 [Location](entities/Location.md)                             | /api/location
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [MonitorInstance](entities/MonitorInstance.md)               | /api/monitorInstance
+[MonitorSubscription](entities/MonitorSubscription.md)       | /api/monitorSubscription
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
 [RawMonitor](entities/RawMonitor.md)                         | /api/rawMonitor

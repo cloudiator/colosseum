@@ -50,9 +50,9 @@ public class WindowsInstaller extends AbstractInstaller {
         //7zip
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://7-zip.org/a/7za920.zip','"+this.homeDir+"\\"+this.sevenZipArchive+"')");
         //download visor
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.visorDownload + "','" + this.homeDir + "\\" + this.visorJar + "')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.VISOR_DOWNLOAD + "','" + this.homeDir + "\\" + this.VISOR_JAR + "')");
         //download kairosDB
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.kairosDbDownload + "','"+this.homeDir+"\\"+this.kairosDbArchive+"')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.KAIROSDB_DOWNLOAD + "','"+this.homeDir+"\\"+this.KAIROSDB_ARCHIVE +"')");
 
     }
 
@@ -60,11 +60,11 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installJava() {
 
         Logger.debug("Installing Java...");
-        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\jre8.exe /s INSTALLDIR=" + this.homeDir + "\\" + this.javaDir);
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\jre8.exe /s INSTALLDIR=" + this.homeDir + "\\" + this.JAVA_DIR);
 
         //Set JAVA envirnonment vars
-        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+this.javaDir + "\\bin;%PATH%");
-        remoteConnection.executeCommand("SET JAVA_HOME=" + this.homeDir + "\\" + this.javaDir);
+        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+WindowsInstaller.JAVA_DIR + "\\bin;%PATH%");
+        remoteConnection.executeCommand("SET JAVA_HOME=" + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR);
 
 
     }
@@ -87,7 +87,7 @@ public class WindowsInstaller extends AbstractInstaller {
         String visorJobId = "visor";
 
         //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
-        String startCommand = "java -jar " + this.homeDir + "\\" + this.visorJar + " -conf " + this.homeDir + "\\" + this.visorProperties;
+        String startCommand = "java -jar " + this.homeDir + "\\" + this.VISOR_JAR + " -conf " + this.homeDir + "\\" + this.visorProperties;
         this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorBat, startCommand, false );
 
         //TODO: open WindowsFirewall Ports if Rest/Telnet ports need to be remote accessible
@@ -106,8 +106,8 @@ public class WindowsInstaller extends AbstractInstaller {
 
         Logger.debug("Extract, setup and start KairosDB...");
         //extract kairosdb
-        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\\7za.exe e " + this.homeDir + "\\"+ this.kairosDbArchive + " -o" + this.homeDir);
-        String kairosDbTar = this.kairosDbArchive.replace(".gz", "");
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\\7za.exe e " + this.homeDir + "\\"+ this.KAIROSDB_ARCHIVE + " -o" + this.homeDir);
+        String kairosDbTar = this.KAIROSDB_ARCHIVE.replace(".gz", "");
         this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\" + this.sevenZipDir + "\7za.exe x " + this.homeDir + "\\" + kairosDbTar + " -o" + this.homeDir);
 
         //set firewall rule
@@ -122,7 +122,7 @@ public class WindowsInstaller extends AbstractInstaller {
     }
 
     @Override
-    public void installLifecycleAgent() {
+    public void installLance() {
         Logger.error("InstallLifecycleAgent currently not supported...");
     }
     

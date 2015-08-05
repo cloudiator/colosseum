@@ -29,10 +29,10 @@ import play.Play;
  */
 public class UnixInstaller extends AbstractInstaller {
     private final String homeDir;
-    private final String javaArchive = "jre8.tar.gz";
-    private final String javaDownload = Play.application().configuration().getString("colosseum.installer.linux.java.download");
-    private final String dockerDownload = Play.application().configuration().getString("colosseum.installer.linux.lifecycle.docker.download");
-    private final String dockerInstall = "docker_install.sh";
+    private static final String JAVA_ARCHIVE = "jre8.tar.gz";
+    private static final String JAVA_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.java.download");
+    private static final String DOCKER_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.lance.docker.download");
+    private static final String DOCKER_INSTALL = "docker_install.sh";
 
     public UnixInstaller(RemoteConnection remoteConnection, String user) {
         super(remoteConnection);
@@ -44,13 +44,16 @@ public class UnixInstaller extends AbstractInstaller {
     public void initSources() {
 
         //java
-        this.sourcesList.add("wget " + this.javaDownload + " -O " + this.javaArchive);
+        this.sourcesList.add("wget " + UnixInstaller.JAVA_DOWNLOAD + " -O " + UnixInstaller.JAVA_ARCHIVE);
+        //lance
+        this.sourcesList.add("wget " + UnixInstaller.LANCE_DOWNLOAD + " -O " + UnixInstaller.LANCE_JAR);
         //docker
-        this.sourcesList.add("wget " + this.dockerDownload + " -O " + this.dockerInstall);
+        this.sourcesList.add("wget " + UnixInstaller.DOCKER_DOWNLOAD + " -O " + UnixInstaller.DOCKER_INSTALL);
         //kairosDB
-        this.sourcesList.add("wget " + this.kairosDbDownload + " -O " + this.kairosDbArchive);
+        this.sourcesList.add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + " -O " + UnixInstaller.KAIROSDB_ARCHIVE);
         //visor
-        this.sourcesList.add("wget " + this.visorDownload + " -O " + this.visorJar);
+        this.sourcesList.add("wget " + UnixInstaller.VISOR_DOWNLOAD + " -O " + UnixInstaller.VISOR_JAR);
+
     }
 
 
@@ -60,11 +63,11 @@ public class UnixInstaller extends AbstractInstaller {
 
         Logger.debug("Starting Java installation...");
         //create directory
-        this.remoteConnection.executeCommand("mkdir " + this.javaDir);
+        this.remoteConnection.executeCommand("mkdir " + UnixInstaller.JAVA_DIR);
         //extract java
-        this.remoteConnection.executeCommand("tar zxvf "+this.javaArchive+" -C "+this.javaDir+" --strip-components=1");
+        this.remoteConnection.executeCommand("tar zxvf "+UnixInstaller.JAVA_ARCHIVE +" -C "+UnixInstaller.JAVA_DIR +" --strip-components=1");
         //set symbolic link
-        this.remoteConnection.executeCommand("sudo ln -s "+ this.homeDir + "/"+this.javaDir+"/bin/java /usr/bin/java");
+        this.remoteConnection.executeCommand("sudo ln -s "+ this.homeDir + "/"+UnixInstaller.JAVA_DIR +"/bin/java /usr/bin/java");
         Logger.debug("Java was successfully installed!");
     }
 
@@ -77,7 +80,7 @@ public class UnixInstaller extends AbstractInstaller {
         this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(), false);
 
         //start visor
-        this.remoteConnection.executeCommand("java -jar "+this.visorJar+" -conf default.properties &> /dev/null &");
+        this.remoteConnection.executeCommand("java -jar "+UnixInstaller.VISOR_JAR +" -conf default.properties &> /dev/null &");
         Logger.debug("Visor started successfully!");
     }
 
@@ -85,23 +88,38 @@ public class UnixInstaller extends AbstractInstaller {
     public void installKairosDb() {
 
         Logger.debug("Installing and starting KairosDB...");
-        this.remoteConnection.executeCommand("mkdir " + this.kairosDbDir);
+        this.remoteConnection.executeCommand("mkdir " + UnixInstaller.KAIRROSDB_DIR);
 
-        this.remoteConnection.executeCommand("tar  zxvf "+this.kairosDbArchive+" -C "+ this.kairosDbDir +" --strip-components=1");
+        this.remoteConnection.executeCommand("tar  zxvf "+UnixInstaller.KAIROSDB_ARCHIVE +" -C "+ UnixInstaller.KAIRROSDB_DIR +" --strip-components=1");
 
-        this.remoteConnection.executeCommand(" sudo "+this.kairosDbDir+"/bin/kairosdb.sh start");
+        this.remoteConnection.executeCommand(" sudo "+UnixInstaller.KAIRROSDB_DIR +"/bin/kairosdb.sh start");
         Logger.debug("KairosDB started successfully!");
     }
 
     @Override
-    public void installLifecycleAgent() {
+    public void installLance() {
+
+        //install Lance
+        Logger.debug("Installing and starting LanceLifecycleAgent:Docker...");
 
         //install docker
-        Logger.debug("Installing and starting LifecycleAgent:Docker...");
-        this.remoteConnection.executeCommand("sudo chmod +x " + this.dockerInstall);
-        this.remoteConnection.executeCommand("sudo ./" + this.dockerInstall);
+        Logger.debug("Installing and starting Docker...");
+        this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_INSTALL);
+        this.remoteConnection.executeCommand("sudo ./" + UnixInstaller.DOCKER_INSTALL);
         this.remoteConnection.executeCommand("sudo service docker restart");
-        Logger.debug("LifecycleAgent:Docker installed and started successfully!");
+        //start Lance
+        /*
+        Logger.debug("Installtion of Docker finished, setting up Lance...");
+        this.remoteConnection.executeCommand("java -classpath " + UnixInstaller.LANCE_JAR + " "+
+                "-Dhost.ip.public=<public ip of machine> " +
+                "-Dhost.ip.private=<private ip of machine> " +
+                "-Djava.rmi.server.hostname=<ip address to be used by RMI> " +
+                "-DVM_ID=<id of machine> -DTENANT_ID=<id of tenant> " +
+                "-Dhost.os=<operating system> " +
+                "-Dhost.vm.cloud.id=<id of cloud platform> " +
+                "de.uniulm.omi.cloudiator.lance.lca.LifecycleAgentBooter");
+        */
+        Logger.debug("Lance installed and started successfully!");
     }
 
     @Override
@@ -114,7 +132,7 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installJava();
 
-        this.installLifecycleAgent();
+        this.installLance();
 
         this.installKairosDb();
 

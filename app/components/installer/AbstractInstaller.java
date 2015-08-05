@@ -34,19 +34,24 @@ import play.Play;
  */
 abstract class AbstractInstaller implements InstallApi {
 
-    protected  final  RemoteConnection remoteConnection;
+    protected final  RemoteConnection remoteConnection;
     protected final List<String> sourcesList = new ArrayList<>();
 
     //KairosDB
-    protected final String kairosDbArchive = "kairosdb.tar.gz";
-    protected final String kairosDbDir = "kairosdb";
-    protected final String kairosDbDownload = Play.application().configuration().getString("colosseum.installer.abstract.kairosdb.download");
+    protected static final String KAIROSDB_ARCHIVE = "kairosdb.tar.gz";
+    protected static final String KAIRROSDB_DIR = "kairosdb";
+    protected static final String KAIROSDB_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.abstract.kairosdb.download");
 
     //Visor
-    protected final String visorJar = "visor.jar";
-    protected final String visorDownload = Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
+    protected static final String VISOR_JAR = "visor.jar";
+    protected static final String VISOR_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
 
-    protected final String javaDir = "jre8";
+    //Lance
+    protected static final String LANCE_JAR = "lance.jar";
+    protected static final String LANCE_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.abstract.lance.download");
+
+    //Java
+    protected static final String JAVA_DIR = "jre8";
 
 
     protected final String visorProperties = "default.properties";

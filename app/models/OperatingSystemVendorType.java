@@ -18,21 +18,42 @@
 
 package models;
 
+import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
+
 /**
  * Created by daniel on 04.11.14.
  */
 public enum OperatingSystemVendorType {
 
-    NIX("*nix"),
-    WINDOWS("windows");
+    NIX("*nix", true, OSFamily.UNIX, 22),
+    WINDOWS("windows", false, OSFamily.WINDOWS, 5985);
 
     private final String text;
+    private final boolean supportsKeyPair;
+    private final OSFamily osFamily;
+    private final int port;
 
-    private OperatingSystemVendorType(String text) {
+    OperatingSystemVendorType(String text, boolean supportsKeyPair, OSFamily osFamily, int port) {
         this.text = text;
+        this.supportsKeyPair = supportsKeyPair;
+        this.osFamily = osFamily;
+        this.port = port;
     }
 
     @Override public String toString() {
         return text;
     }
+
+    public boolean supportsKeyPair() {
+        return supportsKeyPair;
+    }
+
+    public OSFamily osFamily() {
+        return osFamily;
+    }
+
+    public int port() {
+        return port;
+    }
+
 }

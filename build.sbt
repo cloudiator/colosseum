@@ -24,7 +24,7 @@ libraryDependencies ++= Seq(
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10",
-  "de.uniulm.omi.cloudiator" % "LifecycleClient" % "1.0-SNAPSHOT"
+  "de.uniulm.omi.cloudiator" % "lance-client" % "1.2.0-SNAPSHOT"
 )
 
 TwirlKeys.templateImports += "dtos._"

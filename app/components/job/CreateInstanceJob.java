@@ -20,17 +20,18 @@ package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
-import eu.dslab.client.LifecycleClient;
-import eu.dslab.control.application.ApplicationId;
-import eu.dslab.control.application.ApplicationInstanceId;
-import eu.dslab.control.application.DeploymentContext;
-import eu.dslab.control.application.component.*;
-import eu.dslab.control.container.spec.os.OperatingSystem;
-import eu.dslab.control.lifecycle.LifecycleHandler;
-import eu.dslab.control.lifecycle.LifecycleHandlerType;
-import eu.dslab.control.lifecycle.LifecycleStore;
-import eu.dslab.control.lifecycle.LifecycleStoreBuilder;
-import eu.dslab.control.lifecycle.bash.BashBasedHandlerBuilder;
+import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
+import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
+import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
+import de.uniulm.omi.cloudiator.lance.application.component.*;
+import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
+import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
+import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
+import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
+import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
+import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStore;
+import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
+import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import models.*;
 import models.service.ModelService;
 
@@ -53,18 +54,15 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
     @Override protected void doWork(Instance instance, ModelService<Instance> modelService,
         ColosseumComputeService computeService, Tenant tenant) throws JobException {
-
         try {
             buildClient(instance);
-        } catch (RemoteException | NotBoundException e) {
+        } catch (RemoteException | NotBoundException | RegistrationException e) {
             throw new JobException(e);
-
         }
-
     }
 
     private LifecycleClient buildClient(Instance instance)
-        throws RemoteException, NotBoundException {
+        throws RemoteException, NotBoundException, RegistrationException {
 
         final LifecycleClient client = LifecycleClient.getClient();
         final ApplicationInstanceId applicationInstanceId =
@@ -89,6 +87,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
             client.initDeploymentContext(applicationId, applicationInstanceId));
 
         checkState(instance.getVirtualMachine().publicIpAddress() != null);
+
 
         client.deploy(instance.getVirtualMachine().publicIpAddress().getIp(), deploymentContext,
             buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);

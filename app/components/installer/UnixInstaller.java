@@ -139,9 +139,9 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installLance();
 
-        //this.installKairosDb();
+        this.installKairosDb();
 
-        //this.installVisor();
+        this.installVisor();
 
         this.finishInstallation();
 

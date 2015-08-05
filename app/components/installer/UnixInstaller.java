@@ -110,17 +110,19 @@ public class UnixInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand("sudo ./" + UnixInstaller.DOCKER_INSTALL);
         this.remoteConnection.executeCommand("sudo service docker restart");
         //start Lance
-        /*
+
         Logger.debug("Installtion of Docker finished, setting up Lance...");
-        this.remoteConnection.executeCommand("java -classpath " + UnixInstaller.LANCE_JAR + " "+
-                "-Dhost.ip.public=<public ip of machine> " +
-                "-Dhost.ip.private=<private ip of machine> " +
-                "-Djava.rmi.server.hostname=<ip address to be used by RMI> " +
-                "-DVM_ID=<id of machine> -DTENANT_ID=<id of tenant> " +
-                "-Dhost.os=<operating system> " +
-                "-Dhost.vm.cloud.id=<id of cloud platform> " +
-                "de.uniulm.omi.cloudiator.lance.lca.LifecycleAgentBooter");
-        */
+        this.remoteConnection.executeCommand("java -classpath " + UnixInstaller.LANCE_JAR +
+                " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress() +
+                " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true) +
+                " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress() +
+                " -DVM_ID=" + this.virtualMachine.getUuid() +
+                " -DTENANT_ID=" + this.tenant.getUuid() +
+                " -Dhost.os=" + this.virtualMachine.image().getOperatingSystem() +
+                " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
+                " de.uniulm.omi.cloudiator.lance.lca.LifecycleAgentBooter " +
+                " &> /dev/null &");
+
         Logger.debug("Lance installed and started successfully!");
     }
 

@@ -20,6 +20,8 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
+import models.Tenant;
+import models.VirtualMachine;
 import play.Logger;
 import play.Play;
 
@@ -36,8 +38,8 @@ public class WindowsInstaller extends AbstractInstaller {
     private final String zip7Donwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
 
 
-    public WindowsInstaller(RemoteConnection remoteConnection, String user) {
-        super(remoteConnection);
+    public WindowsInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant, String user) {
+        super(remoteConnection, virtualMachine, tenant);
 
         this.homeDir = "C:\\Users\\" + user;
     }

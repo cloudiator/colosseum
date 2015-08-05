@@ -26,15 +26,24 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
+
+import models.Tenant;
+import models.VirtualMachine;
 import play.Logger;
 import play.Play;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Daniel Seybold on 19.05.2015.
  */
 abstract class AbstractInstaller implements InstallApi {
 
-    protected final  RemoteConnection remoteConnection;
+    protected final RemoteConnection remoteConnection;
+    protected final VirtualMachine virtualMachine;
+    protected final Tenant tenant;
+
+
     protected final List<String> sourcesList = new ArrayList<>();
 
     //KairosDB
@@ -56,9 +65,15 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected static final String VISOR_PROPERTIES = "default.properties";
 
-    public AbstractInstaller(RemoteConnection remoteConnection){
+    public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant){
+
+        checkNotNull(remoteConnection);
+        checkNotNull(virtualMachine);
+        checkNotNull(tenant);
 
         this.remoteConnection = remoteConnection;
+        this.virtualMachine = virtualMachine;
+        this.tenant = tenant;
     }
 
     @Override

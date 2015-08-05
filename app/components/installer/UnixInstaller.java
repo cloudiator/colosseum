@@ -20,6 +20,8 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
+import models.Tenant;
+import models.VirtualMachine;
 import play.Logger;
 import play.Play;
 
@@ -34,8 +36,8 @@ public class UnixInstaller extends AbstractInstaller {
     private static final String DOCKER_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.lance.docker.download");
     private static final String DOCKER_INSTALL = "docker_install.sh";
 
-    public UnixInstaller(RemoteConnection remoteConnection, String user) {
-        super(remoteConnection);
+    public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant, String user) {
+        super(remoteConnection, virtualMachine, tenant);
 
         this.homeDir = "/home/" + user;
     }

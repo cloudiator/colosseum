@@ -118,7 +118,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         final RemoteConnection remoteConnection =
             computeService.remoteConnection(tenant, virtualMachine);
 
-        UnixInstaller unixInstaller = new UnixInstaller(remoteConnection, "ubuntu");
+        UnixInstaller unixInstaller = new UnixInstaller(remoteConnection, virtualMachine, tenant,
+            virtualMachine.getLoginName());
         unixInstaller.installAll();
     }
 }

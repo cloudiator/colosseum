@@ -91,6 +91,7 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             throw new IllegalArgumentException(
                 "PrivateKey nor LoginPassword available for virtual machine.");
         }
+        loginCredentialBuilder.username(virtualMachine.getLoginName());
 
         checkNotNull(virtualMachine.publicIpAddress(),
             "Virtual machine has no public ip address assigned.");

@@ -23,7 +23,7 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import models.OperatingSystem;
-import models.service.impl.generic.BaseModelService;
+import models.service.BaseModelService;
 
 public class ImageOfferDto extends ValidatableDto {
 

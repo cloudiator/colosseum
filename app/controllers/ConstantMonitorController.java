@@ -24,7 +24,9 @@ import controllers.generic.GenericApiController;
 import dtos.ConstantMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.ConstantMonitor;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the ConstantMonitor model class.
@@ -42,9 +44,10 @@ public class ConstantMonitorController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ConstantMonitorController(ModelService<ConstantMonitor> modelService,
+    @Inject public ConstantMonitorController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<ConstantMonitor> modelService,
         TypeLiteral<ConstantMonitor> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

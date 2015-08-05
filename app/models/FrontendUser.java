@@ -18,7 +18,7 @@
 
 package models;
 
-import components.security.Password;
+import de.uniulm.omi.cloudiator.common.Password;
 import models.generic.Model;
 import org.apache.commons.codec.binary.Base64;
 
@@ -49,7 +49,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @OneToMany(mappedBy = "frontendUser") private List<ApiAccessToken> tokens;
 
-    @ManyToMany(mappedBy = "frontendUsers") private List<FrontendGroup> frontendGroups;
+    @ManyToMany(mappedBy = "frontendUsers") private List<Tenant> tenants;
 
     /**
      * Empty constructor for hibernate.
@@ -155,12 +155,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.tokens = tokens;
     }
 
-    public List<FrontendGroup> getFrontendGroups() {
-        return frontendGroups;
+    public List<Tenant> getTenants() {
+        return tenants;
     }
 
-    public void setFrontendGroups(List<FrontendGroup> frontendGroups) {
-        this.frontendGroups = frontendGroups;
+    public void setTenants(List<Tenant> tenants) {
+        this.tenants = tenants;
     }
 
     public String getName() {

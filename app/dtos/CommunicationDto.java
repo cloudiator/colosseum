@@ -25,7 +25,7 @@ import dtos.validation.validators.ExpressionValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.ApplicationComponent;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 09.01.15.

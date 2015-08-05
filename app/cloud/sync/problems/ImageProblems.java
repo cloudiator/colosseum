@@ -1,6 +1,24 @@
+/*
+ * Copyright (c) 2014-2015 University of Ulm
+ *
+ * See the NOTICE file distributed with this work for additional information
+ * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
 package cloud.sync.problems;
 
-import cloud.ImageInCloudAndLocation;
+import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -16,19 +34,19 @@ public class ImageProblems {
 
     private abstract static class BaseImageProblem implements Problem {
 
-        private final ImageInCloudAndLocation imageInCloudAndLocation;
+        private final ImageInLocation imageInLocation;
 
-        public BaseImageProblem(ImageInCloudAndLocation imageInCloudAndLocation) {
-            checkNotNull(imageInCloudAndLocation);
-            this.imageInCloudAndLocation = imageInCloudAndLocation;
+        public BaseImageProblem(ImageInLocation imageInLocation) {
+            checkNotNull(imageInLocation);
+            this.imageInLocation = imageInLocation;
         }
 
         @Override public int getPriority() {
             return Priority.MEDIUM;
         }
 
-        public ImageInCloudAndLocation getImageInCloudAndLocation() {
-            return imageInCloudAndLocation;
+        public ImageInLocation getImageInLocation() {
+            return imageInLocation;
         }
 
         @Override public boolean equals(Object o) {
@@ -39,36 +57,34 @@ public class ImageProblems {
 
             BaseImageProblem that = (BaseImageProblem) o;
 
-            return imageInCloudAndLocation.equals(that.imageInCloudAndLocation);
+            return imageInLocation.equals(that.imageInLocation);
 
         }
 
         @Override public int hashCode() {
-            return imageInCloudAndLocation.hashCode();
+            return imageInLocation.hashCode();
         }
     }
 
 
-    public static class BaseImageNotInDatabase extends BaseImageProblem {
+    public static class ImageNotInDatabase extends BaseImageProblem {
 
-        public BaseImageNotInDatabase(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageNotInDatabase(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 
 
     public static class ImageMissesCredential extends BaseImageProblem {
-
-        public ImageMissesCredential(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageMissesCredential(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 
 
     public static class ImageMissesLocation extends BaseImageProblem {
-
-        public ImageMissesLocation(ImageInCloudAndLocation imageInCloudAndLocation) {
-            super(imageInCloudAndLocation);
+        public ImageMissesLocation(ImageInLocation imageInLocation) {
+            super(imageInLocation);
         }
     }
 

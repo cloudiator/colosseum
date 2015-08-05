@@ -26,7 +26,7 @@ import models.Application;
 import models.ApplicationComponent;
 import models.Component;
 import models.VirtualMachineTemplate;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 10.04.15.

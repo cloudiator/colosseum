@@ -24,7 +24,9 @@ import controllers.generic.GenericApiController;
 import dtos.MonitorInstanceDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.MonitorInstance;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the MonitorInstance model class.
@@ -42,9 +44,10 @@ public class MonitorInstanceController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public MonitorInstanceController(ModelService<MonitorInstance> modelService,
+    @Inject public MonitorInstanceController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<MonitorInstance> modelService,
         TypeLiteral<MonitorInstance> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

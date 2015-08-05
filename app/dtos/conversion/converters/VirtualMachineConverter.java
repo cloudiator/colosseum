@@ -23,7 +23,7 @@ import dtos.VirtualMachineDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.*;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 15.04.15.
@@ -47,7 +47,7 @@ public class VirtualMachineConverter extends AbstractConverter<VirtualMachine, V
 
     @Override public void configure() {
         builder().from("name").to("name");
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "image").to(Image.class, "image")

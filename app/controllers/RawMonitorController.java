@@ -20,16 +20,15 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import components.scalability.AgentCommunicator;
-import components.scalability.FrontendCommunicator;
 import components.scalability.ScalingEngine;
 import controllers.generic.GenericApiController;
-import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
 import dtos.RawMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.MonitorInstance;
 import models.RawMonitor;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -53,10 +52,11 @@ public class RawMonitorController
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public RawMonitorController(ModelService<RawMonitor> modelService,
+    @Inject public RawMonitorController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<RawMonitor> modelService,
         TypeLiteral<RawMonitor> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se, ModelService<MonitorInstance> monitorInstanceModelService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
 
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.se = se;

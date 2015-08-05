@@ -25,7 +25,7 @@ import dtos.validation.validators.ModelIdValidator;
 import models.Monitor;
 import models.scalability.FilterType;
 import models.scalability.SubscriptionType;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by Frank on 02.08.2015.

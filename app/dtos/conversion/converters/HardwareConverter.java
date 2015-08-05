@@ -24,7 +24,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 14.04.15.
@@ -47,7 +47,7 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
     }
 
     @Override public void configure() {
-        builder().from("cloudUuid").to("cloudUuid");
+        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "hardwareOffer").to(HardwareOffer.class, "hardwareOffer")
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")

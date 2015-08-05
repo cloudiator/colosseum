@@ -25,7 +25,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Api;
 import models.Cloud;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 
 @Singleton public class CloudConverter extends AbstractConverter<Cloud, CloudDto> {

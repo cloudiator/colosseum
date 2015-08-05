@@ -25,7 +25,7 @@ import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

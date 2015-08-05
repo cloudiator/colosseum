@@ -24,7 +24,7 @@ import models.Component;
 import models.IpAddress;
 import models.Monitor;
 import models.VirtualMachine;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

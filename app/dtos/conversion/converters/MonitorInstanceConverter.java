@@ -26,7 +26,7 @@ import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.*;
 import models.generic.ExternalReference;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

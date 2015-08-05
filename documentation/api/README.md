@@ -19,7 +19,7 @@ Entity                                                       | URL
 [ComposedMonitor](entities/ComposedMonitor.md)               | /api/composedMonitor
 [ConstantMonitor](entities/ConstantMonitor.md)               | /api/constantMonitor
 [FormulaQuantifier](entities/FormulaQuantifier.md)           | /api/formulaQuantifier
-[FrontendGroup](entities/FrontendGroup.md)                   | /api/fg
+[Tenant](entities/Tenant.md)                                 | /api/tenant
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo
 [Hardware](entities/Hardware.md)                             | /api/hardware

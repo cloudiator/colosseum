@@ -25,7 +25,9 @@ import controllers.generic.GenericApiController;
 import dtos.ComposedMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.ComposedMonitor;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -47,10 +49,11 @@ public class ComposedMonitorController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ComposedMonitorController(ModelService<ComposedMonitor> modelService,
+    @Inject public ComposedMonitorController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<ComposedMonitor> modelService,
         TypeLiteral<ComposedMonitor> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
 
         this.se = se;
     }

@@ -24,24 +24,20 @@ import controllers.generic.GenericApiController;
 import dtos.IpAddressDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.IpAddress;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 10.04.15.
  */
 public class IpAddressController
     extends GenericApiController<IpAddress, IpAddressDto, IpAddressDto, IpAddressDto> {
-    /**
-     * Constructs a GenericApiController.
-     *
-     * @param modelService      the model service for retrieving the models.
-     * @param typeLiteral       a type literal for the model type
-     * @param conversionService the conversion service for converting models and dtos.
-     * @throws NullPointerException if any of the above parameters is null.
-     */
-    @Inject public IpAddressController(ModelService<IpAddress> modelService,
+
+    @Inject public IpAddressController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<IpAddress> modelService,
         TypeLiteral<IpAddress> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

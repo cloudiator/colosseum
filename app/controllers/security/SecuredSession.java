@@ -20,7 +20,6 @@ package controllers.security;
 
 import play.mvc.Http.Context;
 import play.mvc.Result;
-import play.mvc.Security;
 
 /**
  * Security Authenticator.
@@ -29,10 +28,14 @@ import play.mvc.Security;
  *
  * @author Daniel Baur.
  */
-public class SecuredSession extends Security.Authenticator {
+public class SecuredSession extends TenantAwareAuthenticator {
 
-    @Override public String getUsername(Context context) {
+    @Override public String getUser(Context context) {
         return context.session().get("email");
+    }
+
+    @Override public String getTenant(Context context) {
+        return context.session().get("tenant");
     }
 
     @Override public Result onUnauthorized(Context context) {

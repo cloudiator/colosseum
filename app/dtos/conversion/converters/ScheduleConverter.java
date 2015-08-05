@@ -24,7 +24,7 @@ import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
 import models.Api;
 import models.Schedule;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 
 @Singleton public class ScheduleConverter extends AbstractConverter<Schedule, ScheduleDto> {

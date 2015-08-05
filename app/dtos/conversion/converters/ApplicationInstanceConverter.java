@@ -24,7 +24,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Application;
 import models.ApplicationInstance;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 10.04.15.

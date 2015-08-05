@@ -25,7 +25,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Monitor;
 import models.MonitorSubscription;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by Frank on 02.08.2015.

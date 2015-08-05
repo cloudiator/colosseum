@@ -28,13 +28,14 @@ import controllers.security.SecuredSessionOrToken;
 import dtos.api.Dto;
 import dtos.conversion.ModelDtoConversionService;
 import dtos.generic.LinkDecoratorDto;
+import models.Tenant;
 import models.generic.Model;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.BodyParser;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
 
@@ -55,13 +56,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @param <T> The type of the model the controller uses.
  * @param <U> The type of the DTO the controller uses for get operations (display)
- * @param <V> The type of the DTO the controller uses for post operations (create)
+ * @param <V> The type of the DTO the controller uses for post operations (computeService)
  * @param <W> The type of the DTO the controller uses for put operations (update)
  * @author Daniel Baur
  */
 @Security.Authenticated(SecuredSessionOrToken.class)
 public abstract class GenericApiController<T extends Model, U extends Dto, V extends Dto, W extends Dto>
-    extends Controller {
+    extends AuthenticationController {
 
     private final ModelService<T> modelService;
     private final ModelDtoConversionService conversionService;
@@ -80,8 +81,10 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      * @param conversionService the conversion service for converting models and dtos.
      * @throws java.lang.NullPointerException if any of the above parameters is null.
      */
-    public GenericApiController(ModelService<T> modelService, TypeLiteral<T> typeLiteral,
-        ModelDtoConversionService conversionService) {
+    public GenericApiController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<T> modelService,
+        TypeLiteral<T> typeLiteral, ModelDtoConversionService conversionService) {
+        super(frontendUserService, tenantModelService);
 
         checkNotNull(modelService);
         checkNotNull(typeLiteral);
@@ -336,9 +339,5 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
 
     protected void postPut(T entity) {
         //intentionally left empty
-    }
-
-    protected ModelService<T> getModelService() {
-        return modelService;
     }
 }

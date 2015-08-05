@@ -25,7 +25,7 @@ import dtos.conversion.transformers.IdToModelTransformer;
 import models.Communication;
 import models.CommunicationChannel;
 import models.Instance;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

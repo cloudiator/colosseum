@@ -60,6 +60,6 @@ import java.util.UUID;
     }
 
     @Override public String toString() {
-        return String.format("Resource{uuid='%s'}", uuid);
+        return String.format("ColosseumResource{uuid='%s'}", uuid);
     }
 }

@@ -17,10 +17,9 @@
  */
 
 import com.google.inject.Inject;
-import models.FrontendGroup;
-import models.FrontendUser;
-import models.service.api.FrontendUserService;
-import models.service.api.generic.ModelService;
+import models.*;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 25.11.14.
@@ -28,37 +27,70 @@ import models.service.api.generic.ModelService;
 public class InitialData {
 
     private final FrontendUserService frontendUserService;
-    private final ModelService<FrontendGroup> frontendGroupModelService;
+    private final ModelService<Tenant> tenantModelService;
+    private final ModelService<OperatingSystem> operatingSystemModelService;
+    private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
     private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
-        ModelService<FrontendGroup> frontendGroupModelService) {
+        ModelService<Tenant> tenantModelService,
+        ModelService<OperatingSystem> operatingSystemModelService,
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
         this.frontendUserService = frontendUserService;
-        this.frontendGroupModelService = frontendGroupModelService;
+        this.tenantModelService = tenantModelService;
+        this.operatingSystemModelService = operatingSystemModelService;
+        this.operatingSystemVendorModelService = operatingSystemVendorModelService;
     }
 
     public void loadInitialData() {
         /**
-         * Creates a default system user and a default group.
+         * Creates a default system user and a default tenant.
          */
         if (frontendUserService.getAll().isEmpty()) {
-            FrontendGroup frontendGroup = null;
-            for (FrontendGroup storedFrontendGroup : frontendGroupModelService.getAll()) {
-                if (DEFAULT_GROUP.equals(storedFrontendGroup.getName())) {
-                    frontendGroup = storedFrontendGroup;
+            Tenant tenant = null;
+            for (Tenant storedTenant : tenantModelService.getAll()) {
+                if (DEFAULT_GROUP.equals(storedTenant.getName())) {
+                    tenant = storedTenant;
                     break;
                 }
             }
-            if (frontendGroup == null) {
-                frontendGroup = new FrontendGroup(DEFAULT_GROUP);
-                frontendGroupModelService.save(frontendGroup);
+            if (tenant == null) {
+                tenant = new Tenant(DEFAULT_GROUP);
+                tenantModelService.save(tenant);
             }
 
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
             frontendUserService.save(frontendUser);
-            frontendGroup.getFrontendUsers().add(frontendUser);
-            frontendGroupModelService.save(frontendGroup);
+            tenant.getFrontendUsers().add(frontendUser);
+            tenantModelService.save(tenant);
+
         }
+
+        if (operatingSystemVendorModelService.getAll().isEmpty()) {
+
+            //load ubuntu
+            OperatingSystemVendor ubuntu =
+                new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu", null);
+            operatingSystemVendorModelService.save(ubuntu);
+
+            //ubuntu 14.04 amd64
+            OperatingSystem ubuntu1404amd64 =
+                new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
+            operatingSystemModelService.save(ubuntu1404amd64);
+
+            //load windows
+            OperatingSystemVendor windows =
+                new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,
+                    "Administrator", null);
+            operatingSystemVendorModelService.save(windows);
+
+            //Windows Server 2012 R2
+            OperatingSystem windowsServer2012R2 =
+                new OperatingSystem(windows, OperatingSystemArchitecture.AMD64, "Server 2012 R2");
+            operatingSystemModelService.save(windowsServer2012R2);
+        }
+
+
     }
 }

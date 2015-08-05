@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.validation.validators.ModelIdValidator;
 import models.ApplicationComponent;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

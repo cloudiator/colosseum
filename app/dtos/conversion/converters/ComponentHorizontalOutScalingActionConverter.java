@@ -27,7 +27,7 @@ import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.ApplicationComponent;
 import models.ComponentHorizontalOutScalingAction;
 import models.generic.ExternalReference;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

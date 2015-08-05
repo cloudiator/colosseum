@@ -23,7 +23,7 @@ import de.uniulm.omi.executionware.srl.api.utils.Check;
 import models.*;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -146,7 +146,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
 
             // Filter for cloud id
             if (suitable && Check.idNotNull(cloudId)) {
-                if(vm.getCloud().getId() != cloudId){
+                if(vm.cloud().getId() != cloudId){
                     suitable = false;
                 }
             }
@@ -225,10 +225,8 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
     }
 
     @Override public long getIdPublicAddressOfVM(VirtualMachine vm) {
-        for(IpAddress ip : vm.getIpAddresses()){
-            if(ip.getIpType().equals(IpType.PUBLIC)){
-                return ip.getId();
-            }
+        if (vm.publicIpAddress() != null){
+            return vm.publicIpAddress().getId();
         }
 
         return 0;

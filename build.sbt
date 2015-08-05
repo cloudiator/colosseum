@@ -6,9 +6,13 @@ name := "colosseum"
 
 version := "1.2.0-SNAPSHOT"
 
-resolvers := (
-  "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
-  ) +: resolvers.value
+
+resolvers := ("Local Maven Repository" at "file:///C:/Users/bwpc/.m2/repository") +: resolvers.value
+
+externalResolvers += "OMI Snapshots" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/snapshots/"
+
+externalResolvers += "OMI Releases" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/releases/"
+
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -23,10 +27,10 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
+  "de.uniulm.omi.cloudiator" % "common" % "1.2.0-SNAPSHOT",
   "de.uniulm.omi.cloudiator" % "visor-rest-client" % "1.0-SNAPSHOT",
   "de.uniulm.omi.executionware.srl.aggregator" % "SRLAggregator" % "1.0-SNAPSHOT",
   //"de.uniulm.omi.executionware.srl.api" % "MonitoringAPI" % "1.0-SNAPSHOT",
- "org.slf4j" % "jul-to-slf4j" % "1.7.12",
   "org.reflections" % "reflections" % "0.9.10"
 )
 
@@ -36,4 +40,6 @@ jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
+
 ApiDocSettings.apiDocTask
+

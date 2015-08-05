@@ -25,7 +25,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.ConstantMonitor;
 import models.generic.ExternalReference;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

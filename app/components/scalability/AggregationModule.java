@@ -20,8 +20,11 @@ package components.scalability;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 import components.job.Job;
 import components.job.JobQueue;
 
@@ -30,8 +33,10 @@ import components.job.JobQueue;
  */
 public class AggregationModule  extends AbstractModule {
 
-    @Override protected void configure() {
+    @Loop @Stable @Override protected void configure() {
         bind(new TypeLiteral<SimpleBlockingQueue<Aggregation>>() {
         }).annotatedWith(Names.named("aggregationQueue")).to(AggregationQueue.class);
+        Multibinder<Runnable> runnables = Multibinder.newSetBinder(binder(), Runnable.class);
+        runnables.addBinding().to(AggregationWorker.class);
     }
 }

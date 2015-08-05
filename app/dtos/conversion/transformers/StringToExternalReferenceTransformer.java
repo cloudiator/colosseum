@@ -2,7 +2,7 @@ package dtos.conversion.transformers;
 
 import com.google.inject.Inject;
 import models.generic.ExternalReference;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.ArrayList;
 import java.util.List;

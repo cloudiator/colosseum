@@ -24,7 +24,10 @@ import controllers.generic.GenericApiController;
 import dtos.ScheduleDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.Schedule;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the Schedule model class.
@@ -42,9 +45,10 @@ public class ScheduleController
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ScheduleController(ModelService<Schedule> modelService,
+    @Inject public ScheduleController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<Schedule> modelService,
         TypeLiteral<Schedule> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

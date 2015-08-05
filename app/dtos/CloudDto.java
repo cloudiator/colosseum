@@ -25,7 +25,7 @@ import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Api;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 public class CloudDto extends ValidatableDto {
 

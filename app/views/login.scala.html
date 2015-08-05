@@ -1,0 +1,18 @@
+@(loginForm: Form[LoginDto])
+
+@if(loginForm.hasGlobalErrors) {
+    <p>
+    @loginForm.globalError.message
+    </p>
+}
+@helper.form(routes.SecurityController.authenticate()) {
+    <h2>Please sign in</h2>
+    @helper.inputText(loginForm("email"), '_label -> "Display Name")
+    @helper.inputPassword(loginForm("password"), '_label -> "Password")
+    @helper.inputText(loginForm("tenant"), 'class -> "form-control", '_label -> "Tenant")
+
+    <button type="submit">Sign in</button>
+
+}
+
+

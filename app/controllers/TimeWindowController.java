@@ -23,8 +23,10 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.TimeWindowDto;
 import dtos.conversion.ModelDtoConversionService;
+import models.Tenant;
 import models.TimeWindow;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the TimeWindow model class.
@@ -42,9 +44,10 @@ public class TimeWindowController
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public TimeWindowController(ModelService<TimeWindow> modelService,
+    @Inject public TimeWindowController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<TimeWindow> modelService,
         TypeLiteral<TimeWindow> typeLiteral, ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

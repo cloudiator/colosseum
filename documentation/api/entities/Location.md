@@ -32,7 +32,7 @@ A list of all location entities stored in the database.
          }
       ],
       "cloud":1,
-      "cloudUuid":"regionOne"
+      "remoteId":"regionOne"
       "parent":null,
       "locationScope": "REGION",
       "isAssignable":"false",
@@ -49,7 +49,7 @@ A list of all location entities stored in the database.
          }
       ],
       "cloud":1,
-      "cloudUuid":"regionOne"
+      "remoteId":"regionOne"
       "parent":1,
       "locationScope": "ZONE",
       "isAssignable":"true",
@@ -96,7 +96,7 @@ The location entity identified by the given id.
       }
    ],
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
@@ -126,7 +126,7 @@ Creates a new location entity. The new entity will be returned.
 Parameter        | Description
 -------------    | -------------
 cloud            | The cloud associated with the location.
-cloudUuid        | The UUID of the location.
+remoteId        | The UUID of the location.
 parent           | The parent location (hierachical)
 locationScope    | The scope of the location (REGION,ZONE,HOST)
 isAssignable     | If the location can be assigned to a virtual machine.
@@ -138,7 +138,7 @@ cloudCredentials | The cloud credentials used to retrieve this location.
 ```
 {  
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",
@@ -173,7 +173,7 @@ Parameter           | Description
 -------------       | -------------
 location_id         | The id of the location to update.
 cloud               | The cloud associated with the location.
-cloudUuid           | The UUID of the location.
+remoteId           | The UUID of the location.
 parent              | The parent location (hierachical)
 locationScope       | The scope of the location (REGION,ZONE,HOST)
 isAssignable        | If the location can be assigned to a virtual machine.
@@ -187,7 +187,7 @@ PUT /location/1
 ```
 {  
    "cloud":1,
-   "cloudUuid":"regionOne"
+   "remoteId":"regionOne"
    "parent":1,
    "locationScope": "ZONE",
    "isAssignable":"true",

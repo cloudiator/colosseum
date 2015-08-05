@@ -25,8 +25,10 @@ import controllers.generic.GenericApiController;
 import dtos.MonitorSubscriptionDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.MonitorSubscription;
+import models.Tenant;
 import models.scalability.SubscriptionType;
-import models.service.api.generic.ModelService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -46,10 +48,11 @@ public class MonitorSubscriptionController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public MonitorSubscriptionController(ModelService<MonitorSubscription> modelService,
+    @Inject public MonitorSubscriptionController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<MonitorSubscription> modelService,
         TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
 
         this.se = se;
     }

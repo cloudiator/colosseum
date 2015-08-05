@@ -23,7 +23,7 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import models.*;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 import java.util.List;
 

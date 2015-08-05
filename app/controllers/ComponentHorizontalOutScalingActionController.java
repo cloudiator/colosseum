@@ -24,7 +24,9 @@ import controllers.generic.GenericApiController;
 import dtos.ComponentHorizontalOutScalingActionDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.ComponentHorizontalOutScalingAction;
-import models.service.api.generic.ModelService;
+import models.Tenant;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the ComponentHorizontalOutScalingAction model class.
@@ -42,11 +44,12 @@ public class ComponentHorizontalOutScalingActionController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ComponentHorizontalOutScalingActionController(
+    @Inject public ComponentHorizontalOutScalingActionController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService,
         ModelService<ComponentHorizontalOutScalingAction> modelService,
         TypeLiteral<ComponentHorizontalOutScalingAction> typeLiteral,
         ModelDtoConversionService conversionService) {
-        super(modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

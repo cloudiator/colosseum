@@ -28,7 +28,7 @@ import models.Cloud;
 import models.Hardware;
 import models.Image;
 import models.Location;
-import models.service.api.generic.ModelService;
+import models.service.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.
@@ -40,18 +40,20 @@ public class VirtualMachineDto extends ValidatableDto {
     private Long image;
     private Long hardware;
     private Long location;
-    private String cloudUuid;
+    private String remoteId;
 
     public VirtualMachineDto() {
         super();
     }
 
-    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location, String cloudUuid) {
+    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location,
+        String remoteId) {
         this.name = name;
         this.cloud = cloud;
         this.image = image;
         this.hardware = hardware;
         this.location = location;
+        this.remoteId = remoteId;
     }
 
     public String getName() {
@@ -94,19 +96,19 @@ public class VirtualMachineDto extends ValidatableDto {
         this.location = location;
     }
 
-    public String getCloudUuid() {
-        return cloudUuid;
+    public String getRemoteId() {
+        return remoteId;
     }
 
     @Override public void validation() {
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
-        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+        validator(Long.class).validate(cloud, "cloud").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(image).withValidator(new NotNullValidator())
+        validator(Long.class).validate(image, "image").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.imageService.get()));
-        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+        validator(Long.class).validate(location, "location").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
-        validator(Long.class).validate(hardware).withValidator(new NotNullValidator())
+        validator(Long.class).validate(hardware, "hardware").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
     }
 

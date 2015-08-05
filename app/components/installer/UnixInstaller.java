@@ -30,7 +30,8 @@ import play.Play;
  * Created by Daniel Seybold on 19.05.2015.
  */
 public class UnixInstaller extends AbstractInstaller {
-    private final String homeDir;
+
+    protected final String homeDir;
     private static final String JAVA_ARCHIVE = "jre8.tar.gz";
     private static final String JAVA_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.java.download");
     private static final String DOCKER_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.lance.docker.download");
@@ -112,15 +113,15 @@ public class UnixInstaller extends AbstractInstaller {
         //start Lance
 
         Logger.debug("Installtion of Docker finished, setting up Lance...");
-        this.remoteConnection.executeCommand("java -classpath " + UnixInstaller.LANCE_JAR +
+        this.remoteConnection.executeCommand("java " +
                 " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress() +
                 " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true) +
                 " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress() +
                 " -DVM_ID=" + this.virtualMachine.getUuid() +
                 " -DTENANT_ID=" + this.tenant.getUuid() +
-                " -Dhost.os=" + this.virtualMachine.image().getOperatingSystem() +
                 " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
                 " de.uniulm.omi.cloudiator.lance.lca.LifecycleAgentBooter " +
+                " -jar " + UnixInstaller.LANCE_JAR +
                 " &> /dev/null &");
 
         Logger.debug("Lance installed and started successfully!");
@@ -138,9 +139,9 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installLance();
 
-        this.installKairosDb();
+        //this.installKairosDb();
 
-        this.installVisor();
+        //this.installVisor();
 
         this.finishInstallation();
 

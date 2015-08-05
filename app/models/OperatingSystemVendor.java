@@ -38,6 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Enumerated(EnumType.STRING) @Column(nullable = false) private OperatingSystemVendorType
         operatingSystemVendorType;
     @Nullable private String defaultUserName;
+    @Nullable private String defaultPassword;
 
     /**
      * Empty constructor for hibernate.
@@ -45,13 +46,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected OperatingSystemVendor() {
     }
 
-    public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType, @Nullable String defaultUserName) {
+    public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType,
+        @Nullable String defaultUserName, @Nullable String defaultPassword) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
         checkNotNull(operatingSystemVendorType);
         this.operatingSystemVendorType = operatingSystemVendorType;
-        if(defaultUserName != null) {
+        if (defaultUserName != null) {
             checkArgument(!defaultUserName.isEmpty());
         }
         this.defaultUserName = defaultUserName;
@@ -83,5 +85,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @Nullable public String getDefaultUserName() {
         return defaultUserName;
+    }
+
+    @Nullable public String getDefaultPassword() {
+        return defaultPassword;
+    }
+
+    public void setDefaultPassword(@Nullable String defaultPassword) {
+        this.defaultPassword = defaultPassword;
     }
 }

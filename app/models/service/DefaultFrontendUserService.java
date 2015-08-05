@@ -19,7 +19,7 @@
 package models.service;
 
 import com.google.inject.Inject;
-import components.security.Password;
+import de.uniulm.omi.cloudiator.common.Password;
 import models.FrontendUser;
 import models.Tenant;
 import org.apache.commons.codec.binary.Base64;

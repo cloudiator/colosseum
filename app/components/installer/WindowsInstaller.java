@@ -81,13 +81,13 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.debug("Setting up and starting Visor");
 
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorProperties, this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "\\" + this.VISOR_PROPERTIES, this.buildDefaultVisorConfig(), false);
 
         //id of the visor schtasks
         String visorJobId = "visor";
 
         //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
-        String startCommand = "java -jar " + this.homeDir + "\\" + this.VISOR_JAR + " -conf " + this.homeDir + "\\" + this.visorProperties;
+        String startCommand = "java -jar " + this.homeDir + "\\" + this.VISOR_JAR + " -conf " + this.homeDir + "\\" + this.VISOR_PROPERTIES;
         this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorBat, startCommand, false );
 
         //TODO: open WindowsFirewall Ports if Rest/Telnet ports need to be remote accessible

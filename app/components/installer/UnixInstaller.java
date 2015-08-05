@@ -77,10 +77,10 @@ public class UnixInstaller extends AbstractInstaller {
         Logger.debug("setting up Visor...");
 
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "/default.properties",this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "/" + UnixInstaller.VISOR_PROPERTIES, this.buildDefaultVisorConfig(), false);
 
         //start visor
-        this.remoteConnection.executeCommand("java -jar "+UnixInstaller.VISOR_JAR +" -conf default.properties &> /dev/null &");
+        this.remoteConnection.executeCommand("java -jar "+UnixInstaller.VISOR_JAR +" -conf " + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &");
         Logger.debug("Visor started successfully!");
     }
 

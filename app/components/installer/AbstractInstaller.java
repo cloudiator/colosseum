@@ -54,7 +54,7 @@ abstract class AbstractInstaller implements InstallApi {
     protected static final String JAVA_DIR = "jre8";
 
 
-    protected final String visorProperties = "default.properties";
+    protected static final String VISOR_PROPERTIES = "default.properties";
 
     public AbstractInstaller(RemoteConnection remoteConnection){
 

@@ -19,6 +19,7 @@
 package models;
 
 import com.google.common.collect.Iterables;
+import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import models.generic.RemoteModel;
 
 import javax.annotation.Nullable;
@@ -32,6 +33,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by daniel on 31.10.14.
  */
 @Entity public class VirtualMachine extends RemoteModel {
+
+    private static final OSFamily defaultOsFamily = OSFamily.UNIX;
+    private static final int defaultPort = 22;
 
     @ManyToOne(optional = true) private Cloud cloud;
     @Column(unique = true, nullable = false) private String name;
@@ -144,6 +148,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
             return image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword();
         }
         return null;
+    }
+
+    public OSFamily osFamily() {
+        if (image != null && image.getOperatingSystem() != null) {
+            return image.getOperatingSystem().getOperatingSystemVendor()
+                .getOperatingSystemVendorType().osFamily();
+        }
+        return defaultOsFamily;
+    }
+
+    public boolean supportsKeyPair() {
+        return image != null && image.getOperatingSystem() != null && image.getOperatingSystem()
+            .getOperatingSystemVendor().getOperatingSystemVendorType().supportsKeyPair();
+    }
+
+    public int port() {
+        if (image != null && image.getOperatingSystem() != null) {
+            return image.getOperatingSystem().getOperatingSystemVendor()
+                .getOperatingSystemVendorType().port();
+        }
+        return defaultPort;
     }
 
     @Nullable public String getGeneratedLoginUsername() {

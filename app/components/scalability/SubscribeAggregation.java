@@ -28,8 +28,8 @@ import models.scalability.SubscriptionType;
  * Created by Frank on 03.08.2015.
  */
 public class SubscribeAggregation implements Aggregation {
-    private final MonitorSubscription subscription;
-    private final Monitor monitor;
+    protected final MonitorSubscription subscription;
+    protected final Monitor monitor;
 
     public SubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {
         super();

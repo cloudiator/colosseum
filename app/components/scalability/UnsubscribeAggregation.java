@@ -19,6 +19,7 @@
 package components.scalability;
 
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
 import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
 import de.uniulm.omi.executionware.srl.api.Monitor;
 import models.MonitorSubscription;
@@ -35,7 +36,7 @@ public class UnsubscribeAggregation extends SubscribeAggregation {
 
     @Override public void execute(AggregatorService service) {
         try {
-            //TODO remove subscription
+            service.removeObserverFromMonitor(monitor.getId(), new TelnetMetricObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
         } catch (Exception e) {
             e.printStackTrace();
         }

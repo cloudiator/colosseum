@@ -36,7 +36,7 @@ public abstract class MonitorAggregation implements Aggregation {
     }
 
     @Override public int getPriority() {
-        return 0; /*TODO needed? */
+        return Priority.LOW; /*TODO needed? */
     }
 
 }

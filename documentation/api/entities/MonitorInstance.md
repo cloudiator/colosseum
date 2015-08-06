@@ -17,7 +17,21 @@ A list of all MonitorInstance entities stored in the database.
 
 ###Response Example
 ```
-TODO
+[
+    {
+        "externalReferences":[],
+        "monitor":196612,
+        "ipAddress":1,
+        "virtualMachine":1,
+        "component":null,
+        "link":
+            [
+                {
+                    "href":"http://localhost:9000/api/monitorInstance/196613","rel":"self"
+                }
+            ]
+    }
+]
 ```
 
 ###Response Codes
@@ -45,7 +59,19 @@ The MonitorInstance entity identified by the given id.
 
 ###Response Example
 ```
-TODO
+{
+    "externalReferences":[],
+    "monitor":196612,
+    "ipAddress":1,
+    "virtualMachine":1,
+    "component":null,
+    "link":
+        [
+            {
+                "href":"http://localhost:9000/api/monitorInstance/196613","rel":"self"
+            }
+        ]
+}
 ```
 
 ###Response Codes
@@ -65,11 +91,21 @@ Creates a new MonitorInstance entity. The new entity will be returned.
 ###Request Parameters
 Parameter     | Description
 ------------- | -------------
-TODO
+externalReferences  | A list of external references.
+monitor             | ID of the monitor that was instantiated
+ipAddress           | ID of the IP address of the execution of the MonitorInstances
+virtualMachine      | ID of the concerned VirtualMachine.
+component           | ID of the concerned Component
 
 ###Request Example
 ```
-TODO
+{
+    "externalReferences":[],
+    "monitor":196612,
+    "ipAddress":1,
+    "virtualMachine":1,
+    "component":null
+}
 ```
 
 ###Response Codes
@@ -92,14 +128,31 @@ Updates the MonitorInstance entity identified by the given id.
 
 Parameter     | Description
 ------------- | -------------
-TODO
+monitorInstance_id  | ID of the given MonitorInstance to update.
+externalReferences  | A list of external references.
+monitor             | ID of the monitor that was instantiated
+ipAddress           | ID of the IP address of the execution of the MonitorInstances
+virtualMachine      | ID of the concerned VirtualMachine.
+component           | ID of the concerned Component
 
 ###Request Example
 ```
 PUT /api/monitorInstance/1
 ```
 ```
-TODO
+{
+    "externalReferences":[],
+    "monitor":196612,
+    "ipAddress":1,
+    "virtualMachine":1,
+    "component":null,
+    "link":
+        [
+            {
+                "href":"http://localhost:9000/api/monitorInstance/196613","rel":"self"
+            }
+        ]
+}
 ```
 
 ###Response

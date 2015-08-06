@@ -7,7 +7,7 @@ The MonitorSubscription entity represents...
 ## GET /api/monitorSubscription
 
 ###Description
-Returns a list of monitorSubscription types supported by the system.
+Returns a list of MonitorSubscriptions handled by the system.
 
 ###Request Parameters
 None

@@ -9,6 +9,8 @@ version := "1.2.0-SNAPSHOT"
 
 resolvers := ("Local Maven Repository" at "file:///C:/Users/bwpc/.m2/repository") +: resolvers.value
 
+resolvers += ("Local Maven Repository" at "file:///C:/Users/Frank/.m2/repository/") // TODO: make local dynamic: %USERNAME% does not work
+
 externalResolvers += "OMI Snapshots" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/snapshots/"
 
 externalResolvers += "OMI Releases" at "https://omi-dev.e-technik.uni-ulm.de/nexus/content/repositories/releases/"

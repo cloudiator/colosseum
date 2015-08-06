@@ -24,7 +24,6 @@ import components.execution.SimpleBlockingQueue;
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
 import de.uniulm.omi.executionware.srl.aggregator.DirectEngineCommunicator;
 import de.uniulm.omi.executionware.srl.aggregator.IEngineCommunicator;
-import play.db.jpa.Transactional;
 
 /**
  * Created by Frank on 30.07.2015.
@@ -41,7 +40,7 @@ public class AggregationWorker implements Runnable {
         /*TODO make this dynamic: */
         de.uniulm.omi.executionware.srl.aggregator.FrontendCommunicator afc =
             new de.uniulm.omi.executionware.srl.aggregator.RemoteFrontendCommunicator
-                ("http", "127.0.0.1", 9000, "john.doe@example.com", "admin"); //TODO <- has to be dynamic!
+                ("http", "127.0.0.1", 9000, "john.doe@example.com", "admin", "admin"); //TODO <- has to be dynamic!
 
         IEngineCommunicator ec = new DirectEngineCommunicator(afc);
 
@@ -51,8 +50,8 @@ public class AggregationWorker implements Runnable {
     @Override public void run() {
         try {
             while(!Thread.currentThread().isInterrupted()){ /*TODO change with new version*/
-                Thread.sleep(3000); /* wait for transaction to be finished */
                 Aggregation job = aggregationQueue.take();
+                Thread.sleep(1000); /* wait for transaction to be finished */
                 job.execute(this.service);
             }
         } catch (InterruptedException e) {

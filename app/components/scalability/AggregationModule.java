@@ -33,7 +33,7 @@ import components.job.JobQueue;
  */
 public class AggregationModule  extends AbstractModule {
 
-    @Loop @Stable @Override protected void configure() {
+    @Override protected void configure() {
         bind(new TypeLiteral<SimpleBlockingQueue<Aggregation>>() {
         }).annotatedWith(Names.named("aggregationQueue")).to(AggregationQueue.class);
         Multibinder<Runnable> runnables = Multibinder.newSetBinder(binder(), Runnable.class);

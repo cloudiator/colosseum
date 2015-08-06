@@ -58,6 +58,9 @@ public class WindowsInstaller extends AbstractInstaller {
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + WindowsInstaller.VISOR_DOWNLOAD + "','" + this.homeDir + "\\" + WindowsInstaller.VISOR_JAR + "')");
         //download kairosDB
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + WindowsInstaller.KAIROSDB_DOWNLOAD + "','"+this.homeDir+"\\"+WindowsInstaller.KAIROSDB_ARCHIVE +"')");
+        //lance
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + WindowsInstaller.LANCE_DOWNLOAD + "','"+this.homeDir+"\\"+WindowsInstaller.LANCE_JAR +"')");
+
 
     }
 
@@ -97,10 +100,14 @@ public class WindowsInstaller extends AbstractInstaller {
         String startCommand = "java -jar " + this.homeDir + "\\" + WindowsInstaller.VISOR_JAR + " -conf " + this.homeDir + "\\" + WindowsInstaller.VISOR_PROPERTIES;
         this.remoteConnection.writeFile(this.homeDir + "\\" + WindowsInstaller.VISOR_BAT, startCommand, false );
 
-        //TODO: open WindowsFirewall Ports if Rest/Telnet ports need to be remote accessible
+        //set firewall rules
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+
+
 
         //create schtaks
-        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"java -jar " + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
+        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
         this.waitForSchtaskCreation();
         //run schtask
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId );
@@ -136,8 +143,13 @@ public class WindowsInstaller extends AbstractInstaller {
 
     @Override
     public void installLance() {
-        //TODO: open ports 1099 and 33033 in Windows Firewall
-        Logger.error("InstallLifecycleAgent currently not supported...");
+        Logger.error("Setting up Lance...");
+
+        Logger.error("Opening Firewall ports for Lance...");
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+
+
     }
 
     @Override
@@ -149,6 +161,8 @@ public class WindowsInstaller extends AbstractInstaller {
         this.downloadSources();
 
         this.installJava();
+
+        this.installLance();
 
         this.install7Zip();
         this.installKairosDb();

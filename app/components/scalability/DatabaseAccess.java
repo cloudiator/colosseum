@@ -29,7 +29,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Frank on 20.07.2015.
  */
-public interface IDatabase {
+public interface DatabaseAccess {
     public List<MonitorInstance> getMonitorInstances(Long monitorId);
     public MonitorInstance saveMonitorInstance(Long idMonitor, Long ipAddressId, Long vmId, Long componentId);
     public MonitorInstance getMonitorInstance(Long monitorInstanceId);

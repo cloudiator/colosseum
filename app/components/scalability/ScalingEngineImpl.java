@@ -26,7 +26,6 @@ import models.*;
 import models.generic.ExternalReference;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
-import models.scalability.SubscriptionType;
 
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class ScalingEngineImpl implements ScalingEngine {
     private static final long NA = -1;
     private final SimpleBlockingQueue<Aggregation> aggregationQueue;
     private final FrontendCommunicator fc;
-    private final IDatabase db;
+    private final DatabaseAccess db;
     private final int agentPort;
 
     @Inject

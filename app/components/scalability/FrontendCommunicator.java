@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Created by Frank on 23.07.2015.
  */
-public interface FrontendCommunicator extends IDatabase {
+public interface FrontendCommunicator extends DatabaseAccess {
 
     public List<VirtualMachine> getVirtualMachines(long applicationId, long componentId, long instanceId, long cloudId);
 

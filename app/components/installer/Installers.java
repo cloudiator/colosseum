@@ -36,11 +36,9 @@ public class Installers {
         Tenant tenant) {
         switch (virtualMachine.osFamily()) {
             case UNIX:
-                return new UnixInstaller(remoteConnection, virtualMachine, tenant,
-                    virtualMachine.getLoginName());
+                return new UnixInstaller(remoteConnection, virtualMachine, tenant);
             case WINDOWS:
-                return new WindowsInstaller(remoteConnection, virtualMachine, tenant,
-                    virtualMachine.getLoginName());
+                return new WindowsInstaller(remoteConnection, virtualMachine, tenant);
             default:
                 throw new AssertionError("Unsupported OsFamily.");
         }

@@ -38,10 +38,10 @@ public class WindowsInstaller extends AbstractInstaller {
     private final String zip7Donwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
 
 
-    public WindowsInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant, String user) {
+    public WindowsInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "C:\\Users\\" + user;
+        this.homeDir = "C:\\Users\\" + virtualMachine.getLoginName();
     }
 
     @Override

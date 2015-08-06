@@ -37,10 +37,10 @@ public class UnixInstaller extends AbstractInstaller {
     private static final String DOCKER_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.lance.docker.download");
     private static final String DOCKER_INSTALL = "docker_install.sh";
 
-    public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant, String user) {
+    public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "/home/" + user;
+        this.homeDir = "/home/" + virtualMachine.getLoginName();
     }
 
     @Override
@@ -103,26 +103,25 @@ public class UnixInstaller extends AbstractInstaller {
     public void installLance() {
 
         //install Lance
-        Logger.debug("Installing and starting LanceLifecycleAgent:Docker...");
+        Logger.debug("Installing and starting Lance: Docker...");
 
         //install docker
         Logger.debug("Installing and starting Docker...");
         this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_INSTALL);
         this.remoteConnection.executeCommand("sudo ./" + UnixInstaller.DOCKER_INSTALL);
         this.remoteConnection.executeCommand("sudo service docker restart");
-        //start Lance
 
+        //start Lance
         Logger.debug("Installtion of Docker finished, setting up Lance...");
-        this.remoteConnection.executeCommand("java " +
+        this.remoteConnection.executeCommand("nohup java " +
                 " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress() +
                 " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true) +
                 " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress() +
-                " -DVM_ID=" + this.virtualMachine.getUuid() +
-                " -DTENANT_ID=" + this.tenant.getUuid() +
+                " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
+                " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
                 " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
-                " de.uniulm.omi.cloudiator.lance.lca.LifecycleAgentBooter " +
                 " -jar " + UnixInstaller.LANCE_JAR +
-                " &> /dev/null &");
+                " > lance.out 2>&1 &");
 
         Logger.debug("Lance installed and started successfully!");
     }

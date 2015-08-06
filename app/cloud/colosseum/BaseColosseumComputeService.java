@@ -26,7 +26,6 @@ import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
 import com.google.common.net.HostAndPort;
-import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
@@ -83,7 +82,8 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             }
         }
 
-        if (keyPairToUse != null && keyPairToUse.getPrivateKey() != null) {
+        if (keyPairToUse != null && keyPairToUse.getPrivateKey() != null && virtualMachine
+            .supportsKeyPair()) {
             loginCredentialBuilder.privateKey(keyPairToUse.getPrivateKey());
         } else if (virtualMachine.getLoginPassword() != null) {
             loginCredentialBuilder.password(virtualMachine.getLoginPassword());
@@ -91,16 +91,16 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             throw new IllegalArgumentException(
                 "PrivateKey nor LoginPassword available for virtual machine.");
         }
+        loginCredentialBuilder.username(virtualMachine.getLoginName());
 
         checkNotNull(virtualMachine.publicIpAddress(),
             "Virtual machine has no public ip address assigned.");
         //noinspection ConstantConditions
         final HostAndPort hostAndPort =
-            HostAndPort.fromParts(virtualMachine.publicIpAddress().getIp(), 22);
+            HostAndPort.fromParts(virtualMachine.publicIpAddress().getIp(), virtualMachine.port());
 
-        // todo: remove hardcoded reference to unix.
-        return connectionService()
-            .getRemoteConnection(hostAndPort, OSFamily.UNIX, loginCredentialBuilder.build());
+        return connectionService().getRemoteConnection(hostAndPort, virtualMachine.osFamily(),
+            loginCredentialBuilder.build());
     }
 
     @Override public Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid) {

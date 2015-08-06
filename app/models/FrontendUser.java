@@ -18,7 +18,7 @@
 
 package models;
 
-import components.security.Password;
+import de.uniulm.omi.cloudiator.common.Password;
 import models.generic.Model;
 import org.apache.commons.codec.binary.Base64;
 

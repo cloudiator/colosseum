@@ -6,6 +6,7 @@ name := "colosseum"
 
 version := "1.2.0-SNAPSHOT"
 
+
 resolvers := (
   "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
   ) +: resolvers.value
@@ -23,8 +24,9 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
-  "org.reflections" % "reflections" % "0.9.10",
-  "de.uniulm.omi.cloudiator" % "lance-client" % "1.2.0-SNAPSHOT"
+  "de.uniulm.omi.cloudiator" % "lance-client" % "1.2.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "common" % "1.2.0-SNAPSHOT",
+  "org.reflections" % "reflections" % "0.9.10"
 )
 
 TwirlKeys.templateImports += "dtos._"

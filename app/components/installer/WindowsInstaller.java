@@ -20,7 +20,10 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 
+import models.Tenant;
+import models.VirtualMachine;
 import play.Logger;
+import play.Play;
 
 /**
  * Created by Daniel Seybold on 20.05.2015.
@@ -31,25 +34,27 @@ public class WindowsInstaller extends AbstractInstaller {
     private final String sevenZipArchive = "7zip.zip";
     private final String sevenZipDir = "7zip";
     private final String visorBat = "startVisor.bat";
+    private final String javaDonwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
+    private final String zip7Donwload = Play.application().configuration().getString("colosseum.installer.windows.java.download");
 
 
-    public WindowsInstaller(RemoteConnection remoteConnection, String user) {
-        super(remoteConnection);
+    public WindowsInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant) {
+        super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "C:\\Users\\" + user;
+        this.homeDir = "C:\\Users\\" + virtualMachine.getLoginName();
     }
 
     @Override
     public void initSources() {
 
         //java
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://javadl.sun.com/webapps/download/AutoDL?BundleId=107100','"+this.homeDir+"\\"+this.javaExe+"')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.javaDonwload + "','"+this.homeDir+"\\"+this.javaExe+"')");
         //7zip
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('http://7-zip.org/a/7za920.zip','"+this.homeDir+"\\"+this.sevenZipArchive+"')");
         //download visor
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('https://omi-dev.e-technik.uni-ulm.de/jenkins/job/cloudiator-visor/lastSuccessfulBuild/artifact/visor-service/target/visor.jar','" + this.homeDir + "\\" + this.visorJar + "')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.VISOR_DOWNLOAD + "','" + this.homeDir + "\\" + this.VISOR_JAR + "')");
         //download kairosDB
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('https://github.com/kairosdb/kairosdb/releases/download/v0.9.4/kairosdb-0.9.4-6.tar.gz','"+this.homeDir+"\\"+this.kairosDbArchive+"')");
+        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('" + this.KAIROSDB_DOWNLOAD + "','"+this.homeDir+"\\"+this.KAIROSDB_ARCHIVE +"')");
 
     }
 
@@ -57,11 +62,11 @@ public class WindowsInstaller extends AbstractInstaller {
     public void installJava() {
 
         Logger.debug("Installing Java...");
-        this.remoteConnection.executeCommand("powershell -command "+this.homeDir+"\\jre8.exe /s INSTALLDIR="+this.homeDir+"\\"+this.javaDir);
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\jre8.exe /s INSTALLDIR=" + this.homeDir + "\\" + this.JAVA_DIR);
 
         //Set JAVA envirnonment vars
-        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+this.javaDir + "\\bin;%PATH%");
-        remoteConnection.executeCommand("SET JAVA_HOME="+this.homeDir+"\\"+this.javaDir);
+        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+WindowsInstaller.JAVA_DIR + "\\bin;%PATH%");
+        remoteConnection.executeCommand("SET JAVA_HOME=" + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR);
 
 
     }
@@ -78,13 +83,13 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.debug("Setting up and starting Visor");
 
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorProperties, this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "\\" + this.VISOR_PROPERTIES, this.buildDefaultVisorConfig(), false);
 
         //id of the visor schtasks
         String visorJobId = "visor";
 
         //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
-        String startCommand = "java -jar " + this.homeDir + "\\" + this.visorJar + " -conf " + this.homeDir + "\\" + this.visorProperties;
+        String startCommand = "java -jar " + this.homeDir + "\\" + this.VISOR_JAR + " -conf " + this.homeDir + "\\" + this.VISOR_PROPERTIES;
         this.remoteConnection.writeFile(this.homeDir + "\\" + this.visorBat, startCommand, false );
 
         //TODO: open WindowsFirewall Ports if Rest/Telnet ports need to be remote accessible
@@ -103,9 +108,9 @@ public class WindowsInstaller extends AbstractInstaller {
 
         Logger.debug("Extract, setup and start KairosDB...");
         //extract kairosdb
-        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\\7za.exe e " + this.homeDir + "\\"+ this.kairosDbArchive + " -o" + this.homeDir);
-        String kairosDbTar = this.kairosDbArchive.replace(".gz", "");
-        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\7za.exe x " + this.homeDir + "\\"+ kairosDbTar +" -o" + this.homeDir);
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir +"\\"+ this.sevenZipDir +"\\7za.exe e " + this.homeDir + "\\"+ this.KAIROSDB_ARCHIVE + " -o" + this.homeDir);
+        String kairosDbTar = this.KAIROSDB_ARCHIVE.replace(".gz", "");
+        this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\" + this.sevenZipDir + "\7za.exe x " + this.homeDir + "\\" + kairosDbTar + " -o" + this.homeDir);
 
         //set firewall rule
         this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Kairos Port 8080' dir = in action = allow protocol=TCP localport=8080");
@@ -119,24 +124,27 @@ public class WindowsInstaller extends AbstractInstaller {
     }
 
     @Override
-    public void installLifecycleAgent() {
+    public void installLance() {
         Logger.error("InstallLifecycleAgent currently not supported...");
     }
-
+    
     @Override
     public void installAll() {
+
+        Logger.debug("Starting installation of all tools on WINDOWS...");
 
         this.initSources();
         this.downloadSources();
 
         this.installJava();
 
-
-        //not used yet
-        //this.install7Zip();
-        //this.installKairosDb();
+        this.install7Zip();
+        this.installKairosDb();
 
         this.installVisor();
+
+        this.finishInstallation();
+
 
     }
 }

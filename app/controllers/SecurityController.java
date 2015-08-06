@@ -20,7 +20,6 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
-import components.security.Password;
 import dtos.LoginDto;
 import models.ApiAccessToken;
 import models.service.ApiAccessTokenService;
@@ -31,6 +30,7 @@ import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
+import de.uniulm.omi.cloudiator.common.Password;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

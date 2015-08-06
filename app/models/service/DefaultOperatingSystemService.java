@@ -42,7 +42,7 @@ public class DefaultOperatingSystemService extends BaseModelService<OperatingSys
                 operatingSystem.getOperatingSystemVendor().getName()};
             boolean isMatch = true;
             for (String check : needsToContain) {
-                if (!imageName.contains(check)) {
+                if (!imageName.toLowerCase().contains(check.toLowerCase())) {
                     isMatch = false;
                     break;
                 }

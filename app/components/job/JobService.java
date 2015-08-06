@@ -18,6 +18,7 @@
 
 package components.job;
 
+import models.Instance;
 import models.Tenant;
 import models.VirtualMachine;
 
@@ -27,4 +28,6 @@ import models.VirtualMachine;
 public interface JobService {
 
     void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
+
+    void newInstanceJob(Instance instance, Tenant tenant);
 }

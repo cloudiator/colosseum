@@ -19,13 +19,16 @@
 package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
+import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
 import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
 import de.uniulm.omi.cloudiator.lance.application.component.*;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
+import de.uniulm.omi.cloudiator.lance.lca.LcaException;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
@@ -35,8 +38,8 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import models.*;
 import models.service.ModelService;
 
-import java.rmi.NotBoundException;
-import java.rmi.RemoteException;
+import javax.annotation.Nullable;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -56,13 +59,13 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         ColosseumComputeService computeService, Tenant tenant) throws JobException {
         try {
             buildClient(instance);
-        } catch (RemoteException | NotBoundException | RegistrationException e) {
+        } catch (RegistrationException | LcaException e) {
             throw new JobException(e);
         }
     }
 
     private LifecycleClient buildClient(Instance instance)
-        throws RemoteException, NotBoundException, RegistrationException {
+        throws RegistrationException, LcaException {
 
         final LifecycleClient client = LifecycleClient.getClient();
         final ApplicationInstanceId applicationInstanceId =
@@ -72,15 +75,11 @@ public class CreateInstanceJob extends GenericJob<Instance> {
             ApplicationId.fromString(instance.getApplicationInstance().getApplication().getUuid());
 
         //register application instance
-        client.registerApplicationInstance(applicationInstanceId, applicationId);
+        final boolean couldRegister =
+            client.registerApplicationInstance(applicationInstanceId, applicationId);
 
-
-        //register all components (do only if first application instance) todo
-        for (ApplicationComponent applicationComponent : instance.getApplicationInstance()
-            .getApplication().getApplicationComponents()) {
-            client.registerComponentForApplicationInstance(applicationInstanceId,
-                //add optional name argument todo
-                ComponentId.fromString(applicationComponent.getUuid()));
+        if (couldRegister) {
+            registerApplicationComponents(instance, applicationInstanceId, client);
         }
 
         final DeploymentContext deploymentContext = buildDeploymentContext(instance,
@@ -88,12 +87,23 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         checkState(instance.getVirtualMachine().publicIpAddress() != null);
 
-
         client.deploy(instance.getVirtualMachine().publicIpAddress().getIp(), deploymentContext,
             buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);
 
         return client;
 
+    }
+
+    private void registerApplicationComponents(Instance instance,
+        ApplicationInstanceId applicationInstanceId, LifecycleClient client)
+        throws RegistrationException {
+
+        for (ApplicationComponent applicationComponent : instance.getApplicationInstance()
+            .getApplication().getApplicationComponents()) {
+            client.registerComponentForApplicationInstance(applicationInstanceId,
+                ComponentId.fromString(applicationComponent.getUuid()),
+                applicationComponent.getComponent().getName());
+        }
     }
 
     private DeployableComponent buildDeployableComponent(Instance instance) {
@@ -113,24 +123,13 @@ public class CreateInstanceJob extends GenericJob<Instance> {
             builder.addOutport(portRequired.name(), null, PortProperties.INFINITE_CARDINALITY);
         }
 
-        builder.addLifecycleStore(buildLifecycleStore(instance));
+        //build a lifecycle store from the application component
+        builder.addLifecycleStore(new LifecycleComponentToLifecycleStoreConverter()
+            .apply((LifecycleComponent) instance.getApplicationComponent().getComponent()));
 
         return builder.build();
 
 
-    }
-
-    private LifecycleStore buildLifecycleStore(Instance instance) {
-
-        final LifecycleStoreBuilder lifecycleStoreBuilder = new LifecycleStoreBuilder();
-        LifecycleComponent lc =
-            (LifecycleComponent) instance.getApplicationComponent().getComponent();
-        final BashBasedHandlerBuilder bashBasedHandlerBuilder = new BashBasedHandlerBuilder();
-        bashBasedHandlerBuilder.addCommand(lc.getStart());
-        final LifecycleHandler lifecycleHandler =
-            bashBasedHandlerBuilder.build(LifecycleHandlerType.START);
-        lifecycleStoreBuilder.setHandler(lifecycleHandler, LifecycleHandlerType.START);
-        return lifecycleStoreBuilder.build();
     }
 
     private DeploymentContext buildDeploymentContext(Instance instance,
@@ -151,5 +150,61 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         return deploymentContext;
     }
+
+    private static class LifecycleComponentToLifecycleStoreConverter
+        implements OneWayConverter<LifecycleComponent, LifecycleStore> {
+
+        private Map<LifecycleHandlerType, String> buildCommandMap(LifecycleComponent lc) {
+            Map<LifecycleHandlerType, String> commands = Maps.newHashMap();
+            if (lc.getInit() != null) {
+                commands.put(LifecycleHandlerType.INIT, lc.getInit());
+            }
+            if (lc.getPreInstall() != null) {
+                commands.put(LifecycleHandlerType.PRE_INSTALL, lc.getPreInstall());
+            }
+            if (lc.getInstall() != null) {
+                commands.put(LifecycleHandlerType.INSTALL, lc.getInstall());
+            }
+            if (lc.getPostInstall() != null) {
+                commands.put(LifecycleHandlerType.POST_INSTALL, lc.getPostInstall());
+            }
+            if (lc.getPreStart() != null) {
+                commands.put(LifecycleHandlerType.PRE_START, lc.getPreStart());
+            }
+            commands.put(LifecycleHandlerType.START, lc.getStart());
+            if (lc.getPostStart() != null) {
+                commands.put(LifecycleHandlerType.POST_START, lc.getPostStart());
+            }
+            if (lc.getPreStop() != null) {
+                commands.put(LifecycleHandlerType.PRE_STOP, lc.getPreStop());
+            }
+            if (lc.getStop() != null) {
+                commands.put(LifecycleHandlerType.STOP, lc.getStop());
+            }
+            if (lc.getPostStop() != null) {
+                commands.put(LifecycleHandlerType.POST_STOP, lc.getPostStop());
+            }
+            return commands;
+        }
+
+        @Nullable @Override public LifecycleStore apply(LifecycleComponent lc) {
+
+            final LifecycleStoreBuilder lifecycleStoreBuilder = new LifecycleStoreBuilder();
+
+            for (Map.Entry<LifecycleHandlerType, String> entry : buildCommandMap(lc).entrySet()) {
+                final BashBasedHandlerBuilder bashBasedHandlerBuilder =
+                    new BashBasedHandlerBuilder();
+                bashBasedHandlerBuilder.setOperatingSystem(OperatingSystem.UBUNTU_14_04);
+                bashBasedHandlerBuilder.addCommand(entry.getValue());
+                final LifecycleHandler lifecycleHandler =
+                    bashBasedHandlerBuilder.build(entry.getKey());
+                lifecycleStoreBuilder.setHandler(lifecycleHandler, entry.getKey());
+            }
+
+            return lifecycleStoreBuilder.build();
+        }
+    }
+
+
 
 }

@@ -19,7 +19,6 @@
 package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -33,74 +32,87 @@ public class UnixInstaller extends AbstractInstaller {
 
     protected final String homeDir;
     private static final String JAVA_ARCHIVE = "jre8.tar.gz";
-    private static final String JAVA_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.java.download");
-    private static final String DOCKER_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.linux.lance.docker.download");
+    private static final String JAVA_DOWNLOAD =
+        Play.application().configuration().getString("colosseum.installer.linux.java.download");
+    private static final String DOCKER_DOWNLOAD = Play.application().configuration()
+        .getString("colosseum.installer.linux.lance.docker.download");
     private static final String DOCKER_INSTALL = "docker_install.sh";
 
-    public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine, Tenant tenant) {
+    public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
+        Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
         this.homeDir = "/home/" + virtualMachine.getLoginName();
     }
 
-    @Override
-    public void initSources() {
+    @Override public void initSources() {
 
         //java
-        this.sourcesList.add("wget " + UnixInstaller.JAVA_DOWNLOAD + " -O " + UnixInstaller.JAVA_ARCHIVE);
+        this.sourcesList
+            .add("wget " + UnixInstaller.JAVA_DOWNLOAD + " -O " + UnixInstaller.JAVA_ARCHIVE);
         //lance
-        this.sourcesList.add("wget " + UnixInstaller.LANCE_DOWNLOAD + " -O " + UnixInstaller.LANCE_JAR);
+        this.sourcesList
+            .add("wget " + UnixInstaller.LANCE_DOWNLOAD + " -O " + UnixInstaller.LANCE_JAR);
         //docker
-        this.sourcesList.add("wget " + UnixInstaller.DOCKER_DOWNLOAD + " -O " + UnixInstaller.DOCKER_INSTALL);
+        this.sourcesList
+            .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + " -O " + UnixInstaller.DOCKER_INSTALL);
         //kairosDB
-        this.sourcesList.add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + " -O " + UnixInstaller.KAIROSDB_ARCHIVE);
+        this.sourcesList.add(
+            "wget " + UnixInstaller.KAIROSDB_DOWNLOAD + " -O " + UnixInstaller.KAIROSDB_ARCHIVE);
         //visor
-        this.sourcesList.add("wget " + UnixInstaller.VISOR_DOWNLOAD + " -O " + UnixInstaller.VISOR_JAR);
+        this.sourcesList
+            .add("wget " + UnixInstaller.VISOR_DOWNLOAD + " -O " + UnixInstaller.VISOR_JAR);
 
     }
 
 
 
-    @Override
-    public void installJava() {
+    @Override public void installJava() {
 
         Logger.debug("Starting Java installation...");
         //create directory
         this.remoteConnection.executeCommand("mkdir " + UnixInstaller.JAVA_DIR);
         //extract java
-        this.remoteConnection.executeCommand("tar zxvf "+UnixInstaller.JAVA_ARCHIVE +" -C "+UnixInstaller.JAVA_DIR +" --strip-components=1");
+        this.remoteConnection.executeCommand(
+            "tar zxvf " + UnixInstaller.JAVA_ARCHIVE + " -C " + UnixInstaller.JAVA_DIR
+                + " --strip-components=1");
         //set symbolic link
-        this.remoteConnection.executeCommand("sudo ln -s "+ this.homeDir + "/"+UnixInstaller.JAVA_DIR +"/bin/java /usr/bin/java");
+        this.remoteConnection.executeCommand(
+            "sudo ln -s " + this.homeDir + "/" + UnixInstaller.JAVA_DIR
+                + "/bin/java /usr/bin/java");
         Logger.debug("Java was successfully installed!");
     }
 
-    @Override
-    public void installVisor() {
+    @Override public void installVisor() {
 
         Logger.debug("setting up Visor...");
 
         //create properties file
-        this.remoteConnection.writeFile(this.homeDir + "/" + UnixInstaller.VISOR_PROPERTIES, this.buildDefaultVisorConfig(), false);
+        this.remoteConnection.writeFile(this.homeDir + "/" + UnixInstaller.VISOR_PROPERTIES,
+            this.buildDefaultVisorConfig(), false);
 
         //start visor
-        this.remoteConnection.executeCommand("java -jar "+UnixInstaller.VISOR_JAR +" -conf " + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &");
+        this.remoteConnection.executeCommand(
+            "java -jar " + UnixInstaller.VISOR_JAR + " -conf " + UnixInstaller.VISOR_PROPERTIES
+                + " &> /dev/null &");
         Logger.debug("Visor started successfully!");
     }
 
-    @Override
-    public void installKairosDb() {
+    @Override public void installKairosDb() {
 
         Logger.debug("Installing and starting KairosDB...");
         this.remoteConnection.executeCommand("mkdir " + UnixInstaller.KAIRROSDB_DIR);
 
-        this.remoteConnection.executeCommand("tar  zxvf "+UnixInstaller.KAIROSDB_ARCHIVE +" -C "+ UnixInstaller.KAIRROSDB_DIR +" --strip-components=1");
+        this.remoteConnection.executeCommand(
+            "tar  zxvf " + UnixInstaller.KAIROSDB_ARCHIVE + " -C " + UnixInstaller.KAIRROSDB_DIR
+                + " --strip-components=1");
 
-        this.remoteConnection.executeCommand(" sudo "+UnixInstaller.KAIRROSDB_DIR +"/bin/kairosdb.sh start");
+        this.remoteConnection
+            .executeCommand(" sudo " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
         Logger.debug("KairosDB started successfully!");
     }
 
-    @Override
-    public void installLance() {
+    @Override public void installLance() {
 
         //install Lance
         Logger.debug("Installing and starting Lance: Docker...");
@@ -112,22 +124,21 @@ public class UnixInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand("sudo service docker restart");
 
         //start Lance
-        Logger.debug("Installtion of Docker finished, setting up Lance...");
-        this.remoteConnection.executeCommand("nohup java " +
-                " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress() +
-                " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true) +
-                " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress() +
-                " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
-                " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
-                " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
-                " -jar " + UnixInstaller.LANCE_JAR +
-                " > lance.out 2>&1 &");
+        Logger.debug("Installation of Docker finished, setting up Lance...");
+        this.remoteConnection.executeCommand("nohup sudo java " +
+            " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().getIp() +
+            " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).getIp() +
+            " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().getIp() +
+            " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
+            " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
+            " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
+            " -jar " + UnixInstaller.LANCE_JAR +
+            " > lance.out 2>&1 &");
 
         Logger.debug("Lance installed and started successfully!");
     }
 
-    @Override
-    public void installAll() {
+    @Override public void installAll() {
 
         Logger.debug("Starting installation of all tools on UNIX...");
 

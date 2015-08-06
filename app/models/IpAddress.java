@@ -77,4 +77,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setVirtualMachine(VirtualMachine virtualMachine) {
         this.virtualMachine = virtualMachine;
     }
+
+    @Override public String toString() {
+        return ip;
+    }
 }

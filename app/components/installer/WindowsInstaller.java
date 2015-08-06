@@ -36,6 +36,7 @@ public class WindowsInstaller extends AbstractInstaller {
     private static final String SEVEN_ZIP_EXE = "7za.exe";
     private static final String VISOR_BAT = "startVisor.bat";
     private static final String KAIROSDB_BAT = "startKairos.bat";
+    private static final String LANCE_BAT = "startLance.bat";
     private static final String JAVA_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.windows.java.download");
     private static final String SEVEN_ZIP_DOWNLOAD = Play.application().configuration().getString("colosseum.installer.windows.7zip.download");
 
@@ -146,9 +147,26 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.error("Setting up Lance...");
 
         Logger.error("Opening Firewall ports for Lance...");
-        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
-        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=1099");
+        this.remoteConnection.executeCommand("powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=33033");
 
+        //create a .bat file to start Lance, because it is not possible to pass schtasks paramters using overthere
+        String startCommand = " java " +
+                " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress() +
+                " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true) +
+                " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress() +
+                " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
+                " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
+                " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
+                " -jar " + this.homeDir + "\\" +WindowsInstaller.LANCE_JAR;
+        this.remoteConnection.writeFile(this.homeDir + "\\" + WindowsInstaller.LANCE_BAT, startCommand, false);
+
+        //start lance in backround
+        String lanceJobId = "lance";
+        this.remoteConnection.executeCommand("schtasks.exe /create /st 00:00  /sc ONCE /tn " + lanceJobId + " /tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT+ "\"");
+        this.waitForSchtaskCreation();
+        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + lanceJobId);
+        Logger.debug("Lance successfully started!");
 
     }
 

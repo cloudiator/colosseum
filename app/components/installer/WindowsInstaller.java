@@ -64,9 +64,11 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.debug("Installing Java...");
         this.remoteConnection.executeCommand("powershell -command " + this.homeDir + "\\jre8.exe /s INSTALLDIR=" + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR);
 
-        //Set JAVA envirnonment vars
-        remoteConnection.executeCommand("SET PATH="+this.homeDir+"\\"+WindowsInstaller.JAVA_DIR + "\\bin;%PATH%");
-        remoteConnection.executeCommand("SET JAVA_HOME=" + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR);
+        //Set JAVA envirnonment vars, use SETX for setting the vars for all future session use /m for machine scope
+        remoteConnection.executeCommand("SETX PATH %PATH%;" + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR + "\\bin /m");
+        remoteConnection.executeCommand("SETX JAVA_HOME " + this.homeDir + "\\" + WindowsInstaller.JAVA_DIR + " /m");
+       
+        Logger.debug("Java successfully installed!");
 
 
     }
@@ -128,7 +130,7 @@ public class WindowsInstaller extends AbstractInstaller {
         //TODO: open ports 1099 and 33033 in Windows Firewall
         Logger.error("InstallLifecycleAgent currently not supported...");
     }
-    
+
     @Override
     public void installAll() {
 

@@ -57,6 +57,7 @@ A default user is available:
 
 username: john.doe@example.com
 password: admin
+tenant: admin
 
 Documentation
 =====================================

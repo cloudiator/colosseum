@@ -29,6 +29,7 @@ import de.uniulm.omi.cloudiator.lance.application.component.*;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.LcaException;
+import de.uniulm.omi.cloudiator.lance.lca.container.ContainerException;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
@@ -59,13 +60,13 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         ColosseumComputeService computeService, Tenant tenant) throws JobException {
         try {
             buildClient(instance);
-        } catch (RegistrationException | LcaException e) {
+        } catch (RegistrationException | LcaException | ContainerException e) {
             throw new JobException(e);
         }
     }
 
     private LifecycleClient buildClient(Instance instance)
-        throws RegistrationException, LcaException {
+        throws RegistrationException, LcaException, ContainerException {
 
         final LifecycleClient client = LifecycleClient.getClient();
         final ApplicationInstanceId applicationInstanceId =

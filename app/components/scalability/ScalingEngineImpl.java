@@ -111,7 +111,7 @@ public class ScalingEngineImpl implements ScalingEngine {
     }
 
     @Override
-    public Monitor aggregateMonitors(ComposedMonitor monitor) {
+    public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances) {
 
         if (monitor.getFlowOperator().equals(FlowOperator.MAP)){
             /*
@@ -122,10 +122,12 @@ public class ScalingEngineImpl implements ScalingEngine {
             also store ip of aggregator/tsdb into monitorinstance
 
             */
-            for (Monitor obj : monitor.getMonitors()) {
-                List<MonitorInstance> monitorInstances = db.getMonitorInstances(obj.getId());
-                for (MonitorInstance inst : monitorInstances) {
-                    db.saveMonitorInstance(monitor.getId(), null, null, null);
+            if(createInstances) {
+                for (Monitor obj : monitor.getMonitors()) {
+                    List<MonitorInstance> monitorInstances = db.getMonitorInstances(obj.getId());
+                    for (MonitorInstance inst : monitorInstances) {
+                        db.saveMonitorInstance(monitor.getId(), null, null, null);
+                    }
                 }
             }
 
@@ -141,7 +143,9 @@ public class ScalingEngineImpl implements ScalingEngine {
             is always 1
 
              */
-            db.saveMonitorInstance(monitor.getId(), null, null, null);
+            if(createInstances) {
+                db.saveMonitorInstance(monitor.getId(), null, null, null);
+            }
 
             aggregationQueue.add(new AddAggregation(Converter.convert(monitor)));
 

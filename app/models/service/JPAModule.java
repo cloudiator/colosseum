@@ -71,6 +71,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<ComponentHorizontalOutScalingAction>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ComponentHorizontalOutScalingAction>>() {
         });
+        //ComponentHorizontalIntScalingAction
+        bind(new TypeLiteral<ModelRepository<ComponentHorizontalInScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComponentHorizontalInScalingAction>>() {
+        });
         //ComposedMonitor
         bind(new TypeLiteral<ModelRepository<ComposedMonitor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ComposedMonitor>>() {
@@ -135,6 +139,10 @@ public class JPAModule extends AbstractModule {
         //Location
         bind(new TypeLiteral<ModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
+        });
+        //MeasurementWindow
+        bind(new TypeLiteral<ModelRepository<MeasurementWindow>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MeasurementWindow>>() {
         });
         //Monitor
         bind(new TypeLiteral<ModelRepository<Monitor>>() {

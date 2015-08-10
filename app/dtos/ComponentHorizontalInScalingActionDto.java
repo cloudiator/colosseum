@@ -18,6 +18,8 @@
 
 package dtos;
 
-public class ComponentHorizontalOutScalingActionDto extends ComponentHorizontalScalingActionDto {
-
+/**
+ * Created by Frank on 10.08.2015.
+ */
+public class ComponentHorizontalInScalingActionDto extends ComponentHorizontalScalingActionDto {
 }

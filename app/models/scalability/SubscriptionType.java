@@ -23,7 +23,8 @@ package models.scalability;
  */
 public enum SubscriptionType {
 
-    CDO("CDO");
+    CDO("CDO"),
+    CDO_EVENT("CDO_EVENT");
 
     private final String text;
 

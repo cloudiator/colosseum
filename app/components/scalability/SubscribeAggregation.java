@@ -19,6 +19,7 @@
 package components.scalability;
 
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetEventObserver;
 import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
 import de.uniulm.omi.executionware.srl.api.Monitor;
 import models.MonitorSubscription;
@@ -39,7 +40,13 @@ public class SubscribeAggregation implements Aggregation {
 
     @Override public void execute(AggregatorService service) {
         try {
-            service.addObserverToMonitor(monitor.getId(), new TelnetMetricObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
+            if(this.subscription.getType() == SubscriptionType.CDO) {
+                service.addObserverToMonitor(monitor.getId(),
+                    new TelnetMetricObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
+            } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
+                service.addObserverToMonitor(monitor.getId(),
+                    new TelnetEventObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

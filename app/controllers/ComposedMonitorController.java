@@ -65,7 +65,7 @@ public class ComposedMonitorController extends
     @Override @Transactional protected void postPost(ComposedMonitor entity) {
         super.postPost(entity);
 
-        se.aggregateMonitors(entity);
+        se.aggregateMonitors(entity, true);
     }
 
     @Override @Transactional protected void postPut(ComposedMonitor entity) {
@@ -74,7 +74,7 @@ public class ComposedMonitorController extends
         //TODO better update than remove and add?
         se.removeMonitor(entity.getId());
 
-        se.aggregateMonitors(entity);
+        se.aggregateMonitors(entity, true);
     }
 
     @Override @Transactional public Result delete(final Long id){

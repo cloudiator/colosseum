@@ -21,20 +21,18 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.ComponentHorizontalOutScalingActionDto;
+import dtos.ComponentHorizontalInScalingActionDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ComponentHorizontalOutScalingAction;
+import models.ComponentHorizontalInScalingAction;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 
 /**
- * Implementation of the GenericApiController for the ComponentHorizontalOutScalingAction model class.
- *
- * @author Frank
+ * Created by Frank on 10.08.2015.
  */
-public class ComponentHorizontalOutScalingActionController extends
-    GenericApiController<ComponentHorizontalOutScalingAction, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto, ComponentHorizontalOutScalingActionDto> {
+public class ComponentHorizontalInScalingActionController extends
+    GenericApiController<ComponentHorizontalInScalingAction, ComponentHorizontalInScalingActionDto, ComponentHorizontalInScalingActionDto, ComponentHorizontalInScalingActionDto> {
 
     /**
      * Constructs a GenericApiController.
@@ -44,16 +42,17 @@ public class ComponentHorizontalOutScalingActionController extends
      * @param conversionService the conversion service for converting models and dtos.
      * @throws NullPointerException if any of the above parameters is null.
      */
-    @Inject public ComponentHorizontalOutScalingActionController(FrontendUserService frontendUserService,
+    @Inject
+    public ComponentHorizontalInScalingActionController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
-        ModelService<ComponentHorizontalOutScalingAction> modelService,
-        TypeLiteral<ComponentHorizontalOutScalingAction> typeLiteral,
+        ModelService<ComponentHorizontalInScalingAction> modelService,
+        TypeLiteral<ComponentHorizontalInScalingAction> typeLiteral,
         ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ComponentHorizontalOutScalingActionController.get(id)
+        return controllers.routes.ComponentHorizontalInScalingActionController.get(id)
             .absoluteURL(request());
     }
 }

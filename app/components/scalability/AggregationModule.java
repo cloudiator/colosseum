@@ -38,5 +38,6 @@ public class AggregationModule  extends AbstractModule {
         }).annotatedWith(Names.named("aggregationQueue")).to(AggregationQueue.class);
         Multibinder<Runnable> runnables = Multibinder.newSetBinder(binder(), Runnable.class);
         runnables.addBinding().to(AggregationWorker.class);
+        runnables.addBinding().to(AggregationRestartWorker.class);
     }
 }

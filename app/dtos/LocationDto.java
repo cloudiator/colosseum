@@ -21,24 +21,22 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
-import dtos.generic.ValidatableDto;
+import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
-import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.*;
-import models.service.ModelService;
 import models.service.BaseModelService;
+import models.service.ModelService;
 
 import java.util.List;
 
 /**
  * Created by daniel on 09.04.15.
  */
-public class LocationDto extends ValidatableDto {
+public class LocationDto extends RemoteDto {
 
     protected Long cloud;
-    protected String remoteId;
     private Long parent;
     private LocationScope locationScope;
     private Boolean isAssignable;
@@ -49,10 +47,9 @@ public class LocationDto extends ValidatableDto {
         super();
     }
 
-    public LocationDto(Long cloud, String remoteId, Long parent, LocationScope locationScope,
-        Boolean isAssignable, Long geoLocation) {
+    public LocationDto(Long cloud, Long parent, LocationScope locationScope, Boolean isAssignable,
+        Long geoLocation) {
         this.cloud = cloud;
-        this.remoteId = remoteId;
         this.parent = parent;
         this.locationScope = locationScope;
         this.isAssignable = isAssignable;
@@ -60,9 +57,9 @@ public class LocationDto extends ValidatableDto {
     }
 
     @Override public void validation() {
+        super.validation();
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(geoLocation).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.geoLocationService.get()));
         validator(Boolean.class).validate(isAssignable).withValidator(new NotNullValidator());
@@ -88,14 +85,6 @@ public class LocationDto extends ValidatableDto {
 
     public void setCloud(Long cloud) {
         this.cloud = cloud;
-    }
-
-    public String getRemoteId() {
-        return remoteId;
-    }
-
-    public void setRemoteId(String remoteId) {
-        this.remoteId = remoteId;
     }
 
     public Long getParent() {

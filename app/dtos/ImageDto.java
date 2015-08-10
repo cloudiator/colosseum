@@ -21,10 +21,9 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
-import dtos.generic.ValidatableDto;
+import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
-import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.CloudCredential;
@@ -34,10 +33,9 @@ import models.service.ModelService;
 
 import java.util.List;
 
-public class ImageDto extends ValidatableDto {
+public class ImageDto extends RemoteDto {
 
     private String name;
-    private String remoteId;
     private Long cloud;
     private List<Long> locations;
     private Long operatingSystem;
@@ -48,7 +46,7 @@ public class ImageDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
+        super.validation();
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(new TypeLiteral<List<Long>>() {
@@ -99,14 +97,6 @@ public class ImageDto extends ValidatableDto {
 
     public void setCloudCredentials(List<Long> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
-    }
-
-    public String getRemoteId() {
-        return remoteId;
-    }
-
-    public void setRemoteId(String remoteId) {
-        this.remoteId = remoteId;
     }
 
     public static class References {

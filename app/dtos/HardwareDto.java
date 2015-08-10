@@ -21,25 +21,23 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
-import dtos.generic.ValidatableDto;
+import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
-import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.CloudCredential;
 import models.HardwareOffer;
 import models.Location;
-import models.service.ModelService;
 import models.service.BaseModelService;
+import models.service.ModelService;
 
 import java.util.List;
 
-public class HardwareDto extends ValidatableDto {
+public class HardwareDto extends RemoteDto {
 
     private Long cloud;
     private Long hardwareOffer;
-    private String remoteId;
     private List<Long> locations;
     private List<Long> cloudCredentials;
 
@@ -48,11 +46,11 @@ public class HardwareDto extends ValidatableDto {
     }
 
     @Override public void validation() {
+        super.validation();
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
-        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
@@ -75,14 +73,6 @@ public class HardwareDto extends ValidatableDto {
 
     public void setHardwareOffer(Long hardwareOffer) {
         this.hardwareOffer = hardwareOffer;
-    }
-
-    public String getRemoteId() {
-        return remoteId;
-    }
-
-    public void setRemoteId(String remoteId) {
-        this.remoteId = remoteId;
     }
 
     public List<Long> getLocations() {

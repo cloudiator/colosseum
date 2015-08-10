@@ -50,6 +50,9 @@ public class LocationConverter extends RemoteConverter<Location, LocationDto> {
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
 

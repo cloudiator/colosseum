@@ -47,6 +47,9 @@ public class HardwareConverter extends RemoteConverter<Hardware, HardwareDto> {
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from(Long.class, "hardwareOffer").to(HardwareOffer.class, "hardwareOffer")
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")

@@ -48,6 +48,9 @@ public class ImageConverter extends RemoteConverter<Image, ImageDto> {
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from("name").to("name");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));

@@ -46,6 +46,9 @@ public class VirtualMachineConverter extends RemoteConverter<VirtualMachine, Vir
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from("name").to("name");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));

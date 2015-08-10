@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.ImageDto;
-import dtos.conversion.AbstractConverter;
+import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
@@ -29,7 +29,7 @@ import models.service.ModelService;
 /**
  * Created by daniel on 14.04.15.
  */
-public class ImageConverter extends AbstractConverter<Image, ImageDto> {
+public class ImageConverter extends RemoteConverter<Image, ImageDto> {
 
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<OperatingSystem> operatingSystemModelService;
@@ -49,7 +49,6 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
 
     @Override public void configure() {
         builder().from("name").to("name");
-        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "operatingSystem").to(OperatingSystem.class, "operatingSystem")
@@ -57,6 +56,7 @@ public class ImageConverter extends AbstractConverter<Image, ImageDto> {
         builder().from("locations").to("locations").withUnsafeTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
         builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
-            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
+            new ModelToListIdTransformer<>(
+                new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

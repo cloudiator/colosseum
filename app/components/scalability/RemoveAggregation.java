@@ -32,7 +32,7 @@ public class RemoveAggregation extends MonitorAggregation {
 
     @Override public void execute(AggregatorService service) {
         try {
-            service.addAggregator(this.getComposedMonitor());
+            service.removeAggregator(this.getComposedMonitor());
         } catch (Exception e) {
             e.printStackTrace();
         }

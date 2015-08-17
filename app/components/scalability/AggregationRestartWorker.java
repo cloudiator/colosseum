@@ -46,9 +46,10 @@ public class AggregationRestartWorker  implements Runnable {
 
     @Override @Transactional public void run() {
         try {
-            for(ComposedMonitor m : modelService.getAll()){
-                se.aggregateMonitors(m, false);
-            }
+//TODO does not work correctly:
+//            for(ComposedMonitor m : modelService.getAll()){
+//                se.aggregateMonitors(m, false);
+//            }
         } catch (Exception e) {
             Logger.error("Job Execution got an error", e);
 

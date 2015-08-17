@@ -58,7 +58,7 @@ public class MonitorSubscriptionController extends
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ComposedMonitorController.get(id).absoluteURL(request());
+        return controllers.routes.MonitorSubscriptionController.get(id).absoluteURL(request());
     }
 
     @Override @Transactional protected void postPost(MonitorSubscription entity) {
@@ -70,11 +70,13 @@ public class MonitorSubscriptionController extends
     @Override @Transactional protected void postPut(MonitorSubscription entity) {
         super.postPut(entity);
 
-        se.unsubscribe(entity.getMonitor(), entity);
+        se.unsubscribe(entity.getId());
+        se.subscribe(entity.getMonitor(), entity);
     }
 
     @Override @Transactional public Result delete(final Long id) {
         // for each mi : se.unsubscribe(id); // moved here because access to monitor is still needed
+        se.unsubscribe(id); //TODO currently misused monitor id here, since we dont know it anymore - preDelete?
 
         Result parent = super.delete(id);
 

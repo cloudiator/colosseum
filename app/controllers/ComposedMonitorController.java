@@ -73,7 +73,7 @@ public class ComposedMonitorController extends
 
         //TODO better update than remove and add?
         se.removeMonitor(entity.getId());
-
+        // TODO not cool since new monitorinstance ids will be created
         se.aggregateMonitors(entity, true);
     }
 

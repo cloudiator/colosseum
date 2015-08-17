@@ -51,7 +51,7 @@ public class AggregationWorker implements Runnable {
         try {
             while(!Thread.currentThread().isInterrupted()){ /*TODO change with new version*/
                 Aggregation job = aggregationQueue.take();
-                Thread.sleep(1000); /* wait for transaction to be finished */
+                Thread.sleep(2000); /* wait for transaction to be finished */
                 job.execute(this.service);
             }
         } catch (InterruptedException e) {

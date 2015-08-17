@@ -22,11 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.MeasurementWindowDto;
-import dtos.TimeWindowDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.MeasurementWindow;
 import models.Tenant;
-import models.TimeWindow;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 

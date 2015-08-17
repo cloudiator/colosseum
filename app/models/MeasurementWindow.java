@@ -22,11 +22,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by Frank on 20.05.2015.
  */
-@Entity public abstract class MeasurementWindow extends Window {
+@Entity public class MeasurementWindow extends Window {
 
     @Column(nullable = false, updatable = false) private Long measurements;
 
@@ -37,6 +38,7 @@ import static com.google.common.base.Preconditions.checkArgument;
     }
 
     public MeasurementWindow(Long measurements) {
+        checkNotNull(measurements);
         checkArgument(measurements > 0);
         this.measurements = measurements;
     }

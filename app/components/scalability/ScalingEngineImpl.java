@@ -26,6 +26,7 @@ import models.*;
 import models.generic.ExternalReference;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
+import play.Logger;
 
 import java.util.List;
 
@@ -113,6 +114,8 @@ public class ScalingEngineImpl implements ScalingEngine {
     @Override
     public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances) {
 
+        Logger.debug("Aggregate ComposedMonitor: " + monitor.getId());
+
         if (monitor.getFlowOperator().equals(FlowOperator.MAP)){
             /*
 
@@ -183,9 +186,9 @@ public class ScalingEngineImpl implements ScalingEngine {
         } else {
             ComposedMonitor composedMonitor = db.getComposedMonitor(monitorId);
             if (composedMonitor != null){
-                System.out.println("Delete ComposedMonitor: " + composedMonitor.getId());
+                Logger.debug("Delete ComposedMonitor: " + composedMonitor.getId());
 
-                aggregationQueue.add(new AddAggregation(Converter.convert(composedMonitor)));
+                aggregationQueue.add(new RemoveAggregation(Converter.convert(composedMonitor)));
             }
 
             List<MonitorInstance> monitorInstances = db.getMonitorInstances(monitorId);
@@ -372,7 +375,7 @@ public class ScalingEngineImpl implements ScalingEngine {
         aggregationQueue.add(new SubscribeAggregation(Converter.convert(monitor), subscription));
     }
 
-    @Override public void unsubscribe(Monitor monitor, MonitorSubscription subscription) {
-        aggregationQueue.add(new UnsubscribeAggregation(Converter.convert(monitor), subscription));
+    @Override public void unsubscribe(Long idSubscription) {
+        aggregationQueue.add(new UnsubscribeAggregation(idSubscription));
     }
 }

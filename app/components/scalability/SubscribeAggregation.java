@@ -42,10 +42,10 @@ public class SubscribeAggregation implements Aggregation {
         try {
             if(this.subscription.getType() == SubscriptionType.CDO) {
                 service.addObserverToMonitor(monitor.getId(),
-                    new TelnetMetricObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
+                    new TelnetMetricObserver(subscription.getId().toString(), subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic*/
             } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
                 service.addObserverToMonitor(monitor.getId(),
-                    new TelnetEventObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
+                    new TelnetEventObserver(subscription.getId().toString(), subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic*/
             }
         } catch (Exception e) {
             e.printStackTrace();

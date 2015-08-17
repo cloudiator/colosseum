@@ -73,5 +73,5 @@ public interface ScalingEngine {
     public Monitor _doMonitorVms(long applicationId, long componentId, long instanceId, long cloudId, RawMonitor monitor);
 
     void subscribe(Monitor monitor, MonitorSubscription subscription);
-    void unsubscribe(Monitor monitor, MonitorSubscription subscription);
+    void unsubscribe(Long idSubscription);
 }

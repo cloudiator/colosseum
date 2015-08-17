@@ -29,24 +29,24 @@ import models.scalability.SubscriptionType;
 /**
  * Created by Frank on 03.08.2015.
  */
-public class UnsubscribeAggregation extends SubscribeAggregation {
+public class UnsubscribeAggregation implements Aggregation {
 
-    public UnsubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {
-        super(monitor, subscription);
+    private Long idMonitorSubscription;
+
+    public UnsubscribeAggregation(Long idMonitorSubscription) {
+        super();
+        this.idMonitorSubscription = idMonitorSubscription;
     }
 
     @Override public void execute(AggregatorService service) {
         try {
-            if(this.subscription.getType() == SubscriptionType.CDO) {
-                service.removeObserverFromMonitor(monitor.getId(),
-                    new TelnetMetricObserver(subscription.getFilterValue(),
-                        Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
-            } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
-                service.removeObserverFromMonitor(monitor.getId(),
-                    new TelnetEventObserver(subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), "localhost", 27182)); /*TODO dynamic*/
-            }
+            service.removeObserverFromMonitor(idMonitorSubscription.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override public int getPriority() {
+        return 0;
     }
 }

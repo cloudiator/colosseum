@@ -138,6 +138,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Location>>() {
         }).to(new TypeLiteral<BaseModelService<Location>>() {
         });
+        //TimeWindow
+        bind(new TypeLiteral<ModelService<MeasurementWindow>>() {
+        }).to(new TypeLiteral<BaseModelService<MeasurementWindow>>() {
+        });
         bind(LocationModelService.class).to(DefaultLocationModelService.class);
         //Monitor
         bind(new TypeLiteral<ModelService<Monitor>>() {

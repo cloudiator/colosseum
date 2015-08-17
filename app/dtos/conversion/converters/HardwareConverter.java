@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.HardwareDto;
-import dtos.conversion.AbstractConverter;
+import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
@@ -29,7 +29,7 @@ import models.service.ModelService;
 /**
  * Created by daniel on 14.04.15.
  */
-public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> {
+public class HardwareConverter extends RemoteConverter<Hardware, HardwareDto> {
 
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final ModelService<Cloud> cloudModelService;
@@ -47,7 +47,9 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
     }
 
     @Override public void configure() {
-        builder().from("remoteId").to("remoteId");
+
+        super.configure();
+
         builder().from(Long.class, "hardwareOffer").to(HardwareOffer.class, "hardwareOffer")
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
@@ -55,6 +57,7 @@ public class HardwareConverter extends AbstractConverter<Hardware, HardwareDto> 
         builder().from("locations").to("locations").withUnsafeTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
         builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
-            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
+            new ModelToListIdTransformer<>(
+                new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

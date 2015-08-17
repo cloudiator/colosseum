@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.LocationDto;
-import dtos.conversion.AbstractConverter;
+import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Cloud;
@@ -32,7 +32,7 @@ import models.service.ModelService;
 /**
  * Created by daniel on 14.04.15.
  */
-public class LocationConverter extends AbstractConverter<Location, LocationDto> {
+public class LocationConverter extends RemoteConverter<Location, LocationDto> {
 
     private final ModelService<Location> locationModelService;
     private final ModelService<Cloud> cloudModelService;
@@ -50,10 +50,11 @@ public class LocationConverter extends AbstractConverter<Location, LocationDto> 
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-
-        builder().from("remoteId").to("remoteId");
 
         builder().from(Long.class, "parent").to(Location.class, "parent")
             .withTransformation(new IdToModelTransformer<>(locationModelService));
@@ -66,6 +67,7 @@ public class LocationConverter extends AbstractConverter<Location, LocationDto> 
             .withTransformation(new IdToModelTransformer<>(geoLocationModelService));
 
         builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
-            new ModelToListIdTransformer<>(new IdToModelTransformer<>(cloudCredentialModelService)));
+            new ModelToListIdTransformer<>(
+                new IdToModelTransformer<>(cloudCredentialModelService)));
     }
 }

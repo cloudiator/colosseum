@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.VirtualMachineDto;
-import dtos.conversion.AbstractConverter;
+import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.*;
 import models.service.ModelService;
@@ -28,7 +28,7 @@ import models.service.ModelService;
 /**
  * Created by daniel on 15.04.15.
  */
-public class VirtualMachineConverter extends AbstractConverter<VirtualMachine, VirtualMachineDto> {
+public class VirtualMachineConverter extends RemoteConverter<VirtualMachine, VirtualMachineDto> {
 
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<Image> imageModelService;
@@ -46,8 +46,10 @@ public class VirtualMachineConverter extends AbstractConverter<VirtualMachine, V
     }
 
     @Override public void configure() {
+
+        super.configure();
+
         builder().from("name").to("name");
-        builder().from("remoteId").to("remoteId");
         builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         builder().from(Long.class, "image").to(Image.class, "image")

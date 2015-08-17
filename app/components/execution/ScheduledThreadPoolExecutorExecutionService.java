@@ -19,7 +19,9 @@
 package components.execution;
 
 import com.google.inject.Singleton;
+import play.Configuration;
 import play.Logger;
+import play.Play;
 
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -30,8 +32,11 @@ import java.util.concurrent.ScheduledExecutorService;
 
     private final ScheduledExecutorService scheduledExecutorService;
 
+
     public ScheduledThreadPoolExecutorExecutionService() {
-        scheduledExecutorService = new ExtendedScheduledThreadPoolExecutor(10);
+        final Configuration configuration = Play.application().configuration();
+        scheduledExecutorService = new ExtendedScheduledThreadPoolExecutor(
+            configuration.getInt("colosseum.execution.thread", 10));
     }
 
     @Override public void schedule(Schedulable schedulable) {

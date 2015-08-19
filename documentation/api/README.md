@@ -13,7 +13,6 @@ Entity                                                       | URL
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [Communication](entities/Communication.md)                   | /api/communication
-[CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
 [Tenant](entities/Tenant.md)                                 | /api/tenant
 [FrontendUser](entities/FrontendUser.md)                     | /api/frontendUser
 [GeoLocation](entities/GeoLocation.md)                       | /api/geo
@@ -26,6 +25,8 @@ Entity                                                       | URL
 [LifecycleComponent](entities/LifecycleComponent.md)         | /api/lifecycleComponent
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
 [OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
+[PortProvided](entities/PortProvided.md)                     | /api/portProv                                                         
+[PortOutbound](entities/PortRequired.md)                     | /api/portReq
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 

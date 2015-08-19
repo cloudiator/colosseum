@@ -16,18 +16,13 @@
  * under the License.
  */
 
-package components.job;
-
-import models.Instance;
-import models.Tenant;
-import models.VirtualMachine;
+package dtos;
 
 /**
- * Created by daniel on 03.07.15.
+ * Created by daniel on 03.08.15.
  */
-public interface JobService {
+public class PortRequiredDto extends PortDto {
 
-    void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
-
-    void newInstanceJob(Instance instance, Tenant tenant);
+    public PortRequiredDto() {
+    }
 }

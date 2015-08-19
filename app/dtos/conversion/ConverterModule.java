@@ -18,6 +18,7 @@
 
 package dtos.conversion;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
@@ -28,6 +29,7 @@ import org.reflections.util.ConfigurationBuilder;
 import play.Configuration;
 import play.Play;
 
+import java.lang.reflect.Modifier;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkState;
@@ -60,6 +62,14 @@ public class ConverterModule extends AbstractModule {
         Multibinder<DtoConverter> converterBinder =
             Multibinder.newSetBinder(binder(), DtoConverter.class);
 
+        for (Class<? extends DtoConverter> converterClass : Sets
+            .filter(findConverters(), new ClassFilter())) {
+            converterBinder.addBinding().to(converterClass);
+        }
+    }
+
+    private Set<Class<? extends DtoConverter>> findConverters() {
+
         String conversionPackage = configuration.getString("colosseum.conversion.package");
         String convertersPackage = configuration.getString("colosseum.conversion.converters");
 
@@ -70,12 +80,20 @@ public class ConverterModule extends AbstractModule {
                 .setUrls(ClasspathHelper.forPackage(conversionPackage))
                 .addScanners(new SubTypesScanner()));
 
-        final Set<Class<? extends DtoConverter>> converters =
-            Sets.filter(reflections.getSubTypesOf(DtoConverter.class),
-                aClass -> aClass.getName().startsWith(convertersPackage));
+        return Sets.filter(reflections.getSubTypesOf(DtoConverter.class),
+            aClass -> aClass.getName().startsWith(convertersPackage));
+    }
 
-        for (Class<? extends DtoConverter> converter : converters) {
-            converterBinder.addBinding().to(converter);
+    private static class ClassFilter implements Predicate<Class<? extends DtoConverter>> {
+
+        @Override public boolean apply(Class<? extends DtoConverter> aClass) {
+
+            //filter abstract classes
+            if (Modifier.isAbstract(aClass.getModifiers())) {
+                return false;
+            }
+            return true;
         }
     }
+
 }

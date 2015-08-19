@@ -54,13 +54,12 @@ public abstract class ValidatableDto implements Dto, Validatable {
     public abstract void validation();
 
 
-    @Nullable @Override public List<ValidationError> validate() {
+    @Nullable @Override public final List<ValidationError> validate() {
         validation();
         List<ValidationError> errors = new LinkedList<>();
         try {
             errors.addAll(validationHolder.validate().stream()
-                .map(dtos.validation.ValidationError::toPlayError)
-                .collect(Collectors.toList()));
+                .map(dtos.validation.ValidationError::toPlayError).collect(Collectors.toList()));
         } catch (ValidationException e) {
             if (errors.isEmpty()) {
                 throw new RuntimeException(

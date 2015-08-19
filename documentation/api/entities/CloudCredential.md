@@ -7,7 +7,7 @@ The CloudCredential entity represents the user account for a specified cloud.
 
 ***
 
-## GET /api/credential
+## GET /api/cloudCredential
 
 ###Description
 
@@ -99,7 +99,7 @@ The Credential entity identified by the given id.
 
 ***
 
-## POST /api/credential
+## POST /api/cloudCredential
 
 ###Description
 

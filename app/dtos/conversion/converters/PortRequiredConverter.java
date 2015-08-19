@@ -16,18 +16,21 @@
  * under the License.
  */
 
-package components.job;
+package dtos.conversion.converters;
 
-import models.Instance;
-import models.Tenant;
-import models.VirtualMachine;
+import com.google.inject.Inject;
+import dtos.PortRequiredDto;
+import models.ApplicationComponent;
+import models.PortRequired;
+import models.service.ModelService;
 
 /**
- * Created by daniel on 03.07.15.
+ * Created by daniel on 03.08.15.
  */
-public interface JobService {
+public class PortRequiredConverter extends PortConverter<PortRequired, PortRequiredDto> {
 
-    void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
-
-    void newInstanceJob(Instance instance, Tenant tenant);
+    @Inject public PortRequiredConverter(
+        ModelService<ApplicationComponent> applicationComponentModelService) {
+        super(PortRequired.class, PortRequiredDto.class, applicationComponentModelService);
+    }
 }

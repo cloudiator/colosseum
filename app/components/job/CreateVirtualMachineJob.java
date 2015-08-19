@@ -29,7 +29,7 @@ import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import de.uniulm.omi.cloudiator.sword.core.domain.builders.TemplateOptionsBuilder;
+import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
 import models.service.ModelService;
 

@@ -24,6 +24,7 @@ import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
 import components.installer.Installers;
+import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
@@ -107,6 +108,19 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         for (String ip : cloudVirtualMachine.publicAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
         }
+
+        if (cloudVirtualMachine.loginCredential().isPresent()) {
+            LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
+            virtualMachine.setGeneratedLoginPassword(loginCredential.username());
+            if (loginCredential.isPasswordCredential()) {
+                virtualMachine.setGeneratedLoginPassword(loginCredential.password().get());
+            } else {
+                //todo: if a private key and a public key are returned, we need to store them
+                throw new UnsupportedOperationException(
+                    "Virtual Machine that started with key credentials is not yet supported.");
+            }
+        }
+        
         modelService.save(virtualMachine);
 
         if (virtualMachine.publicIpAddress() == null) {

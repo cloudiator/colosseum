@@ -21,8 +21,6 @@ package dtos.validation;
 import java.util.Collection;
 import java.util.LinkedList;
 
-import static com.google.common.base.Preconditions.checkState;
-
 /**
  * Created by daniel on 20.03.15.
  */
@@ -33,13 +31,14 @@ public abstract class AbstractValidator<T> implements Validator<T> {
     public AbstractValidator() {
     }
 
-    protected void addError(ValidationErrorMessage validationErrorMessage) {
+    protected final void addError(ValidationErrorMessage validationErrorMessage) {
         this.validationErrorMessages.add(validationErrorMessage);
     }
 
     protected abstract void validation(T t) throws ValidationException;
 
-    @Override public Collection<ValidationErrorMessage> validate(T t) throws ValidationException {
+    @Override public final Collection<ValidationErrorMessage> validate(T t)
+        throws ValidationException {
         this.validationErrorMessages = new LinkedList<>();
         this.validation(t);
         return validationErrorMessages;

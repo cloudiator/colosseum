@@ -24,13 +24,13 @@ import dtos.conversion.transformers.Transformer;
 /**
  * Created by daniel on 17.03.15.
  */
-public class DefaultFieldBinding extends GenericFieldBinding<Object, Object> {
+public class DefaultConversionBinding extends GenericConversionBinding<Object, Object> {
 
-    public DefaultFieldBinding(String fieldNameFrom, String fieldNameTo) {
+    public DefaultConversionBinding(String fieldNameFrom, String fieldNameTo) {
         super(Object.class, fieldNameFrom, Object.class, fieldNameTo, new DefaultTransformer());
     }
 
-    public DefaultFieldBinding(Class<Object> fieldTypeFrom, String fieldNameFrom,
+    public DefaultConversionBinding(Class<Object> fieldTypeFrom, String fieldNameFrom,
         Class<Object> fieldTypeTo, String fieldNameTo, Transformer<Object, Object> transformer) {
         super(fieldTypeFrom, fieldNameFrom, fieldTypeTo, fieldNameTo, transformer);
     }

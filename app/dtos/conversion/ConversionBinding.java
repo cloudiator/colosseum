@@ -21,9 +21,9 @@ package dtos.conversion;
 /**
  * Created by daniel on 16.03.15.
  */
-public interface FieldBinding{
+public interface ConversionBinding {
 
-    public void bind(Object from, Object to);
+    void bind(Object from, Object to);
 
-    public void bindReverse(Object from, Object to);
+    void bindReverse(Object from, Object to);
 }

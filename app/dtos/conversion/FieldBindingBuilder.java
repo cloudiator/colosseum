@@ -48,7 +48,7 @@ public class FieldBindingBuilder implements FromBindingBuilder {
         return tToBindingBuilder;
     }
 
-    public FieldBinding build() {
+    public ConversionBinding build() {
         checkState(toBindingBuilder != null);
         return toBindingBuilder.build();
     }
@@ -81,7 +81,7 @@ public class FieldBindingBuilder implements FromBindingBuilder {
             return tObjectTransformationBindingBuilder;
         }
 
-        private FieldBinding build() {
+        private ConversionBinding build() {
             checkState(transformationBindingBuilder != null);
             return transformationBindingBuilder.build();
         }
@@ -115,11 +115,11 @@ public class FieldBindingBuilder implements FromBindingBuilder {
             this.transformer = transformer;
         }
 
-        private FieldBinding build() {
+        private ConversionBinding build() {
             if (transformer == null) {
-                return new DefaultFieldBinding(fromFieldName, toFieldName);
+                return new DefaultConversionBinding(fromFieldName, toFieldName);
             }
-            return new GenericFieldBinding<>(this.fromFieldType, fromFieldName, toFieldType,
+            return new GenericConversionBinding<>(this.fromFieldType, fromFieldName, toFieldType,
                 toFieldName, transformer);
         }
     }

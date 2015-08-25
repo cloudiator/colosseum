@@ -27,13 +27,13 @@ import models.generic.Model;
 public abstract class AbstractConverter<T extends Model, S extends Dto>
     implements DtoConverter<T, S> {
 
-    private final FieldBindings fieldBindings;
+    private final ConversionBindings fieldBindings;
     private final Class<T> tType;
     private final Class<S> sType;
     private boolean configured = false;
 
     protected AbstractConverter(Class<T> t, Class<S> s) {
-        fieldBindings = new FieldBindings();
+        fieldBindings = new ConversionBindings();
         tType = t;
         sType = s;
     }

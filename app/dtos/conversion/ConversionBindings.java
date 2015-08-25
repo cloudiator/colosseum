@@ -28,13 +28,13 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 17.03.15.
  */
-public class FieldBindings implements FieldBinding {
+public class ConversionBindings implements ConversionBinding {
 
     private boolean isBuild = false;
     private Collection<FieldBindingBuilder> builders;
-    private Collection<FieldBinding> fieldBindings;
+    private Collection<ConversionBinding> conversionBindings;
 
-    public FieldBindings() {
+    public ConversionBindings() {
         this.builders = new LinkedList<>();
     }
 
@@ -46,25 +46,25 @@ public class FieldBindings implements FieldBinding {
     }
 
     private void build() {
-        final ImmutableList.Builder<FieldBinding> builder = ImmutableList.<FieldBinding>builder();
+        final ImmutableList.Builder<ConversionBinding> builder = ImmutableList.<ConversionBinding>builder();
         for (FieldBindingBuilder fieldBindingBuilder : builders) {
             builder.add(fieldBindingBuilder.build());
         }
-        this.fieldBindings = builder.build();
+        this.conversionBindings = builder.build();
         isBuild = true;
     }
 
     @Override public void bind(Object from, Object to) {
         build();
-        for (FieldBinding fieldBinding : fieldBindings) {
-            fieldBinding.bind(from, to);
+        for (ConversionBinding conversionBinding : conversionBindings) {
+            conversionBinding.bind(from, to);
         }
     }
 
     @Override public void bindReverse(Object from, Object to) {
         build();
-        for (FieldBinding fieldBinding : fieldBindings) {
-            fieldBinding.bindReverse(from, to);
+        for (ConversionBinding conversionBinding : conversionBindings) {
+            conversionBinding.bindReverse(from, to);
         }
     }
 }

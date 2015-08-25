@@ -23,7 +23,7 @@ import dtos.conversion.transformers.Transformer;
 /**
  * Created by daniel on 16.03.15.
  */
-public class GenericFieldBinding<T, S> implements FieldBinding {
+public class GenericConversionBinding<T, S> implements ConversionBinding {
 
     private final String fieldNameFrom;
     private final String fieldNameTo;
@@ -31,8 +31,8 @@ public class GenericFieldBinding<T, S> implements FieldBinding {
     private final Class<T> fieldTypeFrom;
     private final Class<S> fieldTypeTo;
 
-    public GenericFieldBinding(Class<T> fieldTypeFrom, String fieldNameFrom, Class<S> fieldTypeTo,
-        String fieldNameTo, Transformer<T, S> transformer) {
+    public GenericConversionBinding(Class<T> fieldTypeFrom, String fieldNameFrom,
+        Class<S> fieldTypeTo, String fieldNameTo, Transformer<T, S> transformer) {
         this.fieldNameFrom = fieldNameFrom;
         this.fieldNameTo = fieldNameTo;
         this.transformer = transformer;

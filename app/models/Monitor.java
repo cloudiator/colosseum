@@ -28,18 +28,18 @@ import java.util.List;
  */
 @Entity
 public abstract class Monitor extends ModelWithExternalReference {
-//
-//    @OneToMany(mappedBy = "monitor") private List<MonitorInstance>
-//        monitorInstances;
-//
-//    public List<MonitorInstance> getMonitorInstances() {
-//        return monitorInstances;
-//    }
-//
-//    public void setMonitorInstances(List<MonitorInstance> monitorInstances) {
-//        this.monitorInstances = monitorInstances;
-//    }
-//
+
+    @OneToMany(mappedBy = "monitor") private List<MonitorInstance>
+        monitorInstances;
+
+    public List<MonitorInstance> getMonitorInstances() {
+        return monitorInstances;
+    }
+
+    public void setMonitorInstances(List<MonitorInstance> monitorInstances) {
+        this.monitorInstances = monitorInstances;
+    }
+
 //    @ManyToMany(mappedBy = "monitors") private List<ComposedMonitor>
 //        composedMonitors;
 //

@@ -16,37 +16,26 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetEventObserver;
-import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
-import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
-import de.uniulm.omi.executionware.srl.api.Monitor;
-import models.MonitorSubscription;
-import models.scalability.SubscriptionType;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import models.ComposedMonitor;
 
 /**
- * Created by Frank on 03.08.2015.
+ * Created by Frank on 30.07.2015.
  */
-public class UnsubscribeAggregation implements Aggregation {
+public class RemoveAggregation extends MonitorAggregation {
 
-    private Long idMonitorSubscription;
-
-    public UnsubscribeAggregation(Long idMonitorSubscription) {
-        super();
-        this.idMonitorSubscription = idMonitorSubscription;
+    public RemoveAggregation(ComposedMonitor composedMonitor) {
+        super(composedMonitor);
     }
 
-    @Override public void execute(AggregatorService service) {
+    @Override public void execute(AggregatorServiceAccess service) {
         try {
-            service.removeObserverFromMonitor(idMonitorSubscription.toString());
+            service.stopAggregation(getObject().getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override public int getPriority() {
-        return 0;
     }
 }

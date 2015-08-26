@@ -16,12 +16,16 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
+import components.scalability.Converter;
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
 import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetEventObserver;
 import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
-import de.uniulm.omi.executionware.srl.api.Monitor;
+import models.Monitor;
 import models.MonitorSubscription;
 import models.scalability.SubscriptionType;
 
@@ -38,21 +42,27 @@ public class SubscribeAggregation implements Aggregation {
         this.monitor = monitor;
     }
 
-    @Override public void execute(AggregatorService service) {
+    @Override public int getPriority() {
+        return 0;
+    }
+
+    @Override public models.Monitor getObject() {
+        return monitor;
+    }
+
+    @Override public void execute(AggregatorServiceAccess service) {
         try {
             if(this.subscription.getType() == SubscriptionType.CDO) {
-                service.addObserverToMonitor(monitor.getId(),
-                    new TelnetMetricObserver(subscription.getId().toString(), subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic*/
+                service.addObserver(monitor.getId(), new TelnetMetricObserverParameter(subscription.getId().toString(), subscription.getFilterValue(), Converter
+                    .convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic port*/
             } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
-                service.addObserverToMonitor(monitor.getId(),
-                    new TelnetEventObserver(subscription.getId().toString(), subscription.getFilterValue(), Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic*/
+                service.addObserver(monitor.getId(),
+                    new TelnetEventObserverParameter(subscription.getId().toString(),
+                        subscription.getFilterValue(),
+                        Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic port*/
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override public int getPriority() {
-        return 0;
     }
 }

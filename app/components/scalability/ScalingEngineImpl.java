@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import components.scalability.aggregation.*;
 import models.*;
 import models.generic.ExternalReference;
 import models.scalability.FlowOperator;
@@ -129,15 +130,12 @@ public class ScalingEngineImpl implements ScalingEngine {
                 for (Monitor obj : monitor.getMonitors()) {
                     List<MonitorInstance> monitorInstances = db.getMonitorInstances(obj.getId());
                     for (MonitorInstance inst : monitorInstances) {
-                        db.saveMonitorInstance(monitor.getId(), null, null, null);
+                        //TODO
+                        String apiEndpoint = "";
+                        db.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
                     }
                 }
             }
-
-
-            aggregationQueue.add(new AddAggregation(Converter.convert(monitor)));
-
-            return monitor;
         } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)){
             /*
 
@@ -147,15 +145,70 @@ public class ScalingEngineImpl implements ScalingEngine {
 
              */
             if(createInstances) {
-                db.saveMonitorInstance(monitor.getId(), null, null, null);
+                //TODO
+                String apiEndpoint = "";
+                db.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
             }
-
-            aggregationQueue.add(new AddAggregation(Converter.convert(monitor)));
-
-            return monitor;
         }
 
-        return null;
+        aggregationQueue.add(new AddAggregation(monitor));
+
+        return monitor;
+    }
+
+    @Override public void updateAggregation(ComposedMonitor monitor) {
+        if (monitor != null){
+            Logger.debug("Update ComposedMonitor: " + monitor.getId());
+
+            aggregationQueue.add(new UpdateAggregation(monitor));
+        }
+
+        List<MonitorInstance> monitorInstances = db.getMonitorInstances(monitor.getId());
+
+        int amountOfNeededInstances = 0;
+
+        if (monitor.getFlowOperator().equals(FlowOperator.MAP)){
+            /*
+
+            TODO
+            just a workaround, # of instances depend on quantifier
+
+            also store ip of aggregator/tsdb into monitorinstance
+
+            */
+            for (Monitor obj : monitor.getMonitors()) {
+                List<MonitorInstance> monInstances = db.getMonitorInstances(obj.getId());
+                amountOfNeededInstances += monInstances.size();
+            }
+        } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)){
+            /*
+
+            TODO
+            just a workaround, but actually # of instances when reducing
+            is always 1
+
+             */
+            amountOfNeededInstances = 1;
+        }
+
+        // Be careful, if a sub-monitor changed, the external
+        // references etc. has to be set again for the upper ones
+        int i = monitorInstances.size();
+
+        if(amountOfNeededInstances > i){
+            int toAdd = amountOfNeededInstances - i;
+            for (int j = 0; j < toAdd; ++j) {
+                //TODO
+                String apiEndpoint = "";
+                db.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+            }
+
+        } else if (i > amountOfNeededInstances) {
+            int toDelete = i - amountOfNeededInstances;
+            for (int j = 0; j < toDelete; ++j) {
+                fc.removeMonitorInstance(monitorInstances.get(monitorInstances.size() - 1 - j));
+            }
+        }
     }
 
     @Override public void removeMonitor(long monitorId) {
@@ -188,7 +241,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             if (composedMonitor != null){
                 Logger.debug("Delete ComposedMonitor: " + composedMonitor.getId());
 
-                aggregationQueue.add(new RemoveAggregation(Converter.convert(composedMonitor)));
+                aggregationQueue.add(new RemoveAggregation(composedMonitor));
             }
 
             List<MonitorInstance> monitorInstances = db.getMonitorInstances(monitorId);
@@ -265,7 +318,10 @@ public class ScalingEngineImpl implements ScalingEngine {
 
             /* TODO create monitor instance */
 
-            MonitorInstance instance = db.saveMonitorInstance(resultMonitor.getId(), fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
+            String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
+
+
+            MonitorInstance instance = db.saveMonitorInstance(resultMonitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
 
 
             ac.addMonitor(String.valueOf(instance.getId()), sensorDescription.getClassName(), sensorDescription.getMetricName(), schedule.getInterval(), schedule.getTimeUnit());
@@ -315,7 +371,9 @@ public class ScalingEngineImpl implements ScalingEngine {
 
                 /* TODO create monitor instance */
 
-                MonitorInstance instance = db.saveMonitorInstance(resultMonitor.getId(), fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
+                String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
+
+                MonitorInstance instance = db.saveMonitorInstance(resultMonitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
 
 
 
@@ -354,7 +412,9 @@ public class ScalingEngineImpl implements ScalingEngine {
 
             /* TODO create monitor instance */
 
-            MonitorInstance instance = db.saveMonitorInstance(monitor.getId(), fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
+            String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
+
+            MonitorInstance instance = db.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm), vm.getId(), componentId);
 
 
             ac.addMonitor(String.valueOf(instance.getId()), monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(), monitor.getSchedule().getTimeUnit());
@@ -372,7 +432,7 @@ public class ScalingEngineImpl implements ScalingEngine {
     }
 
     @Override public void subscribe(Monitor monitor, MonitorSubscription subscription) {
-        aggregationQueue.add(new SubscribeAggregation(Converter.convert(monitor), subscription));
+        aggregationQueue.add(new SubscribeAggregation(monitor, subscription));
     }
 
     @Override public void unsubscribe(Long idSubscription) {

@@ -31,6 +31,7 @@ import java.util.List;
 public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     private Long monitor;
+    private String apiEndpoint;
     private Long ipAddress;
     private Long virtualMachine;
     private Long component;
@@ -39,10 +40,12 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
         super();
     }
 
-    public MonitorInstanceDto(List<String> externalReferences, Long monitor, Long ipAddress,
+    public MonitorInstanceDto(List<String> externalReferences, Long monitor, String apiEndpoint,
+        Long ipAddress,
         Long virtualMachine, Long component) {
         super(externalReferences);
         this.monitor = monitor;
+        this.apiEndpoint = apiEndpoint;
         this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
@@ -90,5 +93,13 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     public void setComponent(Long component) {
         this.component = component;
+    }
+
+    public String getApiEndpoint() {
+        return apiEndpoint;
+    }
+
+    public void setApiEndpoint(String apiEndpoint) {
+        this.apiEndpoint = apiEndpoint;
     }
 }

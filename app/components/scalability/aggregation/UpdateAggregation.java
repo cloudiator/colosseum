@@ -16,23 +16,25 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import models.ComposedMonitor;
 
 /**
- * Created by Frank on 30.07.2015.
+ * Created by Frank on 19.08.2015.
  */
-public class AddAggregation extends MonitorAggregation {
+public class UpdateAggregation extends MonitorAggregation {
 
-    public AddAggregation(ComposedMonitor composedMonitor) {
+    public UpdateAggregation(ComposedMonitor composedMonitor) {
         super(composedMonitor);
     }
 
-    @Override public void execute(AggregatorService service) {
+    @Override public void execute(AggregatorServiceAccess service) {
         try {
-            service.addAggregator(this.getComposedMonitor());
+            service.stopAggregation(this.getObject().getId());
+            service.doAggregation(this.getObject().getId());
         } catch (Exception e) {
             e.printStackTrace();
         }

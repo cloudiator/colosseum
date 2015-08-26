@@ -41,14 +41,18 @@ import java.util.List;
     private final ModelService<Monitor> monitorModelService;
     private final ModelService<FormulaQuantifier> formulaQuantifierModelService;
     private final ModelService<ExternalReference> externalReferenceModelService;
+    private final ModelService<MonitorInstance> monitorInstanceModelService;
 
-    @Inject protected ComposedMonitorConverter(ModelService<Schedule> scheduleModelService,
+    @Inject protected ComposedMonitorConverter(
+        ModelService<MonitorInstance> monitorInstanceModelService,
+        ModelService<Schedule> scheduleModelService,
         ModelService<Window> windowModelService,
         ModelService<ScalingAction> scalingActionModelService,
         ModelService<Monitor> monitorModelService,
         ModelService<FormulaQuantifier> formulaQuantifierModelService,
         ModelService<ExternalReference> externalReferenceModelService) {
         super(ComposedMonitor.class, ComposedMonitorDto.class);
+        this.monitorInstanceModelService = monitorInstanceModelService;
         this.scheduleModelService = scheduleModelService;
         this.windowModelService = windowModelService;
         this.scalingActionModelService = scalingActionModelService;
@@ -74,5 +78,8 @@ import java.util.List;
                 new IdToModelTransformer<>(scalingActionModelService)));
         builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
             .withUnsafeTransformation(new StringToExternalReferenceTransformer());
+        builder().from(List.class, "monitorInstances").to(List.class, "monitorInstances")
+            .withUnsafeTransformation(
+                new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorInstanceModelService)));
     }
 }

@@ -16,14 +16,13 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.worker;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
-import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.aggregator.DirectEngineCommunicator;
-import de.uniulm.omi.executionware.srl.aggregator.IEngineCommunicator;
+import components.scalability.Helper;
+import components.scalability.aggregation.Aggregation;
 
 /**
  * Created by Frank on 30.07.2015.
@@ -31,20 +30,9 @@ import de.uniulm.omi.executionware.srl.aggregator.IEngineCommunicator;
 public class AggregationWorker implements Runnable {
 
     private final SimpleBlockingQueue<Aggregation> aggregationQueue;
-    private final AggregatorService service;
-
 
     @Inject public AggregationWorker(@Named("aggregationQueue") SimpleBlockingQueue<Aggregation> aggregationQueue) {
         this.aggregationQueue = aggregationQueue;
-
-        /*TODO make this dynamic: */
-        de.uniulm.omi.executionware.srl.aggregator.FrontendCommunicator afc =
-            new de.uniulm.omi.executionware.srl.aggregator.RemoteFrontendCommunicator
-                ("http", "127.0.0.1", 9000, "john.doe@example.com", "admin", "admin"); //TODO <- has to be dynamic!
-
-        IEngineCommunicator ec = new DirectEngineCommunicator(afc);
-
-        this.service = AggregatorService.getService(afc, ec /*, play.Logger.of("scalability")*/);
     }
 
     @Override public void run() {
@@ -52,7 +40,12 @@ public class AggregationWorker implements Runnable {
             while(!Thread.currentThread().isInterrupted()){ /*TODO change with new version*/
                 Aggregation job = aggregationQueue.take();
                 Thread.sleep(2000); /* wait for transaction to be finished */
-                job.execute(this.service);
+
+                Helper.getIpOfTSDB(job.getObject(), null);
+
+                //job.execute(AggregationAccessService.getService(), monitorInstances);
+
+                //TODO has to be done on basis of the monitor instances instead of the monitors
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

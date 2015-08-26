@@ -22,11 +22,10 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
-import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
-import components.execution.Stable;
-import components.job.Job;
-import components.job.JobQueue;
+import components.scalability.aggregation.Aggregation;
+import components.scalability.worker.AggregationRestartWorker;
+import components.scalability.worker.AggregationWorker;
 
 /**
  * Created by Frank on 30.07.2015.

@@ -16,14 +16,10 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.worker;
 
 import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import components.execution.SimpleBlockingQueue;
-import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.aggregator.DirectEngineCommunicator;
-import de.uniulm.omi.executionware.srl.aggregator.IEngineCommunicator;
+import components.scalability.ScalingEngine;
 import models.ComposedMonitor;
 import models.service.ModelService;
 import play.Logger;

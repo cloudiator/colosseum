@@ -16,31 +16,29 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
-import com.google.inject.Singleton;
-import components.execution.DefaultPriorityQueue;
-import components.execution.PriorityQueue;
-import components.execution.SimpleBlockingQueue;
-import components.scalability.aggregation.Aggregation;
+
+import models.ComposedMonitor;
 
 /**
  * Created by Frank on 30.07.2015.
  */
-@Singleton public class AggregationQueue implements PriorityQueue<Aggregation> {
+public abstract class MonitorAggregation implements Aggregation<ComposedMonitor> {
 
-    private SimpleBlockingQueue<Aggregation> aggregationSimpleBlockingQueue;
+    private final ComposedMonitor composedMonitor;
 
-    public AggregationQueue() {
-        this.aggregationSimpleBlockingQueue = new DefaultPriorityQueue<>();
+    public MonitorAggregation(ComposedMonitor composedMonitor) {
+        this.composedMonitor = composedMonitor;
     }
 
-    @Override public void add(Aggregation t) {
-        aggregationSimpleBlockingQueue.add(t);
+    @Override
+    public ComposedMonitor getObject() {
+        return this.composedMonitor;
     }
 
-    @Override public Aggregation take() throws InterruptedException {
-        return aggregationSimpleBlockingQueue.take();
+    @Override public int getPriority() {
+        return Priority.LOW; /*TODO needed? */
     }
+
 }
-

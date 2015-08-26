@@ -27,7 +27,6 @@ libraryDependencies ++= Seq(
   "de.uniulm.omi.cloudiator" % "common" % "1.2.0-SNAPSHOT",
   "de.uniulm.omi.cloudiator" % "visor-rest-client" % "1.0-SNAPSHOT",
   "de.uniulm.omi.executionware.srl.aggregator" % "SRLAggregator" % "1.0-SNAPSHOT",
-  //"de.uniulm.omi.executionware.srl.api" % "MonitoringAPI" % "1.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

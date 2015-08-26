@@ -54,6 +54,7 @@ public interface ScalingEngine {
     public Monitor mapAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
     public Monitor reduceAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
     public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances);
+    public void updateAggregation(ComposedMonitor monitor);
 
     /** remove a monitor */
     public void removeMonitor(long monitorId);

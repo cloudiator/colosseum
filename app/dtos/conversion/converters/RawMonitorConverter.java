@@ -23,6 +23,7 @@ import com.google.inject.Singleton;
 import dtos.RawMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.transformers.ModelToListIdTransformer;
 import dtos.conversion.transformers.StringToExternalReferenceTransformer;
 import models.*;
 import models.generic.ExternalReference;
@@ -40,13 +41,15 @@ import java.util.List;
     private final ModelService<SensorDescription> sensorDescriptionModelService;
     private final ModelService<Schedule> scheduleModelService;
     private final ModelService<ExternalReference> externalReferenceModelService;
+    private final ModelService<MonitorInstance> monitorInstanceModelService;
 
     @Inject protected RawMonitorConverter(ModelService<Application> applicationModelService,
         ModelService<Component> componentModelService, ModelService<Instance> instanceModelService,
         ModelService<Cloud> cloudModelService,
         ModelService<SensorDescription> sensorDescriptionModelService,
         ModelService<Schedule> scheduleModelService,
-        ModelService<ExternalReference> externalReferenceModelService) {
+        ModelService<ExternalReference> externalReferenceModelService,
+        ModelService<MonitorInstance> monitorInstanceModelService) {
         super(RawMonitor.class, RawMonitorDto.class);
         this.applicationModelService = applicationModelService;
         this.componentModelService = componentModelService;
@@ -55,6 +58,7 @@ import java.util.List;
         this.sensorDescriptionModelService = sensorDescriptionModelService;
         this.scheduleModelService = scheduleModelService;
         this.externalReferenceModelService = externalReferenceModelService;
+        this.monitorInstanceModelService = monitorInstanceModelService;
     }
 
     @Override public void configure() {
@@ -73,5 +77,8 @@ import java.util.List;
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
         builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
             .withUnsafeTransformation(new StringToExternalReferenceTransformer());
+        builder().from(List.class, "monitorInstances").to(List.class, "monitorInstances")
+            .withUnsafeTransformation(
+                new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorInstanceModelService)));
     }
 }

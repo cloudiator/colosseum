@@ -19,7 +19,7 @@
 package components.scalability;
 
 import com.google.inject.Inject;
-import de.uniulm.omi.executionware.srl.api.utils.Check;
+import de.uniulm.omi.executionware.srl.aggregator.utils.Check;
 import models.*;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
@@ -282,9 +282,10 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
     }
 
     @Override
-    public MonitorInstance saveMonitorInstance(Long idMonitor, Long ipAddressId, Long vmId,
+    public MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long ipAddressId, Long vmId,
         Long componentId) {
         MonitorInstance result = new MonitorInstance(monitorModelService.getById(idMonitor),
+            apiEndpoint,
             (ipAddressId == null ? null : ipAddressModelService.getById(ipAddressId)),
             (vmId == null ? null : virtualMachineModelService.getById(vmId)),
             (componentId == null ? null : componentModelService.getById(componentId)));

@@ -21,6 +21,7 @@ package models;
 import models.generic.ModelWithExternalReference;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -31,6 +32,7 @@ import javax.persistence.ManyToOne;
 @Entity public class MonitorInstance extends ModelWithExternalReference {
 
     @ManyToOne(optional = false) private Monitor monitor;
+    private String apiEndpoint;
     @ManyToOne(optional = true) @Nullable private IpAddress ipAddress;
     @ManyToOne(optional = true) @Nullable private VirtualMachine virtualMachine;
     @ManyToOne(optional = true) @Nullable private Component component;
@@ -41,8 +43,9 @@ import javax.persistence.ManyToOne;
     protected MonitorInstance() {
     }
 
-    public MonitorInstance(Monitor monitor, @Nullable IpAddress ipAddress,
+    public MonitorInstance(Monitor monitor, String apiEndpoint, @Nullable IpAddress ipAddress,
         @Nullable VirtualMachine virtualMachine, @Nullable Component component) {
+        this.apiEndpoint = apiEndpoint;
         this.monitor = monitor;
         this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
@@ -63,5 +66,9 @@ import javax.persistence.ManyToOne;
 
     @Nullable public Component getComponent() {
         return component;
+    }
+
+    public String getApiEndpoint() {
+        return apiEndpoint;
     }
 }

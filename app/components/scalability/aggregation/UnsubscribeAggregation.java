@@ -16,25 +16,37 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import models.Monitor;
 
 /**
- * Created by Frank on 30.07.2015.
+ * Created by Frank on 03.08.2015.
  */
-public class RemoveAggregation extends MonitorAggregation {
+public class UnsubscribeAggregation implements Aggregation<Monitor> {
 
-    public RemoveAggregation(ComposedMonitor composedMonitor) {
-        super(composedMonitor);
+    private Long idMonitorSubscription;
+
+    public UnsubscribeAggregation(Long idMonitorSubscription) {
+        super();
+        this.idMonitorSubscription = idMonitorSubscription;
     }
 
-    @Override public void execute(AggregatorService service) {
+    @Override public Monitor getObject() {
+        return null; // no monitor needed, nor available when removing subscription
+    }
+
+    @Override public void execute(AggregatorServiceAccess service) {
         try {
-            service.removeAggregator(this.getComposedMonitor());
+            service.removeObserver(idMonitorSubscription.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override public int getPriority() {
+        return 0;
     }
 }

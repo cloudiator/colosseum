@@ -16,15 +16,18 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.aggregation;
 
 import components.execution.Prioritized;
+import components.scalability.AggregationAccessService;
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
-import de.uniulm.omi.executionware.srl.api.ComposedMonitor;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import models.Monitor;
 
 /**
  * Created by Frank on 30.07.2015.
  */
-public interface Aggregation extends Prioritized {
-    void execute(AggregatorService service);
+public interface Aggregation<T extends Monitor> extends Prioritized {
+    T getObject();
+    void execute(AggregatorServiceAccess service);
 }

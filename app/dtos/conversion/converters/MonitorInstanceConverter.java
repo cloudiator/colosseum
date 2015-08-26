@@ -58,6 +58,7 @@ import java.util.List;
             .withTransformation(new IdToModelTransformer<>(componentModelService));
         builder().from(Long.class, "monitor").to(Monitor.class, "monitor")
             .withTransformation(new IdToModelTransformer<>(monitorModelService));
+        builder().from("apiEndpoint").to("apiEndpoint");
         builder().from(Long.class, "ipAddress").to(IpAddress.class, "ipAddress")
             .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
         builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")

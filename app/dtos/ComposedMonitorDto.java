@@ -20,6 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import dtos.generic.MonitorDto;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import models.*;
@@ -29,7 +30,7 @@ import models.service.ModelService;
 
 import java.util.List;
 
-public class ComposedMonitorDto extends ModelWithExternalReferenceDto {
+public class ComposedMonitorDto extends MonitorDto {
 
     private FlowOperator flowOperator;
     private FormulaOperator function;
@@ -44,9 +45,10 @@ public class ComposedMonitorDto extends ModelWithExternalReferenceDto {
         super();
     }
 
-    public ComposedMonitorDto(List<String> externalReferences, FlowOperator flowOperator, FormulaOperator function, Long quantifier,
+    public ComposedMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
+        FlowOperator flowOperator, FormulaOperator function, Long quantifier,
         Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
-        super(externalReferences);
+        super(externalReferences, monitorInstances);
         this.flowOperator = flowOperator;
         this.function = function;
         this.quantifier = quantifier;
@@ -57,6 +59,8 @@ public class ComposedMonitorDto extends ModelWithExternalReferenceDto {
     }
 
     @Override public void validation() {
+        super.validation();
+
         // TODO List?
         //validator(Long.class).validate(monitors)
         //        .withValidator(new ModelIdValidator<>(References.monitorAddressService.get()));
@@ -70,7 +74,7 @@ public class ComposedMonitorDto extends ModelWithExternalReferenceDto {
             .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
     }
 
-    public static class References extends ModelWithExternalReferenceDto.References {
+    public static class References extends MonitorDto.References {
         @Inject public static Provider<ModelService<Schedule>> scheduleService;
         @Inject public static Provider<ModelService<Window>> windowService;
         @Inject public static Provider<ModelService<Monitor>> monitorService;

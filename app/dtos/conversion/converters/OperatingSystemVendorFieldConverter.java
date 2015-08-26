@@ -16,14 +16,19 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
+
+import dtos.OperatingSystemVendorDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.OperatingSystemVendor;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 15.04.15.
  */
-public interface FromBindingBuilder<T, S> {
+public class OperatingSystemVendorFieldConverter
+    extends DefaultFieldConverter<OperatingSystemVendor, OperatingSystemVendorDto> {
 
-    ToBindingBuilder<T, S> fromField(String name);
-
-    ToBindingBuilder<T, S> fromMethod(String name);
+    protected OperatingSystemVendorFieldConverter() {
+        super(OperatingSystemVendor.class, OperatingSystemVendorDto.class);
+    }
 }

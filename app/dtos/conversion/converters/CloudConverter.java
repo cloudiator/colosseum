@@ -38,9 +38,9 @@ import models.service.ModelService;
     }
 
     @Override public void configure() {
-        builder().from("name").to("name");
-        builder().from("endpoint").to("endpoint");
-        builder().from(Long.class, "api").to(Api.class, "api")
+        binding().fromField("name").toField("name");
+        binding().fromField("endpoint").toField("endpoint");
+        binding(Long.class, Api.class).fromField("api").toField("api")
             .withTransformation(new IdToModelTransformer<>(apiModelService));
     }
 }

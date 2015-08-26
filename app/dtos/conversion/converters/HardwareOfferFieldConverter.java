@@ -18,15 +18,17 @@
 
 package dtos.conversion.converters;
 
-import dtos.FrontendUserGetDto;
-import dtos.conversion.DefaultConverter;
-import models.FrontendUser;
+import dtos.HardwareOfferDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.HardwareOffer;
 
 /**
- * Created by daniel on 13.04.15.
+ * Created by daniel on 14.04.15.
  */
-public class FrontendUserConverter extends DefaultConverter<FrontendUser, FrontendUserGetDto> {
-    protected FrontendUserConverter() {
-        super(FrontendUser.class, FrontendUserGetDto.class);
+public class HardwareOfferFieldConverter
+    extends DefaultFieldConverter<HardwareOffer, HardwareOfferDto> {
+    protected HardwareOfferFieldConverter() {
+        super(HardwareOffer.class, HardwareOfferDto.class);
     }
+
 }

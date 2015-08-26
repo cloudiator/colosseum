@@ -18,18 +18,16 @@
 
 package dtos.conversion.converters;
 
-import dtos.LifecycleComponentDto;
-import dtos.conversion.DefaultConverter;
-import models.LifecycleComponent;
+import dtos.FrontendUserGetDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.FrontendUser;
 
 /**
- * Created by daniel on 14.04.15.
+ * Created by daniel on 13.04.15.
  */
-public class LifecycleComponentConverter
-    extends DefaultConverter<LifecycleComponent, LifecycleComponentDto> {
-
-    protected LifecycleComponentConverter() {
-        super(LifecycleComponent.class, LifecycleComponentDto.class);
+public class FrontendUserFieldConverter
+    extends DefaultFieldConverter<FrontendUser, FrontendUserGetDto> {
+    protected FrontendUserFieldConverter() {
+        super(FrontendUser.class, FrontendUserGetDto.class);
     }
-
 }

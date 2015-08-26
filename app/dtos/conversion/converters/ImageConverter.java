@@ -19,12 +19,14 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import dtos.ImageDto;
-import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
 import models.service.ModelService;
+
+import java.util.List;
 
 /**
  * Created by daniel on 14.04.15.
@@ -51,14 +53,19 @@ public class ImageConverter extends RemoteConverter<Image, ImageDto> {
 
         super.configure();
 
-        builder().from("name").to("name");
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding().fromField("name").toField("name");
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "operatingSystem").to(OperatingSystem.class, "operatingSystem")
+        binding(Long.class, OperatingSystem.class).fromField("operatingSystem")
+            .toField("operatingSystem")
             .withTransformation(new IdToModelTransformer<>(operatingSystemModelService));
-        builder().from("locations").to("locations").withUnsafeTransformation(
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<Location>>() {
+        }).fromField("locations").toField("locations").withTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
-        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<CloudCredential>>() {
+        }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(
             new ModelToListIdTransformer<>(
                 new IdToModelTransformer<>(cloudCredentialModelService)));
     }

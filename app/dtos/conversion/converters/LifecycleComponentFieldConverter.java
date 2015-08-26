@@ -16,22 +16,20 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
 
-import dtos.conversion.transformers.DefaultTransformer;
-import dtos.conversion.transformers.Transformer;
+import dtos.LifecycleComponentDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.LifecycleComponent;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 14.04.15.
  */
-public class DefaultConversionBinding extends GenericConversionBinding<Object, Object> {
+public class LifecycleComponentFieldConverter
+    extends DefaultFieldConverter<LifecycleComponent, LifecycleComponentDto> {
 
-    public DefaultConversionBinding(String fieldNameFrom, String fieldNameTo) {
-        super(Object.class, fieldNameFrom, Object.class, fieldNameTo, new DefaultTransformer());
+    protected LifecycleComponentFieldConverter() {
+        super(LifecycleComponent.class, LifecycleComponentDto.class);
     }
 
-    public DefaultConversionBinding(Class<Object> fieldTypeFrom, String fieldNameFrom,
-        Class<Object> fieldTypeTo, String fieldNameTo, Transformer<Object, Object> transformer) {
-        super(fieldTypeFrom, fieldNameFrom, fieldTypeTo, fieldNameTo, transformer);
-    }
 }

@@ -18,6 +18,7 @@
 
 package dtos.conversion;
 
+import com.google.inject.TypeLiteral;
 import dtos.api.Dto;
 import models.generic.Model;
 
@@ -38,8 +39,19 @@ public abstract class AbstractConverter<T extends Model, S extends Dto>
         sType = s;
     }
 
-    protected final FromBindingBuilder builder() {
-        return fieldBindings.builder();
+    protected final <U, V> FromBindingBuilder<U, V> binding(Class<U> uClass, Class<V> vClass) {
+        return fieldBindings.builder(uClass, vClass);
+    }
+
+    protected final FromBindingBuilder<Object, Object> binding() {
+        return fieldBindings.builder(Object.class, Object.class);
+    }
+
+    protected final <U, V> FromBindingBuilder<U, V> binding(TypeLiteral<U> uTypeLiteral,
+        TypeLiteral<V> vTypeLiteral) {
+        //noinspection unchecked
+        return fieldBindings
+            .builder((Class<U>) uTypeLiteral.getRawType(), (Class<V>) vTypeLiteral.getRawType());
     }
 
     private synchronized void configureOnce() {

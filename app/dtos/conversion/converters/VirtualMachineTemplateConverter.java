@@ -47,13 +47,13 @@ public class VirtualMachineTemplateConverter
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "image").to(Image.class, "image")
+        binding(Long.class, Image.class).fromField("image").toField("image")
             .withTransformation(new IdToModelTransformer<>(imageModelService));
-        builder().from(Long.class, "hardware").to(Hardware.class, "hardware")
+        binding(Long.class, Hardware.class).fromField("hardware").toField("hardware")
             .withTransformation(new IdToModelTransformer<>(hardwareModelService));
-        builder().from(Long.class, "location").to(Location.class, "location")
+        binding(Long.class, Location.class).fromField("location").toField("location")
             .withTransformation(new IdToModelTransformer<>(locationModelService));
     }
 }

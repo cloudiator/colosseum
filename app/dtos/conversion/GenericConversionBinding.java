@@ -25,31 +25,27 @@ import dtos.conversion.transformers.Transformer;
  */
 public class GenericConversionBinding<T, S> implements ConversionBinding {
 
-    private final String fieldNameFrom;
-    private final String fieldNameTo;
+    private final Getter<T> fromGetter;
+    private final Setter<T> fromSetter;
+    private final Getter<S> toGetter;
+    private final Setter<S> toSetter;
     private final Transformer<T, S> transformer;
-    private final Class<T> fieldTypeFrom;
-    private final Class<S> fieldTypeTo;
 
-    public GenericConversionBinding(Class<T> fieldTypeFrom, String fieldNameFrom,
-        Class<S> fieldTypeTo, String fieldNameTo, Transformer<T, S> transformer) {
-        this.fieldNameFrom = fieldNameFrom;
-        this.fieldNameTo = fieldNameTo;
+    public GenericConversionBinding(Getter<T> fromGetter, Setter<T> fromSetter, Getter<S> toGetter,
+        Setter<S> toSetter, Transformer<T, S> transformer) {
+        this.fromGetter = fromGetter;
+        this.fromSetter = fromSetter;
+        this.toGetter = toGetter;
+        this.toSetter = toSetter;
         this.transformer = transformer;
-        this.fieldTypeFrom = fieldTypeFrom;
-        this.fieldTypeTo = fieldTypeTo;
     }
 
     @Override public void bind(Object from, Object to) {
-        ReflectionField<T> fromField = ReflectionField.of(fieldNameFrom, fieldTypeFrom, from);
-        ReflectionField<S> toField = ReflectionField.of(fieldNameTo, fieldTypeTo, to);
-        toField.setValue(this.transformer.transform(fromField.getValue()));
+        toSetter.setValue(to, this.transformer.transform(fromGetter.getValue(from)));
     }
 
     @Override public void bindReverse(Object from, Object to) {
-        ReflectionField<T> fromField = ReflectionField.of(fieldNameFrom, fieldTypeFrom, from);
-        ReflectionField<S> toField = ReflectionField.of(fieldNameTo, fieldTypeTo, to);
-        fromField.setValue(this.transformer.transformReverse(toField.getValue()));
+        fromSetter.setValue(from, this.transformer.transformReverse(toGetter.getValue(to)));
     }
 
 

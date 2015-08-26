@@ -21,12 +21,12 @@ package dtos.conversion.transformers;
 /**
  * Created by daniel on 17.03.15.
  */
-public class DefaultTransformer implements Transformer<Object,Object> {
+public class DefaultTransformer implements Transformer<Object, Object> {
     @Override public Object transform(Object o) {
         return o;
     }
 
     @Override public Object transformReverse(Object o) {
-        return transform(o);
+        return o;
     }
 }

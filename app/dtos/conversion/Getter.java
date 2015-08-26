@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,19 +16,12 @@
  * under the License.
  */
 
-package dtos.conversion.converters;
-
-import dtos.OperatingSystemVendorDto;
-import dtos.conversion.DefaultConverter;
-import models.OperatingSystemVendor;
+package dtos.conversion;
 
 /**
- * Created by daniel on 15.04.15.
+ * Created by daniel on 25.08.15.
  */
-public class OperatingSystemVendorConverter
-    extends DefaultConverter<OperatingSystemVendor, OperatingSystemVendorDto> {
+public interface Getter<T> {
 
-    protected OperatingSystemVendorConverter() {
-        super(OperatingSystemVendor.class, OperatingSystemVendorDto.class);
-    }
+    T getValue(Object object);
 }

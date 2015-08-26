@@ -21,13 +21,12 @@ package dtos.conversion.transformers;
 import models.generic.Model;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by daniel on 19.03.15.
  */
-public class ModelToListIdTransformer<T extends Model>
-    implements Transformer<Collection<Long>, Collection<T>> {
+public class ModelToListIdTransformer<T extends Model> implements Transformer<List<Long>, List<T>> {
 
     private final IdToModelTransformer<T> idToModelTransformer;
 
@@ -35,16 +34,16 @@ public class ModelToListIdTransformer<T extends Model>
         this.idToModelTransformer = idToModelTransformer;
     }
 
-    @Override public Collection<T> transform(Collection<Long> longs) {
-        Collection<T> list = new ArrayList<>(longs.size());
+    @Override public List<T> transform(List<Long> longs) {
+        List<T> list = new ArrayList<>(longs.size());
         for (Long id : longs) {
             list.add(idToModelTransformer.transform(id));
         }
         return list;
     }
 
-    @Override public Collection<Long> transformReverse(Collection<T> ts) {
-        Collection<Long> ids = new ArrayList<>(ts.size());
+    @Override public List<Long> transformReverse(List<T> ts) {
+        List<Long> ids = new ArrayList<>(ts.size());
         for (T t : ts) {
             ids.add(idToModelTransformer.transformReverse(t));
         }

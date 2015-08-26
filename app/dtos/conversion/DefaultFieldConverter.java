@@ -64,19 +64,19 @@ public class DefaultFieldConverter<T extends Model, S extends Dto> implements Dt
         return model;
     }
 
-    @Override public T toModel(S dto) {
+    @Override public final T toModel(S dto) {
         return bindFromDtoToModel(dto, new TypeBuilder<T>().getInstance(tClass));
     }
 
-    @Override public T toModel(S dto, T model) {
+    @Override public final T toModel(S dto, T model) {
         return bindFromDtoToModel(dto, model);
     }
 
-    @Override public S toDto(T model) {
+    @Override public final S toDto(T model) {
         return bindFromModelToDto(model, new TypeBuilder<S>().getInstance(sClass));
     }
 
-    @Override public S toDto(T model, S dto) {
+    @Override public final S toDto(T model, S dto) {
         return bindFromModelToDto(model, dto);
     }
 

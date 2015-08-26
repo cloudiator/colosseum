@@ -59,10 +59,6 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Communication>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Communication>>() {
         });
-        // Communication Channel
-        bind(new TypeLiteral<ModelRepository<CommunicationChannel>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<CommunicationChannel>>() {
-        });
         // Component
         bind(new TypeLiteral<ModelRepository<Component>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Component>>() {
@@ -186,6 +182,14 @@ public class JPAModule extends AbstractModule {
         //TimeWindow
         bind(new TypeLiteral<ModelRepository<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<TimeWindow>>() {
+        });
+        //PortInbound
+        bind(new TypeLiteral<ModelRepository<PortRequired>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortRequired>>() {
+        });
+        //PortOutbound
+        bind(new TypeLiteral<ModelRepository<PortProvided>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PortProvided>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelRepository<VirtualMachine>>() {

@@ -20,7 +20,6 @@ package models.service;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-import dtos.OperatingSystemDto;
 import models.*;
 import models.generic.ExternalReference;
 
@@ -62,10 +61,6 @@ public class DatabaseServiceModule extends AbstractModule {
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {
-        });
-        // Communication Channel
-        bind(new TypeLiteral<ModelService<CommunicationChannel>>() {
-        }).to(new TypeLiteral<BaseModelService<CommunicationChannel>>() {
         });
         //ComponentHorizontalOutScalingAction
         bind(new TypeLiteral<ModelService<ComponentHorizontalOutScalingAction>>() {
@@ -160,7 +155,6 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
         });
         bind(OperatingSystemService.class).to(DefaultOperatingSystemService.class);
-        requestStaticInjection(OperatingSystemDto.References.class);
         //Operating System Vendor
         bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
         }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
@@ -184,6 +178,14 @@ public class DatabaseServiceModule extends AbstractModule {
         //TimeWindow
         bind(new TypeLiteral<ModelService<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelService<TimeWindow>>() {
+        });
+        //PortInbound
+        bind(new TypeLiteral<ModelService<PortRequired>>() {
+        }).to(new TypeLiteral<BaseModelService<PortRequired>>() {
+        });
+        //PortOutbound
+        bind(new TypeLiteral<ModelService<PortProvided>>() {
+        }).to(new TypeLiteral<BaseModelService<PortProvided>>() {
         });
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {

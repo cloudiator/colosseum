@@ -13,7 +13,6 @@ Entity                                                       | URL
 [Cloud](entities/Cloud.md)                                   | /api/cloud
 [CloudCredential](entities/CloudCredential.md)               | /api/cloudCredential
 [Communication](entities/Communication.md)                   | /api/communication
-[CommunicationChannel](entities/CommunicationChannel.md)     | /api/communicationChannel
 [ComponentHorizontalInScalingAction](entities/ComponentHorizontalInScalingAction.md)     | /api/componentHorizontalInScalingAction
 [ComponentHorizontalOutScalingAction](entities/ComponentHorizontalOutScalingAction.md)     | /api/componentHorizontalOutScalingAction
 [ComposedMonitor](entities/ComposedMonitor.md)               | /api/composedMonitor
@@ -37,6 +36,8 @@ Entity                                                       | URL
 [Schedule](entities/Schedule.md)                             | /api/schedule
 [SensorDescription](entities/SensorDescription.md)           | /api/sensorDescription
 [TimeWindow](entities/TimeWindow.md)                         | /api/timeWindow
+[PortProvided](entities/PortProvided.md)                     | /api/portProv                                                         
+[PortOutbound](entities/PortRequired.md)                     | /api/portReq
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 

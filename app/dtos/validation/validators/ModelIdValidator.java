@@ -26,6 +26,8 @@ import models.service.ModelService;
 
 import javax.annotation.Nullable;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 13.03.15.
  */
@@ -34,6 +36,7 @@ public class ModelIdValidator<T extends Model> extends AbstractValidator<Long> {
     private final ModelService<T> modelService;
 
     public ModelIdValidator(ModelService<T> modelService) {
+        checkNotNull(modelService);
         this.modelService = modelService;
     }
 

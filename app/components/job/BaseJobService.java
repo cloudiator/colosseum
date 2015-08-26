@@ -24,6 +24,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import models.Instance;
 import models.KeyPair;
 import models.Tenant;
 import models.VirtualMachine;
@@ -37,16 +38,18 @@ import models.service.ModelService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Tenant> tenantModelService;
     private final ModelService<KeyPair> keyPairModelService;
+    private final ModelService<Instance> instanceModelService;
     private final ColosseumComputeService colosseumComputeService;
     private final SimpleBlockingQueue<Job> jobQueue;
 
     @Inject public BaseJobService(ModelService<VirtualMachine> virtualMachineModelService,
         CloudService cloudService, ModelService<Tenant> tenantModelService,
-        ModelService<KeyPair> keyPairModelService,
+        ModelService<KeyPair> keyPairModelService, ModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
         this.keyPairModelService = keyPairModelService;
+        this.instanceModelService = instanceModelService;
         this.colosseumComputeService = cloudService.computeService();
         this.jobQueue = jobQueue;
     }
@@ -54,6 +57,11 @@ import models.service.ModelService;
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
         this.jobQueue.add(new CreateVirtualMachineJob(virtualMachine, virtualMachineModelService,
             tenantModelService, colosseumComputeService, tenant, keyPairModelService));
+    }
+
+    @Override public void newInstanceJob(Instance instance, Tenant tenant) {
+        this.jobQueue.add(new CreateInstanceJob(instance, instanceModelService, tenantModelService,
+            colosseumComputeService, tenant));
     }
 
 }

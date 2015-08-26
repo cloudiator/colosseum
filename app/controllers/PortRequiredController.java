@@ -21,27 +21,27 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
-import dtos.ApiDto;
+import dtos.PortRequiredDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Api;
+import models.PortRequired;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 
 /**
- * Created by daniel on 29.03.15.
+ * Created by daniel on 03.08.15.
  */
-public class ApiController extends GenericApiController<Api, ApiDto, ApiDto, ApiDto> {
+public class PortRequiredController
+    extends GenericApiController<PortRequired, PortRequiredDto, PortRequiredDto, PortRequiredDto> {
 
-    
-    @Inject public ApiController(FrontendUserService frontendUserService,
-        ModelService<Tenant> tenantModelService, ModelService<Api> modelService,
-        TypeLiteral<Api> typeLiteral, ModelDtoConversionService conversionService) {
+    @Inject public PortRequiredController(FrontendUserService frontendUserService,
+        ModelService<Tenant> tenantModelService, ModelService<PortRequired> modelService,
+        TypeLiteral<PortRequired> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ApiController.get(id).absoluteURL(request());
+        return controllers.routes.PortRequiredController.get(id).absoluteURL(request());
     }
 }

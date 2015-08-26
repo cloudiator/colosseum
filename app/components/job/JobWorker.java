@@ -22,7 +22,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
-import components.execution.Stable;
 import play.Logger;
 import play.db.jpa.Transactional;
 
@@ -39,11 +38,14 @@ public class JobWorker implements Runnable {
         this.jobQueue = jobQueue;
     }
 
-    @Loop @Stable @Transactional @Override public void run() {
+    @Loop @Transactional @Override public void run() {
         try {
             Job job = jobQueue.take();
+            Logger.info("Starting execution of job" + job);
             job.execute();
+            Logger.info("Finished execution of job" + job);
         } catch (InterruptedException e) {
+            Logger.error("Job Execution got interrupted", e);
             Thread.currentThread().interrupt();
         } catch (JobException e) {
             Logger.error("Job Execution got error", e);

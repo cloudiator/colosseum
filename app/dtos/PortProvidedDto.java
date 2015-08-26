@@ -16,18 +16,32 @@
  * under the License.
  */
 
-package components.job;
+package dtos;
 
-import models.Instance;
-import models.Tenant;
-import models.VirtualMachine;
+import dtos.validation.validators.ExpressionValidator;
+import dtos.validation.validators.NotNullValidator;
 
 /**
- * Created by daniel on 03.07.15.
+ * Created by daniel on 03.08.15.
  */
-public interface JobService {
+public class PortProvidedDto extends PortDto {
 
-    void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
+    private Integer port;
 
-    void newInstanceJob(Instance instance, Tenant tenant);
+    public PortProvidedDto() {
+    }
+
+    @Override public void validation() {
+        super.validation();
+        validator(Integer.class).validate(port).withValidator(new NotNullValidator())
+            .withValidator(new ExpressionValidator(port > 0));
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
+    }
 }

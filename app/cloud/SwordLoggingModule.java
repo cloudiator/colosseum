@@ -20,12 +20,12 @@ package cloud;
 
 import de.uniulm.omi.cloudiator.sword.api.logging.Logger;
 import de.uniulm.omi.cloudiator.sword.api.logging.LoggerFactory;
-import de.uniulm.omi.cloudiator.sword.core.logging.LoggingModule;
+import de.uniulm.omi.cloudiator.sword.core.logging.AbstractLoggingModule;
 
 /**
  * Created by daniel on 29.07.15.
  */
-public class SwordLoggingModule extends LoggingModule {
+public class SwordLoggingModule extends AbstractLoggingModule {
 
     @Override protected LoggerFactory getLoggerFactory() {
         return SwordColosseumLogger::new;

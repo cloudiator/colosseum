@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -18,36 +18,37 @@
 
 package models;
 
-import models.generic.Model;
-
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 
-/**
- * Created by daniel on 07.01.15.
- */
-@Entity public class Communication extends Model {
+import static com.google.common.base.Preconditions.checkNotNull;
 
-    @OneToOne(optional = false) private PortRequired requiredPort;
-    @OneToOne(optional = false) private PortProvided providedPort;
+/**
+ * Created by daniel on 03.08.15.
+ */
+@Entity public class PortProvided extends Port {
+
+    @Column(nullable = false) private Integer port;
+    @OneToOne(mappedBy = "providedPort") Communication communication;
 
     /**
      * Empty constructor for hibernate.
      */
-    protected Communication() {
-
+    protected PortProvided() {
     }
 
-    public Communication(PortRequired requiredPort, PortProvided providedPort) {
-        this.requiredPort = requiredPort;
-        this.providedPort = providedPort;
+    public PortProvided(String name, ApplicationComponent applicationComponent, int port) {
+        super(name, applicationComponent);
+        checkNotNull(port);
+        this.port = port;
     }
 
-    public PortRequired getRequiredPort() {
-        return requiredPort;
+    public int getPort() {
+        return port;
     }
 
-    public PortProvided getProvidedPort() {
-        return providedPort;
+    public Communication getCommunication() {
+        return communication;
     }
 }

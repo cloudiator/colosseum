@@ -35,28 +35,28 @@ public abstract class GenericJob<T extends Model> implements Job {
     private final Tenant tenant;
     private final ModelService<Tenant> tenantModelService;
 
-    public GenericJob(T t, ModelService<T> modelService, ModelService<Tenant> tentantModelService,
+    public GenericJob(T t, ModelService<T> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant) {
         this.colosseumComputeService = colosseumComputeService;
         this.resourceUuid = t.getUuid();
         this.modelService = modelService;
-        this.tenantModelService = tentantModelService;
+        this.tenantModelService = tenantModelService;
         this.tenant = tenant;
     }
 
-    @Override public String getResourceUuid() {
+    @Override public final String getResourceUuid() {
         return resourceUuid;
     }
 
-    @Override public JobState state() {
+    @Override public final JobState state() {
         return jobState;
     }
 
-    @Override public void state(JobState jobState) {
+    @Override public final void state(JobState jobState) {
         this.jobState = jobState;
     }
 
-    @Override public int getPriority() {
+    @Override public final int getPriority() {
         return Priority.HIGH;
     }
 

@@ -31,7 +31,7 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
-import de.uniulm.omi.cloudiator.sword.core.domain.builders.LoginCredentialBuilder;
+import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import models.KeyPair;
 import models.Tenant;
 import models.VirtualMachine;

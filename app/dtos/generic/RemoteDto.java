@@ -12,9 +12,9 @@ public abstract class RemoteDto extends ValidatableDto {
 
 
     @Override public void validation() {
-        validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
-        validator(String.class).validate(cloudProviderId)
-            .withValidator(new NotNullOrEmptyValidator());
+        //validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
+        //validator(String.class).validate(cloudProviderId)
+        //    .withValidator(new NotNullOrEmptyValidator());
     }
 
     public String getRemoteId() {

@@ -3,72 +3,65 @@
 # ~~~~
 
 # Home page
-GET           /                                                   @controllers.CloudController.list()
+GET           /                                   @controllers.CloudController.list()
 
 #Auth for browser
-GET           /login                                              @controllers.SecurityController.login()
-POST          /login                                              @controllers.SecurityController.authenticate()
-GET           /logout                                             @controllers.SecurityController.logout()
+GET           /login                              @controllers.SecurityController.login()
+POST          /login                              @controllers.SecurityController.authenticate()
+GET           /logout                             @controllers.SecurityController.logout()
 
 #Auth for api
-POST          /api/login                                          @controllers.SecurityController.authenticateApi()
-GET           /api/logout                                         @controllers.SecurityController.logout()
+POST          /api/login                          @controllers.SecurityController.authenticateApi()
+GET           /api/logout                         @controllers.SecurityController.logout()
 
 #Api
-GET           /api/api                                            @controllers.ApiController.list()
-GET           /api/api/:id                                        @controllers.ApiController.get(id: Long)
-POST          /api/api                                            @controllers.ApiController.post()
-PUT           /api/api/:id                                        @controllers.ApiController.put(id: Long)
-DELETE        /api/api/:id                                        @controllers.ApiController.delete(id: Long)
+GET           /api/api                            @controllers.ApiController.list()
+GET           /api/api/:id                        @controllers.ApiController.get(id: Long)
+POST          /api/api                            @controllers.ApiController.post()
+PUT           /api/api/:id                        @controllers.ApiController.put(id: Long)
+DELETE        /api/api/:id                        @controllers.ApiController.delete(id: Long)
 
 #Application
-GET           /api/application                                    @controllers.ApplicationController.list()
-GET           /api/application/:id                                @controllers.ApplicationController.get(id: Long)
-POST          /api/application                                    @controllers.ApplicationController.post()
-PUT           /api/application/:id                                @controllers.ApplicationController.put(id: Long)
-DELETE        /api/application/:id                                @controllers.ApplicationController.delete(id: Long)
+GET           /api/application                    @controllers.ApplicationController.list()
+GET           /api/application/:id                @controllers.ApplicationController.get(id: Long)
+POST          /api/application                    @controllers.ApplicationController.post()
+PUT           /api/application/:id                @controllers.ApplicationController.put(id: Long)
+DELETE        /api/application/:id                @controllers.ApplicationController.delete(id: Long)
 
 #ApplicationComponent
-GET           /api/ac                                             @controllers.ApplicationComponentController.list()
-GET           /api/ac/:id                                         @controllers.ApplicationComponentController.get(id: Long)
-POST          /api/ac                                             @controllers.ApplicationComponentController.post()
-PUT           /api/ac/:id                                         @controllers.ApplicationComponentController.put(id: Long)
-DELETE        /api/ac/:id                                         @controllers.ApplicationComponentController.delete(id: Long)
+GET           /api/ac                             @controllers.ApplicationComponentController.list()
+GET           /api/ac/:id                         @controllers.ApplicationComponentController.get(id: Long)
+POST          /api/ac                             @controllers.ApplicationComponentController.post()
+PUT           /api/ac/:id                         @controllers.ApplicationComponentController.put(id: Long)
+DELETE        /api/ac/:id                         @controllers.ApplicationComponentController.delete(id: Long)
 
 #Application Instance
-GET           /api/applicationInstance                            @controllers.ApplicationInstanceController.list()
-GET           /api/applicationInstance/:id                        @controllers.ApplicationInstanceController.get(id: Long)
-POST          /api/applicationInstance                            @controllers.ApplicationInstanceController.post()
-PUT           /api/applicationInstance/:id                        @controllers.ApplicationInstanceController.put(id: Long)
-DELETE        /api/applicationInstance/:id                        @controllers.ApplicationInstanceController.delete(id: Long)
+GET           /api/applicationInstance            @controllers.ApplicationInstanceController.list()
+GET           /api/applicationInstance/:id        @controllers.ApplicationInstanceController.get(id: Long)
+POST          /api/applicationInstance            @controllers.ApplicationInstanceController.post()
+PUT           /api/applicationInstance/:id        @controllers.ApplicationInstanceController.put(id: Long)
+DELETE        /api/applicationInstance/:id        @controllers.ApplicationInstanceController.delete(id: Long)
 
 #Cloud
-GET           /api/cloud                                          @controllers.CloudController.list()
-GET           /api/cloud/:id                                      @controllers.CloudController.get(id: Long)
-POST          /api/cloud                                          @controllers.CloudController.post()
-PUT           /api/cloud/:id                                      @controllers.CloudController.put(id: Long)
-DELETE        /api/cloud/:id                                      @controllers.CloudController.delete(id: Long)
+GET           /api/cloud                          @controllers.CloudController.list()
+GET           /api/cloud/:id                      @controllers.CloudController.get(id: Long)
+POST          /api/cloud                          @controllers.CloudController.post()
+PUT           /api/cloud/:id                      @controllers.CloudController.put(id: Long)
+DELETE        /api/cloud/:id                      @controllers.CloudController.delete(id: Long)
 
 #CloudCredential
-GET           /api/cloudCredential                                @controllers.CloudCredentialController.list()
-GET           /api/cloudCredential/:id                            @controllers.CloudCredentialController.get(id: Long)
-POST          /api/cloudCredential                                @controllers.CloudCredentialController.post()
-PUT           /api/cloudCredential/:id                            @controllers.CloudCredentialController.put(id: Long)
-DELETE        /api/cloudCredential/:id                            @controllers.CloudCredentialController.delete(id: Long)
+GET           /api/cloudCredential                @controllers.CloudCredentialController.list()
+GET           /api/cloudCredential/:id            @controllers.CloudCredentialController.get(id: Long)
+POST          /api/cloudCredential                @controllers.CloudCredentialController.post()
+PUT           /api/cloudCredential/:id            @controllers.CloudCredentialController.put(id: Long)
+DELETE        /api/cloudCredential/:id            @controllers.CloudCredentialController.delete(id: Long)
 
 #Communication
-GET           /api/communication                                  @controllers.CommunicationController.list()
-GET           /api/communication/:id                              @controllers.CommunicationController.get(id: Long)
-POST          /api/communication                                  @controllers.CommunicationController.post()
-PUT           /api/communication/:id                              @controllers.CommunicationController.put(id: Long)
-DELETE        /api/communication/:id                              @controllers.CommunicationController.delete(id: Long)
-
-#Communication Channel
-GET           /api/communicationChannel                           @controllers.CommunicationChannelController.list()
-GET           /api/communicationChannel/:id                       @controllers.CommunicationChannelController.get(id: Long)
-POST          /api/communicationChannel                           @controllers.CommunicationChannelController.post()
-PUT           /api/communicationChannel/:id                       @controllers.CommunicationChannelController.put(id: Long)
-DELETE        /api/communicationChannel/:id                       @controllers.CommunicationChannelController.delete(id: Long)
+GET           /api/communication                  @controllers.CommunicationController.list()
+GET           /api/communication/:id              @controllers.CommunicationController.get(id: Long)
+POST          /api/communication                  @controllers.CommunicationController.post()
+PUT           /api/communication/:id              @controllers.CommunicationController.put(id: Long)
+DELETE        /api/communication/:id              @controllers.CommunicationController.delete(id: Long)
 
 #Component Horizontal Out Scaling Action
 GET           /api/componentHorizontalOutScalingAction            @controllers.ComponentHorizontalOutScalingActionController.list()
@@ -106,74 +99,74 @@ PUT           /api/formulaQuantifier/:id                          @controllers.F
 DELETE        /api/formulaQuantifier/:id                          @controllers.FormulaQuantifierController.delete(id: Long)
 
 #Tenant
-GET           /api/tenant                                         @controllers.TenantController.list()
-GET           /api/tenant/:id                                     @controllers.TenantController.get(id: Long)
-POST          /api/tenant                                         @controllers.TenantController.post()
-PUT           /api/tenant/:id                                     @controllers.TenantController.put(id: Long)
-DELETE        /api/tenant/:id                                     @controllers.TenantController.delete(id: Long)
+GET           /api/tenant                         @controllers.TenantController.list()
+GET           /api/tenant/:id                     @controllers.TenantController.get(id: Long)
+POST          /api/tenant                         @controllers.TenantController.post()
+PUT           /api/tenant/:id                     @controllers.TenantController.put(id: Long)
+DELETE        /api/tenant/:id                     @controllers.TenantController.delete(id: Long)
 
 #FrontendUser
-GET           /api/frontendUser                                   @controllers.FrontendUserController.list()
-GET           /api/frontendUser/:id                               @controllers.FrontendUserController.get(id: Long)
-POST          /api/frontendUser                                   @controllers.FrontendUserController.post()
-PUT           /api/frontendUser/:id                               @controllers.FrontendUserController.put(id: Long)
-DELETE        /api/frontendUser/:id                               @controllers.FrontendUserController.delete(id: Long)
+GET           /api/frontendUser                   @controllers.FrontendUserController.list()
+GET           /api/frontendUser/:id               @controllers.FrontendUserController.get(id: Long)
+POST          /api/frontendUser                   @controllers.FrontendUserController.post()
+PUT           /api/frontendUser/:id               @controllers.FrontendUserController.put(id: Long)
+DELETE        /api/frontendUser/:id               @controllers.FrontendUserController.delete(id: Long)
 
 #GeoLocation
-GET           /api/geo                                            @controllers.GeoLocationController.list()
-GET           /api/geo/:id                                        @controllers.GeoLocationController.get(id: Long)
-POST          /api/geo                                            @controllers.GeoLocationController.post()
-PUT           /api/geo/:id                                        @controllers.GeoLocationController.put(id: Long)
-DELETE        /api/geo/:id                                        @controllers.GeoLocationController.delete(id: Long)
+GET           /api/geo                            @controllers.GeoLocationController.list()
+GET           /api/geo/:id                        @controllers.GeoLocationController.get(id: Long)
+POST          /api/geo                            @controllers.GeoLocationController.post()
+PUT           /api/geo/:id                        @controllers.GeoLocationController.put(id: Long)
+DELETE        /api/geo/:id                        @controllers.GeoLocationController.delete(id: Long)
 
 #Hardware
-GET           /api/hardware                                       @controllers.HardwareController.list()
-GET           /api/hardware/:id                                   @controllers.HardwareController.get(id: Long)
-POST          /api/hardware                                       @controllers.HardwareController.post()
-PUT           /api/hardware/:id                                   @controllers.HardwareController.put(id: Long)
-DELETE        /api/hardware/:id                                   @controllers.HardwareController.delete(id: Long)
+GET           /api/hardware                       @controllers.HardwareController.list()
+GET           /api/hardware/:id                   @controllers.HardwareController.get(id: Long)
+POST          /api/hardware                       @controllers.HardwareController.post()
+PUT           /api/hardware/:id                   @controllers.HardwareController.put(id: Long)
+DELETE        /api/hardware/:id                   @controllers.HardwareController.delete(id: Long)
 
 #HardwareOffer
-GET           /api/hardwareOffer                                  @controllers.HardwareOfferController.list()
-GET           /api/hardwareOffer/:id                              @controllers.HardwareOfferController.get(id: Long)
-POST          /api/hardwareOffer                                  @controllers.HardwareOfferController.post()
-PUT           /api/hardwareOffer/:id                              @controllers.HardwareOfferController.put(id: Long)
-DELETE        /api/hardwareOffer/:id                              @controllers.HardwareOfferController.delete(id: Long)
+GET           /api/hardwareOffer                  @controllers.HardwareOfferController.list()
+GET           /api/hardwareOffer/:id              @controllers.HardwareOfferController.get(id: Long)
+POST          /api/hardwareOffer                  @controllers.HardwareOfferController.post()
+PUT           /api/hardwareOffer/:id              @controllers.HardwareOfferController.put(id: Long)
+DELETE        /api/hardwareOffer/:id              @controllers.HardwareOfferController.delete(id: Long)
 
 #Image
-GET           /api/image                                          @controllers.ImageController.list()
-GET           /api/image/:id                                      @controllers.ImageController.get(id: Long)
-POST          /api/image                                          @controllers.ImageController.post()
-PUT           /api/image/:id                                      @controllers.ImageController.put(id: Long)
-DELETE        /api/image/:id                                      @controllers.ImageController.delete(id: Long)
+GET           /api/image                          @controllers.ImageController.list()
+GET           /api/image/:id                      @controllers.ImageController.get(id: Long)
+POST          /api/image                          @controllers.ImageController.post()
+PUT           /api/image/:id                      @controllers.ImageController.put(id: Long)
+DELETE        /api/image/:id                      @controllers.ImageController.delete(id: Long)
 
 #Instance
-GET           /api/instance                                       @controllers.InstanceController.list()
-GET           /api/instance/:id                                   @controllers.InstanceController.get(id: Long)
-POST          /api/instance                                       @controllers.InstanceController.post()
-PUT           /api/instance/:id                                   @controllers.InstanceController.put(id: Long)
-DELETE        /api/instance/:id                                   @controllers.InstanceController.delete(id: Long)
+GET           /api/instance                       @controllers.InstanceController.list()
+GET           /api/instance/:id                   @controllers.InstanceController.get(id: Long)
+POST          /api/instance                       @controllers.InstanceController.post()
+PUT           /api/instance/:id                   @controllers.InstanceController.put(id: Long)
+DELETE        /api/instance/:id                   @controllers.InstanceController.delete(id: Long)
 
 #IpAddresses
-GET           /api/ip                                             @controllers.IpAddressController.list()
-GET           /api/ip/:id                                         @controllers.IpAddressController.get(id: Long)
-POST          /api/ip                                             @controllers.IpAddressController.post()
-PUT           /api/ip/:id                                         @controllers.IpAddressController.put(id: Long)
-DELETE        /api/ip/:id                                         @controllers.IpAddressController.delete(id: Long)
+GET           /api/ip                             @controllers.IpAddressController.list()
+GET           /api/ip/:id                         @controllers.IpAddressController.get(id: Long)
+POST          /api/ip                             @controllers.IpAddressController.post()
+PUT           /api/ip/:id                         @controllers.IpAddressController.put(id: Long)
+DELETE        /api/ip/:id                         @controllers.IpAddressController.delete(id: Long)
 
 #KeyPairs
-GET           /api/keyPair                                        @controllers.KeyPairController.list()
-GET           /api/keyPair/:id                                    @controllers.KeyPairController.get(id: Long)
-POST          /api/keyPair                                        @controllers.KeyPairController.post()
-PUT           /api/keyPair/:id                                    @controllers.KeyPairController.put(id: Long)
-DELETE        /api/keyPair/:id                                    @controllers.KeyPairController.delete(id: Long)
+GET           /api/keyPair                        @controllers.KeyPairController.list()
+GET           /api/keyPair/:id                    @controllers.KeyPairController.get(id: Long)
+POST          /api/keyPair                        @controllers.KeyPairController.post()
+PUT           /api/keyPair/:id                    @controllers.KeyPairController.put(id: Long)
+DELETE        /api/keyPair/:id                    @controllers.KeyPairController.delete(id: Long)
 
 #LifecycleComponent
-GET           /api/lifecycleComponent                             @controllers.LifecycleComponentController.list()
-GET           /api/lifecycleComponent/:id                         @controllers.LifecycleComponentController.get(id: Long)
-POST          /api/lifecycleComponent                             @controllers.LifecycleComponentController.post()
-PUT           /api/lifecycleComponent/:id                         @controllers.LifecycleComponentController.put(id: Long)
-DELETE        /api/lifecycleComponent/:id                         @controllers.LifecycleComponentController.delete(id: Long)
+GET           /api/lifecycleComponent             @controllers.LifecycleComponentController.list()
+GET           /api/lifecycleComponent/:id         @controllers.LifecycleComponentController.get(id: Long)
+POST          /api/lifecycleComponent             @controllers.LifecycleComponentController.post()
+PUT           /api/lifecycleComponent/:id         @controllers.LifecycleComponentController.put(id: Long)
+DELETE        /api/lifecycleComponent/:id         @controllers.LifecycleComponentController.delete(id: Long)
 
 #Measurement Window
 GET           /api/measurementWindow                              @controllers.MeasurementWindowController.list()
@@ -197,25 +190,25 @@ PUT           /api/monitorSubscription/:id                        @controllers.M
 DELETE        /api/monitorSubscription/:id                        @controllers.MonitorSubscriptionController.delete(id: Long)
 
 #Location
-GET           /api/location                                       @controllers.LocationController.list()
-GET           /api/location/:id                                   @controllers.LocationController.get(id: Long)
-POST          /api/location                                       @controllers.LocationController.post()
-PUT           /api/location/:id                                   @controllers.LocationController.put(id: Long)
-DELETE        /api/location/:id                                   @controllers.LocationController.delete(id: Long)
+GET           /api/location                       @controllers.LocationController.list()
+GET           /api/location/:id                   @controllers.LocationController.get(id: Long)
+POST          /api/location                       @controllers.LocationController.post()
+PUT           /api/location/:id                   @controllers.LocationController.put(id: Long)
+DELETE        /api/location/:id                   @controllers.LocationController.delete(id: Long)
 
 #Operating System
-GET           /api/os                                             @controllers.OperatingSystemController.list()
-GET           /api/os/:id                                         @controllers.OperatingSystemController.get(id: Long)
-POST          /api/os                                             @controllers.OperatingSystemController.post()
-PUT           /api/os/:id                                         @controllers.OperatingSystemController.put(id: Long)
-DELETE        /api/os/:id                                         @controllers.OperatingSystemController.delete(id: Long)
+GET           /api/os                             @controllers.OperatingSystemController.list()
+GET           /api/os/:id                         @controllers.OperatingSystemController.get(id: Long)
+POST          /api/os                             @controllers.OperatingSystemController.post()
+PUT           /api/os/:id                         @controllers.OperatingSystemController.put(id: Long)
+DELETE        /api/os/:id                         @controllers.OperatingSystemController.delete(id: Long)
 
 #Operating System Vendor
-GET           /api/osVendor                                       @controllers.OperatingSystemVendorController.list()
-GET           /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.get(id: Long)
-POST          /api/osVendor                                       @controllers.OperatingSystemVendorController.post()
-PUT           /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.put(id: Long)
-DELETE        /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.delete(id: Long)
+GET           /api/osVendor                       @controllers.OperatingSystemVendorController.list()
+GET           /api/osVendor/:id                   @controllers.OperatingSystemVendorController.get(id: Long)
+POST          /api/osVendor                       @controllers.OperatingSystemVendorController.post()
+PUT           /api/osVendor/:id                   @controllers.OperatingSystemVendorController.put(id: Long)
+DELETE        /api/osVendor/:id                   @controllers.OperatingSystemVendorController.delete(id: Long)
 
 #Raw Monitor
 GET           /api/rawMonitor                                     @controllers.RawMonitorController.list()
@@ -245,19 +238,33 @@ POST          /api/timeWindow                                     @controllers.T
 PUT           /api/timeWindow/:id                                 @controllers.TimeWindowController.put(id: Long)
 DELETE        /api/timeWindow/:id                                 @controllers.TimeWindowController.delete(id: Long)
 
+#Port Required
+GET           /api/portReq                        @controllers.PortRequiredController.list()
+GET           /api/portReq/:id                    @controllers.PortRequiredController.get(id: Long)
+POST          /api/portReq                        @controllers.PortRequiredController.post()
+PUT           /api/portReq/:id                    @controllers.PortRequiredController.put(id: Long)
+DELETE        /api/portReq/:id                    @controllers.PortRequiredController.delete(id: Long)
+
+#Port Provided
+GET           /api/portProv                       @controllers.PortProvidedController.list()
+GET           /api/portProv/:id                   @controllers.PortProvidedController.get(id: Long)
+POST          /api/portProv                       @controllers.PortProvidedController.post()
+PUT           /api/portProv/:id                   @controllers.PortProvidedController.put(id: Long)
+DELETE        /api/portProv/:id                   @controllers.PortProvidedController.delete(id: Long)
+
 #VirtualMachine
-GET           /api/virtualMachine                                 @controllers.VirtualMachineController.list()
-GET           /api/virtualMachine/:id                             @controllers.VirtualMachineController.get(id: Long)
-POST          /api/virtualMachine                                 @controllers.VirtualMachineController.post()
-PUT           /api/virtualMachine/:id                             @controllers.VirtualMachineController.put(id: Long)
-DELETE        /api/virtualMachine/:id                             @controllers.VirtualMachineController.delete(id: Long)
+GET           /api/virtualMachine                 @controllers.VirtualMachineController.list()
+GET           /api/virtualMachine/:id             @controllers.VirtualMachineController.get(id: Long)
+POST          /api/virtualMachine                 @controllers.VirtualMachineController.post()
+PUT           /api/virtualMachine/:id             @controllers.VirtualMachineController.put(id: Long)
+DELETE        /api/virtualMachine/:id             @controllers.VirtualMachineController.delete(id: Long)
 
 #VirtualMachineTemplate
-GET           /api/vmt                                            @controllers.VirtualMachineTemplateController.list()
-GET           /api/vmt/:id                                        @controllers.VirtualMachineTemplateController.get(id: Long)
-POST          /api/vmt                                            @controllers.VirtualMachineTemplateController.post()
-PUT           /api/vmt/:id                                        @controllers.VirtualMachineTemplateController.put(id: Long)
-DELETE        /api/vmt/:id                                        @controllers.VirtualMachineTemplateController.delete(id: Long)
+GET           /api/vmt                            @controllers.VirtualMachineTemplateController.list()
+GET           /api/vmt/:id                        @controllers.VirtualMachineTemplateController.get(id: Long)
+POST          /api/vmt                            @controllers.VirtualMachineTemplateController.post()
+PUT           /api/vmt/:id                        @controllers.VirtualMachineTemplateController.put(id: Long)
+DELETE        /api/vmt/:id                        @controllers.VirtualMachineTemplateController.delete(id: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET           /assets/*file                                       controllers.Assets.at(path="/public", file)
+GET           /assets/*file                       controllers.Assets.at(path="/public", file)

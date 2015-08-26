@@ -22,8 +22,9 @@ import com.google.inject.Inject;
 import dtos.CommunicationDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.ApplicationComponent;
 import models.Communication;
+import models.PortProvided;
+import models.PortRequired;
 import models.service.ModelService;
 
 /**
@@ -31,19 +32,20 @@ import models.service.ModelService;
  */
 public class CommunicationConverter extends AbstractConverter<Communication, CommunicationDto> {
 
-    private final ModelService<ApplicationComponent> applicationComponentModelService;
+    private final ModelService<PortRequired> portRequiredModelService;
+    private final ModelService<PortProvided> portProvidedModelService;
 
-    @Inject protected CommunicationConverter(
-        ModelService<ApplicationComponent> applicationComponentModelService) {
+    @Inject protected CommunicationConverter(ModelService<PortRequired> portRequiredModelService,
+        ModelService<PortProvided> portProvidedModelService) {
         super(Communication.class, CommunicationDto.class);
-        this.applicationComponentModelService = applicationComponentModelService;
+        this.portRequiredModelService = portRequiredModelService;
+        this.portProvidedModelService = portProvidedModelService;
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "provider").to(ApplicationComponent.class, "provider")
-            .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
-        builder().from(Long.class, "consumer").to(ApplicationComponent.class, "consumer")
-            .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
-        builder().from("port").to("port");
+        builder().from(Long.class, "requiredPort").to(PortRequired.class, "requiredPort")
+            .withTransformation(new IdToModelTransformer<>(portRequiredModelService));
+        builder().from(Long.class, "providedPort").to(PortProvided.class, "providedPort")
+            .withTransformation(new IdToModelTransformer<>(portProvidedModelService));
     }
 }

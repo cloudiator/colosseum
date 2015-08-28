@@ -26,6 +26,7 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 import models.CloudCredential;
 import models.Location;
 import models.service.ImageModelService;
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by daniel on 07.05.15.
  */
-public class ImageWatchdog extends AbstractCloudServiceWatchdog {
+@Stable public class ImageWatchdog extends AbstractCloudServiceWatchdog {
 
     private final ImageModelService imageModelService;
 

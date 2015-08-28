@@ -30,6 +30,7 @@ import play.db.jpa.Transactional;
  */
 public class TransactionalRunnableInterceptor implements MethodInterceptor {
 
+    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
 
     public TransactionalRunnableInterceptor() {
     }
@@ -43,7 +44,7 @@ public class TransactionalRunnableInterceptor implements MethodInterceptor {
         final boolean readOnly =
             methodInvocation.getMethod().getAnnotation(Transactional.class).readOnly();
         Object ret;
-        Logger
+        LOGGER
             .debug("Running " + methodInvocation.getThis().getClass() + " in transaction context.");
 
         try {
@@ -51,7 +52,7 @@ public class TransactionalRunnableInterceptor implements MethodInterceptor {
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }
-        Logger.debug(
+        LOGGER.debug(
             "Finished " + methodInvocation.getThis().getClass() + " in transaction context.");
         return ret;
     }

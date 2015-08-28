@@ -26,6 +26,7 @@ import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 import models.CloudCredential;
 import models.Location;
 import models.service.LocationModelService;
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by daniel on 05.05.15.
  */
-public class LocationWatchdog extends AbstractCloudServiceWatchdog {
+@Stable public class LocationWatchdog extends AbstractCloudServiceWatchdog {
 
     private final LocationModelService locationModelService;
 

@@ -18,13 +18,20 @@
 
 package components.execution;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.lang.annotation.*;
 
 /**
- * Created by daniel on 24.07.15.
+ * Annotation for {@link Schedulable}, stating
+ * that the schedulable should be executed in a stable context.
+ * <p>
+ * Stable context means, that the execution service will no longer stop
+ * the execution if it encounters an {@link Exception}.
+ * <p>
+ * Note that levels above Exception ({@link Throwable} or {@link Error}) will still
+ * halt the execution of the schedulable.
+ * <p>
+ * The annotation is inherited as "workaround", since otherwise the annotation is not present
+ * in the Guice AOP Proxies {@see https://github.com/google/guice/issues/201}.
  */
-@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.METHOD) public @interface Stable {
+@Retention(RetentionPolicy.RUNTIME) @Target(ElementType.TYPE) @Inherited public @interface Stable {
 }

@@ -21,6 +21,8 @@ package components.execution;
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
+import play.Configuration;
+import play.Play;
 import play.db.jpa.Transactional;
 
 /**
@@ -28,19 +30,26 @@ import play.db.jpa.Transactional;
  */
 public class ExecutionModule extends AbstractModule {
 
+    private final Configuration configuration;
+
+    public ExecutionModule() {
+        configuration = Play.application().configuration();
+    }
+
+
+
     @Override protected void configure() {
 
-        bindInterceptor(Matchers.subclassesOf(Runnable.class), Matchers.annotatedWith(Stable.class),
-            new StableRunnableInterceptor());
         bindInterceptor(Matchers.subclassesOf(Runnable.class), Matchers.annotatedWith(Loop.class),
             new LoopRunnableInterceptor());
         bindInterceptor(Matchers.subclassesOf(Runnable.class),
             Matchers.annotatedWith(Transactional.class), new TransactionalRunnableInterceptor());
 
 
-        bind(ExecutionService.class).to(ScheduledThreadPoolExecutorExecutionService.class);
+        bind(ExecutionService.class).toInstance(new StableScheduledThreadExecutor(
+            new ScheduledThreadPoolExecutorExecutionService(new LoggingScheduledThreadPoolExecutor(
+                configuration.getInt("colosseum.execution.thread", 10)))));
         bind(Init.class).asEagerSingleton();
-
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);

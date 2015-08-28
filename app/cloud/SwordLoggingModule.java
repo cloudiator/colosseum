@@ -36,7 +36,7 @@ public class SwordLoggingModule extends AbstractLoggingModule {
         private final play.Logger.ALogger Logger;
 
         public SwordColosseumLogger(String s) {
-            this.Logger = play.Logger.of(s›);
+            this.Logger = play.Logger.of(s);
         }
 
         @Override public boolean isTraceEnabled() {

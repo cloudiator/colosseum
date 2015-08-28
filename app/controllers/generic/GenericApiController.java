@@ -303,9 +303,8 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
 
         final W putDto = filledForm.get();
+        prePut(putDto, entity);
         entity = this.conversionService.toModel(putDto, entity);
-        entity = prePut(putDto, entity);
-
         this.modelService.save(entity);
 
         postPut(entity);
@@ -345,8 +344,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         // intentionally left empty
     }
 
-    protected T prePut(W putDto, T entity) {
-        return entity;
+    protected void prePut(W putDto, T entity) {
     }
 
     protected void postPut(T entity) {

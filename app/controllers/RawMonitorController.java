@@ -69,12 +69,7 @@ public class RawMonitorController
     @Override @Transactional protected void postPost(RawMonitor entity) {
         super.postPost(entity);
 
-        se._doMonitorVms(
-            (entity.getApplication() == null ? -1l : entity.getApplication().getId()),
-            (entity.getComponent() == null ? -1l : entity.getComponent().getId()),
-            (entity.getComponentInstance() == null ? -1l : entity.getComponentInstance().getId()),
-            (entity.getCloud() == null ? -1l : entity.getCloud().getId()),
-            entity);
+        se.doMonitor(entity);
     }
 
     @Override @Transactional protected void postPut(RawMonitor entity) {
@@ -88,23 +83,6 @@ public class RawMonitorController
 
         //TODO implement postDelete with true/false if delete worked
         Result parent = super.delete(id);
-
-        // TODO now done in scaling engine: remove after integration
-//        for(MonitorInstance mi : monitorInstanceModelService.getAll()){
-//            if(mi.getMonitor().getId().equals(id)){
-//                String ipaddress todo;
-//                String port todo;
-//
-//                AgentCommunicator ac = AgentCommunicator.getCommunicator("http", ipaddress, port);
-//                Monitor coolMonitor = Monitor.builder().
-//                    sensorClassName(getModelService().getById(id).getSensorDescription().getClassName()).
-//                    metricName(getModelService().getById(id).getSensorDescription().getMetricName()).
-//                    interval(getModelService().getById(id).getSchedule().getInterval(), getModelService().getById(id).getSchedule().getTimeUnit()).
-//                    build();
-//                ac.removeMonitor(coolMonitor);
-//                monitorInstanceModelService.delete(mi);
-//            }
-//        }
 
         return parent;
     }

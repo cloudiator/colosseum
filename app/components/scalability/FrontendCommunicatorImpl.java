@@ -72,8 +72,8 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
         this.instanceModelService = instanceModelService;
     }
 
-    @Override public List<VirtualMachine> getVirtualMachines(long applicationId, long componentId,
-        long instanceId, long cloudId) {
+    @Override public List<VirtualMachine> getVirtualMachines(Long applicationId, Long componentId,
+        Long instanceId, Long cloudId) {
         List<VirtualMachine> vms;
         List<VirtualMachine> result = new ArrayList<VirtualMachine>();
 
@@ -86,7 +86,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
 
 
             // Filter for application id
-            if (Check.idNotNull(applicationId)) {
+            if (applicationId != null) {
                 instances = this.getInstances(vm.getId());
                 appComps = new ArrayList<ApplicationComponent>();
                 for(Instance instance : instances){
@@ -108,7 +108,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             }
 
             // Filter for component id
-            if (suitable && Check.idNotNull(componentId)) {
+            if (suitable && componentId != null) {
                 if (instances == null){
                     instances = this.getInstances(vm.getId());
                     appComps = new ArrayList<ApplicationComponent>();
@@ -129,7 +129,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             }
 
             // Filter for instance id
-            if (suitable && Check.idNotNull(instanceId)) {
+            if (suitable && instanceId != null) {
                 if (instances == null){
                     instances = this.getInstances(vm.getId());
                 }
@@ -145,7 +145,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             }
 
             // Filter for cloud id
-            if (suitable && Check.idNotNull(cloudId)) {
+            if (suitable && cloudId != null) {
                 if(vm.cloud().getId() != cloudId){
                     suitable = false;
                 }
@@ -160,7 +160,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
         return result;
     }
 
-    @Override public List<Instance> getInstances(long vm) {
+    @Override public List<Instance> getInstances(Long vm) {
         List<Instance> instances;
         List<Instance> result = new ArrayList<Instance>();
 
@@ -184,12 +184,8 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
         return result;
     }
 
-    @Override public ApplicationComponent getApplicationComponentForInstance(long appCompId) {
+    @Override public ApplicationComponent getApplicationComponentForInstance(Long appCompId) {
         return applicationComponentModelService.getById(appCompId);
-    }
-
-    @Override public long getIdFromLink(String link) {
-        return 0;
     }
 
     @Override public String getPublicAddressOfVM(VirtualMachine vm) {
@@ -205,68 +201,129 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
         return null;
     }
 
-    @Override public List<LifecycleComponent> getComponents(long applicationId, long componentId,
-        long instanceId, long cloudId) {
-        return null;
-    }
+    @Override public List<Component> getComponents(
+        Long applicationId,
+        Long componentId,
+        Long instanceId,
+        Long cloudId) {
+        List<Component> result = new ArrayList<Component>();
+        List<Component> components = componentModelService.getAll();
+        List<Instance> instances = null;
+        List<VirtualMachine> vms = null;
 
-    @Override public boolean isInstanceOf(Instance instance, List<ApplicationComponent> appComps,
-        LifecycleComponent component) {
-        return false;
-    }
+        List<ApplicationComponent> appComps = applicationComponentModelService.getAll();
 
-    @Override
-    public boolean isInstanceOf(Instance instance, List<VirtualMachine> vms, long cloudId) {
-        return false;
-    }
 
-    @Override public String getIpAddress(long idIpAddress) {
-        return ipAddressModelService.getById(idIpAddress).getIp();
-    }
+        for (Component component : components) {
+            boolean suitable = false;
 
-    @Override public long getIdPublicAddressOfVM(VirtualMachine vm) {
-        if (vm.publicIpAddress() != null){
-            return vm.publicIpAddress().getId();
-        }
+            if(applicationId != null) {
+                for (ApplicationComponent ac : appComps){
+                    if(ac.getComponent().getId().equals(componentId) && ac.getApplication().getId().equals(
+                        applicationId)){
+                        suitable = true;
+                    }
+                }
+            }
 
-        return 0;
-    }
 
-    @Override public Long getVirtualMachineToIP(String ipAddress) {
-        return null;
-    }
 
-    @Override public Long getApplicationIdByName(String name) {
-        return null;
-    }
+            if(componentId != null){
+                if(componentId.equals(component.getId())){
+                    suitable = suitable && true;
+                }
+            }
 
-    @Override public Long getComponentIdByName(String name) {
-        Long result = null;
 
-        /* TODO NOT ONLY LC COMPONENT */
-        for(Component component : componentModelService.getAll()){
-            if (component instanceof LifecycleComponent && component.getName().equals(name)){
-                result = component.getId();
-                break;
+            if(instanceId != null){
+                if(instances==null) instances = instanceModelService.getAll();
+                boolean oneFits = false;
+
+                for (Instance instance : instances) {
+                    if(isInstanceOf(instance, appComps, component)) {
+                        oneFits = true;
+                    }
+                }
+
+                if(oneFits){
+                    suitable = suitable && true;
+                } else {
+                    suitable = false;
+                }
+            }
+
+
+            if(cloudId != null){
+                if(instances==null) instances = instanceModelService.getAll();
+                if(vms==null) vms = virtualMachineModelService.getAll();
+                boolean oneFits = false;
+
+                for (Instance instance : instances) {
+                    if(isInstanceOf(instance, vms, cloudId)){
+                        if(isInstanceOf(instance, appComps, component)) {
+                            oneFits = true;
+                        }
+                    }
+                }
+
+                if(oneFits){
+                    suitable = suitable && true;
+                } else {
+                    suitable = false;
+                }
+            }
+
+
+            if(suitable){
+                result.add(component);
             }
         }
 
         return result;
     }
 
-    @Override public List<MonitorInstance> getMonitorInstances(long idMonitor) {
-        return null;
-    }
+    public boolean isInstanceOf(Instance instance, List<ApplicationComponent> appComps, Component component) {
+        boolean result = false;
 
-    @Override public List<Long> getMonitorInstanceIDs(long idMonitor) {
-        List<MonitorInstance> monitorInstances = getMonitorInstances(idMonitor);
-        List<Long> result = new ArrayList<Long>();
+        Long componentId = component.getId();
 
-        for(MonitorInstance monitorInstance : monitorInstances){
-            result.add(monitorInstance.getId());
+        for (ApplicationComponent ac : appComps) {
+            Long acId = ac.getId();
+
+            if(instance.getApplicationComponent().getId().equals(acId) &&
+                ac.getComponent().getId().equals(componentId)){
+                result = true;
+            }
         }
 
         return result;
+    }
+
+    public boolean isInstanceOf(Instance instance, List<VirtualMachine> vms, long cloudId) {
+        boolean result = false;
+
+        for (VirtualMachine vm : vms) {
+            Long vmId = vm.getId();
+
+            if(vm.cloud().getId().equals(cloudId) && instance.getVirtualMachine().getId().equals(
+                vmId)){
+                result = true;
+            }
+        }
+
+        return result;
+    }
+
+    @Override public String getIpAddress(Long idIpAddress) {
+        return ipAddressModelService.getById(idIpAddress).getIp();
+    }
+
+    @Override public Long getIdPublicAddressOfVM(VirtualMachine vm) {
+        if (vm.publicIpAddress() != null){
+            return vm.publicIpAddress().getId();
+        }
+
+        return null;
     }
 
     @Override public List<MonitorInstance> getMonitorInstances(Long monitorId) {
@@ -294,180 +351,23 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
     }
 
     @Override public MonitorInstance getMonitorInstance(Long monitorInstanceId) {
-        return null;
-    }
-
-    @Override public Collection<MonitorInstance> getMonitorInstances() {
-        return null;
-    }
-
-    @Override
-    public RawMonitor saveRawMonitor(Long applicationId, Long componentId, Long compInstanceId,
-        Long cloudId, Schedule schedule, SensorDescription config) {
-        return null;
+        return monitorInstanceModelService.getById(monitorInstanceId);
     }
 
     @Override public RawMonitor getRawMonitor(Long monitorId) {
         return rawMonitorModelService.getById(monitorId);
     }
 
-    @Override public Collection<RawMonitor> getRawMonitors() {
-        return null;
-    }
-
-    @Override public ConstantMonitor saveConstantMonitor(Double val) {
-        return null;
-    }
-
-    @Override public ConstantMonitor getConstantMonitor(Long monitorId) {
-        return null;
-    }
-
-    @Override public Collection<ConstantMonitor> getConstantMonitors() {
-        return null;
-    }
-
-    @Override
-    public ComposedMonitor saveComposedMonitor(FlowOperator flow, FormulaQuantifier quantifier,
-        Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors) {
-        return null;
-    }
-
     @Override public ComposedMonitor getComposedMonitor(Long monitorId) {
         return composedMonitorModelService.getById(monitorId);
     }
 
-    @Override public List<ComposedMonitor> getComposedMonitors() {
-        return null;
-    }
-
-    @Override public SensorDescription saveSensorDescription(String _className, String _metricName,
-        boolean _isVmSensor) {
-        SensorDescription result = new SensorDescription(_className, _metricName, _isVmSensor);
-        sensorDescriptionModelService.save(result);
-        return result;
-    }
-
-    @Override public SensorDescription getSensorDescription(SensorDescription sensorDescription) {
-        return null;
-    }
-
-    @Override public List<SensorDescription> getSensorDescriptions() {
-        return null;
-    }
-
-    @Override public TimeWindow saveTimeWindow(Long interval, TimeUnit timeUnit) {
-        return null;
-    }
-
-    @Override public TimeWindow getTimeWindow(Long windowId) {
-        return null;
-    }
-
-    @Override public List<TimeWindow> getTimeWindows() {
-        return null;
-    }
-
-    @Override public MeasurementWindow saveMeasurementWindow(Long measurements) {
-        return null;
-    }
-
-    @Override public MeasurementWindow getMeasurementWindow(Long windowId) {
-        return null;
-    }
-
-    @Override public List<MeasurementWindow> getMeasurementWindows() {
-        return null;
-    }
-
-    @Override public Schedule saveSchedule(Long interval, TimeUnit timeUnit) {
-        Schedule result = new Schedule(interval, timeUnit);
-        scheduleModelService.save(result);
-        return result;
-    }
-
-    @Override public Schedule getSchedule(Long scheduleId) {
-        return null;
-    }
-
-    @Override public List<Schedule> getSchedules() {
-        return null;
-    }
-
-    @Override
-    public ComponentHorizontalOutScalingAction saveComponentHorizontalOutScalingAction(Long amount,
-        Long min, Long max, Long count, Long component) {
-        return null;
-    }
-
-    @Override
-    public ComponentHorizontalOutScalingAction getComponentHorizontalOutScalingAction(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<ComponentHorizontalOutScalingAction> getComponentHorizontalOutScalingAction() {
-        return null;
-    }
-
     @Override public Monitor getMonitor(Long id) {
-        return null;
-    }
-
-    @Override public void deleteMonitorAndItsInstances(Long id) {
-        //TODO not needed anymore? REMOVE after INTEGRATION!
-    }
-
-    @Override public void setExternalIDToMonitor(Long monitorId, String externalId) {
-
-    }
-
-    @Override
-    public void setExternalIDToMonitorInstance(Long monitorInstanceId, String externalId) {
-
-    }
-
-    @Override public void setExternalIDToMonitorInstance(Long monitorInstanceId, String externalId,
-        Long virtualMachine) {
-
-    }
-
-    @Override public void setExternalIDToMonitorInstance(Long monitorInstanceId, String externalId,
-        Long virtualMachine, Long componentId) {
-
-    }
-
-    @Override public Schedule getSchedule(Long interval, TimeUnit timeUnit) throws Exception {
-        return null;
-    }
-
-    @Override public SensorDescription getSensorDescription(String _className, String _metricName,
-        boolean _isVmSensor) {
-        return null;
-    }
-
-    @Override public TimeWindow getTimeWindow(Long interval, TimeUnit timeUnit) {
-        return null;
+        return monitorModelService.getById(id);
     }
 
     @Override public List<Monitor> getMonitors() {
-        return null;
-    }
-
-    @Override public Schedule getLowestSchedule(List<Monitor> monitors) throws Exception {
-        return null;
-    }
-
-    @Override public TimeWindow getSmallestTimeWindow(List<Monitor> monitors) throws Exception {
-        return null;
-    }
-
-    @Override public ComposedMonitor getComposedMonitorByExternalId(String externalId) {
-        return null;
-    }
-
-    @Override public void addScalingAction(ComposedMonitor monitor, ScalingAction action) {
-
+        return monitorModelService.getAll();
     }
 
     @Override public void removeMonitorInstance(MonitorInstance monitorInstance) {

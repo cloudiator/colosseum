@@ -53,13 +53,25 @@ public class SubscribeAggregation implements Aggregation {
     @Override public void execute(AggregatorServiceAccess service) {
         try {
             if(this.subscription.getType() == SubscriptionType.CDO) {
-                service.addObserver(monitor.getId(), new TelnetMetricObserverParameter(subscription.getId().toString(), subscription.getFilterValue(), Converter
-                    .convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic port*/
-            } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
-                service.addObserver(monitor.getId(),
-                    new TelnetEventObserverParameter(subscription.getId().toString(),
+                service.addObserver(
+                    monitor.getId(),
+                    new TelnetMetricObserverParameter(
                         subscription.getFilterValue(),
-                        Converter.convert(subscription.getFilterType()), subscription.getEndpoint(), 27182)); /*TODO dynamic port*/
+                        Converter.convert(subscription.getFilterType()),
+                        subscription.getEndpoint(),
+                        27182,
+                        subscription.getId().toString())
+                ); /*TODO dynamic port*/
+            } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
+                service.addObserver(
+                    monitor.getId(),
+                    new TelnetEventObserverParameter(
+                        subscription.getFilterValue(),
+                        Converter.convert(subscription.getFilterType()),
+                        subscription.getEndpoint(),
+                        27182,
+                        subscription.getId().toString())
+                ); /*TODO dynamic port*/
             }
         } catch (Exception e) {
             e.printStackTrace();

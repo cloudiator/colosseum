@@ -28,50 +28,26 @@ import java.util.List;
  * Created by Frank on 22.06.2015.
  */
 public interface ScalingEngine {
-    /** monitor all component instances attached to this application Id */
-    public Monitor doMonitorComponents(Application applicationId, Schedule schedule, SensorDescription desc);
-    /** monitor all component instances attached to this application Id and component Id*/
-    public Monitor doMonitorComponents(Application applicationId, Component component, Schedule schedule, SensorDescription desc);
-    /** monitor this particular component instance */
-    public Monitor doMonitorComponents(Application application, Component component, Instance compInstance, Schedule schedule, SensorDescription desc);
-
-    /** monitor all component instances of this component in this cloud */
-    public Monitor doMonitorComponents(Application application, Component componentId, Cloud cloudId, Schedule schedule, SensorDescription desc);
-    /** monitor all component instances in this cloud */
-    public Monitor doMonitorComponents(Application application, Cloud cloud, Schedule schedule, SensorDescription desc);
-
-    /** all vms of this application */
-    public Monitor doMonitorVms(Application appId, Schedule schedule, SensorDescription desc);
-    /** all vms of this application in this cloud */
-    public Monitor doMonitorVms(Application appId, Cloud cid, Schedule schedule, SensorDescription desc);
-    /** all vms of this application running a component instance of this component */
-    public Monitor doMonitorVms(Application appId, Component cid, Schedule schedule, SensorDescription desc);
-    /** all vms of this application running a component instance of this component in this cloud */
-    public Monitor doMonitorVms(Application appId, Component cid, Cloud cloudId, Schedule schedule, SensorDescription desc);
-
 
     /** most simple map and reduce **/
-    public Monitor mapAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
-    public Monitor reduceAggregatedMonitors(FormulaQuantifier quantifier, Schedule schedule, Window window, FormulaOperator formulaOperator, List<Monitor> monitors);
-    public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances);
-    public void updateAggregation(ComposedMonitor monitor);
+    Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances);
+    void updateAggregation(ComposedMonitor monitor);
 
     /** remove a monitor */
-    public void removeMonitor(long monitorId);
+    void removeMonitor(long monitorId);
 
     /** update a monitor */
-    public void updateMonitor(RawMonitor monitor);
+    void updateMonitor(RawMonitor monitor);
 
     /** add an external ID to a monitor / monitor instance based on discriminator */
-    public void addExternalIdToMonitor(Long monitorId, String externalId);
-    public void addExternalId(Long monitorInstanceId, String externalId);
-    public void addExternalId(Long monitorId, String externalId, Long virtualMachine);
-    public void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId);
+    void addExternalIdToMonitor(Long monitorId, String externalId);
+    void addExternalId(Long monitorInstanceId, String externalId);
+    void addExternalId(Long monitorId, String externalId, Long virtualMachine);
+    void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId);
 
-    public Monitor _doMonitorComponents(long applicationId, long componentId, long instanceId, long cloudId, Schedule schedule, SensorDescription sensorDescription);
-    public Monitor _doMonitorVms(long applicationId, long componentId, long instanceId, long cloudId, Schedule schedule, SensorDescription sensorDescription);
-
-    public Monitor _doMonitorVms(long applicationId, long componentId, long instanceId, long cloudId, RawMonitor monitor);
+    Monitor doMonitor(RawMonitor monitor);
+    Monitor doMonitorComponents(RawMonitor monitor);
+    Monitor doMonitorVms(RawMonitor monitor);
 
     void subscribe(Monitor monitor, MonitorSubscription subscription);
     void unsubscribe(Long idSubscription);

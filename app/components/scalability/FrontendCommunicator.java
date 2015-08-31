@@ -25,37 +25,21 @@ import java.util.List;
 /**
  * Created by Frank on 23.07.2015.
  */
-public interface FrontendCommunicator extends DatabaseAccess {
+public interface FrontendCommunicator {
 
-    public List<VirtualMachine> getVirtualMachines(long applicationId, long componentId, long instanceId, long cloudId);
-
-    public List<Instance> getInstances(long vm);
-
-    public ApplicationComponent getApplicationComponentForInstance(long appCompId);
-
-    public long getIdFromLink(String link);
-
-    public String getPublicAddressOfVM(VirtualMachine vm);
-
-    public List<LifecycleComponent> getComponents(long applicationId, long componentId, long instanceId, long cloudId);
-
-    public boolean isInstanceOf(Instance instance, List<ApplicationComponent> appComps, LifecycleComponent component);
-
-    public boolean isInstanceOf(Instance instance, List<VirtualMachine> vms, long cloudId);
-
-    public String getIpAddress(long idIpAddress);
-
-    public long getIdPublicAddressOfVM(VirtualMachine vm);
-
-    public Long getVirtualMachineToIP(String ipAddress);
-
-    public Long getApplicationIdByName(String name);
-
-    public Long getComponentIdByName(String name);
-
-    public List<MonitorInstance> getMonitorInstances(long idMonitor);
-
-    public List<Long> getMonitorInstanceIDs(long idMonitor);
-
-    public void removeMonitorInstance(MonitorInstance monitorInstance);
+    List<VirtualMachine> getVirtualMachines(Long applicationId, Long componentId, Long instanceId, Long cloudId);
+    List<Instance> getInstances(Long vm);
+    ApplicationComponent getApplicationComponentForInstance(Long appCompId);
+    String getPublicAddressOfVM(VirtualMachine vm);
+    List<Component> getComponents(Long applicationId, Long componentId, Long instanceId, Long cloudId);
+    String getIpAddress(Long idIpAddress);
+    Long getIdPublicAddressOfVM(VirtualMachine vm);
+    void removeMonitorInstance(MonitorInstance monitorInstance);
+    List<MonitorInstance> getMonitorInstances(Long monitorId);
+    MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long ipAddressId, Long vmId, Long componentId);
+    MonitorInstance getMonitorInstance(Long monitorInstanceId);
+    RawMonitor getRawMonitor(Long monitorId);
+    ComposedMonitor getComposedMonitor(Long monitorId);
+    Monitor getMonitor(Long id);
+    List<Monitor> getMonitors();
 }

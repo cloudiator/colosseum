@@ -19,9 +19,7 @@
 package components.execution;
 
 import com.google.inject.Singleton;
-import play.Configuration;
 import play.Logger;
-import play.Play;
 
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -32,15 +30,15 @@ import java.util.concurrent.ScheduledExecutorService;
 
     private final ScheduledExecutorService scheduledExecutorService;
 
+    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
 
-    public ScheduledThreadPoolExecutorExecutionService() {
-        final Configuration configuration = Play.application().configuration();
-        scheduledExecutorService = new ExtendedScheduledThreadPoolExecutor(
-            configuration.getInt("colosseum.execution.thread", 10));
+    public ScheduledThreadPoolExecutorExecutionService(
+        ScheduledExecutorService scheduledExecutorService) {
+        this.scheduledExecutorService = scheduledExecutorService;
     }
 
     @Override public void schedule(Schedulable schedulable) {
-        Logger.debug(String
+        LOGGER.debug(String
             .format("Scheduling %s with initial delay of %s and period of %s %s", schedulable,
                 schedulable.delay(), schedulable.period(), schedulable.timeUnit()));
         this.scheduledExecutorService
@@ -49,7 +47,7 @@ import java.util.concurrent.ScheduledExecutorService;
     }
 
     @Override public void execute(Runnable runnable) {
-        Logger.debug("Executing " + runnable);
+        LOGGER.debug("Executing " + runnable);
         this.scheduledExecutorService.execute(runnable);
     }
 }

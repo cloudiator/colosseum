@@ -26,6 +26,7 @@ import cloud.sync.problems.HardwareProblems;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 import models.CloudCredential;
 import models.Hardware;
 import models.Location;
@@ -36,7 +37,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by daniel on 07.05.15.
  */
-public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
+@Stable public class HardwareWatchdog extends AbstractCloudServiceWatchdog {
 
     private final HardwareModelService hardwareModelService;
 

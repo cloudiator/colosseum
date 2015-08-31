@@ -20,19 +20,17 @@ package dtos.validation.validators;
 
 
 
+import dtos.validation.AbstractValidator;
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
 
 import java.util.Collection;
-import java.util.LinkedList;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 19.03.15.
  */
-public class IterableValidator<T> implements Validator<Iterable<T>> {
+public class IterableValidator<T> extends AbstractValidator<Iterable<T>> {
 
     private Validator<T> validator;
 
@@ -40,15 +38,15 @@ public class IterableValidator<T> implements Validator<Iterable<T>> {
         this.validator = tValidator;
     }
 
-    @Override public Collection<ValidationErrorMessage> validate(Iterable<T> ts)
-        throws ValidationException {
+    @Override protected void validation(Iterable<T> ts) throws ValidationException {
 
-        checkNotNull(ts);
-
-        Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
-        for (T t : ts) {
-            validationErrorMessages.addAll(this.validator.validate(t));
+        if (ts == null) {
+            throw new ValidationException("Iterable to validate is null.");
         }
-        return validationErrorMessages;
+
+        for (T t : ts) {
+            Collection<ValidationErrorMessage> validatorErrors = this.validator.validate(t);
+            validatorErrors.forEach(this::addError);
+        }
     }
 }

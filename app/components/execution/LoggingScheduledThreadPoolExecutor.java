@@ -23,22 +23,23 @@ import play.Logger;
 import java.util.concurrent.*;
 
 /**
- * Created by daniel on 05.05.15.
+ * An extension of the ScheduledThreadPoolExecutor, that logs any errors occurring during
+ * the execution of tasks, instead of silently ignoring them.
  */
-public class ExtendedScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor {
-    public ExtendedScheduledThreadPoolExecutor(int corePoolSize) {
+public class LoggingScheduledThreadPoolExecutor extends ScheduledThreadPoolExecutor {
+    public LoggingScheduledThreadPoolExecutor(int corePoolSize) {
         super(corePoolSize);
     }
 
-    public ExtendedScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory) {
+    public LoggingScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory) {
         super(corePoolSize, threadFactory);
     }
 
-    public ExtendedScheduledThreadPoolExecutor(int corePoolSize, RejectedExecutionHandler handler) {
+    public LoggingScheduledThreadPoolExecutor(int corePoolSize, RejectedExecutionHandler handler) {
         super(corePoolSize, handler);
     }
 
-    public ExtendedScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory,
+    public LoggingScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory,
         RejectedExecutionHandler handler) {
         super(corePoolSize, threadFactory, handler);
     }

@@ -18,10 +18,12 @@
 
 package models;
 
+import components.scalability.internal.TsdbLocator;
 import models.generic.ModelWithExternalReference;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank on 20.05.2015.
@@ -51,4 +53,19 @@ public abstract class Monitor extends ModelWithExternalReference {
 //        this.composedMonitors = composedMonitors;
 //    }
 
+
+
+    /**
+     * Method to get TSDB Locator - composition pattern.
+     * @return Tbe actual TSDB Locator for this class.
+     */
+    protected abstract TsdbLocator getTsdbLocator();
+
+    /**
+     * Gets the TSDB IPs for a Monitor in respect to its MonitorInstances.
+     * @return The map of IP and all MonitorInstances to this IP.
+     */
+    public Map<String, List<MonitorInstance>> getTsdbIp(){
+        return getTsdbLocator().getTsdbIp();
+    }
 }

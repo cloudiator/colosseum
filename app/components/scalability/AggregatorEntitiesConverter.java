@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by Frank on 28.07.2015.
  */
-public class Converter {
+public class AggregatorEntitiesConverter {
     public static de.uniulm.omi.executionware.srl.aggregator.entities.ComposedMonitor convert(ComposedMonitor cm){
         return new de.uniulm.omi.executionware.srl.aggregator.entities.ComposedMonitor(
             cm.getId(),
@@ -42,6 +42,7 @@ public class Converter {
             convert(cm.getMonitors())
         );
     }
+
     public static de.uniulm.omi.executionware.srl.aggregator.entities.RawMonitor convert(RawMonitor mon){
         return
             new de.uniulm.omi.executionware.srl.aggregator.entities.RawMonitor(

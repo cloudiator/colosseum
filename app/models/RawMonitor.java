@@ -18,6 +18,9 @@
 
 package models;
 
+import components.scalability.internal.RawMonitorTsdbLocator;
+import components.scalability.internal.TsdbLocator;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -70,5 +73,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public SensorDescription getSensorDescription() {
         return sensorDescription;
+    }
+
+    @Override protected TsdbLocator getTsdbLocator() {
+        return new RawMonitorTsdbLocator(this);
     }
 }

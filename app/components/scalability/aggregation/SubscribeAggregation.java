@@ -18,13 +18,10 @@
 
 package components.scalability.aggregation;
 
-import components.scalability.Converter;
-import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
+import components.scalability.AggregatorEntitiesConverter;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
-import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetEventObserver;
-import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
 import models.Monitor;
 import models.MonitorSubscription;
 import models.scalability.SubscriptionType;
@@ -65,7 +62,7 @@ public class SubscribeAggregation implements Aggregation {
                     monitor.getId(),
                     new TelnetMetricObserverParameter(
                         subscription.getFilterValue(),
-                        Converter.convert(subscription.getFilterType()),
+                        AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
                         VISOR_TELNET_PORT,
                         subscription.getId().toString())
@@ -75,7 +72,7 @@ public class SubscribeAggregation implements Aggregation {
                     monitor.getId(),
                     new TelnetEventObserverParameter(
                         subscription.getFilterValue(),
-                        Converter.convert(subscription.getFilterType()),
+                        AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
                         VISOR_TELNET_PORT,
                         subscription.getId().toString())

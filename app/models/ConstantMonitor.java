@@ -18,6 +18,9 @@
 
 package models;
 
+import components.scalability.internal.EmptyTsdbLocator;
+import components.scalability.internal.TsdbLocator;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -44,5 +47,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public Double getValue() {
         return value;
+    }
+
+    @Override protected TsdbLocator getTsdbLocator() {
+        return new EmptyTsdbLocator();
     }
 }

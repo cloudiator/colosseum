@@ -19,8 +19,10 @@
 package components.scalability;
 
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.ColosseumDetails;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.Constants;
 import play.Logger;
+import play.Play;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -36,7 +38,7 @@ public class AggregationAccessService {
     private final static Map<String, AggregatorServiceAccess> services = new ConcurrentHashMap<String, AggregatorServiceAccess>();
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    public static AggregatorServiceAccess getService(String ip, int port, String key){
+    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key){
 
         String mapKey = ip + "_" + port + "_" + key;
 
@@ -56,5 +58,18 @@ public class AggregationAccessService {
         }
 
         return services.get(mapKey);
+    }
+
+    public synchronized static AggregatorServiceAccess getLocalService(){
+
+        final String LOCALHOST =
+            Play.application().configuration().getString(
+                "colosseum.scalability.aggregator.rmi.host");
+        final int RMI_PORT =
+            Play.application().configuration().getInt("colosseum.scalability.aggregator.rmi.port");
+        final String RMI_KEY =
+            Play.application().configuration().getString("colosseum.scalability.aggregator.rmi.key");
+
+        return getService(LOCALHOST, RMI_PORT, RMI_KEY);
     }
 }

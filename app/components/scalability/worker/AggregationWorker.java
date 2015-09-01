@@ -21,7 +21,8 @@ package components.scalability.worker;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
-import components.scalability.Helper;
+import components.scalability.AggregationAccessService;
+import components.scalability.internal.TsdbHelper;
 import components.scalability.aggregation.Aggregation;
 
 /**
@@ -41,11 +42,11 @@ public class AggregationWorker implements Runnable {
                 Aggregation job = aggregationQueue.take();
                 Thread.sleep(2000); /* wait for transaction to be finished */
 
-                Helper.getIpOfTSDB(job.getObject(), null);
-
-                //job.execute(AggregationAccessService.getService(), monitorInstances);
-
                 //TODO has to be done on basis of the monitor instances instead of the monitors
+                //TsdbHelper.getIpOfTSDB(job.getObject(), null /*TODO use this as filter if you only want to aggregate some */);
+                //job.execute(AggregationAccessService.getService(), monitorInstances);3
+
+                job.execute(AggregationAccessService.getLocalService());
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

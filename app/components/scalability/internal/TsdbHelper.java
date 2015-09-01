@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package components.scalability;
+package components.scalability.internal;
 
 import models.ComposedMonitor;
 import models.Monitor;
@@ -32,34 +32,33 @@ import java.util.Map;
 /**
  * Created by Frank on 24.08.2015.
  */
-public class Helper {
-    private static final String DEFAULT_TSDB_HOST =
+public class TsdbHelper {
+    public static final String DEFAULT_TSDB_HOST =
         Play.application().configuration().getString("colosseum.scalability.tsdb.host.default");
 
+
+    private TsdbHelper(){
+        //no instantiation of this class
+    }
+
+    //TODO use instances as filter - does this make sense?
     public static Map<String, List<MonitorInstance>> getIpOfTSDB(Monitor mon, List<MonitorInstance> instances){
-        Map<String, List<MonitorInstance>> map = new HashMap<>();
+        Map<String, List<MonitorInstance>> result = new HashMap<>();
 
         if(mon == null){
             // TODO
             // because sometimes for the aggregation e.g. in subscription, the
             // monitor is not available anymore. There must be a way to access
             // the monitor object BEFORE delete is called.
-            addMonitorInstanceToIP(map, DEFAULT_TSDB_HOST, null);
-        } else if(mon instanceof ComposedMonitor){
-            // TODO just for the time being composed monitors always on localhost
-            // null is ok, because in that case just this IP is used
-            addMonitorInstanceToIP(map, DEFAULT_TSDB_HOST, null);
-        } else if(mon instanceof RawMonitor){
-            RawMonitor rm = (RawMonitor)mon;
-            for(MonitorInstance instance : instances){
-                addMonitorInstanceToIP(map, instance.getIpAddress().getIp(), instance);
-            }
+            addMonitorInstanceToIP(result, DEFAULT_TSDB_HOST, null);
+        } else {
+            result = mon.getTsdbIp();
         }
 
-        return map;
+        return result;
     }
 
-    private static void addMonitorInstanceToIP(Map<String, List<MonitorInstance>> map, String ip, MonitorInstance mi){
+    public static void addMonitorInstanceToIP(Map<String, List<MonitorInstance>> map, String ip, MonitorInstance mi){
         if(!map.containsKey(ip)){
             map.put(ip, new ArrayList<MonitorInstance>());
         }
@@ -67,9 +66,5 @@ public class Helper {
         if(mi != null){
             map.get(ip).add(mi);
         }
-    }
-
-    private Helper(){
-        //no instantiation of this class
     }
 }

@@ -18,6 +18,8 @@
 
 package models;
 
+import components.scalability.internal.ComposedMonitorTsdbLocator;
+import components.scalability.internal.TsdbLocator;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
 
@@ -85,5 +87,9 @@ import java.util.List;
 
     public void addScalingActions(ScalingAction scalingAction) {
         this.scalingActions.add(scalingAction);
+    }
+
+    @Override protected TsdbLocator getTsdbLocator() {
+        return new ComposedMonitorTsdbLocator(this);
     }
 }

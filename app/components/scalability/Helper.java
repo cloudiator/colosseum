@@ -22,6 +22,7 @@ import models.ComposedMonitor;
 import models.Monitor;
 import models.MonitorInstance;
 import models.RawMonitor;
+import play.Play;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +33,9 @@ import java.util.Map;
  * Created by Frank on 24.08.2015.
  */
 public class Helper {
+    private static final String DEFAULT_TSDB_HOST =
+        Play.application().configuration().getString("colosseum.scalability.tsdb.host.default");
+
     public static Map<String, List<MonitorInstance>> getIpOfTSDB(Monitor mon, List<MonitorInstance> instances){
         Map<String, List<MonitorInstance>> map = new HashMap<>();
 
@@ -40,11 +44,11 @@ public class Helper {
             // because sometimes for the aggregation e.g. in subscription, the
             // monitor is not available anymore. There must be a way to access
             // the monitor object BEFORE delete is called.
-            addMonitorInstanceToIP(map, "127.0.0.1", null);
+            addMonitorInstanceToIP(map, DEFAULT_TSDB_HOST, null);
         } else if(mon instanceof ComposedMonitor){
             // TODO just for the time being composed monitors always on localhost
             // null is ok, because in that case just this IP is used
-            addMonitorInstanceToIP(map, "127.0.0.1", null);
+            addMonitorInstanceToIP(map, DEFAULT_TSDB_HOST, null);
         } else if(mon instanceof RawMonitor){
             RawMonitor rm = (RawMonitor)mon;
             for(MonitorInstance instance : instances){

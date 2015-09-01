@@ -26,8 +26,8 @@ import components.scalability.aggregation.*;
 import models.*;
 import models.generic.ExternalReference;
 import models.scalability.FlowOperator;
-import models.scalability.FormulaOperator;
 import play.Logger;
+import play.Play;
 
 import java.util.List;
 
@@ -39,16 +39,13 @@ public class ScalingEngineImpl implements ScalingEngine {
     private static final long NA = -1;
     private final SimpleBlockingQueue<Aggregation> aggregationQueue;
     private final FrontendCommunicator fc;
-    private final int agentPort;
+    private final int AGENT_PORT =
+        Play.application().configuration().getInt("colosseum.scalability.visor.port");
 
     @Inject
     public ScalingEngineImpl(FrontendCommunicator fc,
-        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation> aggregationQueue
-        /*, int agentPort*/) {
+        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation> aggregationQueue) {
         this.fc = fc;
-        /*TODO make this dynamic: */
-        //this.agentPort = agentPort;
-        this.agentPort = 31415;
         this.aggregationQueue = aggregationQueue;
     }
 
@@ -162,7 +159,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             for (MonitorInstance monitorInstance : monitorInstances) {
                 String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
 
-                AgentCommunicator ac = AgentCommunicator.getCommunicator("http", ipAddress, agentPort);
+                AgentCommunicator ac = AgentCommunicator.getCommunicator("http", ipAddress, AGENT_PORT);
 
                 List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(desc.getClassName(), desc.getMetricName(), null /*TODO*/);
 
@@ -279,7 +276,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             System.out.println("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " " + " to this application " + monitor.getApplication());
 
             /* TODO not magical static values : monitoring agent config (at least port) has to be saved in db */
-            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", fc.getPublicAddressOfVM(vm), agentPort);
+            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", fc.getPublicAddressOfVM(vm), AGENT_PORT);
 
             List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), null);
 
@@ -320,7 +317,7 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     @Override public void updateMonitor(RawMonitor monitor) {
         for(MonitorInstance mi : fc.getMonitorInstances(monitor.getId())){
-            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", mi.getIpAddress().getIp(), agentPort);
+            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", mi.getIpAddress().getIp(), AGENT_PORT);
 
             ac.updateMonitor(mi);
         }

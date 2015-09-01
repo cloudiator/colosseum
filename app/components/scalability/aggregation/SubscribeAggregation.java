@@ -28,6 +28,7 @@ import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
 import models.Monitor;
 import models.MonitorSubscription;
 import models.scalability.SubscriptionType;
+import play.Play;
 
 /**
  * Created by Frank on 03.08.2015.
@@ -35,6 +36,9 @@ import models.scalability.SubscriptionType;
 public class SubscribeAggregation implements Aggregation {
     protected final MonitorSubscription subscription;
     protected final Monitor monitor;
+     /*TODO dynamic port*/
+     private static final int VISOR_TELNET_PORT =
+         Play.application().configuration().getInt("colosseum.scalability.visor.telnet.port");
 
     public SubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {
         super();
@@ -59,9 +63,9 @@ public class SubscribeAggregation implements Aggregation {
                         subscription.getFilterValue(),
                         Converter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
-                        27182,
+                        VISOR_TELNET_PORT,
                         subscription.getId().toString())
-                ); /*TODO dynamic port*/
+                );
             } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
                 service.addObserver(
                     monitor.getId(),
@@ -69,9 +73,9 @@ public class SubscribeAggregation implements Aggregation {
                         subscription.getFilterValue(),
                         Converter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
-                        27182,
+                        VISOR_TELNET_PORT,
                         subscription.getId().toString())
-                ); /*TODO dynamic port*/
+                );
             }
         } catch (Exception e) {
             e.printStackTrace();

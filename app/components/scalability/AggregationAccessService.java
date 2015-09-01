@@ -20,6 +20,7 @@ package components.scalability;
 
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.Constants;
+import play.Logger;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -32,7 +33,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Frank on 24.08.2015.
  */
 public class AggregationAccessService {
-    private static final Map<String, AggregatorServiceAccess> services = new ConcurrentHashMap<String, AggregatorServiceAccess>();
+    private final static Map<String, AggregatorServiceAccess> services = new ConcurrentHashMap<String, AggregatorServiceAccess>();
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     public static AggregatorServiceAccess getService(String ip, int port, String key){
 
@@ -47,9 +49,9 @@ public class AggregationAccessService {
 
                 services.put(mapKey, asa);
             } catch (RemoteException e) {
-                e.printStackTrace();
+                Logger.error("Error while calling remote object: " + e.getMessage());
             } catch (NotBoundException e) {
-                e.printStackTrace();
+                Logger.error("Remote object was not bound in registry: " + e.getMessage());
             }
         }
 

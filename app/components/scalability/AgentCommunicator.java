@@ -35,160 +35,18 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Frank on 20.07.2015.
  */
-public class AgentCommunicator {
+public interface AgentCommunicator {
 
-    private static List<AgentCommunicator> agents = new ArrayList<AgentCommunicator>();
-
-    public int getPort() {
-        return port;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public String getProtocol() {
-        return protocol;
-    }
-
-    private final String protocol;
-    private final String ip;
-    private final int port;
-    private final ClientController<Monitor> controller;
-
-    private AgentCommunicator(String protocol, String ip, int port) {
-        this.ip = ip;
-        this.port = port;
-        this.protocol = protocol;
-
-        //get the controller for the cloud entity
-        this.controller =
-            ClientBuilder.getNew()
-                // the base url
-                .url(protocol + "://" + ip + ":" + port)
-                    // the entity to get the controller for.
-                .build(Monitor.class);
-
-    }
-
-    public static AgentCommunicator getCommunicator(String protocol, String ip, int port){
-        for(AgentCommunicator agent : agents){
-            if (agent.getProtocol().equals(protocol) && agent.getIp().equals(ip) && agent.getPort() == port){
-                return agent;
-            }
-        }
-        AgentCommunicator agent = new AgentCommunicator(protocol, ip, port);
-        agents.add(agent);
-        return agent;
-    }
-
-
-    /*
-    TODO This probably won't work...
-     */
-    public void removeMonitor(String className, String metricName, long interval, TimeUnit unit){
-        Monitor monitor = Monitor.builder().sensorClassName(className).metricName(metricName).interval(interval, unit).build();
-
-        //remove a Monitor
-        controller.delete(monitor);
-    }
-
-    public void addMonitor(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit){
-        Monitor monitor = Monitor.builder().sensorClassName(className).metricName(metricName).interval(interval, unit).addContext("monitorinstance", idMonitorInstance).build();
-
-        //create a new Monitor
-        monitor = controller.create(monitor);
-    }
-
-    /*
-    TODO This probably won't work...
-     */
-    public void removeMonitorForComponent(String className, String metricName, long interval, TimeUnit unit, String componentId){
-        Monitor monitor = Monitor.builder().sensorClassName(className).metricName(metricName).interval(interval, unit).addContext("component", componentId).build();
-
-        //remove a Monitor
-        controller.delete(monitor);
-    }
-
-    public void removeMonitor(Monitor monitor) {
-        //remove a Monitor
-        controller.delete(monitor);
-    }
-
-
-    public void addMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId){
-        Monitor monitor = Monitor.builder().sensorClassName(className).metricName(metricName).interval(interval, unit).addContext("component", componentId).addContext("monitorinstance", idMonitorInstance).build();
-
-        //create a new Monitor
-        controller.create(monitor);
-    }
-
-    public List<Monitor> getMonitorWithSameValues(String className, String metricName, String componentName) {
-        List<Monitor> monitors = controller.getList();
-        List<Monitor> result = new ArrayList<Monitor>();
-
-        for(Monitor monitor : monitors){
-            if (monitor.getSensorClassName().equals(className) &&
-                    monitor.getMetricName().equals(metricName) &&
-                    checkForComponentContext(componentName, monitor.getContexts())){
-                result.add(monitor);
-            }
-        }
-
-        return result;
-        //return new ArrayList<Monitor>();
-    }
-
-    private boolean checkForComponentContext(String componentName, List<Context> contexts) {
-        boolean isComponent = false;
-
-        if (componentName == null || componentName.equals("")){
-            isComponent = true;
-        } else {
-            for(Context context : contexts){
-                if(context.getKey().equals("component") && context.getValue().equals(componentName)){
-                    isComponent = true;
-                }
-            }
-        }
-
-        return isComponent;
-    }
-
-    public void updateMonitor(MonitorInstance mi) {
-        List<Monitor> mons = controller.getList();
-
-        for(Monitor mon : mons){
-            if (hasSameContext(mon, "monitorinstance", mi.getId().toString())){
-                controller.update(copyValueFromMonitorInstance(mon, mi));
-            }
-        }
-    }
-
-    public boolean hasSameContext(Monitor mon, String contextKey, String contextValue){
-        for(Context con : mon.getContexts()){
-            if(con.getKey().equals(contextKey) && con.getValue().equals(contextValue)){
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public Monitor copyValueFromMonitorInstance(Monitor m, MonitorInstance mi){
-        for(Context c : m.getContexts()){
-            if(c.getKey().equals("monitorinstance")){
-                c.setValue(mi.getId().toString());
-            }
-        }
-
-        for(ExternalReference er : mi.getExternalReferences()){
-            m.getContexts().add(new Context("er_" + er.getId(), er.getReference()));
-        }
-
-        m.setSensorClassName(((RawMonitor)mi.getMonitor()).getSensorDescription().getClassName());
-        m.setMetricName(((RawMonitor)mi.getMonitor()).getSensorDescription().getMetricName());
-        m.setInterval(new Interval(((RawMonitor)mi.getMonitor()).getSchedule().getInterval(), ((RawMonitor)mi.getMonitor()).getSchedule().getTimeUnit().toString()));
-        return m;
-    }
+    void addMonitor(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit);
+    void removeMonitor(String className, String metricName, long interval, TimeUnit unit);
+    void removeMonitorForComponent(String className, String metricName, long interval, TimeUnit unit, String componentId);
+    void removeMonitor(Monitor monitor);
+    void addMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId);
+    List<Monitor> getMonitorWithSameValues(String className, String metricName, String componentName);
+    void updateMonitor(MonitorInstance mi);
+    boolean hasSameContext(Monitor mon, String contextKey, String contextValue);
+    Monitor copyValueFromMonitorInstance(Monitor m, MonitorInstance mi);
+    int getPort();
+    String getIp();
+    String getProtocol();
 }

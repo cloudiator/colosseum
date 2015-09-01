@@ -159,7 +159,8 @@ public class ScalingEngineImpl implements ScalingEngine {
             for (MonitorInstance monitorInstance : monitorInstances) {
                 String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
 
-                AgentCommunicator ac = AgentCommunicator.getCommunicator("http", ipAddress, AGENT_PORT);
+                AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
+                    ipAddress, AGENT_PORT);
 
                 List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(desc.getClassName(), desc.getMetricName(), null /*TODO*/);
 
@@ -276,7 +277,8 @@ public class ScalingEngineImpl implements ScalingEngine {
             System.out.println("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " " + " to this application " + monitor.getApplication());
 
             /* TODO not magical static values : monitoring agent config (at least port) has to be saved in db */
-            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", fc.getPublicAddressOfVM(vm), AGENT_PORT);
+            AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
+                fc.getPublicAddressOfVM(vm), AGENT_PORT);
 
             List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), null);
 
@@ -317,7 +319,8 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     @Override public void updateMonitor(RawMonitor monitor) {
         for(MonitorInstance mi : fc.getMonitorInstances(monitor.getId())){
-            AgentCommunicator ac = AgentCommunicator.getCommunicator("http", mi.getIpAddress().getIp(), AGENT_PORT);
+            AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
+                mi.getIpAddress().getIp(), AGENT_PORT);
 
             ac.updateMonitor(mi);
         }

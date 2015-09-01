@@ -21,11 +21,15 @@ package components.scalability.aggregation;
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.Monitor;
+import play.Logger;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Frank on 03.08.2015.
  */
 public class UnsubscribeAggregation implements Aggregation<Monitor> {
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     private Long idMonitorSubscription;
 
@@ -41,8 +45,8 @@ public class UnsubscribeAggregation implements Aggregation<Monitor> {
     @Override public void execute(AggregatorServiceAccess service) {
         try {
             service.removeObserver(idMonitorSubscription.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LOGGER.error("Error when calling remote object to remove observer.");
         }
     }
 

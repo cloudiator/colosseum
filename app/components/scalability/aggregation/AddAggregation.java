@@ -21,6 +21,8 @@ package components.scalability.aggregation;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by Frank on 30.07.2015.
  */
@@ -33,8 +35,8 @@ public class AddAggregation extends MonitorAggregation {
     @Override public void execute(AggregatorServiceAccess service) {
         try {
             service.doAggregation(getObject().getId());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LOGGER.error("Error when calling remote object to do aggregation.");
         }
     }
 }

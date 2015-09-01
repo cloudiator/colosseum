@@ -22,6 +22,8 @@ import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
 
+import java.rmi.RemoteException;
+
 /**
  * Created by Frank on 30.07.2015.
  */
@@ -34,8 +36,8 @@ public class RemoveAggregation extends MonitorAggregation {
     @Override public void execute(AggregatorServiceAccess service) {
         try {
             service.stopAggregation(getObject().getId());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LOGGER.error("Error when calling remote object to stop aggregation.");
         }
     }
 }

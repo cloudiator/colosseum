@@ -20,6 +20,7 @@ package components.scalability.aggregation;
 
 
 import models.ComposedMonitor;
+import play.Logger;
 
 /**
  * Created by Frank on 30.07.2015.
@@ -27,6 +28,7 @@ import models.ComposedMonitor;
 public abstract class MonitorAggregation implements Aggregation<ComposedMonitor> {
 
     private final ComposedMonitor composedMonitor;
+    protected final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     public MonitorAggregation(ComposedMonitor composedMonitor) {
         this.composedMonitor = composedMonitor;

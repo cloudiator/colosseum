@@ -28,7 +28,10 @@ import de.uniulm.omi.executionware.srl.aggregator.observer.TelnetMetricObserver;
 import models.Monitor;
 import models.MonitorSubscription;
 import models.scalability.SubscriptionType;
+import play.Logger;
 import play.Play;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Frank on 03.08.2015.
@@ -39,6 +42,7 @@ public class SubscribeAggregation implements Aggregation {
      /*TODO dynamic port*/
      private static final int VISOR_TELNET_PORT =
          Play.application().configuration().getInt("colosseum.scalability.visor.telnet.port");
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     public SubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {
         super();
@@ -77,8 +81,8 @@ public class SubscribeAggregation implements Aggregation {
                         subscription.getId().toString())
                 );
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LOGGER.error("Error when calling remote object to add observer.");
         }
     }
 }

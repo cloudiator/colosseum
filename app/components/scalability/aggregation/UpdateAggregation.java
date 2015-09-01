@@ -21,11 +21,15 @@ package components.scalability.aggregation;
 import de.uniulm.omi.executionware.srl.aggregator.AggregatorService;
 import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
+import play.Logger;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Frank on 19.08.2015.
  */
 public class UpdateAggregation extends MonitorAggregation {
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     public UpdateAggregation(ComposedMonitor composedMonitor) {
         super(composedMonitor);
@@ -35,8 +39,8 @@ public class UpdateAggregation extends MonitorAggregation {
         try {
             service.stopAggregation(this.getObject().getId());
             service.doAggregation(this.getObject().getId());
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (RemoteException e) {
+            LOGGER.error("Error when calling remote object to remove observer.");
         }
     }
 }

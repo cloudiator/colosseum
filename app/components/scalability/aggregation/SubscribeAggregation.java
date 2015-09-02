@@ -19,9 +19,9 @@
 package components.scalability.aggregation;
 
 import components.scalability.AggregatorEntitiesConverter;
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
 import models.Monitor;
 import models.MonitorSubscription;
 import models.scalability.SubscriptionType;

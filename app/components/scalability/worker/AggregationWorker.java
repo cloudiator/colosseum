@@ -24,11 +24,18 @@ import components.execution.SimpleBlockingQueue;
 import components.scalability.AggregationAccessService;
 import components.scalability.internal.TsdbHelper;
 import components.scalability.aggregation.Aggregation;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
+import play.Logger;
+import play.Play;
+
+import java.rmi.RemoteException;
 
 /**
  * Created by Frank on 30.07.2015.
  */
 public class AggregationWorker implements Runnable {
+    protected final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     private final SimpleBlockingQueue<Aggregation> aggregationQueue;
 
@@ -46,7 +53,32 @@ public class AggregationWorker implements Runnable {
                 //TsdbHelper.getIpOfTSDB(job.getObject(), null /*TODO use this as filter if you only want to aggregate some */);
                 //job.execute(AggregationAccessService.getService(), monitorInstances);3
 
-                job.execute(AggregationAccessService.getLocalService());
+
+                //TODO just for the moment only local service with hard-coded user details:
+                final AggregatorServiceAccess localService = AggregationAccessService.getLocalService();
+
+                if(localService == null){
+                    LOGGER.error("Could not connect to RMI registry or object.");
+                    continue;
+                }
+
+                ColosseumDetails credentials = new ColosseumDetails(
+                    Play.application().configuration().getString("colosseum.scalability.aggregator.agent.local.protocol"),
+                    Play.application().configuration().getString(
+                        "colosseum.scalability.aggregator.agent.local.ip"),
+                    Play.application().configuration().getInt(
+                        "colosseum.scalability.aggregator.agent.local.port"),
+                    Play.application().configuration().getString(
+                        "colosseum.scalability.aggregator.agent.local.username"),
+                    Play.application().configuration().getString(
+                        "colosseum.scalability.aggregator.agent.local.tenant"),
+                    Play.application().configuration().getString("colosseum.scalability.aggregator.agent.local.password"));
+                try{
+                    localService.setColosseum(credentials);
+                } catch (RemoteException re){ // TODO outsource exception handling into separate client class
+                    LOGGER.error("Could not set colosseum credentials to aggregator service.", re);
+                }
+                job.execute(localService);
             }
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();

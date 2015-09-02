@@ -18,9 +18,9 @@
 
 package components.scalability;
 
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.AggregatorServiceAccess;
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.ColosseumDetails;
-import de.uniulm.omi.executionware.srl.aggregator.communication.rmi.Constants;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.Constants;
 import play.Logger;
 import play.Play;
 
@@ -51,9 +51,9 @@ public class AggregationAccessService {
 
                 services.put(mapKey, asa);
             } catch (RemoteException e) {
-                Logger.error("Error while calling remote object: " + e.getMessage());
+                LOGGER.error("Error while calling remote object.", e);
             } catch (NotBoundException e) {
-                Logger.error("Remote object was not bound in registry: " + e.getMessage());
+                LOGGER.error("Remote object was not bound in registry.", e);
             }
         }
 
@@ -65,8 +65,10 @@ public class AggregationAccessService {
         final String LOCALHOST =
             Play.application().configuration().getString(
                 "colosseum.scalability.aggregator.rmi.host");
-        final int RMI_PORT =
-            Play.application().configuration().getInt("colosseum.scalability.aggregator.rmi.port");
+        //TODO: use RMI default port on home domain?
+        //final int RMI_PORT =
+        //    Play.application().configuration().getInt("colosseum.scalability.aggregator.rmi.port");
+        final int RMI_PORT = Registry.REGISTRY_PORT;
         final String RMI_KEY =
             Play.application().configuration().getString("colosseum.scalability.aggregator.rmi.key");
 

@@ -19,11 +19,12 @@
 package components.scalability;
 
 import com.google.inject.Inject;
-import de.uniulm.omi.executionware.srl.aggregator.utils.Check;
+import de.uniulm.omi.cloudiator.axe.aggregator.utils.Check;
 import models.*;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
 import models.service.ModelService;
+import play.Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -34,6 +35,8 @@ import java.util.concurrent.TimeUnit;
  * Created by Frank on 20.07.2015.
  */
 public class FrontendCommunicatorImpl implements FrontendCommunicator {
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
+
     private ModelService<Component> componentModelService;
     private ModelService<SensorDescription> sensorDescriptionModelService;
     private ModelService<Schedule> scheduleModelService;
@@ -91,7 +94,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
                 appComps = new ArrayList<ApplicationComponent>();
                 for(Instance instance : instances){
                     if (instance.getVirtualMachine().getId().equals(vm.getId())){
-                        System.out.println("Instance " + instance.getId() + " belongs to VM " + vm.getId());
+                        LOGGER.info("Instance " + instance.getId() + " belongs to VM " + vm.getId());
                         appComps.add(getApplicationComponentForInstance(instance.getApplicationComponent().getId()));
                     }
                 }

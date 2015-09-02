@@ -31,8 +31,8 @@ import java.util.List;
  * Created by Frank on 28.07.2015.
  */
 public class AggregatorEntitiesConverter {
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.ComposedMonitor convert(ComposedMonitor cm){
-        return new de.uniulm.omi.executionware.srl.aggregator.entities.ComposedMonitor(
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.ComposedMonitor convert(ComposedMonitor cm){
+        return new de.uniulm.omi.cloudiator.axe.aggregator.entities.ComposedMonitor(
             cm.getId(),
             convert(cm.getFlowOperator()),
             convert(cm.getSchedule()),
@@ -43,9 +43,9 @@ public class AggregatorEntitiesConverter {
         );
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.RawMonitor convert(RawMonitor mon){
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.RawMonitor convert(RawMonitor mon){
         return
-            new de.uniulm.omi.executionware.srl.aggregator.entities.RawMonitor(
+            new de.uniulm.omi.cloudiator.axe.aggregator.entities.RawMonitor(
                 mon.getId(),
                 convert(mon.getSchedule()),
                 (mon.getApplication() == null ? -1 : mon.getApplication().getId()),
@@ -56,8 +56,8 @@ public class AggregatorEntitiesConverter {
         );
     }
 
-    public static List<de.uniulm.omi.executionware.srl.aggregator.entities.Monitor> convert(List<Monitor> obj){
-        List<de.uniulm.omi.executionware.srl.aggregator.entities.Monitor> result = new ArrayList();
+    public static List<de.uniulm.omi.cloudiator.axe.aggregator.entities.Monitor> convert(List<Monitor> obj){
+        List<de.uniulm.omi.cloudiator.axe.aggregator.entities.Monitor> result = new ArrayList();
 
         for(Monitor mon : obj) {
             result.add(convert(mon));
@@ -66,13 +66,13 @@ public class AggregatorEntitiesConverter {
         return result;
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.Monitor convert(Monitor mon){
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.Monitor convert(Monitor mon){
         if (mon instanceof RawMonitor) {
             return (convert((RawMonitor) mon));
         } else if (mon instanceof ComposedMonitor) {
             return (convert((ComposedMonitor)mon));
         } else { //ConstantMonitor TODO fix this
-            return (new de.uniulm.omi.executionware.srl.aggregator.entities.ConstantMonitor(
+            return (new de.uniulm.omi.cloudiator.axe.aggregator.entities.ConstantMonitor(
                     mon.getId(),
                     ((ConstantMonitor) mon).getValue()
                 )
@@ -80,8 +80,8 @@ public class AggregatorEntitiesConverter {
         }
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.SensorDescription convert(SensorDescription obj){
-        return new de.uniulm.omi.executionware.srl.aggregator.entities.SensorDescription(
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.SensorDescription convert(SensorDescription obj){
+        return new de.uniulm.omi.cloudiator.axe.aggregator.entities.SensorDescription(
             obj.getId(),
             obj.getClassName(),
             obj.getMetricName(),
@@ -89,57 +89,57 @@ public class AggregatorEntitiesConverter {
         );
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.FlowOperator convert(FlowOperator fo){
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.FlowOperator convert(FlowOperator fo){
         switch (fo){
-            case MAP: return de.uniulm.omi.executionware.srl.aggregator.entities.FlowOperator.MAP;
-            case REDUCE: return de.uniulm.omi.executionware.srl.aggregator.entities.FlowOperator.REDUCE;
+            case MAP: return de.uniulm.omi.cloudiator.axe.aggregator.entities.FlowOperator.MAP;
+            case REDUCE: return de.uniulm.omi.cloudiator.axe.aggregator.entities.FlowOperator.REDUCE;
             default : return null; //TODO exception
         }
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator convert(FormulaOperator fo){
-        return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.valueOf(fo.toString());
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator convert(FormulaOperator fo){
+        return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.valueOf(fo.toString());
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.Schedule convert(Schedule obj){
-        return new de.uniulm.omi.executionware.srl.aggregator.entities.Schedule(
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.Schedule convert(Schedule obj){
+        return new de.uniulm.omi.cloudiator.axe.aggregator.entities.Schedule(
             obj.getId(),
             obj.getInterval().intValue(),
             obj.getTimeUnit()
         );
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.FormulaQuantifier convert(FormulaQuantifier obj){
-        return new de.uniulm.omi.executionware.srl.aggregator.entities.FormulaQuantifier(
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaQuantifier convert(FormulaQuantifier obj){
+        return new de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaQuantifier(
             obj.getRelative(),
             obj.getValue()
         );
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.Window convert(Window obj){
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.Window convert(Window obj){
         if(obj instanceof TimeWindow){
-            return new de.uniulm.omi.executionware.srl.aggregator.entities.TimeWindow(
+            return new de.uniulm.omi.cloudiator.axe.aggregator.entities.TimeWindow(
                 obj.getId(),
                 ((TimeWindow)obj).getInterval().intValue(), //TODO
                 ((TimeWindow)obj).getTimeUnit()
             );
         } else { //MeasurmentWindow TODO fix this
-            return new de.uniulm.omi.executionware.srl.aggregator.entities.MeasurementWindow(
+            return new de.uniulm.omi.cloudiator.axe.aggregator.entities.MeasurementWindow(
                 obj.getId(),
                 ((MeasurementWindow)obj).getMeasurements().intValue() //TODO
             );
         }
     }
 
-    public static de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator convert(FilterType obj){
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator convert(FilterType obj){
         switch(obj){
-            case LTE : return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.LTE;
-            case LT : return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.LT;
-            case E : return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.EQ;
-            case GT : return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.GT;
-            case GTE : return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.GTE;
+            case LTE : return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.LTE;
+            case LT : return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.LT;
+            case E : return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.EQ;
+            case GT : return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.GT;
+            case GTE : return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.GTE;
         }
 
-        return de.uniulm.omi.executionware.srl.aggregator.entities.FormulaOperator.SUM; /* TODO add any to formula operator enums */
+        return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.SUM; /* TODO add any to formula operator enums */
     }
 }

@@ -41,6 +41,7 @@ public class ScalingEngineImpl implements ScalingEngine {
     private final FrontendCommunicator fc;
     private final int AGENT_PORT =
         Play.application().configuration().getInt("colosseum.scalability.visor.port");
+    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     @Inject
     public ScalingEngineImpl(FrontendCommunicator fc,
@@ -167,7 +168,7 @@ public class ScalingEngineImpl implements ScalingEngine {
                 if (!monitors.isEmpty()) {
                 /*TODO: check for interval: if(hertz(monitor.getInterval())... */
                     for (de.uniulm.omi.cloudiator.visor.client.entities.Monitor agentMonitor : monitors) {
-                        System.out.println("Delete Raw Monitor: " + monitorId);
+                        LOGGER.info("Delete Raw Monitor: " + monitorId);
 
                         ac.removeMonitor(agentMonitor);
                     }
@@ -274,7 +275,7 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     private void addMonitorToVMs(RawMonitor monitor, List<VirtualMachine> virtualMachines){
         for(VirtualMachine vm : virtualMachines) {
-            System.out.println("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " " + " to this application " + monitor.getApplication());
+            LOGGER.info("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " " + " to this application " + monitor.getApplication());
 
             /* TODO not magical static values : monitoring agent config (at least port) has to be saved in db */
             AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",

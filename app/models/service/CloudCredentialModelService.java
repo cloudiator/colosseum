@@ -16,22 +16,20 @@
  * under the License.
  */
 
-package cloud;
+package models.service;
 
-import cloud.colosseum.ColosseumComputeService;
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import models.Cloud;
+import models.CloudCredential;
+import models.Tenant;
 
+import java.util.Optional;
 
 /**
- * Created by daniel on 20.05.15.
+ * Created by daniel on 31.08.15.
  */
-public interface CloudService {
+public interface CloudCredentialModelService extends ModelService<CloudCredential> {
 
-    DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getDiscoveryService();
+    Optional<CloudCredential> get(Cloud cloud, Tenant tenant);
 
-    ColosseumComputeService computeService();
+
 }

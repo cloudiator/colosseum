@@ -16,22 +16,19 @@
  * under the License.
  */
 
-package cloud;
+package cloud.strategies;
 
-import cloud.colosseum.ColosseumComputeService;
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
+import models.Cloud;
+import models.KeyPair;
+import models.Tenant;
 
+import java.util.Optional;
 
 /**
- * Created by daniel on 20.05.15.
+ * Created by daniel on 31.08.15.
  */
-public interface CloudService {
+public interface KeyPairStrategy {
 
-    DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getDiscoveryService();
-
-    ColosseumComputeService computeService();
+    Optional<KeyPair> retrieve(Cloud cloud, Tenant tenant) throws KeyPairException;
 }

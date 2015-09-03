@@ -18,6 +18,7 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import models.generic.RemoteModel;
@@ -25,6 +26,7 @@ import models.generic.RemoteModel;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -97,57 +99,63 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.ipAddresses.add(ipAddress);
     }
 
-    @Nullable public IpAddress publicIpAddress() {
+    public Optional<IpAddress> publicIpAddress() {
         final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
             return ipAddress.getIpType().equals(IpType.PUBLIC);
         });
         if (ipAddresses.iterator().hasNext()) {
-            return ipAddresses.iterator().next();
+            return Optional.of(ipAddresses.iterator().next());
         }
-        return null;
+        return Optional.empty();
     }
 
-    @Nullable public IpAddress privateIpAddress(boolean fallbackToPublic) {
+    public Optional<IpAddress> privateIpAddress(boolean fallbackToPublic) {
         final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
             return ipAddress.getIpType().equals(IpType.PRIVATE);
         });
         if (ipAddresses.iterator().hasNext()) {
-            return ipAddresses.iterator().next();
+            Optional.of(ipAddresses.iterator().next());
         }
         if (fallbackToPublic) {
             return publicIpAddress();
         }
-        return null;
+        return Optional.empty();
     }
 
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
+    public List<CloudCredential> cloudCredentials() {
+        return ImmutableList.copyOf(cloudCredentials);
     }
 
-    public String getName() {
+    public void addCloudCredential(CloudCredential cloudCredential) {
+        this.cloudCredentials.add(cloudCredential);
+    }
+
+    public String name() {
         return name;
     }
 
-    @Nullable public String getLoginName() {
+    public Optional<String> loginName() {
         if (generatedLoginUsername != null) {
-            return generatedLoginUsername;
+            return Optional.of(generatedLoginUsername);
         }
         if (image != null && image.getOperatingSystem() != null
             && image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName() != null) {
-            return image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName();
+            return Optional
+                .of(image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName());
         }
-        return null;
+        return Optional.empty();
     }
 
-    @Nullable public String getLoginPassword() {
+    public Optional<String> loginPassword() {
         if (generatedLoginPassword != null) {
-            return generatedLoginPassword;
+            return Optional.of(generatedLoginPassword);
         }
         if (image != null && image.getOperatingSystem() != null
             && image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword() != null) {
-            return image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword();
+            return Optional
+                .of(image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword());
         }
-        return null;
+        return Optional.empty();
     }
 
     public OSFamily osFamily() {
@@ -163,7 +171,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
             .getOperatingSystemVendor().getOperatingSystemVendorType().supportsKeyPair();
     }
 
-    public int port() {
+    public int remotePort() {
         if (image != null && image.getOperatingSystem() != null) {
             return image.getOperatingSystem().getOperatingSystemVendor()
                 .getOperatingSystemVendorType().port();
@@ -171,22 +179,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return defaultPort;
     }
 
-    @Nullable public String getGeneratedLoginUsername() {
-        return generatedLoginUsername;
-    }
-
     public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
         this.generatedLoginUsername = generatedLoginUsername;
     }
-
-    @Nullable public String getGeneratedLoginPassword() {
-        return generatedLoginPassword;
-    }
-
-    public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
-        this.generatedLoginPassword = generatedLoginPassword;
-    }
-
-
-
 }

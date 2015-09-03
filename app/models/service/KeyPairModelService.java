@@ -16,22 +16,27 @@
  * under the License.
  */
 
-package cloud;
+package models.service;
 
-import cloud.colosseum.ColosseumComputeService;
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import models.Cloud;
+import models.KeyPair;
+import models.Tenant;
 
+import java.util.Optional;
 
 /**
- * Created by daniel on 20.05.15.
+ * Created by daniel on 28.08.15.
  */
-public interface CloudService {
+public interface KeyPairModelService extends ModelService<KeyPair> {
 
-    DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getDiscoveryService();
+    /**
+     * Searches the database for an {@link Optional} keypair for the given cloud and the given tenant.
+     *
+     * @param cloud  the cloud for the keypair (mandatory)
+     * @param tenant the tenant for the keypair (mandatory)
+     * @return the optional keypair.
+     * @throws NullPointerException if cloud or tenant are null.
+     */
+    Optional<KeyPair> getKeyPair(Cloud cloud, Tenant tenant);
 
-    ColosseumComputeService computeService();
 }

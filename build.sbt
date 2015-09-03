@@ -1,3 +1,4 @@
+
 import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)

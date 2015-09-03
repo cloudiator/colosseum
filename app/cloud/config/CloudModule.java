@@ -18,11 +18,14 @@
 
 package cloud.config;
 
-import cloud.CloudService;
-import cloud.ComputeServiceFactory;
-import cloud.DefaultCloudService;
-import cloud.SwordComputeServiceFactory;
+import cloud.*;
+import cloud.strategies.*;
+import com.google.common.collect.Sets;
 import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
+import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
 
 /**
  * Created by daniel on 28.04.15.
@@ -30,7 +33,28 @@ import com.google.inject.AbstractModule;
 public class CloudModule extends AbstractModule {
 
     @Override protected void configure() {
-        bind(CloudService.class).to(DefaultCloudService.class);
+
+        bind(KeyPairStrategy.class).to(RetrieveOrCreateKeyPair.class);
         bind(ComputeServiceFactory.class).to(SwordComputeServiceFactory.class);
+        bind(CloudService.class).to(DefaultCloudService.class);
     }
+
+    @Provides public SwordConnectionService provideConnectionService() {
+        return new DefaultSwordConnectionService(
+            RemoteBuilder.newBuilder().loggingModule(new SwordLoggingModule())
+                .remoteModule(new OverthereModule()).build());
+    }
+
+    @Provides
+    public RemoteConnectionStrategy.RemoteConnectionStrategyFactory provideConnectionFactory(
+        Injector injector) {
+        return new RemoteConnectionStrategies.RemoteConnectionStrategiesFactory(Sets.newHashSet(
+            injector.getInstance(
+                KeyPairRemoteConnectionStrategy.KeyPairRemoteConnectionStrategyFactory.class),
+            injector.getInstance(
+                PasswordRemoteConnectionStrategy.PasswordRemoteConnectionStrategyFactory.class)));
+    }
+
+
+
 }

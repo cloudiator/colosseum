@@ -20,26 +20,16 @@ package cloud.colosseum;
 
 import cloud.ComputeServiceRegistry;
 import cloud.DecoratingPublicIpService;
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
+import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
-import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
-import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
-import models.KeyPair;
 import models.Tenant;
 import models.VirtualMachine;
 
-import java.util.Iterator;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 21.06.15.
@@ -47,9 +37,18 @@ import static com.google.common.base.Preconditions.checkState;
 public class BaseColosseumComputeService implements ColosseumComputeService {
 
     private final ComputeServiceRegistry computeServices;
+    private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory
+        remoteConnectionStrategyFactory;
 
-    public BaseColosseumComputeService(ComputeServiceRegistry computeServices) {
+
+    public BaseColosseumComputeService(ComputeServiceRegistry computeServices,
+        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory) {
+
+        checkNotNull(computeServices);
+        checkNotNull(remoteConnectionStrategyFactory);
+
         this.computeServices = computeServices;
+        this.remoteConnectionStrategyFactory = remoteConnectionStrategyFactory;
     }
 
     @Override public VirtualMachineInLocation createVirtualMachine(
@@ -58,49 +57,20 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             .createVirtualMachine(virtualMachineTemplate);
     }
 
-    private ConnectionService connectionService() {
-        //todo: ssh connection in sword should be available without a compute service
-        final Iterator<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>>
-            iterator = computeServices.getComputeServices().iterator();
-        checkState(iterator.hasNext(),
-            "Accessing connection service is not possible without configured compute services.");
-        return iterator.next().getConnectionService();
-
-    }
-
     @Override
     public RemoteConnection remoteConnection(Tenant tenant, VirtualMachine virtualMachine) {
         checkNotNull(tenant);
         checkNotNull(virtualMachine);
 
-        final LoginCredentialBuilder loginCredentialBuilder = LoginCredentialBuilder.newBuilder();
+        RemoteConnectionStrategy remoteConnectionStrategy =
+            remoteConnectionStrategyFactory.create(tenant);
 
-        KeyPair keyPairToUse = null;
-        for (KeyPair possibleMatch : tenant.getKeyPairs()) {
-            if (possibleMatch.getCloud().equals(virtualMachine.cloud())) {
-                keyPairToUse = possibleMatch;
-            }
+        if (!remoteConnectionStrategy.isApplicable(virtualMachine)) {
+            throw new IllegalArgumentException(String
+                .format("Selected connection strategy does not support the virtual machine %s",
+                    virtualMachine));
         }
-
-        if (keyPairToUse != null && keyPairToUse.getPrivateKey() != null && virtualMachine
-            .supportsKeyPair()) {
-            loginCredentialBuilder.privateKey(keyPairToUse.getPrivateKey());
-        } else if (virtualMachine.getLoginPassword() != null) {
-            loginCredentialBuilder.password(virtualMachine.getLoginPassword());
-        } else {
-            throw new IllegalArgumentException(
-                "PrivateKey nor LoginPassword available for virtual machine.");
-        }
-        loginCredentialBuilder.username(virtualMachine.getLoginName());
-
-        checkNotNull(virtualMachine.publicIpAddress(),
-            "Virtual machine has no public ip address assigned.");
-        //noinspection ConstantConditions
-        final HostAndPort hostAndPort =
-            HostAndPort.fromParts(virtualMachine.publicIpAddress().getIp(), virtualMachine.port());
-
-        return connectionService().getRemoteConnection(hostAndPort, virtualMachine.osFamily(),
-            loginCredentialBuilder.build());
+        return remoteConnectionStrategy.apply(virtualMachine);
     }
 
     @Override public Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid) {

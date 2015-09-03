@@ -29,18 +29,12 @@ import models.service.ModelService;
 
 @Singleton public class ScheduleConverter extends AbstractConverter<Schedule, ScheduleDto> {
 
-    //private final ModelService<Api> apiModelService;
-
-    @Inject protected ScheduleConverter(ModelService<Api> apiModelService) {
+    @Inject protected ScheduleConverter() {
         super(Schedule.class, ScheduleDto.class);
-        //this.apiModelService = apiModelService;
     }
 
     @Override public void configure() {
-        builder().from("interval").to("interval");
-        builder().from("timeUnit").to("timeUnit");
-        if (true) return;
-        //builder().from(Long.class, "api").to(Api.class, "api")
-        //        .withTransformation(new IdToModelTransformer<>(apiModelService));
+        binding().fromField("interval").toField("interval");
+        binding().fromField("timeUnit").toField("timeUnit");
     }
 }

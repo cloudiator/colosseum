@@ -19,17 +19,12 @@
 package components.scalability;
 
 import com.google.inject.Inject;
-import de.uniulm.omi.cloudiator.axe.aggregator.utils.Check;
 import models.*;
-import models.scalability.FlowOperator;
-import models.scalability.FormulaOperator;
 import models.service.ModelService;
 import play.Logger;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -91,7 +86,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             // Filter for application id
             if (applicationId != null) {
                 instances = this.getInstances(vm.getId());
-                appComps = new ArrayList<ApplicationComponent>();
+                appComps = new ArrayList<>();
                 for(Instance instance : instances){
                     if (instance.getVirtualMachine().getId().equals(vm.getId())){
                         LOGGER.info("Instance " + instance.getId() + " belongs to VM " + vm.getId());
@@ -323,7 +318,7 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
 
     @Override public Long getIdPublicAddressOfVM(VirtualMachine vm) {
         if (vm.publicIpAddress() != null){
-            return vm.publicIpAddress().getId();
+            return vm.publicIpAddress().get().getId();
         }
 
         return null;

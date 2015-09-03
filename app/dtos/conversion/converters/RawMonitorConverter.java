@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import dtos.RawMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -62,23 +63,32 @@ import java.util.List;
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "application").to(Application.class, "application")
+        binding(Long.class, Application.class).fromField("application").toField("application")
             .withTransformation(new IdToModelTransformer<>(applicationModelService));
-        builder().from(Long.class, "component").to(Component.class, "component")
+        binding(Long.class, Component.class).fromField("component").toField("component")
             .withTransformation(new IdToModelTransformer<>(componentModelService));
-        builder().from(Long.class, "componentInstance").to(Instance.class, "componentInstance")
+        binding(Long.class, Instance.class).fromField("componentInstance").toField("componentInstance")
             .withTransformation(new IdToModelTransformer<>(instanceModelService));
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "sensorDescription")
-            .to(SensorDescription.class, "sensorDescription")
+        binding(Long.class, SensorDescription.class).fromField("sensorDescription")
+            .toField("sensorDescription")
             .withTransformation(new IdToModelTransformer<>(sensorDescriptionModelService));
-        builder().from(Long.class, "schedule").to(Schedule.class, "schedule")
+        binding(Long.class, Schedule.class).fromField("schedule").toField("schedule")
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
-        builder().from(List.class, "monitorInstances").to(List.class, "monitorInstances")
-            .withUnsafeTransformation(
-                new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorInstanceModelService)));
+
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<MonitorInstance>>() {
+        }).fromField("monitorInstances").toField("monitorInstances")
+                .withTransformation(
+                    new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorInstanceModelService)));
+
+        binding(new TypeLiteral<List<String>>() {
+        }, new TypeLiteral<List<ExternalReference>>() {
+        }).
+                fromField("externalReferences").
+                toField("externalReferences")
+                .withTransformation(
+                        new StringToExternalReferenceTransformer());
     }
 }

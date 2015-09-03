@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import dtos.ComponentHorizontalOutScalingActionDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -48,14 +49,18 @@ import java.util.List;
     }
 
     @Override public void configure() {
-        builder().from("amount").to("amount");
-        builder().from("min").to("min");
-        builder().from("max").to("max");
-        builder().from("count").to("count");
-        builder().from(Long.class, "applicationComponent").to(ApplicationComponent.class, "applicationComponent")
-            .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(
-                new StringToExternalReferenceTransformer());
+        binding().fromField("amount").toField("amount");
+        binding().fromField("min").toField("min");
+        binding().fromField("max").toField("max");
+        binding().fromField("count").toField("count");
+        binding(Long.class, ApplicationComponent.class).fromField("applicationComponent").toField("applicationComponent")
+                .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
+        binding(new TypeLiteral<List<String>>() {
+        }, new TypeLiteral<List<ExternalReference>>() {
+        }).
+                fromField("externalReferences").
+                toField("externalReferences")
+                .withTransformation(
+                        new StringToExternalReferenceTransformer());
     }
 }

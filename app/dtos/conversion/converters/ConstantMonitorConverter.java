@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import dtos.ConstantMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.StringToExternalReferenceTransformer;
@@ -41,8 +42,13 @@ import java.util.List;
     }
 
     @Override public void configure() {
-        builder().from("value").to("value");
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
+        binding().fromField("value").toField("value");
+        binding(new TypeLiteral<List<String>>() {
+        }, new TypeLiteral<List<ExternalReference>>() {
+        }).
+                fromField("externalReferences").
+                toField("externalReferences")
+                .withTransformation(
+                        new StringToExternalReferenceTransformer());
     }
 }

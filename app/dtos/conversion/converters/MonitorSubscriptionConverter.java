@@ -41,11 +41,11 @@ import models.service.ModelService;
     }
 
     @Override public void configure() {
-        builder().from("type").to("type");
-        builder().from("filterType").to("filterType");
-        builder().from(Long.class, "monitor").to(Monitor.class, "monitor")
+        binding().fromField("type").toField("type");
+        binding().fromField("filterType").toField("filterType");
+        binding(Long.class, Monitor.class).fromField("monitor").toField("monitor")
             .withTransformation(new IdToModelTransformer<>(monitorModelService));
-        builder().from("endpoint").to("endpoint");
-        builder().from("filterValue").to("filterValue");
+        binding().fromField("endpoint").toField("endpoint");
+        binding().fromField("filterValue").toField("filterValue");
     }
 }

@@ -38,6 +38,6 @@ import models.TimeWindow;
     }
 
     @Override public void configure() {
-        builder().from("measurements").to("measurements");
+        binding().fromField("measurements").toField("measurements");
     }
 }

@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import dtos.MonitorInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -54,16 +55,21 @@ import java.util.List;
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "component").to(Component.class, "component")
+        binding(Long.class, Component.class).fromField("component").toField("component")
             .withTransformation(new IdToModelTransformer<>(componentModelService));
-        builder().from(Long.class, "monitor").to(Monitor.class, "monitor")
+        binding(Long.class, Monitor.class).fromField("monitor").toField("monitor")
             .withTransformation(new IdToModelTransformer<>(monitorModelService));
-        builder().from("apiEndpoint").to("apiEndpoint");
-        builder().from(Long.class, "ipAddress").to(IpAddress.class, "ipAddress")
+        binding().fromField("apiEndpoint").toField("apiEndpoint");
+        binding(Long.class, IpAddress.class).fromField("ipAddress").toField("ipAddress")
             .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
-        builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
+        binding(Long.class, VirtualMachine.class).fromField("virtualMachine").toField("virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(new StringToExternalReferenceTransformer());
+        binding(new TypeLiteral<List<String>>() {
+        }, new TypeLiteral<List<ExternalReference>>() {
+        }).
+                fromField("externalReferences").
+                toField("externalReferences")
+                .withTransformation(
+                        new StringToExternalReferenceTransformer());
     }
 }

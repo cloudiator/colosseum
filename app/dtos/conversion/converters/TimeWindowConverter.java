@@ -27,14 +27,12 @@ import models.TimeWindow;
 
 @Singleton public class TimeWindowConverter extends AbstractConverter<TimeWindow, TimeWindowDto> {
 
-    //private final ModelService<Api> apiModelService;
-
     @Inject protected TimeWindowConverter() {
         super(TimeWindow.class, TimeWindowDto.class);
     }
 
     @Override public void configure() {
-        builder().from("interval").to("interval");
-        builder().from("timeUnit").to("timeUnit");
+        binding().fromField("interval").toField("interval");
+        binding().fromField("timeUnit").toField("timeUnit");
     }
 }

@@ -33,8 +33,8 @@ import models.SensorDescription;
     }
 
     @Override public void configure() {
-        builder().from("className").to("className");
-        builder().from("metricName").to("metricName");
-        builder().from("isVmSensor").to("isVmSensor");
+        binding().fromField("className").toField("className");
+        binding().fromField("metricName").toField("metricName");
+        binding().fromField("isVmSensor").toField("isVmSensor");
     }
 }

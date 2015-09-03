@@ -34,7 +34,7 @@ import models.FormulaQuantifier;
     }
 
     @Override public void configure() {
-        builder().from("value").to("value");
-        builder().from("relative").to("relative");
+        binding().fromField("value").toField("value");
+        binding().fromField("relative").toField("relative");
     }
 }

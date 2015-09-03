@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import dtos.ComponentHorizontalInScalingActionDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -34,30 +35,37 @@ import java.util.List;
 /**
  * Created by Frank on 10.08.2015.
  */
-@Singleton public class ComponentHorizontalInScalingActionConverter extends
-    AbstractConverter<ComponentHorizontalInScalingAction, ComponentHorizontalInScalingActionDto> {
+@Singleton
+public class ComponentHorizontalInScalingActionConverter extends
+        AbstractConverter<ComponentHorizontalInScalingAction, ComponentHorizontalInScalingActionDto> {
 
     private final ModelService<ApplicationComponent> applicationComponentModelService;
     private final ModelService<ExternalReference> externalReferenceModelService;
 
-    @Inject protected ComponentHorizontalInScalingActionConverter(
-        ModelService<ApplicationComponent> applicationComponentModelService,
-        ModelService<ExternalReference> externalReferenceModelService) {
+    @Inject
+    protected ComponentHorizontalInScalingActionConverter(
+            ModelService<ApplicationComponent> applicationComponentModelService,
+            ModelService<ExternalReference> externalReferenceModelService) {
         super(ComponentHorizontalInScalingAction.class,
-            ComponentHorizontalInScalingActionDto.class);
+                ComponentHorizontalInScalingActionDto.class);
         this.applicationComponentModelService = applicationComponentModelService;
         this.externalReferenceModelService = externalReferenceModelService;
     }
 
-    @Override public void configure() {
-        builder().from("amount").to("amount");
-        builder().from("min").to("min");
-        builder().from("max").to("max");
-        builder().from("count").to("count");
-        builder().from(Long.class, "applicationComponent").to(ApplicationComponent.class, "applicationComponent")
-            .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
-        builder().from(List.class, "externalReferences").to(List.class, "externalReferences")
-            .withUnsafeTransformation(
-                new StringToExternalReferenceTransformer());
+    @Override
+    public void configure() {
+        binding().fromField("amount").toField("amount");
+        binding().fromField("min").toField("min");
+        binding().fromField("max").toField("max");
+        binding().fromField("count").toField("count");
+        binding(Long.class, ApplicationComponent.class).fromField("applicationComponent").toField("applicationComponent")
+                .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
+        binding(new TypeLiteral<List<String>>() {
+        }, new TypeLiteral<List<ExternalReference>>() {
+        }).
+                fromField("externalReferences").
+                toField("externalReferences")
+                .withTransformation(
+                        new StringToExternalReferenceTransformer());
     }
 }

@@ -36,6 +36,6 @@ import models.generic.ExternalReference;
     }
 
     @Override public void configure() {
-        builder().from("reference").to("reference");
+        binding().fromField("reference").toField("reference");
     }
 }

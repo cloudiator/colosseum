@@ -25,6 +25,7 @@ import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by daniel on 14.04.15.
@@ -40,10 +41,17 @@ public class DefaultFieldConverter<T extends Model, S extends Dto> implements Dt
     }
 
     private Iterable<Field> getFieldsToBind() {
+
         Set<Field> dtoFields = new FieldFinder(sClass).getFields();
         Set<Field> modelFields = new FieldFinder(tClass).getFields();
-        dtoFields.retainAll(modelFields);
-        return dtoFields;
+
+        Set<String> dtoFieldNames = dtoFields.stream().map(Field::getName).collect(Collectors.toSet());
+        Set<String> modelFieldNames = modelFields.stream().map(Field::getName).collect(Collectors.toSet());
+
+        dtoFieldNames.retainAll(modelFieldNames);
+
+        return dtoFields.stream().filter(field -> dtoFieldNames.contains(field.getName())).collect(Collectors.toList());
+
     }
 
     private S bindFromModelToDto(T model, S dto) {
@@ -64,19 +72,23 @@ public class DefaultFieldConverter<T extends Model, S extends Dto> implements Dt
         return model;
     }
 
-    @Override public final T toModel(S dto) {
+    @Override
+    public final T toModel(S dto) {
         return bindFromDtoToModel(dto, new TypeBuilder<T>().getInstance(tClass));
     }
 
-    @Override public final T toModel(S dto, T model) {
+    @Override
+    public final T toModel(S dto, T model) {
         return bindFromDtoToModel(dto, model);
     }
 
-    @Override public final S toDto(T model) {
+    @Override
+    public final S toDto(T model) {
         return bindFromModelToDto(model, new TypeBuilder<S>().getInstance(sClass));
     }
 
-    @Override public final S toDto(T model, S dto) {
+    @Override
+    public final S toDto(T model, S dto) {
         return bindFromModelToDto(model, dto);
     }
 

@@ -19,12 +19,16 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import dtos.TenantDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
+import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -42,8 +46,12 @@ public class TenantConverter extends AbstractConverter<Tenant, TenantDto> {
     }
 
     @Override public void configure() {
-        builder().from("name").to("name");
-        builder().from("frontendUsers").to("frontendUsers").withUnsafeTransformation(
+        binding().fromField("name").toField("name");
+
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<FrontendUser>>() {
+        }).fromField("frontendUsers").toField("frontendUsers").withTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(frontendUserModelService)));
+
     }
 }

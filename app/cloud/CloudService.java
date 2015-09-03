@@ -34,5 +34,4 @@ public interface CloudService {
     DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getDiscoveryService();
 
     ColosseumComputeService computeService();
-
 }

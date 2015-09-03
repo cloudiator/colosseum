@@ -42,7 +42,7 @@ public class ApplicationInstanceConverter
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "application").to(Application.class, "application")
+        binding(Long.class, Application.class).fromField("application").toField("application")
             .withTransformation(new IdToModelTransformer<>(applicationModelService));
     }
 }

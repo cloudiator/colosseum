@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,14 +16,23 @@
  * under the License.
  */
 
-package dtos.conversion;
+package cloud.strategies;
+
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import models.Tenant;
+import models.VirtualMachine;
+
+import java.util.function.Function;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 01.09.15.
  */
-public interface FromBindingBuilder<T, S> {
+public interface RemoteConnectionStrategy extends Function<VirtualMachine, RemoteConnection> {
 
-    ToBindingBuilder<T, S> fromField(String name);
+    boolean isApplicable(VirtualMachine virtualMachine);
 
-    ToBindingBuilder<T, S> fromMethod(String name);
+    interface RemoteConnectionStrategyFactory {
+        RemoteConnectionStrategy create(Tenant tenant);
+    }
+
 }

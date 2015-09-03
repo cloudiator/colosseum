@@ -58,6 +58,7 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<CloudCredential>>() {
         }).to(new TypeLiteral<BaseModelService<CloudCredential>>() {
         });
+        bind(CloudCredentialModelService.class).to(DefaultCloudCredentialModelService.class);
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {
@@ -125,6 +126,7 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<KeyPair>>() {
         }).to(new TypeLiteral<BaseModelService<KeyPair>>() {
         });
+        bind(KeyPairModelService.class).to(DefaultKeyPairModelService.class);
         //Lifecycle Component
         bind(new TypeLiteral<ModelService<LifecycleComponent>>() {
         }).to(new TypeLiteral<BaseModelService<LifecycleComponent>>() {

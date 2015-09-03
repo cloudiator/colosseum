@@ -16,14 +16,19 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
+
+import dtos.HardwareOfferDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.HardwareOffer;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 14.04.15.
  */
-public interface FromBindingBuilder<T, S> {
+public class HardwareOfferFieldConverter
+    extends DefaultFieldConverter<HardwareOffer, HardwareOfferDto> {
+    protected HardwareOfferFieldConverter() {
+        super(HardwareOffer.class, HardwareOfferDto.class);
+    }
 
-    ToBindingBuilder<T, S> fromField(String name);
-
-    ToBindingBuilder<T, S> fromMethod(String name);
 }

@@ -99,12 +99,12 @@ public class ColosseumVirtualMachineTemplateBuilder {
     public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
         VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
-        checkArgument(virtualMachine.getCloudCredentials().size() == 1);
+        checkArgument(virtualMachine.cloudCredentials().size() == 1);
         this.cloud = virtualMachine.cloud();
         this.image = virtualMachine.image();
         this.location = virtualMachine.location();
         this.hardware = virtualMachine.hardware();
-        this.cloudCredential = virtualMachine.getCloudCredentials().get(0);
+        this.cloudCredential = virtualMachine.cloudCredentials().get(0);
         return this;
     }
 

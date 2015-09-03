@@ -42,7 +42,7 @@ public class UnixInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "/home/" + virtualMachine.getLoginName();
+        this.homeDir = "/home/" + virtualMachine.loginName();
     }
 
     @Override public void initSources() {
@@ -126,9 +126,9 @@ public class UnixInstaller extends AbstractInstaller {
         //start Lance
         Logger.debug("Installation of Docker finished, setting up Lance...");
         this.remoteConnection.executeCommand("nohup sudo java " +
-            " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().getIp() +
-            " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).getIp() +
-            " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().getIp() +
+            " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
+            " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
+            " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +
             " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
             " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
             " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +

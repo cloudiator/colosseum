@@ -22,12 +22,12 @@ import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import cloud.resources.VirtualMachineInLocation;
+import cloud.strategies.KeyPairStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
-import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
@@ -37,70 +37,57 @@ import models.service.ModelService;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 08.05.15.
  */
 public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
 
-    private final ModelService<KeyPair> keyPairModelService;
+    private final KeyPairStrategy keyPairStrategy;
 
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
         ModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
-        ModelService<KeyPair> keyPairModelService) {
+        KeyPairStrategy keyPairStrategy) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
-        this.keyPairModelService = keyPairModelService;
+
+        checkNotNull(keyPairStrategy);
+
+        this.keyPairStrategy = keyPairStrategy;
     }
 
     @Override
     protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService, Tenant tenant) throws JobException {
 
-        //check keypair
-        KeyPair keyPairToUse = null;
+        final java.util.Optional<KeyPair> keyPairOptional;
         if (virtualMachine.supportsKeyPair()) {
-            for (KeyPair keyPair : keyPairModelService.getAll()) {
-                if (keyPair.getCloud().equals(virtualMachine.cloud()) && keyPair.getTenant()
-                    .equals(tenant)) {
-                    keyPairToUse = keyPair;
-                    break;
-                }
+            try {
+                keyPairOptional = keyPairStrategy.retrieve(virtualMachine.cloud(), tenant);
+            } catch (KeyPairException e) {
+                throw new JobException(e);
             }
-
-            if (keyPairToUse == null) {
-                Optional<KeyPairService> keyPairServiceOptional = computeService
-                    .getKeyPairService(virtualMachine.getCloudCredentials().get(0).getUuid());
-                if (keyPairServiceOptional.isPresent()) {
-                    try {
-                        final de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                            keyPairServiceOptional.get().create(tenant.getUuid());
-                        keyPairToUse = new KeyPair(virtualMachine.cloud(), tenant,
-                            remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey(),
-                            remoteKeyPair.name());
-                        this.keyPairModelService.save(keyPairToUse);
-                    } catch (KeyPairException e) {
-                        throw new JobException(e);
-                    }
-                }
-            }
+        } else {
+            keyPairOptional = java.util.Optional.empty();
         }
 
+
+        // build the template
         ColosseumVirtualMachineTemplateBuilder builder =
             BaseColosseumVirtualMachineTemplate.builder();
-
         TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
-
-        if (keyPairToUse != null) {
-            templateOptionsBuilder.keyPairName(keyPairToUse.getRemoteId());
+        if (keyPairOptional.isPresent()) {
+            templateOptionsBuilder.keyPairName(keyPairOptional.get().getRemoteId());
         }
-
-        //todo add inbound ports
         templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
-
-
         builder.templateOptions(templateOptionsBuilder.build());
+
+        // create the virtual machine
         VirtualMachineInLocation cloudVirtualMachine = computeService
             .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+
+        // set values to the model
         virtualMachine.setRemoteId(cloudVirtualMachine.id());
         for (String ip : cloudVirtualMachine.privateAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
@@ -108,24 +95,23 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         for (String ip : cloudVirtualMachine.publicAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
         }
-
         if (cloudVirtualMachine.loginCredential().isPresent()) {
             LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
-            virtualMachine.setGeneratedLoginPassword(loginCredential.username());
+            virtualMachine.setGeneratedLoginUsername(loginCredential.username());
             if (loginCredential.isPasswordCredential()) {
-                virtualMachine.setGeneratedLoginPassword(loginCredential.password().get());
+                virtualMachine.setGeneratedLoginUsername(loginCredential.password().get());
             } else {
                 //todo: if a private key and a public key are returned, we need to store them
                 throw new UnsupportedOperationException(
                     "Virtual Machine that started with key credentials is not yet supported.");
             }
         }
-        
+
         modelService.save(virtualMachine);
 
-        if (virtualMachine.publicIpAddress() == null) {
+        if (virtualMachine.publicIpAddress().isPresent()) {
             final Optional<PublicIpService> publicIpService = computeService
-                .getPublicIpService(virtualMachine.getCloudCredentials().get(0).getUuid());
+                .getPublicIpService(virtualMachine.cloudCredentials().get(0).getUuid());
             if (publicIpService.isPresent()) {
                 try {
                     final String publicIp =
@@ -147,6 +133,9 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         Installers.of(remoteConnection, virtualMachine, tenant).installAll();
     }
 
+    /**
+     * @todo installers need to be able to register those ports
+     */
     private static class RequiredPorts {
 
         static String ports = "22,1099,4242,8080,9001,9002,5985,443,445,33033";

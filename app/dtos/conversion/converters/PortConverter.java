@@ -41,9 +41,9 @@ public abstract class PortConverter<T extends Port, S extends PortDto>
     }
 
     @Override public void configure() {
-        builder().from("name").to("name");
-        builder().from(Long.class, "applicationComponent")
-            .to(ApplicationComponent.class, "applicationComponent")
+        binding().fromField("name").toField("name");
+        binding(Long.class, ApplicationComponent.class).fromField("applicationComponent")
+            .toField("applicationComponent")
             .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
     }
 }

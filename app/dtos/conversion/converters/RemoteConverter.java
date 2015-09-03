@@ -1,5 +1,6 @@
-package dtos.conversion;
+package dtos.conversion.converters;
 
+import dtos.conversion.AbstractConverter;
 import dtos.generic.RemoteDto;
 import models.generic.RemoteModel;
 
@@ -14,7 +15,7 @@ public abstract class RemoteConverter<T extends RemoteModel, S extends RemoteDto
     }
 
     @Override public void configure() {
-        builder().from("remoteId").to("remoteId");
-        builder().from("cloudProviderId").to("cloudProviderId");
+        binding().fromField("remoteId").toField("remoteId");
+        binding().fromField("cloudProviderId").toField("cloudProviderId");
     }
 }

@@ -31,6 +31,6 @@ public class ApplicationConverter extends AbstractConverter<Application, Applica
     }
 
     @Override public void configure() {
-        builder().from("name").to("name");
+        binding().fromField("name").toField("name");
     }
 }

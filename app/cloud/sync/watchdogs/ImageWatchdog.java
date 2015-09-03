@@ -99,4 +99,8 @@ import java.util.concurrent.TimeUnit;
     @Override public TimeUnit timeUnit() {
         return TimeUnit.MINUTES;
     }
+
+    @Override public String toString() {
+        return "ImageWatchdog";
+    }
 }

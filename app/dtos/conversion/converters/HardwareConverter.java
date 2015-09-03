@@ -19,12 +19,14 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import dtos.HardwareDto;
-import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.*;
 import models.service.ModelService;
+
+import java.util.List;
 
 /**
  * Created by daniel on 14.04.15.
@@ -49,15 +51,23 @@ public class HardwareConverter extends RemoteConverter<Hardware, HardwareDto> {
     @Override public void configure() {
 
         super.configure();
-
-        builder().from(Long.class, "hardwareOffer").to(HardwareOffer.class, "hardwareOffer")
+        binding(Long.class, HardwareOffer.class).fromMethod("hardwareOffer")
+            .toMethod("hardwareOffer")
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from("locations").to("locations").withUnsafeTransformation(
+
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<Location>>() {
+        }).fromField("locations").toField("locations").withTransformation(
             new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
-        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<CloudCredential>>() {
+        }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(
             new ModelToListIdTransformer<>(
                 new IdToModelTransformer<>(cloudCredentialModelService)));
     }
+
+
 }

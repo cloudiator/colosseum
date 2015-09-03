@@ -21,7 +21,7 @@ package cloud.sync.config;
 import cloud.sync.Problem;
 import cloud.sync.ProblemQueue;
 import cloud.sync.Solution;
-import cloud.sync.Solver;
+import cloud.sync.ProblemSolver;
 import cloud.sync.solutions.*;
 import cloud.sync.watchdogs.HardwareWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
@@ -52,7 +52,7 @@ public class SolutionModule extends AbstractModule {
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);
-        runnableMultibinder.addBinding().to(Solver.class);
+        runnableMultibinder.addBinding().to(ProblemSolver.class);
 
     }
 

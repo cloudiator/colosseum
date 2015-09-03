@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.RemoteDto;
+import dtos.validation.ValidateBuilder;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
@@ -51,6 +52,11 @@ public class HardwareDto extends RemoteDto {
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
+
+
+        final ValidateBuilder<List<Long>> validator = validator(new TypeLiteral<List<Long>>() {
+        });
+
         validator(new TypeLiteral<List<Long>>() {
         }).validate(locations).withValidator(
             new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));

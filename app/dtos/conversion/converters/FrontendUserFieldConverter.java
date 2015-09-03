@@ -16,14 +16,18 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
+
+import dtos.FrontendUserGetDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.FrontendUser;
 
 /**
- * Created by daniel on 16.03.15.
+ * Created by daniel on 13.04.15.
  */
-public interface FieldBinding{
-
-    public void bind(Object from, Object to);
-
-    public void bindReverse(Object from, Object to);
+public class FrontendUserFieldConverter
+    extends DefaultFieldConverter<FrontendUser, FrontendUserGetDto> {
+    protected FrontendUserFieldConverter() {
+        super(FrontendUser.class, FrontendUserGetDto.class);
+    }
 }

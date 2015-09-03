@@ -41,10 +41,10 @@ public class OperatingSystemConverter
     }
 
     @Override public void configure() {
-        builder().from("operatingSystemArchitecture").to("operatingSystemArchitecture");
-        builder().from(Long.class, "operatingSystemVendor")
-            .to(OperatingSystemVendor.class, "operatingSystemVendor")
+        binding().fromField("operatingSystemArchitecture").toField("operatingSystemArchitecture");
+        binding(Long.class, OperatingSystemVendor.class).fromField("operatingSystemVendor")
+            .toField("operatingSystemVendor")
             .withTransformation(new IdToModelTransformer<>(operatingSystemVendorModelService));
-        builder().from("version").to("version");
+        binding().fromField("version").toField("version");
     }
 }

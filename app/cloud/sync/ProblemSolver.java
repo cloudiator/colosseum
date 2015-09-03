@@ -27,12 +27,12 @@ import play.db.jpa.Transactional;
 /**
  * Created by daniel on 05.05.15.
  */
-public class Solver implements Runnable {
+public class ProblemSolver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;
 
-    @Inject public Solver(SolutionDatabase solutionDatabase,
+    @Inject public ProblemSolver(SolutionDatabase solutionDatabase,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {
         this.solutionDatabase = solutionDatabase;
         this.problemQueue = problemQueue;
@@ -57,5 +57,9 @@ public class Solver implements Runnable {
                 this.problemQueue.add(problemToSolve);
             }
         }
+    }
+
+    @Override public String toString() {
+        return "ProblemSolver";
     }
 }

@@ -20,12 +20,12 @@ package components.job;
 
 import cloud.CloudService;
 import cloud.colosseum.ColosseumComputeService;
+import cloud.strategies.KeyPairStrategy;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import models.Instance;
-import models.KeyPair;
 import models.Tenant;
 import models.VirtualMachine;
 import models.service.ModelService;
@@ -37,26 +37,26 @@ import models.service.ModelService;
 
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Tenant> tenantModelService;
-    private final ModelService<KeyPair> keyPairModelService;
     private final ModelService<Instance> instanceModelService;
     private final ColosseumComputeService colosseumComputeService;
     private final SimpleBlockingQueue<Job> jobQueue;
+    private final KeyPairStrategy keyPairStrategy;
 
     @Inject public BaseJobService(ModelService<VirtualMachine> virtualMachineModelService,
         CloudService cloudService, ModelService<Tenant> tenantModelService,
-        ModelService<KeyPair> keyPairModelService, ModelService<Instance> instanceModelService,
-        @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
+        ModelService<Instance> instanceModelService,
+        @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
-        this.keyPairModelService = keyPairModelService;
         this.instanceModelService = instanceModelService;
+        this.keyPairStrategy = keyPairStrategy;
         this.colosseumComputeService = cloudService.computeService();
         this.jobQueue = jobQueue;
     }
 
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
         this.jobQueue.add(new CreateVirtualMachineJob(virtualMachine, virtualMachineModelService,
-            tenantModelService, colosseumComputeService, tenant, keyPairModelService));
+            tenantModelService, colosseumComputeService, tenant, keyPairStrategy));
     }
 
     @Override public void newInstanceJob(Instance instance, Tenant tenant) {

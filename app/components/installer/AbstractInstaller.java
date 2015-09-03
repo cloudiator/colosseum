@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -72,6 +73,10 @@ abstract class AbstractInstaller implements InstallApi {
         checkNotNull(remoteConnection);
         checkNotNull(virtualMachine);
         checkNotNull(tenant);
+        checkArgument(virtualMachine.publicIpAddress().isPresent(),
+            "VirtualMachine has no public ip.");
+        checkArgument(virtualMachine.loginName().isPresent(),
+            "No login name is present on virtual machine.");
 
         this.remoteConnection = remoteConnection;
         this.virtualMachine = virtualMachine;

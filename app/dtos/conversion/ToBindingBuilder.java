@@ -21,10 +21,9 @@ package dtos.conversion;
 /**
  * Created by daniel on 17.03.15.
  */
-public interface ToBindingBuilder<T> {
+public interface ToBindingBuilder<T, S> {
 
-    public <S> TransformationBindingBuilder<T, S> to(Class<S> fieldType, String name);
+    TransformationBindingBuilder<T, S> toField(String name);
 
-    public TransformationBindingBuilder<T, Object> to(String name);
-
+    TransformationBindingBuilder<T, S> toMethod(String name);
 }

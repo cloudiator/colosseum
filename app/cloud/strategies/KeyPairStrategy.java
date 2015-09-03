@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,14 +16,19 @@
  * under the License.
  */
 
-package dtos.conversion;
+package cloud.strategies;
+
+import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
+import models.Cloud;
+import models.KeyPair;
+import models.Tenant;
+
+import java.util.Optional;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 31.08.15.
  */
-public interface FromBindingBuilder<T, S> {
+public interface KeyPairStrategy {
 
-    ToBindingBuilder<T, S> fromField(String name);
-
-    ToBindingBuilder<T, S> fromMethod(String name);
+    Optional<KeyPair> retrieve(Cloud cloud, Tenant tenant) throws KeyPairException;
 }

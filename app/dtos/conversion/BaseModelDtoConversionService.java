@@ -35,7 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Daniel Baur
  */
-@Singleton public class GenericModelDtoConversionService
+@Singleton public class BaseModelDtoConversionService
     implements ModelDtoConversionServiceWithRegistry {
 
     /**

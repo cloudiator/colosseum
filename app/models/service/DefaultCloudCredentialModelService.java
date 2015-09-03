@@ -16,26 +16,29 @@
  * under the License.
  */
 
-package dtos.conversion.converters;
+package models.service;
 
 import com.google.inject.Inject;
-import dtos.PortProvidedDto;
-import models.ApplicationComponent;
-import models.PortProvided;
-import models.service.ModelService;
+import models.Cloud;
+import models.CloudCredential;
+import models.Tenant;
+
+import java.util.Optional;
 
 /**
- * Created by daniel on 03.08.15.
+ * Created by daniel on 31.08.15.
  */
-public class PortProvidedConverter extends PortConverter<PortProvided, PortProvidedDto> {
+public class DefaultCloudCredentialModelService extends BaseModelService<CloudCredential>
+    implements CloudCredentialModelService {
 
-    @Inject public PortProvidedConverter(
-        ModelService<ApplicationComponent> applicationComponentModelService) {
-        super(PortProvided.class, PortProvidedDto.class, applicationComponentModelService);
+    @Inject
+    public DefaultCloudCredentialModelService(ModelRepository<CloudCredential> modelRepository) {
+        super(modelRepository);
     }
 
-    @Override public void configure() {
-        super.configure();
-        binding().fromField("port").toField("port");
+    @Override public Optional<CloudCredential> get(Cloud cloud, Tenant tenant) {
+        return getAll().parallelStream().filter(
+            cloudCredential -> cloudCredential.getTenant().equals(tenant) && cloudCredential
+                .getCloud().equals(cloud)).findAny();
     }
 }

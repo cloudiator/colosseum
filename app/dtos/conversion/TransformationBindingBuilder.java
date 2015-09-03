@@ -23,9 +23,6 @@ import dtos.conversion.transformers.Transformer;
 /**
  * Created by daniel on 17.03.15.
  */
-public interface TransformationBindingBuilder<T,S> {
-
-    public void withTransformation(Transformer<T,S> transformer);
-
-    public void withUnsafeTransformation(Transformer transformer);
+public interface TransformationBindingBuilder<T, S> {
+    void withTransformation(Transformer<T,S> transformer);
 }

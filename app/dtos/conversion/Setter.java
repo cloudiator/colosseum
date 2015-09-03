@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,20 +16,12 @@
  * under the License.
  */
 
-package dtos.conversion.converters;
-
-import dtos.LifecycleComponentDto;
-import dtos.conversion.DefaultConverter;
-import models.LifecycleComponent;
+package dtos.conversion;
 
 /**
- * Created by daniel on 14.04.15.
+ * Created by daniel on 25.08.15.
  */
-public class LifecycleComponentConverter
-    extends DefaultConverter<LifecycleComponent, LifecycleComponentDto> {
+public interface Setter<T> {
 
-    protected LifecycleComponentConverter() {
-        super(LifecycleComponent.class, LifecycleComponentDto.class);
-    }
-
+    void setValue(Object object, T value);
 }

@@ -47,13 +47,14 @@ public class InstanceConverter extends AbstractConverter<Instance, InstanceDto> 
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "applicationComponent")
-            .to(ApplicationComponent.class, "applicationComponent")
+        binding(Long.class, ApplicationComponent.class).fromField("applicationComponent")
+            .toField("applicationComponent")
             .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));
-        builder().from(Long.class, "applicationInstance")
-            .to(ApplicationInstance.class, "applicationInstance")
+        binding(Long.class, ApplicationInstance.class).fromField("applicationInstance")
+            .toField("applicationInstance")
             .withTransformation(new IdToModelTransformer<>(applicationInstanceModelService));
-        builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
+        binding(Long.class, VirtualMachine.class).fromField("virtualMachine")
+            .toField("virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
     }
 }

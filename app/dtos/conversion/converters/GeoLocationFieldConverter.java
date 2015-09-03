@@ -16,22 +16,18 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
 
-import dtos.conversion.transformers.DefaultTransformer;
-import dtos.conversion.transformers.Transformer;
+import dtos.GeoLocationDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.GeoLocation;
 
 /**
- * Created by daniel on 17.03.15.
+ * Created by daniel on 14.04.15.
  */
-public class DefaultFieldBinding extends GenericFieldBinding<Object, Object> {
+public class GeoLocationFieldConverter extends DefaultFieldConverter<GeoLocation, GeoLocationDto> {
 
-    public DefaultFieldBinding(String fieldNameFrom, String fieldNameTo) {
-        super(Object.class, fieldNameFrom, Object.class, fieldNameTo, new DefaultTransformer());
-    }
-
-    public DefaultFieldBinding(Class<Object> fieldTypeFrom, String fieldNameFrom,
-        Class<Object> fieldTypeTo, String fieldNameTo, Transformer<Object, Object> transformer) {
-        super(fieldTypeFrom, fieldNameFrom, fieldTypeTo, fieldNameTo, transformer);
+    public GeoLocationFieldConverter() {
+        super(GeoLocation.class, GeoLocationDto.class);
     }
 }

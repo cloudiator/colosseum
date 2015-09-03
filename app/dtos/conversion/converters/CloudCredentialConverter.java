@@ -44,11 +44,11 @@ public class CloudCredentialConverter
     }
 
     @Override public void configure() {
-        builder().from("user").to("user");
-        builder().from("secret").to("secret");
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding().fromField("user").toField("user");
+        binding().fromField("secret").toField("secret");
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "tenant").to(Tenant.class, "tenant")
+        binding(Long.class, Tenant.class).fromField("tenant").toField("tenant")
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
     }
 }

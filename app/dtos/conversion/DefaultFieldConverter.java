@@ -22,60 +22,61 @@ import dtos.api.Dto;
 import models.generic.Model;
 
 import java.lang.reflect.Field;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by daniel on 14.04.15.
  */
-public class DefaultConverter<T extends Model, S extends Dto> implements DtoConverter<T, S> {
+public class DefaultFieldConverter<T extends Model, S extends Dto> implements DtoConverter<T, S> {
 
     private Class<T> tClass;
     private Class<S> sClass;
 
-    public DefaultConverter(Class<T> tClass, Class<S> sClass) {
+    public DefaultFieldConverter(Class<T> tClass, Class<S> sClass) {
         this.tClass = tClass;
         this.sClass = sClass;
     }
 
-    private Iterable<String> getFieldsToBind() {
-        Set<String> dtoFields = new FieldFinder(sClass).getFields();
-        Set<String> modelFields = new FieldFinder(tClass).getFields();
+    private Iterable<Field> getFieldsToBind() {
+        Set<Field> dtoFields = new FieldFinder(sClass).getFields();
+        Set<Field> modelFields = new FieldFinder(tClass).getFields();
         dtoFields.retainAll(modelFields);
         return dtoFields;
     }
 
     private S bindFromModelToDto(T model, S dto) {
-        for (String field : getFieldsToBind()) {
-            ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field, model);
-            ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field, dto);
-            reflectionFieldDto.setValue(reflectionFieldModel.getValue());
+        for (Field field : getFieldsToBind()) {
+            ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field);
+            ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field);
+            reflectionFieldDto.setValue(dto, reflectionFieldModel.getValue(model));
         }
         return dto;
     }
 
     private T bindFromDtoToModel(S dto, T model) {
-        for (String field : getFieldsToBind()) {
-            ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field, model);
-            ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field, dto);
-            reflectionFieldModel.setValue(reflectionFieldDto.getValue());
+        for (Field field : getFieldsToBind()) {
+            ReflectionField<Object> reflectionFieldModel = ReflectionField.of(field);
+            ReflectionField<Object> reflectionFieldDto = ReflectionField.of(field);
+            reflectionFieldModel.setValue(model, reflectionFieldDto.getValue(dto));
         }
         return model;
     }
 
-    @Override public T toModel(S dto) {
+    @Override public final T toModel(S dto) {
         return bindFromDtoToModel(dto, new TypeBuilder<T>().getInstance(tClass));
     }
 
-    @Override public T toModel(S dto, T model) {
+    @Override public final T toModel(S dto, T model) {
         return bindFromDtoToModel(dto, model);
     }
 
-    @Override public S toDto(T model) {
+    @Override public final S toDto(T model) {
         return bindFromModelToDto(model, new TypeBuilder<S>().getInstance(sClass));
     }
 
-    @Override public S toDto(T model, S dto) {
+    @Override public final S toDto(T model, S dto) {
         return bindFromModelToDto(model, dto);
     }
 
@@ -87,13 +88,11 @@ public class DefaultConverter<T extends Model, S extends Dto> implements DtoConv
             this.c = c;
         }
 
-        private Set<String> getFields() {
+        private Set<Field> getFields() {
             Class clazz = c;
-            Set<String> fields = new HashSet<>();
+            Set<Field> fields = new HashSet<>();
             while (clazz != null) {
-                for (Field field : clazz.getDeclaredFields()) {
-                    fields.add(field.getName());
-                }
+                Collections.addAll(fields, clazz.getDeclaredFields());
                 clazz = clazz.getSuperclass();
             }
             return fields;

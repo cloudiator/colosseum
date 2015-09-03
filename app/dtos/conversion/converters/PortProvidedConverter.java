@@ -36,6 +36,6 @@ public class PortProvidedConverter extends PortConverter<PortProvided, PortProvi
 
     @Override public void configure() {
         super.configure();
-        builder().from("port").to("port");
+        binding().fromField("port").toField("port");
     }
 }

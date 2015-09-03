@@ -19,6 +19,7 @@
 package dtos.conversion;
 
 import com.google.common.collect.ImmutableList;
+import com.google.inject.TypeLiteral;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -28,43 +29,44 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 17.03.15.
  */
-public class FieldBindings implements FieldBinding {
+public class ConversionBindings implements ConversionBinding {
 
     private boolean isBuild = false;
-    private Collection<FieldBindingBuilder> builders;
-    private Collection<FieldBinding> fieldBindings;
+    private Collection<BindingBuilder> builders;
+    private Collection<ConversionBinding> conversionBindings;
 
-    public FieldBindings() {
+    public ConversionBindings() {
         this.builders = new LinkedList<>();
     }
 
-    public FieldBindingBuilder builder() {
+    public <T, S> BindingBuilder<T, S> builder(Class<T> tClass, Class<S> sClass) {
         checkState(!isBuild);
-        FieldBindingBuilder fieldBindingBuilder = new FieldBindingBuilder();
-        this.builders.add(fieldBindingBuilder);
-        return fieldBindingBuilder;
+        BindingBuilder<T, S> bindingBuilder = new BindingBuilder<>(tClass, sClass);
+        this.builders.add(bindingBuilder);
+        return bindingBuilder;
     }
 
     private void build() {
-        final ImmutableList.Builder<FieldBinding> builder = ImmutableList.<FieldBinding>builder();
-        for (FieldBindingBuilder fieldBindingBuilder : builders) {
-            builder.add(fieldBindingBuilder.build());
+        final ImmutableList.Builder<ConversionBinding> builder =
+            ImmutableList.<ConversionBinding>builder();
+        for (BindingBuilder bindingBuilder : builders) {
+            builder.add(bindingBuilder.build());
         }
-        this.fieldBindings = builder.build();
+        this.conversionBindings = builder.build();
         isBuild = true;
     }
 
     @Override public void bind(Object from, Object to) {
         build();
-        for (FieldBinding fieldBinding : fieldBindings) {
-            fieldBinding.bind(from, to);
+        for (ConversionBinding conversionBinding : conversionBindings) {
+            conversionBinding.bind(from, to);
         }
     }
 
     @Override public void bindReverse(Object from, Object to) {
         build();
-        for (FieldBinding fieldBinding : fieldBindings) {
-            fieldBinding.bindReverse(from, to);
+        for (ConversionBinding conversionBinding : conversionBindings) {
+            conversionBinding.bindReverse(from, to);
         }
     }
 }

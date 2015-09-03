@@ -23,8 +23,8 @@ import dtos.KeyPairDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
-import models.Tenant;
 import models.KeyPair;
+import models.Tenant;
 import models.service.ModelService;
 
 /**
@@ -43,12 +43,12 @@ public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        builder().from(Long.class, "frontendGroup").to(Tenant.class, "frontendGroup")
+        binding(Long.class, Tenant.class).fromField("frontendGroup").toField("frontendGroup")
             .withTransformation(new IdToModelTransformer<>(frontendGroupModelService));
-        builder().from("privateKey").to("privateKey");
-        builder().from("publicKey").to("publicKey");
-        builder().from("remoteId").to("remoteId");
+        binding().fromField("privateKey").toField("privateKey");
+        binding().fromField("publicKey").toField("publicKey");
+        binding().fromField("remoteId").toField("remoteId");
     }
 }

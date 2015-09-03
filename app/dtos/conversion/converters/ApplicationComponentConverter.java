@@ -50,12 +50,12 @@ public class ApplicationComponentConverter
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "application").to(Application.class, "application")
+        binding(Long.class, Application.class).fromField("application").toField("application")
             .withTransformation(new IdToModelTransformer<>(applicationModelService));
-        builder().from(Long.class, "component").to(Component.class, "component")
+        binding(Long.class, Component.class).fromField("component").toField("component")
             .withTransformation(new IdToModelTransformer<>(componentModelService));
-        builder().from(Long.class, "virtualMachineTemplate")
-            .to(VirtualMachineTemplate.class, "virtualMachineTemplate")
+        binding(Long.class, VirtualMachineTemplate.class).fromField("virtualMachineTemplate")
+            .toField("virtualMachineTemplate")
             .withTransformation(new IdToModelTransformer<>(virtualMachineTemplateModelService));
     }
 }

@@ -18,16 +18,18 @@
 
 package dtos.conversion.converters;
 
-import dtos.HardwareOfferDto;
-import dtos.conversion.DefaultConverter;
-import models.HardwareOffer;
+import dtos.LifecycleComponentDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.LifecycleComponent;
 
 /**
  * Created by daniel on 14.04.15.
  */
-public class HardwareOfferConverter extends DefaultConverter<HardwareOffer, HardwareOfferDto> {
-    protected HardwareOfferConverter() {
-        super(HardwareOffer.class, HardwareOfferDto.class);
+public class LifecycleComponentFieldConverter
+    extends DefaultFieldConverter<LifecycleComponent, LifecycleComponentDto> {
+
+    protected LifecycleComponentFieldConverter() {
+        super(LifecycleComponent.class, LifecycleComponentDto.class);
     }
 
 }

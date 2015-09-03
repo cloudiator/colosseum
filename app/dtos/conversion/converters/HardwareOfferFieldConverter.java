@@ -16,14 +16,19 @@
  * under the License.
  */
 
-package dtos.conversion;
+package dtos.conversion.converters;
+
+import dtos.HardwareOfferDto;
+import dtos.conversion.DefaultFieldConverter;
+import models.HardwareOffer;
 
 /**
- * Created by daniel on 16.03.15.
+ * Created by daniel on 14.04.15.
  */
-public interface FieldBinding{
+public class HardwareOfferFieldConverter
+    extends DefaultFieldConverter<HardwareOffer, HardwareOfferDto> {
+    protected HardwareOfferFieldConverter() {
+        super(HardwareOffer.class, HardwareOfferDto.class);
+    }
 
-    public void bind(Object from, Object to);
-
-    public void bindReverse(Object from, Object to);
 }

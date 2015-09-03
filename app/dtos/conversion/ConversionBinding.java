@@ -16,19 +16,14 @@
  * under the License.
  */
 
-package dtos.conversion.converters;
-
-import dtos.OperatingSystemVendorDto;
-import dtos.conversion.DefaultConverter;
-import models.OperatingSystemVendor;
+package dtos.conversion;
 
 /**
- * Created by daniel on 15.04.15.
+ * Created by daniel on 16.03.15.
  */
-public class OperatingSystemVendorConverter
-    extends DefaultConverter<OperatingSystemVendor, OperatingSystemVendorDto> {
+public interface ConversionBinding {
 
-    protected OperatingSystemVendorConverter() {
-        super(OperatingSystemVendor.class, OperatingSystemVendorDto.class);
-    }
+    void bind(Object from, Object to);
+
+    void bindReverse(Object from, Object to);
 }

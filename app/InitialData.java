@@ -79,6 +79,11 @@ public class InitialData {
                 new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
             operatingSystemModelService.save(ubuntu1404amd64);
 
+            //ubuntu 14.04.2 amd64
+            OperatingSystem ubuntu14042amd64 =
+                new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04.2");
+            operatingSystemModelService.save(ubuntu14042amd64);
+
             //load windows
             OperatingSystemVendor windows =
                 new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,

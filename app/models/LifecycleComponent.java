@@ -20,25 +20,26 @@ package models;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 
 /**
  * Created by daniel on 15.12.14.
  */
 @Entity public class LifecycleComponent extends Component {
 
-    @Nullable private String init;
-    @Nullable private String preInstall;
-    @Nullable private String install;
-    @Nullable private String postInstall;
-    @Nullable private String preStart;
-    private String start;
-    @Nullable private String startDetection;
-    @Nullable private String stopDetection;
-    @Nullable private String postStart;
-    @Nullable private String preStop;
-    @Nullable private String stop;
-    @Nullable private String postStop;
-    @Nullable private String shutdown;
+    @Nullable @Lob private String init;
+    @Nullable @Lob private String preInstall;
+    @Nullable @Lob private String install;
+    @Nullable @Lob private String postInstall;
+    @Nullable @Lob private String preStart;
+    @Lob private String start;
+    @Nullable @Lob private String startDetection;
+    @Nullable @Lob private String stopDetection;
+    @Nullable @Lob private String postStart;
+    @Nullable @Lob private String preStop;
+    @Nullable @Lob private String stop;
+    @Nullable @Lob private String postStop;
+    @Nullable @Lob private String shutdown;
 
     /**
      * Empty constructor for hibernate.

@@ -47,7 +47,7 @@ public class JobWorker implements Runnable {
         } catch (InterruptedException e) {
             Logger.error("Job Execution got interrupted", e);
             Thread.currentThread().interrupt();
-        } catch (JobException e) {
+        } catch (Exception e) {
             Logger.error("Job Execution got error", e);
         }
     }

@@ -22,12 +22,8 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.Tenant;
 import models.VirtualMachine;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 02.09.15.
@@ -46,14 +42,21 @@ public class RemoteConnectionStrategies implements RemoteConnectionStrategy {
     }
 
     @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
-        final Optional<RemoteConnectionStrategy> selectedStrategy = strategySet.stream().filter(
+
+
+        final Set<RemoteConnectionStrategy> applicableStrategies = strategySet.stream().filter(
             remoteConnectionStrategy -> remoteConnectionStrategy.isApplicable(virtualMachine))
-            .findFirst();
+            .collect(Collectors.toSet());
 
-        checkArgument(selectedStrategy.isPresent());
-        checkState(selectedStrategy.get().isApplicable(virtualMachine));
+        for (RemoteConnectionStrategy remoteConnectionStrategy : applicableStrategies) {
+            try {
+                return remoteConnectionStrategy.apply(virtualMachine);
+            } catch (Exception ignored) {
+            }
+        }
 
-        return selectedStrategy.get().apply(virtualMachine);
+        throw new IllegalStateException(
+            "Tried all available remote connection strategies, but still could not connect to machine.");
     }
 
     public static class RemoteConnectionStrategiesFactory

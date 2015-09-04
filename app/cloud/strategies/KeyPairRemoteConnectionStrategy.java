@@ -62,7 +62,7 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
 
         checkArgument(virtualMachine.supportsKeyPair());
         checkArgument(virtualMachine.publicIpAddress().isPresent());
-        checkArgument(virtualMachine.loginPassword().isPresent());
+        checkArgument(virtualMachine.loginName().isPresent());
 
         final Optional<KeyPair> keyPair =
             keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant);

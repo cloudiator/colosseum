@@ -182,4 +182,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
         this.generatedLoginUsername = generatedLoginUsername;
     }
+
+    public void setGeneratedPassword(@Nullable String generatedLoginPassword) {
+        this.generatedLoginPassword = generatedLoginPassword;
+    }
 }

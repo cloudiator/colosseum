@@ -99,7 +99,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
             virtualMachine.setGeneratedLoginUsername(loginCredential.username());
             if (loginCredential.isPasswordCredential()) {
-                virtualMachine.setGeneratedLoginUsername(loginCredential.password().get());
+                virtualMachine.setGeneratedPassword(loginCredential.password().get());
             } else {
                 //todo: if a private key and a public key are returned, we need to store them
                 throw new UnsupportedOperationException(

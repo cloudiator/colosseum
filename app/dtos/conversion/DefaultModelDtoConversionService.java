@@ -30,7 +30,7 @@ import java.util.Set;
  *
  * @author Daniel Baur
  */
-@Singleton public class DefaultModelDtoConversionService extends GenericModelDtoConversionService {
+@Singleton public class DefaultModelDtoConversionService extends BaseModelDtoConversionService {
 
     /**
      * Constructor.

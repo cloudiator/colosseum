@@ -63,6 +63,41 @@ POST          /api/communication                  @controllers.CommunicationCont
 PUT           /api/communication/:id              @controllers.CommunicationController.put(id: Long)
 DELETE        /api/communication/:id              @controllers.CommunicationController.delete(id: Long)
 
+#Component Horizontal Out Scaling Action
+GET           /api/componentHorizontalOutScalingAction            @controllers.ComponentHorizontalOutScalingActionController.list()
+GET           /api/componentHorizontalOutScalingAction/:id        @controllers.ComponentHorizontalOutScalingActionController.get(id: Long)
+POST          /api/componentHorizontalOutScalingAction            @controllers.ComponentHorizontalOutScalingActionController.post()
+PUT           /api/componentHorizontalOutScalingAction/:id        @controllers.ComponentHorizontalOutScalingActionController.put(id: Long)
+DELETE        /api/componentHorizontalOutScalingAction/:id        @controllers.ComponentHorizontalOutScalingActionController.delete(id: Long)
+
+#Component Horizontal In Scaling Action
+GET           /api/componentHorizontalInScalingAction           @controllers.ComponentHorizontalInScalingActionController.list()
+GET           /api/componentHorizontalInScalingAction/:id       @controllers.ComponentHorizontalInScalingActionController.get(id: Long)
+POST          /api/componentHorizontalInScalingAction           @controllers.ComponentHorizontalInScalingActionController.post()
+PUT           /api/componentHorizontalInScalingAction/:id       @controllers.ComponentHorizontalInScalingActionController.put(id: Long)
+DELETE        /api/componentHorizontalInScalingAction/:id       @controllers.ComponentHorizontalInScalingActionController.delete(id: Long)
+
+#Composed Monitor
+GET           /api/composedMonitor                                @controllers.ComposedMonitorController.list()
+GET           /api/composedMonitor/:id                            @controllers.ComposedMonitorController.get(id: Long)
+POST          /api/composedMonitor                                @controllers.ComposedMonitorController.post()
+PUT           /api/composedMonitor/:id                            @controllers.ComposedMonitorController.put(id: Long)
+DELETE        /api/composedMonitor/:id                            @controllers.ComposedMonitorController.delete(id: Long)
+
+#Constant Monitor
+GET           /api/constantMonitor                                @controllers.ConstantMonitorController.list()
+GET           /api/constantMonitor/:id                            @controllers.ConstantMonitorController.get(id: Long)
+POST          /api/constantMonitor                                @controllers.ConstantMonitorController.post()
+PUT           /api/constantMonitor/:id                            @controllers.ConstantMonitorController.put(id: Long)
+DELETE        /api/constantMonitor/:id                            @controllers.ConstantMonitorController.delete(id: Long)
+
+#Formula Quantifier
+GET           /api/formulaQuantifier                              @controllers.FormulaQuantifierController.list()
+GET           /api/formulaQuantifier/:id                          @controllers.FormulaQuantifierController.get(id: Long)
+POST          /api/formulaQuantifier                              @controllers.FormulaQuantifierController.post()
+PUT           /api/formulaQuantifier/:id                          @controllers.FormulaQuantifierController.put(id: Long)
+DELETE        /api/formulaQuantifier/:id                          @controllers.FormulaQuantifierController.delete(id: Long)
+
 #Tenant
 GET           /api/tenant                         @controllers.TenantController.list()
 GET           /api/tenant/:id                     @controllers.TenantController.get(id: Long)
@@ -133,6 +168,27 @@ POST          /api/lifecycleComponent             @controllers.LifecycleComponen
 PUT           /api/lifecycleComponent/:id         @controllers.LifecycleComponentController.put(id: Long)
 DELETE        /api/lifecycleComponent/:id         @controllers.LifecycleComponentController.delete(id: Long)
 
+#Measurement Window
+GET           /api/measurementWindow                              @controllers.MeasurementWindowController.list()
+GET           /api/measurementWindow/:id                          @controllers.MeasurementWindowController.get(id: Long)
+POST          /api/measurementWindow                              @controllers.MeasurementWindowController.post()
+PUT           /api/measurementWindow/:id                          @controllers.MeasurementWindowController.put(id: Long)
+DELETE        /api/measurementWindow/:id                          @controllers.MeasurementWindowController.delete(id: Long)
+
+#Monitor Instance
+GET           /api/monitorInstance                                @controllers.MonitorInstanceController.list()
+GET           /api/monitorInstance/:id                            @controllers.MonitorInstanceController.get(id: Long)
+POST          /api/monitorInstance                                @controllers.MonitorInstanceController.post()
+PUT           /api/monitorInstance/:id                            @controllers.MonitorInstanceController.put(id: Long)
+DELETE        /api/monitorInstance/:id                            @controllers.MonitorInstanceController.delete(id: Long)
+
+#Monitor Subscription
+GET           /api/monitorSubscription                            @controllers.MonitorSubscriptionController.list()
+GET           /api/monitorSubscription/:id                        @controllers.MonitorSubscriptionController.get(id: Long)
+POST          /api/monitorSubscription                            @controllers.MonitorSubscriptionController.post()
+PUT           /api/monitorSubscription/:id                        @controllers.MonitorSubscriptionController.put(id: Long)
+DELETE        /api/monitorSubscription/:id                        @controllers.MonitorSubscriptionController.delete(id: Long)
+
 #Location
 GET           /api/location                       @controllers.LocationController.list()
 GET           /api/location/:id                   @controllers.LocationController.get(id: Long)
@@ -153,6 +209,34 @@ GET           /api/osVendor/:id                   @controllers.OperatingSystemVe
 POST          /api/osVendor                       @controllers.OperatingSystemVendorController.post()
 PUT           /api/osVendor/:id                   @controllers.OperatingSystemVendorController.put(id: Long)
 DELETE        /api/osVendor/:id                   @controllers.OperatingSystemVendorController.delete(id: Long)
+
+#Raw Monitor
+GET           /api/rawMonitor                                     @controllers.RawMonitorController.list()
+GET           /api/rawMonitor/:id                                 @controllers.RawMonitorController.get(id: Long)
+POST          /api/rawMonitor                                     @controllers.RawMonitorController.post()
+PUT           /api/rawMonitor/:id                                 @controllers.RawMonitorController.put(id: Long)
+DELETE        /api/rawMonitor/:id                                 @controllers.RawMonitorController.delete(id: Long)
+
+#Schedule
+GET           /api/schedule                                       @controllers.ScheduleController.list()
+GET           /api/schedule/:id                                   @controllers.ScheduleController.get(id: Long)
+POST          /api/schedule                                       @controllers.ScheduleController.post()
+PUT           /api/schedule/:id                                   @controllers.ScheduleController.put(id: Long)
+DELETE        /api/schedule/:id                                   @controllers.ScheduleController.delete(id: Long)
+
+#Sensor Description
+GET           /api/sensorDescription                              @controllers.SensorDescriptionController.list()
+GET           /api/sensorDescription/:id                          @controllers.SensorDescriptionController.get(id: Long)
+POST          /api/sensorDescription                              @controllers.SensorDescriptionController.post()
+PUT           /api/sensorDescription/:id                          @controllers.SensorDescriptionController.put(id: Long)
+DELETE        /api/sensorDescription/:id                          @controllers.SensorDescriptionController.delete(id: Long)
+
+#Time Window
+GET           /api/timeWindow                                     @controllers.TimeWindowController.list()
+GET           /api/timeWindow/:id                                 @controllers.TimeWindowController.get(id: Long)
+POST          /api/timeWindow                                     @controllers.TimeWindowController.post()
+PUT           /api/timeWindow/:id                                 @controllers.TimeWindowController.put(id: Long)
+DELETE        /api/timeWindow/:id                                 @controllers.TimeWindowController.delete(id: Long)
 
 #Port Required
 GET           /api/portReq                        @controllers.PortRequiredController.list()

@@ -86,9 +86,9 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         final DeploymentContext deploymentContext = buildDeploymentContext(instance,
             client.initDeploymentContext(applicationId, applicationInstanceId));
 
-        checkState(instance.getVirtualMachine().publicIpAddress() != null);
+        checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
 
-        client.deploy(instance.getVirtualMachine().publicIpAddress().getIp(), deploymentContext,
+        client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
             buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);
 
         return client;

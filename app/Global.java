@@ -22,6 +22,8 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import components.execution.ExecutionModule;
 import components.job.config.JobModule;
+import components.scalability.AggregationModule;
+import components.scalability.ScalingEngineModule;
 import dtos.conversion.ConverterModule;
 import models.service.DatabaseServiceModule;
 import models.service.JPAModule;
@@ -62,7 +64,9 @@ public class Global extends GlobalSettings {
         this.injector = Guice
             .createInjector(new JPAModule(), new ConverterModule(app.classloader()),
                 new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
-                new JobModule(), new ExecutionModule());
+                new JobModule(), new ExecutionModule(), new ScalingEngineModule(),
+                new AggregationModule());
+
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);
 

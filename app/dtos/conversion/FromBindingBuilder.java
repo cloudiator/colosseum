@@ -21,9 +21,9 @@ package dtos.conversion;
 /**
  * Created by daniel on 17.03.15.
  */
-public interface FromBindingBuilder {
+public interface FromBindingBuilder<T, S> {
 
-    public <T> ToBindingBuilder<T> from(Class<T> fieldType, String name);
+    ToBindingBuilder<T, S> fromField(String name);
 
-    public ToBindingBuilder<Object> from(String name);
+    ToBindingBuilder<T, S> fromMethod(String name);
 }

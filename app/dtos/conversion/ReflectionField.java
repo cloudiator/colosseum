@@ -27,59 +27,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 20.03.15.
  */
-public class ReflectionField<U> {
+public class ReflectionField<T> implements Getter<T>, Setter<T> {
 
-    private final Field field;
-    private final Object o;
+    private final String fieldName;
+    private final Class<T> fieldType;
 
-    private ReflectionField(String fieldName, Class<U> fieldType, Object o) {
+    public static <S> ReflectionField<S> of(String fieldName, Class<S> fieldType) {
+        return new ReflectionField<>(fieldName, fieldType);
+    }
+
+    public static ReflectionField<Object> of(Field field) {
+        //noinspection unchecked
+        return new ReflectionField<>(field.getName(), (Class<Object>) field.getType());
+    }
+
+    private ReflectionField(String fieldName, Class<T> fieldType) {
         checkNotNull(fieldName);
         checkArgument(!fieldName.isEmpty());
-        checkNotNull(o);
+        checkNotNull(fieldType);
 
-        Field getField = getField(o.getClass(), fieldName);
-        checkNotNull(getField,
-            String.format("Could not find field %s on class of o (%s)", fieldName, o.getClass()));
-
-        checkArgument(isValidField(getField, fieldType), String
-            .format("Illegal field type %s for field %s. Not assignable from %s",
-                fieldType.getName(), fieldName, getField.getType().getClass().getName()));
-
-
-        getField.setAccessible(true);
-        this.field = getField;
-        this.o = o;
-    }
-
-    public static <P> ReflectionField<P> of(String fieldName, Class<P> fieldType, Object o) {
-        return new ReflectionField<>(fieldName, fieldType, o);
-    }
-
-    public static ReflectionField<Object> of(String fieldName, Object o) {
-        return new ReflectionField<>(fieldName, Object.class, o);
-    }
-
-    public U getValue() {
-        try {
-            //noinspection unchecked
-            return (U) field.get(o);
-        } catch (IllegalAccessException e) {
-            throw new BindingException(String
-                .format("Could not get value on field %s on object %s having class %s.",
-                    field.getName(), o, o.getClass()), e);
-        } catch (ClassCastException e) {
-            throw new BindingException("Could not cast field value.", e);
-        }
-    }
-
-    public void setValue(U value) {
-        try {
-            field.set(o, value);
-        } catch (IllegalAccessException e) {
-            throw new BindingException(String
-                .format("Could not set value on field %s on object %s having class %s",
-                    field.getName(), o, o.getClass()), e);
-        }
+        this.fieldName = fieldName;
+        this.fieldType = fieldType;
     }
 
     @Nullable private Field getField(Class clazz, String fieldToFind) {
@@ -99,4 +67,42 @@ public class ReflectionField<U> {
     }
 
 
+    @Override public T getValue(Object object) {
+        Field getField = getField(object.getClass(), fieldName);
+        checkNotNull(getField, String
+            .format("Could not find field %s on class of o (%s)", fieldName, object.getClass()));
+        getField.setAccessible(true);
+        checkArgument(isValidField(getField, fieldType), String
+            .format("Illegal field type %s for field %s. Not assignable from %s",
+                fieldType.getName(), fieldName, getField.getType()));
+
+        try {
+            //noinspection unchecked
+            return (T) getField.get(object);
+        } catch (IllegalAccessException e) {
+            throw new BindingException(String
+                .format("Could not get value on field %s on object %s having class %s.",
+                    getField.getName(), object, object.getClass()), e);
+        } catch (ClassCastException e) {
+            throw new BindingException("Could not cast field value.", e);
+        }
+    }
+
+    @Override public void setValue(Object object, T value) {
+        Field getField = getField(object.getClass(), fieldName);
+        checkNotNull(getField, String
+            .format("Could not find field %s on class of o (%s)", fieldName, object.getClass()));
+        getField.setAccessible(true);
+        checkArgument(isValidField(getField, fieldType), String
+            .format("Illegal field type %s for field %s. Not assignable from %s",
+                fieldType.getName(), fieldName, getField.getType().getClass().getName()));
+
+        try {
+            getField.set(object, value);
+        } catch (IllegalAccessException e) {
+            throw new BindingException(String
+                .format("Could not set value on field %s on object %s having class %s",
+                    getField.getName(), object, object.getClass()), e);
+        }
+    }
 }

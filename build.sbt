@@ -1,3 +1,4 @@
+
 import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
@@ -23,9 +24,11 @@ libraryDependencies ++= Seq(
   "com.google.guava" % "guava" % "18.0",
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "sword-service" % "1.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
   "de.uniulm.omi.cloudiator" % "lance-client" % "1.2.0-SNAPSHOT",
   "de.uniulm.omi.cloudiator" % "common" % "1.2.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "visor-rest-client" % "1.0-SNAPSHOT",
+  "de.uniulm.omi.cloudiator" % "axe-aggregator-common" % "1.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

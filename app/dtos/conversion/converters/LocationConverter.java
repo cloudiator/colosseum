@@ -19,8 +19,8 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
 import dtos.LocationDto;
-import dtos.conversion.RemoteConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.Cloud;
@@ -28,6 +28,8 @@ import models.CloudCredential;
 import models.GeoLocation;
 import models.Location;
 import models.service.ModelService;
+
+import java.util.List;
 
 /**
  * Created by daniel on 14.04.15.
@@ -53,20 +55,22 @@ public class LocationConverter extends RemoteConverter<Location, LocationDto> {
 
         super.configure();
 
-        builder().from(Long.class, "cloud").to(Cloud.class, "cloud")
+        binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
 
-        builder().from(Long.class, "parent").to(Location.class, "parent")
+        binding(Long.class, Location.class).fromField("parent").toField("parent")
             .withTransformation(new IdToModelTransformer<>(locationModelService));
 
-        builder().from("locationScope").to("locationScope");
+        binding().fromField("locationScope").toField("locationScope");
 
-        builder().from("isAssignable").to("isAssignable");
+        binding().fromField("isAssignable").toField("isAssignable");
 
-        builder().from(Long.class, "geoLocation").to(GeoLocation.class, "geoLocation")
+        binding(Long.class, GeoLocation.class).fromField("geoLocation").toField("geoLocation")
             .withTransformation(new IdToModelTransformer<>(geoLocationModelService));
 
-        builder().from("cloudCredentials").to("cloudCredentials").withUnsafeTransformation(
+        binding(new TypeLiteral<List<Long>>() {
+        }, new TypeLiteral<List<CloudCredential>>() {
+        }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(
             new ModelToListIdTransformer<>(
                 new IdToModelTransformer<>(cloudCredentialModelService)));
     }

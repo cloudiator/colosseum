@@ -41,6 +41,6 @@ public class IpAddressController
     }
 
     @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.VirtualMachineTemplateController.get(id).absoluteURL(request());
+        return controllers.routes.IpAddressController.get(id).absoluteURL(request());
     }
 }

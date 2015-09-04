@@ -32,7 +32,7 @@ public class ApiConverter extends AbstractConverter<Api, ApiDto> {
     }
 
     @Override public void configure() {
-        builder().from("name").to("name");
-        builder().from("internalProviderName").to("internalProviderName");
+        binding().fromField("name").toField("name");
+        binding().fromField("internalProviderName").toField("internalProviderName");
     }
 }

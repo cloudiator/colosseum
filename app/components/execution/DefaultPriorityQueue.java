@@ -18,15 +18,13 @@
 
 package components.execution;
 
-import com.google.inject.Singleton;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Created by daniel on 04.05.15.
  */
-@Singleton public class DefaultPriorityQueue<T extends Prioritized> implements PriorityQueue<T> {
+public class DefaultPriorityQueue<T extends Prioritized> implements PriorityQueue<T> {
 
     private BlockingQueue<T> queue;
 

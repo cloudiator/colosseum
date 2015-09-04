@@ -21,6 +21,7 @@ package models.service;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import models.*;
+import models.generic.ExternalReference;
 
 /**
  * Created by daniel on 18.03.15.
@@ -61,6 +62,30 @@ public class JPAModule extends AbstractModule {
         // Component
         bind(new TypeLiteral<ModelRepository<Component>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Component>>() {
+        });
+        //ComponentHorizontalOutScalingAction
+        bind(new TypeLiteral<ModelRepository<ComponentHorizontalOutScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComponentHorizontalOutScalingAction>>() {
+        });
+        //ComponentHorizontalIntScalingAction
+        bind(new TypeLiteral<ModelRepository<ComponentHorizontalInScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComponentHorizontalInScalingAction>>() {
+        });
+        //ComposedMonitor
+        bind(new TypeLiteral<ModelRepository<ComposedMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ComposedMonitor>>() {
+        });
+        //ConstantMonitor
+        bind(new TypeLiteral<ModelRepository<ConstantMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ConstantMonitor>>() {
+        });
+        //ConstantMonitor
+        bind(new TypeLiteral<ModelRepository<ExternalReference>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ExternalReference>>() {
+        });
+        //FormulaQuantifier
+        bind(new TypeLiteral<ModelRepository<FormulaQuantifier>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<FormulaQuantifier>>() {
         });
         // Frontend User
         bind(FrontendUserRepository.class).to(FrontendUserRepositoryJpa.class);
@@ -111,6 +136,22 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Location>>() {
         });
+        //MeasurementWindow
+        bind(new TypeLiteral<ModelRepository<MeasurementWindow>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MeasurementWindow>>() {
+        });
+        //Monitor
+        bind(new TypeLiteral<ModelRepository<Monitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Monitor>>() {
+        });
+        //MonitorInstance
+        bind(new TypeLiteral<ModelRepository<MonitorInstance>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MonitorInstance>>() {
+        });
+        //MonitorSubscription
+        bind(new TypeLiteral<ModelRepository<MonitorSubscription>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<MonitorSubscription>>() {
+        });
         bind(new TypeLiteral<RemoteModelRepository<Location>>() {
         }).to(new TypeLiteral<BaseRemoteModelRepositoryJpa<Location>>() {
         });
@@ -121,6 +162,26 @@ public class JPAModule extends AbstractModule {
         //Operating System Vendor
         bind(new TypeLiteral<ModelRepository<OperatingSystemVendor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystemVendor>>() {
+        });
+        //RawMonitor
+        bind(new TypeLiteral<ModelRepository<RawMonitor>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<RawMonitor>>() {
+        });
+        //ScalingAction
+        bind(new TypeLiteral<ModelRepository<ScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<ScalingAction>>() {
+        });
+        //Schedule
+        bind(new TypeLiteral<ModelRepository<Schedule>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Schedule>>() {
+        });
+        //SensorDescription
+        bind(new TypeLiteral<ModelRepository<SensorDescription>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<SensorDescription>>() {
+        });
+        //TimeWindow
+        bind(new TypeLiteral<ModelRepository<TimeWindow>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<TimeWindow>>() {
         });
         //PortInbound
         bind(new TypeLiteral<ModelRepository<PortRequired>>() {
@@ -137,6 +198,10 @@ public class JPAModule extends AbstractModule {
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelRepository<VirtualMachineTemplate>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<VirtualMachineTemplate>>() {
+        });
+        //Window
+        bind(new TypeLiteral<ModelRepository<Window>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Window>>() {
         });
     }
 }

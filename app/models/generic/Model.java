@@ -32,7 +32,7 @@ import java.io.Serializable;
  */
 @MappedSuperclass public abstract class Model extends Resource implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.AUTO) protected Long id;
+    @Id @GeneratedValue(strategy = GenerationType.TABLE) private Long id;
 
     /**
      * Empty constructor for hibernate.

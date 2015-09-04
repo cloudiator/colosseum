@@ -8,6 +8,7 @@ Query if the application does already exist: [GET /api/application](entities/App
 
 If the application does not already exist, create a new one: [POST /api/application](entities/Application.md)
 
+
 ### 2. Query or create the component
 
 > Note: The only supported component currently is the [LifecycleComponent](entities/LifecycleComponent.md)

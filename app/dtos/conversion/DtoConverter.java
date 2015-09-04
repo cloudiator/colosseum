@@ -27,12 +27,12 @@ import models.generic.Model;
  */
 public interface DtoConverter<T extends Model, S extends Dto> {
 
-    public T toModel(S dto);
+    T toModel(S dto);
 
-    public T toModel(S dto, T model);
+    T toModel(S dto, T model);
 
-    public S toDto(T model);
+    S toDto(T model);
 
-    public S toDto(T model, S dto);
+    S toDto(T model, S dto);
 
 }

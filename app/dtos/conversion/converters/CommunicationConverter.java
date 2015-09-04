@@ -43,9 +43,9 @@ public class CommunicationConverter extends AbstractConverter<Communication, Com
     }
 
     @Override public void configure() {
-        builder().from(Long.class, "requiredPort").to(PortRequired.class, "requiredPort")
+        binding(Long.class, PortRequired.class).fromField("requiredPort").toField("requiredPort")
             .withTransformation(new IdToModelTransformer<>(portRequiredModelService));
-        builder().from(Long.class, "providedPort").to(PortProvided.class, "providedPort")
+        binding(Long.class, PortProvided.class).fromField("providedPort").toField("providedPort")
             .withTransformation(new IdToModelTransformer<>(portProvidedModelService));
     }
 }

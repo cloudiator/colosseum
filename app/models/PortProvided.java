@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class PortProvided extends Port {
 
-    @Column(nullable = false) private Integer port;
+    @Column private Integer port;
     @OneToOne(mappedBy = "providedPort") Communication communication;
 
     /**

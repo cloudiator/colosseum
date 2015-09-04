@@ -39,9 +39,10 @@ public class IpAddressConverter extends AbstractConverter<IpAddress, IpAddressDt
     }
 
     @Override public void configure() {
-        builder().from("ip").to("ip");
-        builder().from("ipType").to("ipType");
-        builder().from(Long.class, "virtualMachine").to(VirtualMachine.class, "virtualMachine")
+        binding().fromField("ip").toField("ip");
+        binding().fromField("ipType").toField("ipType");
+        binding(Long.class, VirtualMachine.class).fromField("virtualMachine")
+            .toField("virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
     }
 }

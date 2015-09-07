@@ -23,12 +23,12 @@ import java.util.HashSet;
 /**
  * Created by daniel on 08.05.15.
  */
-public class UniqueQueue<T> implements SimpleBlockingQueue<T> {
+public class UniqueBlockingQueue<T> implements SimpleBlockingQueue<T> {
 
     private final HashSet<T> set;
     private final SimpleBlockingQueue<T> queue;
 
-    public UniqueQueue(SimpleBlockingQueue<T> queue) {
+    public UniqueBlockingQueue(SimpleBlockingQueue<T> queue) {
         set = new HashSet<>();
         this.queue = queue;
     }

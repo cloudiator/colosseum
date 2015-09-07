@@ -21,6 +21,7 @@ package components.scalability.aggregation;
 import de.uniulm.omi.cloudiator.axe.aggregator.AggregatorService;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
+import models.Monitor;
 
 import java.rmi.RemoteException;
 
@@ -29,8 +30,8 @@ import java.rmi.RemoteException;
  */
 public class RemoveAggregation extends MonitorAggregation {
 
-    public RemoveAggregation(ComposedMonitor composedMonitor) {
-        super(composedMonitor);
+    public RemoveAggregation(Monitor monitor) {
+        super(monitor);
     }
 
     @Override public void execute(AggregatorServiceAccess service) {

@@ -21,6 +21,7 @@ package components.scalability.aggregation;
 import de.uniulm.omi.cloudiator.axe.aggregator.AggregatorService;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
+import models.Monitor;
 import play.Logger;
 
 import java.rmi.RemoteException;
@@ -31,8 +32,8 @@ import java.rmi.RemoteException;
 public class UpdateAggregation extends MonitorAggregation {
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    public UpdateAggregation(ComposedMonitor composedMonitor) {
-        super(composedMonitor);
+    public UpdateAggregation(Monitor monitor) {
+        super(monitor);
     }
 
     @Override public void execute(AggregatorServiceAccess service) {

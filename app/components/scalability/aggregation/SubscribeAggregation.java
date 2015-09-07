@@ -33,7 +33,7 @@ import java.rmi.RemoteException;
 /**
  * Created by Frank on 03.08.2015.
  */
-public class SubscribeAggregation implements Aggregation {
+public class SubscribeAggregation implements Aggregation<Monitor> {
     protected final MonitorSubscription subscription;
     protected final Monitor monitor;
      /*TODO dynamic port*/
@@ -51,7 +51,7 @@ public class SubscribeAggregation implements Aggregation {
         return 0;
     }
 
-    @Override public models.Monitor getObject() {
+    @Override public Monitor getObject() {
         return monitor;
     }
 

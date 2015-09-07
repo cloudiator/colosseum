@@ -26,6 +26,7 @@ import components.execution.SimpleBlockingQueue;
 import components.scalability.aggregation.Aggregation;
 import components.scalability.worker.AggregationRestartWorker;
 import components.scalability.worker.AggregationWorker;
+import models.Monitor;
 
 /**
  * Created by Frank on 30.07.2015.
@@ -33,7 +34,7 @@ import components.scalability.worker.AggregationWorker;
 public class AggregationModule  extends AbstractModule {
 
     @Override protected void configure() {
-        bind(new TypeLiteral<SimpleBlockingQueue<Aggregation>>() {
+        bind(new TypeLiteral<SimpleBlockingQueue<Aggregation<Monitor>>>() {
         }).annotatedWith(Names.named("aggregationQueue")).to(AggregationQueue.class);
         Multibinder<Runnable> runnables = Multibinder.newSetBinder(binder(), Runnable.class);
         runnables.addBinding().to(AggregationWorker.class);

@@ -19,26 +19,34 @@
 package cloud.sync;
 
 import com.google.inject.Singleton;
-import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.SimpleBlockingQueue;
-import components.execution.UniqueQueue;
+import components.execution.SimpleFifoPriorityBlockingQueue;
+import components.execution.UniqueBlockingQueue;
+import models.Monitor;
+import models.RawMonitor;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by daniel on 08.05.15.
  */
-@Singleton public class ProblemQueue implements SimpleBlockingQueue<Problem> {
+@Singleton
+public class ProblemQueue implements SimpleBlockingQueue<Problem> {
 
     private final SimpleBlockingQueue<Problem> simpleBlockingQueue;
 
     public ProblemQueue() {
-        this.simpleBlockingQueue = new UniqueQueue<>(new SimpleFifoPriorityBlockingQueue<>());
+        this.simpleBlockingQueue = new UniqueBlockingQueue<Problem>(new SimpleFifoPriorityBlockingQueue<Problem>());
     }
 
-    @Override public void add(Problem t) {
+    @Override
+    public void add(Problem t) {
         this.simpleBlockingQueue.add(t);
     }
 
-    @Override public Problem take() throws InterruptedException {
+    @Override
+    public Problem take() throws InterruptedException {
         return this.simpleBlockingQueue.take();
     }
 }

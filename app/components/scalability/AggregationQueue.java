@@ -19,26 +19,30 @@
 package components.scalability;
 
 import com.google.inject.Singleton;
-import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.SimpleBlockingQueue;
+import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.scalability.aggregation.Aggregation;
+import models.Monitor;
 
 /**
  * Created by Frank on 30.07.2015.
  */
-@Singleton public class AggregationQueue implements SimpleBlockingQueue<Aggregation> {
+@Singleton
+public class AggregationQueue implements SimpleBlockingQueue<Aggregation<Monitor>> {
 
-    private SimpleBlockingQueue<Aggregation> aggregationSimpleBlockingQueue;
+    private SimpleBlockingQueue<Aggregation<Monitor>> aggregationSimpleBlockingQueue;
 
     public AggregationQueue() {
         this.aggregationSimpleBlockingQueue = new SimpleFifoPriorityBlockingQueue<>();
     }
 
-    @Override public void add(Aggregation t) {
+    @Override
+    public void add(Aggregation<Monitor> t) {
         aggregationSimpleBlockingQueue.add(t);
     }
 
-    @Override public Aggregation take() throws InterruptedException {
+    @Override
+    public Aggregation<Monitor> take() throws InterruptedException {
         return aggregationSimpleBlockingQueue.take();
     }
 }

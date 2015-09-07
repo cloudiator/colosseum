@@ -37,7 +37,7 @@ import java.util.List;
 @Singleton
 public class ScalingEngineImpl implements ScalingEngine {
     private static final long NA = -1;
-    private final SimpleBlockingQueue<Aggregation> aggregationQueue;
+    private final SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue;
     private final FrontendCommunicator fc;
     private final int AGENT_PORT =
         Play.application().configuration().getInt("colosseum.scalability.visor.port");
@@ -45,7 +45,7 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     @Inject
     public ScalingEngineImpl(FrontendCommunicator fc,
-        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation> aggregationQueue) {
+        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue) {
         this.fc = fc;
         this.aggregationQueue = aggregationQueue;
     }

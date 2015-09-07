@@ -26,6 +26,7 @@ import components.scalability.internal.TsdbHelper;
 import components.scalability.aggregation.Aggregation;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
+import models.Monitor;
 import play.Logger;
 import play.Play;
 
@@ -37,16 +38,16 @@ import java.rmi.RemoteException;
 public class AggregationWorker implements Runnable {
     protected final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    private final SimpleBlockingQueue<Aggregation> aggregationQueue;
+    private final SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue;
 
-    @Inject public AggregationWorker(@Named("aggregationQueue") SimpleBlockingQueue<Aggregation> aggregationQueue) {
+    @Inject public AggregationWorker(@Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue) {
         this.aggregationQueue = aggregationQueue;
     }
 
     @Override public void run() {
         try {
             while(!Thread.currentThread().isInterrupted()){ /*TODO change with new version*/
-                Aggregation job = aggregationQueue.take();
+                Aggregation<Monitor> job = aggregationQueue.take();
                 Thread.sleep(2000); /* wait for transaction to be finished */
 
                 //TODO has to be done on basis of the monitor instances instead of the monitors

@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class PortProvided extends Port {
 
     @Column private Integer port;
-    @OneToOne(mappedBy = "providedPort") Communication communication;
+    @OneToOne(mappedBy = "providedPort", optional = true) Communication communication;
 
     /**
      * Empty constructor for hibernate.

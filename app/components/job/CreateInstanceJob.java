@@ -26,6 +26,7 @@ import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
 import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
 import de.uniulm.omi.cloudiator.lance.application.component.*;
+import de.uniulm.omi.cloudiator.lance.client.DeploymentHelper;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.LcaException;
@@ -88,8 +89,9 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
 
-        client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
-            buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);
+        client
+            .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
+                buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);
 
         return client;
 
@@ -115,13 +117,19 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         // add all ingoing ports / provided ports
         for (PortProvided portProvided : instance.getApplicationComponent().getProvidedPorts()) {
-            builder.addInport(portProvided.name(), PortProperties.PortType.PUBLIC_PORT,
-                PortProperties.INFINITE_CARDINALITY);
+            PortProperties.PortType portType;
+            if (portProvided.getCommunication() == null) {
+                portType = PortProperties.PortType.PUBLIC_PORT;
+            } else {
+                portType = PortProperties.PortType.INTERNAL_PORT;
+            }
+            builder.addInport(portProvided.name(), portType, PortProperties.INFINITE_CARDINALITY);
         }
         //add all outgoing ports / required ports
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
             //check if something better for null todo
-            builder.addOutport(portRequired.name(), null, PortProperties.INFINITE_CARDINALITY);
+            builder.addOutport(portRequired.name(), DeploymentHelper.getEmptyPortUpdateHandler(),
+                PortProperties.INFINITE_CARDINALITY);
         }
 
         //build a lifecycle store from the application component

@@ -19,7 +19,7 @@
 package cloud.sync;
 
 import com.google.inject.Singleton;
-import components.execution.DefaultPriorityQueue;
+import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.SimpleBlockingQueue;
 import components.execution.UniqueQueue;
 
@@ -31,7 +31,7 @@ import components.execution.UniqueQueue;
     private final SimpleBlockingQueue<Problem> simpleBlockingQueue;
 
     public ProblemQueue() {
-        this.simpleBlockingQueue = new UniqueQueue<>(new DefaultPriorityQueue<>());
+        this.simpleBlockingQueue = new UniqueQueue<>(new SimpleFifoPriorityBlockingQueue<>());
     }
 
     @Override public void add(Problem t) {

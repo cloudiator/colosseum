@@ -138,7 +138,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
      */
     private static class RequiredPorts {
 
-        static String ports = "22,1099,4242,8080,9001,9002,5985,443,445,33033";
+        static String ports = "22,80,1099,3306,4242,8080,9001,9002,5985,443,445,33033";
 
         private static Set<Integer> inBoundPorts() {
             Set<Integer> intPorts = new HashSet<>();

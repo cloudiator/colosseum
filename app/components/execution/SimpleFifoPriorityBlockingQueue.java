@@ -22,22 +22,33 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
- * Created by daniel on 04.05.15.
+ * A simple {@link BlockingQueue} implementation returning entries based
+ * on their priority given by {@link Prioritized}.
+ * <p>
+ * If two objects have the same priority (are equal with respect to their
+ * compareTo ({@link Comparable}) method) this queue ensures that FIFO
+ * will be applied as tie-breaker.
+ *
+ * @param <T>
  */
-public class DefaultPriorityQueue<T extends Prioritized> implements PriorityQueue<T> {
+public class SimpleFifoPriorityBlockingQueue<T extends Comparable<? super T>>
+    implements SimpleBlockingQueue<T> {
 
-    private BlockingQueue<T> queue;
+    private BlockingQueue<FiFoEntry<T>> queue;
 
-    public DefaultPriorityQueue() {
-        this.queue = new PriorityBlockingQueue<>(10,
-            (first, second) -> Integer.compare(first.getPriority(), second.getPriority()));
+    public SimpleFifoPriorityBlockingQueue() {
+        this.queue = new PriorityBlockingQueue<>();
+    }
+
+    private FiFoEntry<T> decorateFiFo(T prioritized) {
+        return FiFoEntry.of(prioritized);
     }
 
     @Override public void add(T t) {
-        this.queue.add(t);
+        this.queue.add(decorateFiFo(t));
     }
 
     @Override public T take() throws InterruptedException {
-        return this.queue.take();
+        return this.queue.take().getEntry();
     }
 }

@@ -18,10 +18,18 @@
 
 package components.execution;
 
+import javax.annotation.Nonnull;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Created by daniel on 08.05.15.
+ * A prioritized object, offering a way to compare two objects with
+ * respect to their priority.
+ * <p>
+ * For this purpose this class extends {@link Comparable} and offers
+ * a default implementation of the compareTo method.
  */
-public interface Prioritized {
+public interface Prioritized extends Comparable<Prioritized> {
 
     class Priority {
         public static final int HIGH = 2;
@@ -31,4 +39,8 @@ public interface Prioritized {
 
     int getPriority();
 
+    @Override default int compareTo(@Nonnull Prioritized o) {
+        checkNotNull(o);
+        return Integer.compare(getPriority(), o.getPriority());
+    }
 }

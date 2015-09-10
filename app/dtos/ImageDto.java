@@ -40,6 +40,7 @@ public class ImageDto extends RemoteDto {
     private List<Long> locations;
     private Long operatingSystem;
     private List<Long> cloudCredentials;
+    private String defaultUsername;
 
     public ImageDto() {
         super();
@@ -97,6 +98,14 @@ public class ImageDto extends RemoteDto {
 
     public void setCloudCredentials(List<Long> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
+    }
+
+    public String getDefaultUsername() {
+        return defaultUsername;
+    }
+
+    public void setDefaultUsername(String defaultUsername) {
+        this.defaultUsername = defaultUsername;
     }
 
     public static class References {

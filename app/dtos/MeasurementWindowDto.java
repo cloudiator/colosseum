@@ -41,9 +41,6 @@ public class MeasurementWindowDto extends ValidatableDto {
         //TODO
     }
 
-    public static class References {
-    }
-
     public Long getMeasurements() {
         return measurements;
     }

@@ -32,6 +32,7 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
+import models.generic.RemoteState;
 import models.service.ModelService;
 
 import java.util.HashSet;
@@ -89,6 +90,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
 
         // set values to the model
         virtualMachine.setRemoteId(cloudVirtualMachine.id());
+        virtualMachine.setCloudProviderId(cloudVirtualMachine.cloudProviderId());
         for (String ip : cloudVirtualMachine.privateAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
         }
@@ -131,6 +133,13 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             computeService.remoteConnection(tenant, virtualMachine);
 
         Installers.of(remoteConnection, virtualMachine, tenant).installAll();
+
+        virtualMachine.setRemoteState(RemoteState.OK);
+        modelService.save(virtualMachine);
+    }
+
+    @Override public boolean canStart() {
+        return true;
     }
 
     /**

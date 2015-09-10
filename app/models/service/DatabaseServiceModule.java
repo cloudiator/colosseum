@@ -59,6 +59,10 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<CloudCredential>>() {
         });
         bind(CloudCredentialModelService.class).to(DefaultCloudCredentialModelService.class);
+        // Cloud Property
+        bind(new TypeLiteral<ModelService<CloudProperty>>() {
+        }).to(new TypeLiteral<BaseModelService<CloudProperty>>() {
+        });
         // Communication
         bind(new TypeLiteral<ModelService<Communication>>() {
         }).to(new TypeLiteral<BaseModelService<Communication>>() {

@@ -73,18 +73,6 @@ import java.util.concurrent.TimeUnit;
         }
     }
 
-    @Override public long period() {
-        return 1;
-    }
-
-    @Override public long delay() {
-        return 0;
-    }
-
-    @Override public TimeUnit timeUnit() {
-        return TimeUnit.MINUTES;
-    }
-
     @Override public String toString() {
         return "LocationWatchdog";
     }

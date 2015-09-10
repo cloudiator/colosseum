@@ -68,5 +68,6 @@ public class ImageConverter extends RemoteConverter<Image, ImageDto> {
         }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(
             new ModelToListIdTransformer<>(
                 new IdToModelTransformer<>(cloudCredentialModelService)));
+        binding().fromField("defaultUsername").toField("defaultUsername");
     }
 }

@@ -25,6 +25,8 @@ import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.db.jpa.Transactional;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 
@@ -53,5 +55,17 @@ public abstract class AbstractCloudServiceWatchdog implements Schedulable {
 
     protected void report(Problem problem) {
         this.problemQueue.add(problem);
+    }
+
+    @Override public long period() {
+        return 20;
+    }
+
+    @Override public long delay() {
+        return 0;
+    }
+
+    @Override public TimeUnit timeUnit() {
+        return TimeUnit.SECONDS;
     }
 }

@@ -66,7 +66,7 @@ public class CreateImageInDatabase implements Solution {
             operatingSystemService.findByImageName(imageNotInDatabase.getImageInLocation().name());
 
         Image image = new Image(imageNotInDatabase.getImageInLocation().id(),
-            imageNotInDatabase.getImageInLocation().name(), cloud, operatingSystem);
+            imageNotInDatabase.getImageInLocation().name(), cloud, operatingSystem, null);
         image.setCloudProviderId(imageNotInDatabase.getImageInLocation().cloudProviderId());
         imageModelService.save(image);
     }

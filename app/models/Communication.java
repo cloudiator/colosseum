@@ -21,6 +21,7 @@ package models;
 import models.generic.Model;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 /**
@@ -28,8 +29,10 @@ import javax.persistence.OneToOne;
  */
 @Entity public class Communication extends Model {
 
-    @OneToOne(optional = false) private PortRequired requiredPort;
-    @OneToOne(optional = false) private PortProvided providedPort;
+    @OneToOne(optional = false) @JoinColumn(name = "requiredCommunication") private PortRequired
+        requiredPort;
+    @OneToOne(optional = false) @JoinColumn(name = "providedCommunication") private PortProvided
+        providedPort;
 
     /**
      * Empty constructor for hibernate.

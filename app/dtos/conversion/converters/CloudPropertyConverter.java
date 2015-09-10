@@ -19,36 +19,32 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
-import dtos.KeyPairDto;
+import dtos.CloudPropertyDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
-import models.KeyPair;
-import models.Tenant;
+import models.CloudProperty;
 import models.service.ModelService;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
- * Created by daniel on 19.05.15.
+ * Created by daniel on 08.09.15.
  */
-public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
+public class CloudPropertyConverter extends AbstractConverter<CloudProperty, CloudPropertyDto> {
 
     private final ModelService<Cloud> cloudModelService;
-    private final ModelService<Tenant> tenantModelService;
 
-    @Inject protected KeyPairConverter(ModelService<Cloud> cloudModelService,
-        ModelService<Tenant> tenantModelService) {
-        super(KeyPair.class, KeyPairDto.class);
+    @Inject public CloudPropertyConverter(ModelService<Cloud> cloudModelService) {
+        super(CloudProperty.class, CloudPropertyDto.class);
+        checkNotNull(cloudModelService);
         this.cloudModelService = cloudModelService;
-        this.tenantModelService = tenantModelService;
     }
 
     @Override public void configure() {
+        binding().fromField("key").toField("key");
+        binding().fromField("value").toField("value");
         binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        binding(Long.class, Tenant.class).fromField("tenant").toField("tenant")
-            .withTransformation(new IdToModelTransformer<>(tenantModelService));
-        binding().fromField("privateKey").toField("privateKey");
-        binding().fromField("publicKey").toField("publicKey");
-        binding().fromField("remoteId").toField("remoteId");
     }
 }

@@ -25,7 +25,6 @@ import models.VirtualMachine;
 import play.Logger;
 import play.Play;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -155,13 +154,8 @@ abstract class AbstractInstaller implements InstallApi {
     }
 
     public void finishInstallation() {
-
         Logger.debug("Finished installation of all tools, closing remote connection.");
-        try {
-            this.remoteConnection.close();
-        } catch (IOException ignored) {
-        }
-
+        this.remoteConnection.close();
     }
 }
 

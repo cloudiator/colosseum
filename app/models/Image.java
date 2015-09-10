@@ -23,6 +23,7 @@ import models.generic.RemoteModel;
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -42,6 +43,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
+    @Nullable private String defaultUsername;
+
     /**
      * Empty constructor for hibernate.
      */
@@ -49,7 +52,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public Image(String remoteId, @Nullable String name, Cloud cloud,
-        @Nullable OperatingSystem operatingSystem) {
+        @Nullable OperatingSystem operatingSystem, @Nullable String defaultUsername) {
         super(remoteId);
         checkNotNull(cloud);
 
@@ -61,6 +64,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.name = name;
         this.cloud = cloud;
         this.operatingSystem = operatingSystem;
+        this.defaultUsername = defaultUsername;
+    }
+
+    public Optional<String> defaultUsername() {
+        return Optional.ofNullable(defaultUsername);
     }
 
     public Cloud getCloud() {

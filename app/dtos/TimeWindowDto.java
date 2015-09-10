@@ -40,9 +40,6 @@ public class TimeWindowDto extends ValidatableDto {
         //TODO
     }
 
-    public static class References {
-    }
-
     public Long getInterval() {
         return interval;
     }

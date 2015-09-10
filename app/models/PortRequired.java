@@ -26,7 +26,7 @@ import javax.persistence.OneToOne;
  */
 @Entity public class PortRequired extends Port {
 
-    @OneToOne(mappedBy = "requiredPort") Communication communication;
+    @OneToOne(mappedBy = "requiredPort") Communication requiredCommunication;
 
     /**
      * Default constructor for hibernate.
@@ -38,7 +38,7 @@ import javax.persistence.OneToOne;
         super(name, applicationComponent);
     }
 
-    public Communication getCommunication() {
-        return communication;
+    @Override public Communication getAttachedCommunication() {
+        return requiredCommunication;
     }
 }

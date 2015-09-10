@@ -23,6 +23,7 @@ import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
 import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 import models.CloudCredential;
 import play.Configuration;
@@ -47,9 +48,11 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
         checkNotNull(cloudCredential);
 
         return new DecoratingComputeService(ServiceBuilder
-            .newServiceBuilder(cloudCredential.getCloud().getApi().getInternalProviderName())
+            .newServiceBuilder(cloudCredential.getCloud().api().getInternalProviderName())
             .endpoint(cloudCredential.getCloud().getEndpoint())
-            .credentials(cloudCredential.getUser(), cloudCredential.getSecret())
+            .credentials(cloudCredential.getUser(), cloudCredential.getSecret()).properties(
+                PropertiesBuilder.newBuilder()
+                    .putProperties(cloudCredential.getCloud().properties()).build())
             .loggingModule(new SwordLoggingModule()).nodeGroup(getNodeGroup()).build(),
             cloudCredential.getCloud().getUuid(), cloudCredential.getUuid());
     }

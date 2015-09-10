@@ -33,7 +33,7 @@ import models.service.ModelService;
 public class KeyPairDto extends ValidatableDto {
 
     private Long cloud;
-    private Long frontendGroup;
+    private Long tenant;
     private String privateKey;
     private String publicKey;
     private String cloudUuid;
@@ -41,15 +41,15 @@ public class KeyPairDto extends ValidatableDto {
     @Override public void validation() {
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(frontendGroup).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.frontendGroupService.get()));
+        validator(Long.class).validate(tenant).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.tenantService.get()));
         //TODO: validate if valid ssh keys?
         //TODO: validate with respect to public key or remoteId needs to be present?
     }
 
     public static class References {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<Tenant>> frontendGroupService;
+        @Inject public static Provider<ModelService<Tenant>> tenantService;
     }
 
     public Long getCloud() {
@@ -58,14 +58,6 @@ public class KeyPairDto extends ValidatableDto {
 
     public void setCloud(Long cloud) {
         this.cloud = cloud;
-    }
-
-    public Long getFrontendGroup() {
-        return frontendGroup;
-    }
-
-    public void setFrontendGroup(Long frontendGroup) {
-        this.frontendGroup = frontendGroup;
     }
 
     public String getPrivateKey() {
@@ -90,5 +82,13 @@ public class KeyPairDto extends ValidatableDto {
 
     public void setCloudUuid(String cloudUuid) {
         this.cloudUuid = cloudUuid;
+    }
+
+    public Long getTenant() {
+        return tenant;
+    }
+
+    public void setTenant(Long tenant) {
+        this.tenant = tenant;
     }
 }

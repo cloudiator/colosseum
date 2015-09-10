@@ -31,8 +31,6 @@ import models.CloudCredential;
 import models.Location;
 import models.service.ImageModelService;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by daniel on 07.05.15.
  */
@@ -86,18 +84,6 @@ import java.util.concurrent.TimeUnit;
 
 
         }
-    }
-
-    @Override public long period() {
-        return 1;
-    }
-
-    @Override public long delay() {
-        return 0;
-    }
-
-    @Override public TimeUnit timeUnit() {
-        return TimeUnit.MINUTES;
     }
 
     @Override public String toString() {

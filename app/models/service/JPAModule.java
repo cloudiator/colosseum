@@ -55,6 +55,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<CloudCredential>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<CloudCredential>>() {
         });
+        // Cloud Property
+        bind(new TypeLiteral<ModelRepository<CloudProperty>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<CloudProperty>>() {
+        });
         // Communication
         bind(new TypeLiteral<ModelRepository<Communication>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Communication>>() {

@@ -38,6 +38,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStore;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import models.*;
+import models.generic.RemoteState;
 import models.service.ModelService;
 
 import javax.annotation.Nullable;
@@ -50,11 +51,13 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CreateInstanceJob extends GenericJob<Instance> {
 
+    private final Instance instance;
 
     @Inject public CreateInstanceJob(Instance instance, ModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+        this.instance = instance;
     }
 
     @Override protected void doWork(Instance instance, ModelService<Instance> modelService,
@@ -118,10 +121,13 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         // add all ingoing ports / provided ports
         for (PortProvided portProvided : instance.getApplicationComponent().getProvidedPorts()) {
             PortProperties.PortType portType;
-            if (portProvided.getCommunication() == null) {
+            if (portProvided.getAttachedCommunication() == null) {
                 portType = PortProperties.PortType.PUBLIC_PORT;
             } else {
-                portType = PortProperties.PortType.INTERNAL_PORT;
+                // todo should be internal, but for the time being we use public here
+                // facilitates the security group handling
+                //portType = PortProperties.PortType.INTERNAL_PORT;
+                portType = PortProperties.PortType.PUBLIC_PORT;
             }
             builder.addInport(portProvided.name(), portType, PortProperties.INFINITE_CARDINALITY);
         }
@@ -151,13 +157,17 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         }
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
             deploymentContext.setProperty(portRequired.name(), new PortReference(ComponentId
-                .fromString(
-                    portRequired.getCommunication().getProvidedPort().getApplicationComponent()
-                        .getUuid()), portRequired.getCommunication().getProvidedPort().name(),
+                .fromString(portRequired.getAttachedCommunication().getProvidedPort()
+                    .getApplicationComponent().getUuid()),
+                portRequired.getAttachedCommunication().getProvidedPort().name(),
                 PortProperties.PortLinkage.ALL), OutPort.class);
         }
 
         return deploymentContext;
+    }
+
+    @Override public boolean canStart() {
+        return RemoteState.OK.equals(instance.getVirtualMachine().getRemoteState());
     }
 
     private static class LifecycleComponentToLifecycleStoreConverter

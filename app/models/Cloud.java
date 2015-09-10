@@ -18,10 +18,13 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Maps;
 import models.generic.Model;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -40,6 +43,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         virtualMachines;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudCredential>
         cloudCredentials;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudProperty>
+        cloudProperties;
 
     /**
      * Empty constructor. Needed by hibernate.
@@ -74,59 +79,43 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.endpoint = endpoint;
     }
 
-    public Api getApi() {
+    public Api api() {
         return api;
     }
 
-    public void setApi(Api api) {
-        this.api = api;
-    }
-
-    public List<Image> getImages() {
+    public List<Image> images() {
         return images;
     }
 
-    public void setImages(List<Image> images) {
-        this.images = images;
+    public List<Location> locations() {
+        return ImmutableList.copyOf(locations);
     }
 
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<Hardware> getHardware() {
+    public List<Hardware> hardware() {
         return hardware;
     }
 
-    public void setHardware(List<Hardware> hardware) {
-        this.hardware = hardware;
-    }
-
     public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
+        return ImmutableList.copyOf(virtualMachineTemplates);
     }
 
     public List<VirtualMachine> getVirtualMachines() {
-        return virtualMachines;
-    }
-
-    public void setVirtualMachines(List<VirtualMachine> virtualMachines) {
-        this.virtualMachines = virtualMachines;
+        return ImmutableList.copyOf(virtualMachines);
     }
 
     public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
+        return ImmutableList.copyOf(cloudCredentials);
     }
 
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
+    public void addProperty(CloudProperty cloudProperty) {
+        this.cloudProperties.add(cloudProperty);
+    }
+
+    public Map<String, String> properties() {
+        Map<String, String> resultMap = Maps.newHashMapWithExpectedSize(cloudProperties.size());
+        for (CloudProperty cloudProperty : cloudProperties) {
+            resultMap.put(cloudProperty.key(), cloudProperty.value());
+        }
+        return resultMap;
     }
 }

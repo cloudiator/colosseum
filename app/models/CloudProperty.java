@@ -18,37 +18,43 @@
 
 package models;
 
+import models.generic.Model;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.persistence.ManyToOne;
 
 /**
- * Created by daniel on 03.08.15.
+ * Created by daniel on 08.09.15.
  */
-@Entity public class PortProvided extends Port {
+@Entity public class CloudProperty extends Model {
 
-    @Column private Integer port;
-    @OneToOne(mappedBy = "providedPort", optional = true) Communication providedCommunication;
+    @Column(nullable = false, name = "cloudproperty_key") private String key;
+    @Column(nullable = false) private String value;
+    @ManyToOne(optional = false) private Cloud cloud;
 
-    /**
-     * Empty constructor for hibernate.
-     */
-    protected PortProvided() {
+    public CloudProperty(String key, String value, Cloud cloud) {
+        this.key = key;
+        this.value = value;
+        this.cloud = cloud;
     }
 
-    @Override public Communication getAttachedCommunication() {
-        return providedCommunication;
+    protected CloudProperty() {
     }
 
-    public PortProvided(String name, ApplicationComponent applicationComponent, int port) {
-        super(name, applicationComponent);
-        checkNotNull(port);
-        this.port = port;
+    public String key() {
+        return key;
     }
 
-    public int getPort() {
-        return port;
+    public String value() {
+        return value;
+    }
+
+    public void value(String value) {
+        this.value = value;
+    }
+
+    public Cloud cloud() {
+        return cloud;
     }
 }

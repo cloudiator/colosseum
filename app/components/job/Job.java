@@ -33,4 +33,6 @@ public interface Job extends Prioritized {
 
     void execute() throws JobException;
 
+    boolean canStart();
+
 }

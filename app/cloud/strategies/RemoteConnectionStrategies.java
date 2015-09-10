@@ -48,15 +48,18 @@ public class RemoteConnectionStrategies implements RemoteConnectionStrategy {
             remoteConnectionStrategy -> remoteConnectionStrategy.isApplicable(virtualMachine))
             .collect(Collectors.toSet());
 
+        Exception lastException = null;
         for (RemoteConnectionStrategy remoteConnectionStrategy : applicableStrategies) {
             try {
                 return remoteConnectionStrategy.apply(virtualMachine);
-            } catch (Exception ignored) {
+            } catch (Exception last) {
+                lastException = last;
             }
         }
 
         throw new IllegalStateException(
-            "Tried all available remote connection strategies, but still could not connect to machine.");
+            "Tried all available remote connection strategies, but still could not connect to machine.",
+            lastException);
     }
 
     public static class RemoteConnectionStrategiesFactory

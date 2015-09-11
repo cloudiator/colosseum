@@ -74,9 +74,7 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
     }
 
     protected void flush() {
-    	System.out.println(type + " start flush");
         em().flush();
-    	System.out.println(type + " end flush");
     }
 
     protected T refresh(final T t) {

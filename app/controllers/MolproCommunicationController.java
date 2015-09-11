@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import org.apache.commons.io.FileUtils;
 
@@ -133,19 +135,18 @@ public class MolproCommunicationController extends Controller {
         //todo: switch between vm and regular machine: openstack: get the external ip  by magic: http://169.254.169.254/2009-04-04/meta-data/public-ipv4
 
         //no vm solution
-        /*
         try {
             apiEndpoint += InetAddress.getLocalHost().getHostAddress();
         } catch (UnknownHostException e) {
             e.printStackTrace();
             Logger.error(e.toString());
         }
-        apiEndpoint += ":9000/molproCommunication/"+action+"/"+application.id;
+        apiEndpoint += ":9000/molproCommunication/"+action+"/"+application.getId();
         return apiEndpoint;
-        */
+        
 
         //openstack vm solution
-        return apiEndpoint + getOpenStackExternalIp() + ":9000/molproCommunication/"+action+"/"+application.getId();
+        //return apiEndpoint + getOpenStackExternalIp() + ":9000/molproCommunication/"+action+"/"+application.getId();
 
 
     }

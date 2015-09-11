@@ -60,8 +60,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public RemoteModel(String remoteId) {
-        checkNotNull(remoteId);
-        checkArgument(!remoteId.isEmpty());
+        //checkNotNull(remoteId);
+        //checkArgument(!remoteId.isEmpty());
         this.remoteId = remoteId;
     }
 

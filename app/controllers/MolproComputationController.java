@@ -2,19 +2,14 @@ package controllers;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 import java.util.Scanner;
-
-import javax.annotation.Nullable;
 
 import org.apache.commons.io.FileUtils;
 
 import com.google.inject.Inject;
 
 import controllers.security.SecuredSessionOrToken;
-import de.uniulm.omi.cloudiator.colosseum.client.entities.CloudHardware;
 import forms.MolproComputationForm;
-import models.Api;
 import models.Application;
 import models.ApplicationComponent;
 import models.Cloud;
@@ -58,15 +53,20 @@ public class MolproComputationController extends Controller {
 	private final ModelService<LifecycleComponent> lifecycleComponentModelService;
 	private final ModelService<VirtualMachineTemplate> virtualMachineTemplateModelService;
 	private final ModelService<ApplicationComponent> applicationComponentModelService;
-	
+	private final ModelService<Location> locationModelService;
 	
 	
 	
 	@Inject
-	public MolproComputationController(ModelService<Cloud> cloudModelService, ModelService<Application> applicationModelService, 
-			ModelService<Image> imageModelService, ModelService<Hardware> hardwareModelService, 
-			ModelService<LifecycleComponent> lifecycleComponentModelService, ModelService<VirtualMachineTemplate> virtualMachineTemplateModelService,
-			ModelService<ApplicationComponent> applicationComponentModelService){		
+	public MolproComputationController(
+			ModelService<Cloud> cloudModelService, 
+			ModelService<Application> applicationModelService, 
+			ModelService<Image> imageModelService, 
+			ModelService<Hardware> hardwareModelService, 
+			ModelService<LifecycleComponent> lifecycleComponentModelService, 
+			ModelService<VirtualMachineTemplate> virtualMachineTemplateModelService,
+			ModelService<ApplicationComponent> applicationComponentModelService, 
+			ModelService<Location> locationModelService){
 		this.cloudModelService = cloudModelService;
 		this.applicationModelService = applicationModelService;
 		this.imageModelService = imageModelService;
@@ -74,6 +74,8 @@ public class MolproComputationController extends Controller {
 		this.lifecycleComponentModelService = lifecycleComponentModelService;
 		this.virtualMachineTemplateModelService = virtualMachineTemplateModelService;
 		this.applicationComponentModelService = applicationComponentModelService;
+		this.locationModelService = locationModelService;
+
 	}
 
     @Transactional(readOnly = true)
@@ -115,9 +117,6 @@ public class MolproComputationController extends Controller {
 //            return badRequest(views.html.molproComputation.newComputation.render(filledForm));
             
         }else {
-        	
-        	System.out.println("Hello World");
-        	
             MolproComputation molproComputation = new MolproComputation();
             molproComputation.numOfComputationCores = filledForm.get().numOfComputationCores;
             molproComputation.title = filledForm.get().title;
@@ -134,7 +133,6 @@ public class MolproComputationController extends Controller {
                     return badRequest(views.html.molproComputation.newComputation.render(filledForm));
                 }
             }
-
 
             //create and add the MolproApplication
             molproComputation.application = createMolproApplication(molproComputation);
@@ -163,18 +161,17 @@ public class MolproComputationController extends Controller {
 //    }
 
     private Application createMolproApplication(MolproComputation molproComputation){
-        //Application
         Application molproApplication = new Application("molpro_"+molproComputation.title);
         applicationModelService.save(molproApplication);
 
-        Component molproComponent = createMolproComponent(molproApplication, molproComputation);
+        Component molproComponent = createMolproComponent(molproApplication, molproComputation, "molpro_"+molproComputation.title);
         VirtualMachineTemplate vmt = createMolproVirtualMachineTemplate(molproComponent, molproComputation.numOfComputationCores);
         createMolproApplicationComponent(molproApplication, molproComponent, vmt);
 
         return molproApplication;
     }
 
-    private Component createMolproComponent(Application application, MolproComputation molproComputation){
+    private Component createMolproComponent(Application application, MolproComputation molproComputation, String name){
     	
     	String init = "";
 		String preInstall = buildDownloadCommand(application, molproComputation);
@@ -191,7 +188,7 @@ public class MolproComputationController extends Controller {
         String shutdown = "";
     	
         LifecycleComponent molproComponent = new LifecycleComponent(
-        		"MolproComponent",
+        		name,
         		init, 
         		preInstall,
                 install, 
@@ -230,14 +227,9 @@ public class MolproComputationController extends Controller {
 
     private VirtualMachineTemplate createMolproVirtualMachineTemplate(Component component, int numberOfComputationCores){
     	Cloud cloud = cloudModelService.getAll().get(0);
-    	/*if(cloudModelService.getAll().size() == 0){
-    		Cloud cloud = new Cloud("omistack-beta", "endpoint?", Api);
-    	}*/
+    	
     	Image image = findMolproImage();
-    	// TODO remoteId ???
-    	String remoteId = "remoteId";
-    	boolean isAssignable = true;
-    	Location location = new Location(cloud, remoteId, null, null, null, isAssignable);
+    	Location location = locationModelService.getAll().get(0);
     	Hardware hardware = findHardwareByCpuCores(cloud, numberOfComputationCores);
 		VirtualMachineTemplate vmt = new VirtualMachineTemplate(cloud, image, location, hardware);
 		virtualMachineTemplateModelService.save(vmt);
@@ -246,7 +238,7 @@ public class MolproComputationController extends Controller {
 
     private Image findMolproImage(){
     	for(Image image : imageModelService.getAll()){
-    		if(image.getName().contains("Molpro")){
+    		if(image.getName().contains("Centos")){
     			return image;
     		}
     	}
@@ -381,9 +373,11 @@ public class MolproComputationController extends Controller {
                 String [] memoryData = line.split(",");
                 if(memoryData.length != 3){
                     Logger.warn("Unspecidied memory line (more than 3 items)");
+                    scanner.close();
                     return result;
                 }else if(!memoryData[2].equals("m")){
                     Logger.warn("Unspecidied memory unit (expected m): " + memoryData[2]);
+                    scanner.close();
                     return result;
                 }else{
                     //calculate the memory amount

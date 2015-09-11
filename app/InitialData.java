@@ -30,16 +30,30 @@ public class InitialData {
     private final ModelService<Tenant> tenantModelService;
     private final ModelService<OperatingSystem> operatingSystemModelService;
     private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
+	private final ModelService<CloudCredential> cloudCredentialModelService; 
+	private final ModelService<Api> apiModelService;
+	private final ModelService<Cloud> cloudModelService;
+	private final ModelService<CloudProperty> cloudPropertyModelService;
+	
     private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
         ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService,
+        ModelService<CloudCredential> cloudCredentialModelService, 
+        ModelService<Api> apiModelService,
+        ModelService<Cloud> cloudModelService,
+        ModelService<CloudProperty> cloudPropertyModelService
+    		) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
         this.operatingSystemModelService = operatingSystemModelService;
         this.operatingSystemVendorModelService = operatingSystemVendorModelService;
+		this.cloudCredentialModelService = cloudCredentialModelService;
+		this.apiModelService = apiModelService;        
+		this.cloudModelService = cloudModelService;
+		this.cloudPropertyModelService = cloudPropertyModelService;
     }
 
     public void loadInitialData() {
@@ -96,6 +110,21 @@ public class InitialData {
             operatingSystemModelService.save(windowsServer2012R2);
         }
 
+        // Initiate Molpro Setup
+        if(cloudModelService.getAll().isEmpty()){
+    		Api api = new Api("omistack-beta-api", "openstack-nova");
+    		apiModelService.save(api);
+    		
+    		Cloud cloud = new Cloud("omistack-beta", "http://omistack-beta.e-technik.uni-ulm.de:5000/v2.0", api);
+    		cloudModelService.save(cloud);
+    		
+    		CloudProperty cloudPropertyFloatingIp = new CloudProperty("sword.openstack.floatingIpPool", "extnet2", cloud);
+    		cloudPropertyModelService.save(cloudPropertyFloatingIp);
+    		
+    		Tenant tenant = tenantModelService.getAll().get(0);
+    		CloudCredential cc = new CloudCredential(cloud, tenant, "cactos:cactos-tools", "2ab89636ba");
+    		cloudCredentialModelService.save(cc);
+    	}        
 
     }
 }

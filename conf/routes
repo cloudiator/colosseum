@@ -302,15 +302,4 @@ GET         /molproRunconfiguration/show                               @controll
 POST        /molproRunconfiguration                                    @controllers.MolproRunconfigurationController.changeConfiguration()
 
 #Installation
-
-GET         /installation                                              controllers.InstallationController.index()
-GET         /installation/new                                          controllers.InstallationController.newInstallation()
-GET         /installation/:id/show                                     controllers.InstallationController.show(id: Long)
-
-POST        /installation                                              controllers.InstallationController.create()
-GET         /installation/molpro                                       controllers.InstallationController.createMolpro(id: Long)
-
-GET         /api/installation/:id                                      controllers.InstallationController.json(id: Long)
-POST        /api/installation/:id                                      controllers.InstallationController.jsonUpdate(id: Long)
-GET         /api/installation                                          controllers.InstallationController.jsonList()
-POST        /api/installation                                          controllers.InstallationController.jsonNew()
+GET         /molproInstallation/molpro                                 @controllers.MolproInstallationController.createMolpro(id: Long)

@@ -35,10 +35,15 @@ public class MolproRunconfigurationController extends Controller {
     static Form<MolproRunConfigurationForm> molproComputationForm = Form.form(MolproRunConfigurationForm.class);
 
 	private final ModelService<Cloud> cloudModelService;
+	private final ModelService<Hardware> hardwareModelService;
 	
 	@Inject
-	public MolproRunconfigurationController(ModelService<Cloud> cloudModelService){		
+	public MolproRunconfigurationController(
+			ModelService<Cloud> cloudModelService,
+			ModelService<Hardware> hardwareModelService
+			){		
 		this.cloudModelService = cloudModelService;
+		this.hardwareModelService = hardwareModelService;
 	}    
     
     @Transactional(readOnly = true)
@@ -63,10 +68,9 @@ public class MolproRunconfigurationController extends Controller {
             return badRequest("An error occured, missing post parameters!");
         }else{
             MolproComputation molproComputation = MolproComputation.findById(filledForm.get().idMolproComputation);
-//            Hardware cloudHardware = CloudHardware.findById(filledForm.get().idCloudHardware);
-//
-//            molproComputation.application.applicationComponents.get(0).component.componentConfiguration.hardware = cloudHardware.hardware;
-//            molproComputation.save();
+            Hardware cloudHardware = hardwareModelService.getById(filledForm.get().idCloudHardware);
+            molproComputation.application.getApplicationComponents().get(0).getVirtualMachineTemplate().setHardware(cloudHardware);
+            molproComputation.save();
 
             flash("success", "The run configuration of th computation was successfully changed.");
             return redirect(routes.MolproRunconfigurationController.show(molproComputation.getId()));
@@ -77,12 +81,13 @@ public class MolproRunconfigurationController extends Controller {
 
     private Map<String, String> getMatchingHardware(int numberOfCores, Cloud cloud) {
         LinkedHashMap<String, String> options = new LinkedHashMap<String, String>();
-//        List<CloudHardware> cloudHardwareList =  CloudHardware.findByCloudAndCpuCores(cloud, numberOfCores);
-//        for (CloudHardware cloudHardware : cloudHardwareList) {
-//            String idCloudHardware = cloudHardware.id.toString();
-//            String description = "Cores: " + cloudHardware.hardware.numberOfCpu + " Memory: " + cloudHardware.hardware.mbOfRam + "MB Disk:" + cloudHardware.hardware.localDiskSpace + "GB";
-//            options.put(idCloudHardware, description);
-//        }
+        for (Hardware hardware : hardwareModelService.getAll()){
+        	if(!hardware.getCloud().equals(cloud))
+        		continue;
+        	String idHardware = hardware.getId().toString();
+    		String description = "Cores: " + hardware.getHardwareOffer().getNumberOfCores() + " Memory: " + hardware.getHardwareOffer().getMbOfRam() + "MB Disk:" + hardware.getHardwareOffer().getLocalDiskSpace() + "GB";
+    		options.put(idHardware, description);
+        }
         return options;
     }
 

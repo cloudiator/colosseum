@@ -16,7 +16,7 @@
     @status()
 
     @if(!molproComputation.started){
-        <a href="@routes.InstallationController.createMolpro(molproComputation.application.getId())" class="btn btn-default" role="button"><span class="glyphicon glyphicon-plus"></span> Run Computation</a>
+        <a href="@routes.MolproInstallationController.createMolpro(molproComputation.application.getId())" class="btn btn-default" role="button"><span class="glyphicon glyphicon-plus"></span> Run Computation</a>
     }
 
      <table class="table table-hover">

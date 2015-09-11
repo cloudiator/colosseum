@@ -275,3 +275,42 @@ DELETE        /api/vmt/:id                                        @controllers.V
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                       controllers.Assets.at(path="/public", file)
+
+#######################################################################################################################
+
+#Molpro: MolproController
+GET         /molpro                                               @controllers.MolproController.molpro()
+
+#Molpro: CommunicationController
+GET         /molproCommunication/getComputationCores/:id               @controllers.MolproCommunicationController.getMolproEnvironementVariables(id: Long)
+GET         /molproCommunication/getInputFileAsString/:id              @controllers.MolproCommunicationController.getInputFileAsString(id: Long)
+GET         /molproCommunication/getMolproScriptsCompressed/:id        @controllers.MolproCommunicationController.getMolproScriptsCompressed(id: Long)
+POST        /molproCommunication/saveMolproOutputCompressed/:id        @controllers.MolproCommunicationController.saveMolproOutputCompressed(id: Long)
+
+#Molpro: MolproComputationController
+GET         /molproComputation                                         @controllers.MolproComputationController.index()
+GET         /molproComputation/new                                     @controllers.MolproComputationController.newComputation()
+GET         /molproComputation/download/scripts/:id                    @controllers.MolproComputationController.downloadMolproScripts(id: Long)
+GET         /molproComputation/download/output/:id                     @controllers.MolproComputationController.downloadOutput(id: Long)
+GET         /molproComputation/show/:id                                @controllers.MolproComputationController.show(id: Long)
+
+POST        /molproComputation                                         @controllers.MolproComputationController.create()
+
+#Molpro: MolproRunconfigurationController
+GET         /molproRunconfiguration                                    @controllers.MolproRunconfigurationController.index()
+GET         /molproRunconfiguration/show                               @controllers.MolproRunconfigurationController.show(id: Long)
+POST        /molproRunconfiguration                                    @controllers.MolproRunconfigurationController.changeConfiguration()
+
+#Installation
+
+GET         /installation                                              controllers.InstallationController.index()
+GET         /installation/new                                          controllers.InstallationController.newInstallation()
+GET         /installation/:id/show                                     controllers.InstallationController.show(id: Long)
+
+POST        /installation                                              controllers.InstallationController.create()
+GET         /installation/molpro                                       controllers.InstallationController.createMolpro(id: Long)
+
+GET         /api/installation/:id                                      controllers.InstallationController.json(id: Long)
+POST        /api/installation/:id                                      controllers.InstallationController.jsonUpdate(id: Long)
+GET         /api/installation                                          controllers.InstallationController.jsonList()
+POST        /api/installation                                          controllers.InstallationController.jsonNew()

@@ -1,0 +1,16 @@
+@(title: String, breadcrumb: Html = tags.breadcrumb())(content: Html)
+
+@managementBreadcrumb = {
+	<li><a href="@routes.MolproController.molpro()">Management</a></li>
+	@breadcrumb
+}
+
+
+
+@sidebar = {
+
+}
+
+@mainWithSidebar(title,managementBreadcrumb,sidebar) {
+@content
+}

@@ -1,0 +1,10 @@
+@(molproComputationForm: Form[MolproComputationForm])
+
+@import helper._
+@import views.helper.bootstrap.BasicField._
+
+@inputText(molproComputationForm("title"), 'class -> "form-control", '_label -> "Title")
+@inputText(molproComputationForm("numOfComputationCores"), 'class -> "form-control", '_label -> "Numbers of cores to use for computation")
+@textarea(field = molproComputationForm("molproInput"), 'rows -> 10, 'cols -> 50, 'class -> "form-control", '_label -> "Molpro Script")
+@inputFile(molproComputationForm("molproScripts"),  'class -> "form-control", '_label -> "Upload additional Molpro Scripts")
+

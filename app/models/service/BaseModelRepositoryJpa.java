@@ -74,7 +74,9 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
     }
 
     protected void flush() {
+    	System.out.println(type + " start flush");
         em().flush();
+    	System.out.println(type + " end flush");
     }
 
     protected T refresh(final T t) {
@@ -90,7 +92,6 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
     @Override public List<T> findAll() {
         String queryString = String.format("from %s", type.getName());
         Query query = em().createQuery(queryString);
-        Set<Parameter<?>> params = query.getParameters();
         //noinspection unchecked
         return query.getResultList();
     }

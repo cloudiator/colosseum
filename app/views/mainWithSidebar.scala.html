@@ -1,0 +1,21 @@
+@(title: String, breadcrumb: Html = tags.breadcrumb(), sidebar: Html = Html(""))(content: Html)
+
+@managementRow = {
+		<div class="col-lg-2 sidebar">
+			<ul class="nav nav-sidebar">
+				@sidebar
+			</ul>
+		</div>
+		<div class="col-lg-10 main">
+			<div class="page-header">
+				<h1>@title</h1>
+			</div>
+			@content
+			
+		</div>
+}
+
+@main(title,breadcrumb) {
+	@managementRow
+}
+

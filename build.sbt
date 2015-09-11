@@ -34,6 +34,8 @@ libraryDependencies ++= Seq(
 
 TwirlKeys.templateImports += "dtos._"
 
+TwirlKeys.templateImports += "forms._"
+
 jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"

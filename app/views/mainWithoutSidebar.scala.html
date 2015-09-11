@@ -1,0 +1,19 @@
+@(title: String, breadcrumb: Html = tags.breadcrumb())(content: Html)
+
+@managementRow = {
+		<div class="col-lg-12 main">
+			<div class="page-header">
+				<h1>@title</h1>
+			</div>
+			@content
+			
+			
+			
+		</div>
+}
+
+@main(title,breadcrumb) {
+	@managementRow
+	
+}
+

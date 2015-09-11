@@ -1,0 +1,63 @@
+@(title: String, breadcrumb: Html = tags.breadcrumb())(row: Html)
+
+@mainBody = {
+<body>
+	
+	<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="paasage_header container-fluid">
+			
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target=".navbar-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+			
+                @if(session.get("cactos")== "1"){
+                    <a class="navbar-brand" href="/"><img src="@routes.Assets.at("images/cactos_logo.png")"  alt="Cactos" class="paasage_logo">ExecutionWare Frontend</a>
+                }else{
+                    <a class="navbar-brand" href="/"><img src="@routes.Assets.at("images/paasage_logo.png")"  alt="PaaSage" class="paasage_logo">ExecutionWare Frontend</a>
+                }
+
+				
+				
+				
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav navbar-right">
+		                    <li><a href="@routes.MolproController.molpro()">Molpro</a></li>
+				</ul>
+				<form class="navbar-form navbar-right">
+					<input type="text" class="form-control" placeholder="Search...">
+				</form>
+			</div>
+		</div>
+		<div>
+			<ol class="breadcrumb">
+				<li><a href="@routes.MolproController.molpro()">Index</a></li>
+  				@breadcrumb
+			</ol>
+		</div>
+	</div>
+	 
+	<div class="container-fluid">
+		<div class="row">
+			@row
+		</div>
+	</div>
+	
+	<!-- @play.Play.application().configuration().getString("build.number") -->
+
+	<script
+		src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+	<script
+		src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script
+        src="@routes.Assets.at("javascript/chartjs.min.js")"></script>
+</body>
+}
+
+@body(title) {
+	@mainBody
+}

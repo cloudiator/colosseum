@@ -1,0 +1,81 @@
+@(molproComputation: MolproComputation, matchingHardware: Map[String, String] , molproRunConfigurationFrom: Form[MolproRunConfigurationForm])
+
+    @import helper._
+    @import tags._
+
+
+
+@breadcrumb = {
+	<li><a href="@routes.MolproRunconfigurationController.index()">Run Configuration</a></li>
+	<li class="active">@molproComputation.title</li>
+}
+
+@molproTemplate(molproComputation.title, breadcrumb) {
+	
+    
+    @status()
+
+    @if(!molproComputation.started){
+        <a href="@routes.InstallationController.createMolpro(molproComputation.application.getId())" class="btn btn-default" role="button"><span class="glyphicon glyphicon-plus"></span> Run Computation</a>
+    }
+
+     <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <colgroup>
+                <col class="col-xs-1">
+                <col class="col-xs-3">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>@molproComputation.getId()</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>@molproComputation.title</td>
+                </tr>
+                <tr>
+                    <td>Number of cores used by Molpro </td>
+                    <td>@molproComputation.numOfComputationCores</td>
+                </tr>
+                <tr>
+                    <td>VM cores</td>
+                    <td>@molproComputation.application.getApplicationComponents().get(0).getVirtualMachineTemplate().getHardware().getHardwareOffer().getNumberOfCores()</td>
+                </tr>
+                <tr>
+                    <td>VM memory</td>
+                    <td>@molproComputation.application.getApplicationComponents().get(0).getVirtualMachineTemplate().getHardware().getHardwareOffer().getMbOfRam()</td>
+                </tr>
+                <tr>
+                    <td>VM diskspace</td>
+                    <td>@molproComputation.application.getApplicationComponents().get(0).getVirtualMachineTemplate().getHardware().getHardwareOffer().getLocalDiskSpace()</td>
+                </tr>
+             </tbody>
+        </table>
+
+    @form(routes.MolproRunconfigurationController.changeConfiguration(),  'enctype -> "multipart/form-data") {
+
+        @select(
+            molproRunConfigurationFrom("idCloudHardware"),
+            options = options(matchingHardware),
+            '_label -> "Further matching Hardware Flavors",
+            'class -> "form-control",
+            '_showConstraints -> false
+        )
+         <input type="hidden" name="idMolproComputation" value="@molproComputation.getId()" >
+
+
+
+
+        <input type="submit" class="btn btn-default" value="Apply Hardare">
+
+    }
+    
+    
+}
+

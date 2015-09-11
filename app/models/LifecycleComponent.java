@@ -47,11 +47,12 @@ import javax.persistence.Lob;
     protected LifecycleComponent() {
     }
 
-    public LifecycleComponent(@Nullable String init, @Nullable String preInstall,
+    public LifecycleComponent(String name, @Nullable String init, @Nullable String preInstall,
         @Nullable String install, @Nullable String postInstall, @Nullable String preStart,
         String start, @Nullable String startDetection, @Nullable String stopDetection,
         @Nullable String postStart, @Nullable String preStop, @Nullable String stop,
         @Nullable String postStop, @Nullable String shutdown) {
+    	super(name);
         this.init = init;
         this.preInstall = preInstall;
         this.install = install;

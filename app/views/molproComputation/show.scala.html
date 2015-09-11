@@ -1,0 +1,67 @@
+@(molproComputation: MolproComputation)
+
+    @import helper._
+    @import tags._
+
+
+
+@breadcrumb = {
+	<li><a href="@routes.MolproComputationController.index()">Computation</a></li>
+	<li class="active">@molproComputation.title</li>
+}
+
+@molproTemplate(molproComputation.title, breadcrumb) {
+	
+    
+    @status()
+
+    @if(!molproComputation.started){
+        <a href="@routes.InstallationController.createMolpro(molproComputation.application.getId())" class="btn btn-default" role="button"><span class="glyphicon glyphicon-plus"></span> Run Computation</a>
+    }
+
+     <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <colgroup>
+                <col class="col-xs-1">
+                <col class="col-xs-3">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>ID</td>
+                    <td>@molproComputation.getId()</td>
+                </tr>
+                <tr>
+                    <td>Title</td>
+                    <td>@molproComputation.title</td>
+                </tr>
+                <tr>
+                    <td>Molpro input</td>
+                    <td>@molproComputation.molproInput</td>
+                </tr>
+                <tr>
+                    <td>Additional scripts</td>
+                    @if(molproComputation.molproScripts == null){
+                        <td>no additional scripts available</td>
+                    }else{
+                        <td><a href="@routes.MolproComputationController.downloadMolproScripts(molproComputation.getId())">Download scripts as tgz</a></td>
+                    }
+                </tr>
+                <tr>
+                    <td>Output</td>
+                    @if(molproComputation.output == null){
+                        <td>no output available</td>
+                    }else{
+                        <td><a href="@routes.MolproComputationController.downloadOutput(molproComputation.getId())">Download output as tgz</a></td>
+                    }
+                </tr>
+            </tbody>
+        </table>
+    
+    
+}
+

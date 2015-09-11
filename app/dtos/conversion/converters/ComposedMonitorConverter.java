@@ -71,20 +71,25 @@ import java.util.List;
                 .withTransformation(new IdToModelTransformer<>(scheduleModelService));
         binding(Long.class,Window.class ).fromField("window").toField("window")
             .withTransformation(new IdToModelTransformer<>(windowModelService));
+
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<Monitor>>() {
         }).fromField("monitors").toField("monitors")
             .withTransformation(
                     new ModelToListIdTransformer<>(new IdToModelTransformer<>(monitorModelService)));
+
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<ScalingAction>>() {
         }).fromField("scalingActions").toField("scalingActions")
             .withTransformation(new ModelToListIdTransformer<>(
                     new IdToModelTransformer<>(scalingActionModelService)));
+
         binding(new TypeLiteral<List<String>>() {
         }, new TypeLiteral<List<ExternalReference>>() {
         }).fromField("externalReferences").toField("externalReferences")
             .withTransformation(new StringToExternalReferenceTransformer());
+
+//TODO only one-way conversion
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<MonitorInstance>>() {
         }).fromField( "monitorInstances").toField("monitorInstances")

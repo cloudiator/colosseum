@@ -22,6 +22,7 @@ import components.scalability.internal.TsdbLocator;
 import models.generic.ModelWithExternalReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -32,7 +33,7 @@ import java.util.Map;
 public abstract class Monitor extends ModelWithExternalReference {
 
     @OneToMany(mappedBy = "monitor") private List<MonitorInstance>
-        monitorInstances;
+        monitorInstances = new ArrayList<>();;
 
     public List<MonitorInstance> getMonitorInstances() {
         return monitorInstances;

@@ -77,6 +77,7 @@ import java.util.List;
         binding(Long.class, Schedule.class).fromField("schedule").toField("schedule")
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
 
+// TODO: a one-way convertion is needed here:
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<MonitorInstance>>() {
         }).fromField("monitorInstances").toField("monitorInstances")

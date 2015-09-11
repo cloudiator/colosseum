@@ -35,6 +35,10 @@ public class ModelToListIdTransformer<T extends Model> implements Transformer<Li
     }
 
     @Override public List<T> transform(List<Long> longs) {
+        if(longs == null){
+            return new ArrayList<>();
+        }
+
         List<T> list = new ArrayList<>(longs.size());
         for (Long id : longs) {
             list.add(idToModelTransformer.transform(id));
@@ -43,6 +47,10 @@ public class ModelToListIdTransformer<T extends Model> implements Transformer<Li
     }
 
     @Override public List<Long> transformReverse(List<T> ts) {
+        if(ts == null){
+            return new ArrayList<>();
+        }
+
         List<Long> ids = new ArrayList<>(ts.size());
         for (T t : ts) {
             ids.add(idToModelTransformer.transformReverse(t));

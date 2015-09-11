@@ -38,6 +38,16 @@ jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"
 
+// disable the generation of general scaladoc, due to bug
+// https://issues.scala-lang.org/browse/SI-4744
+// the api-doc task will still generate scala and java doc
+// but ignores the problamatic files.
+
+publishArtifact in (Compile, packageDoc) := false
+
+publishArtifact in packageDoc := false
+
+sources in (Compile,doc) := Seq.empty
 
 ApiDocSettings.apiDocTask
 

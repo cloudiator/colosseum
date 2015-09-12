@@ -42,7 +42,7 @@ public class UnixInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "/home/" + virtualMachine.loginName().get();
+        this.homeDir = "~";
     }
 
     @Override public void initSources() {

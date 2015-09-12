@@ -23,6 +23,7 @@ import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import models.CloudCredential;
 import models.Tenant;
 import models.VirtualMachine;
 
@@ -37,7 +38,7 @@ public interface ColosseumComputeService {
     //todo: check if virtual machine should be closed to a tenant
     RemoteConnection remoteConnection(Tenant tenant, VirtualMachine virtualMachine);
 
-    Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid);
+    Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential);
 
     Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid);
 }

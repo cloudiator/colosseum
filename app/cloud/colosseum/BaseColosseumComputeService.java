@@ -19,6 +19,7 @@
 package cloud.colosseum;
 
 import cloud.ComputeServiceRegistry;
+import cloud.DecoratingKeyPairService;
 import cloud.DecoratingPublicIpService;
 import cloud.resources.VirtualMachineInLocation;
 import cloud.strategies.RemoteConnectionStrategy;
@@ -26,6 +27,7 @@ import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import models.CloudCredential;
 import models.Tenant;
 import models.VirtualMachine;
 
@@ -73,10 +75,14 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
         return remoteConnectionStrategy.apply(virtualMachine);
     }
 
-    @Override public Optional<KeyPairService> getKeyPairService(String cloudCredentialUuid) {
-        //todo: decorate
-
-        return this.computeServices.getComputeService(cloudCredentialUuid).getKeyPairService();
+    @Override public Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential) {
+        final Optional<KeyPairService> keyPairService =
+            this.computeServices.getComputeService(cloudCredential.getUuid()).getKeyPairService();
+        if (!keyPairService.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DecoratingKeyPairService(keyPairService.get(),
+            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid()));
     }
 
     @Override public Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid) {

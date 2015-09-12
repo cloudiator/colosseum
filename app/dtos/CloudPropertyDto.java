@@ -29,6 +29,8 @@ import models.service.ModelService;
 
 /**
  * Created by daniel on 08.09.15.
+ *
+ * @todo add to documentation
  */
 public class CloudPropertyDto extends ValidatableDto {
 

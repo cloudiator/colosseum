@@ -21,18 +21,19 @@ package dtos;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ExpressionValidator;
 import dtos.validation.validators.NotNullValidator;
+import dtos.validation.validators.PredicateValidator;
 
 public class HardwareOfferDto extends ValidatableDto {
 
     protected Integer numberOfCores;
     protected Long mbOfRam;
-    protected Long localDiskSpace;
+    protected Float localDiskSpace;
 
     public HardwareOfferDto() {
         super();
     }
 
-    public HardwareOfferDto(Integer numberOfCores, Long mbOfRam, Long localDiskSpace) {
+    public HardwareOfferDto(Integer numberOfCores, Long mbOfRam, Float localDiskSpace) {
         this.numberOfCores = numberOfCores;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;
@@ -43,8 +44,8 @@ public class HardwareOfferDto extends ValidatableDto {
             .withValidator(new ExpressionValidator(numberOfCores > 0));
         validator(Long.class).validate(mbOfRam).withValidator(new NotNullValidator())
             .withValidator(new ExpressionValidator(mbOfRam > 0));
-        validator(Long.class).validate(localDiskSpace).withValidator(new NotNullValidator())
-            .withValidator(new ExpressionValidator(localDiskSpace > 0));
+        validator(Float.class).validate(localDiskSpace)
+            .withValidator(new PredicateValidator<>(aFloat -> aFloat == null || aFloat > 0F));
     }
 
     public Integer getNumberOfCores() {
@@ -63,11 +64,11 @@ public class HardwareOfferDto extends ValidatableDto {
         this.mbOfRam = mbOfRam;
     }
 
-    public Long getLocalDiskSpace() {
+    public Float getLocalDiskSpace() {
         return localDiskSpace;
     }
 
-    public void setLocalDiskSpace(Long localDiskSpace) {
+    public void setLocalDiskSpace(Float localDiskSpace) {
         this.localDiskSpace = localDiskSpace;
     }
 }

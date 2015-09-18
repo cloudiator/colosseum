@@ -67,7 +67,8 @@ public class CreateHardwareInDatabase implements Solution {
 
         Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud,
             getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
-                hardwareNotInDatabase.getHardwareInLocation().mbRam(), null),
+                hardwareNotInDatabase.getHardwareInLocation().mbRam(),
+                hardwareNotInDatabase.getHardwareInLocation().gbDisk()),
             hardwareNotInDatabase.getHardwareInLocation().name());
         hardware
             .setCloudProviderId(hardwareNotInDatabase.getHardwareInLocation().cloudProviderId());
@@ -77,11 +78,12 @@ public class CreateHardwareInDatabase implements Solution {
     }
 
     private HardwareOffer getHardwareOffer(Integer numberOfCores, Long mbOfRam,
-        @Nullable Long localDiskSpace) {
+        @Nullable Float localDiskSpace) {
 
         for (HardwareOffer hardwareOffer : hardwareOfferModelService.getAll()) {
             if (hardwareOffer.getNumberOfCores().equals(numberOfCores)) {
                 if (hardwareOffer.getMbOfRam().equals(mbOfRam)) {
+                    //todo: check if this disk space comparison is ok, or if we need to consider disk space
                     if (localDiskSpace == null || localDiskSpace
                         .equals(hardwareOffer.getLocalDiskSpace())) {
                         return hardwareOffer;

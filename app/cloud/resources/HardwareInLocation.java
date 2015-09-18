@@ -20,6 +20,8 @@ package cloud.resources;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 28.05.15.
  */
@@ -39,5 +41,9 @@ public class HardwareInLocation extends AbstractLocationScopedResource<HardwareF
 
     @Override public long mbRam() {
         return hardwareFlavor.mbRam();
+    }
+
+    @Nullable @Override public Float gbDisk() {
+        return hardwareFlavor.gbDisk();
     }
 }

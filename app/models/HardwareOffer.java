@@ -34,7 +34,7 @@ import java.util.List;
 
     @Column(nullable = false, updatable = false) private Long mbOfRam;
 
-    @Nullable private Long localDiskSpace;
+    @Nullable private Float localDiskSpace;
 
     @OneToMany(mappedBy = "hardwareOffer", cascade = CascadeType.REMOVE) private List<Hardware>
         hardware;
@@ -42,7 +42,7 @@ import java.util.List;
     protected HardwareOffer() {
     }
 
-    public HardwareOffer(Integer numberOfCores, Long mbOfRam, @Nullable Long localDiskSpace) {
+    public HardwareOffer(Integer numberOfCores, Long mbOfRam, @Nullable Float localDiskSpace) {
         this.numberOfCores = numberOfCores;
         this.mbOfRam = mbOfRam;
         this.localDiskSpace = localDiskSpace;
@@ -56,7 +56,7 @@ import java.util.List;
         return mbOfRam;
     }
 
-    @Nullable public Long getLocalDiskSpace() {
+    @Nullable public Float getLocalDiskSpace() {
         return localDiskSpace;
     }
 

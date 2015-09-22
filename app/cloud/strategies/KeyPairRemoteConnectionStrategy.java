@@ -22,6 +22,7 @@ import cloud.SwordConnectionService;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import models.KeyPair;
 import models.Tenant;
@@ -68,11 +69,15 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
             keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant);
         checkState(keyPair.isPresent());
 
-        return connectionService.getRemoteConnection(HostAndPort
-                .fromParts(virtualMachine.publicIpAddress().get().getIp(),
-                    virtualMachine.remotePort()), virtualMachine.osFamily(),
-            LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
-                .privateKey(keyPair.get().getPrivateKey()).build());
+        try {
+            return connectionService.getRemoteConnection(HostAndPort
+                    .fromParts(virtualMachine.publicIpAddress().get().getIp(),
+                        virtualMachine.remotePort()), virtualMachine.osFamily(),
+                LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
+                    .privateKey(keyPair.get().getPrivateKey()).build());
+        } catch (RemoteException e) {
+            throw new RemoteRuntimeException(e);
+        }
     }
 
     public static class KeyPairRemoteConnectionStrategyFactory

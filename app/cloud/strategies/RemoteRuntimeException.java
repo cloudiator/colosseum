@@ -16,27 +16,29 @@
  * under the License.
  */
 
-package components.installer;
-
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-
-import java.util.concurrent.Callable;
+package cloud.strategies;
 
 /**
- * Created by Daniel Seybold on 19.05.2015.
+ * Created by daniel on 22.09.15.
  */
-public class DownloadTask implements Callable<Integer> {
-
-    private final RemoteConnection remoteConnection;
-    private final String command;
-
-    public DownloadTask(RemoteConnection remoteConnection, String command) {
-        this.remoteConnection = remoteConnection;
-        this.command = command;
-
+public class RemoteRuntimeException extends RuntimeException {
+    public RemoteRuntimeException() {
     }
 
-    @Override public Integer call() throws Exception {
-        return this.remoteConnection.executeCommand(this.command).getExitStatus();
+    public RemoteRuntimeException(String message) {
+        super(message);
+    }
+
+    public RemoteRuntimeException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
+    public RemoteRuntimeException(Throwable cause) {
+        super(cause);
+    }
+
+    public RemoteRuntimeException(String message, Throwable cause, boolean enableSuppression,
+        boolean writableStackTrace) {
+        super(message, cause, enableSuppression, writableStackTrace);
     }
 }

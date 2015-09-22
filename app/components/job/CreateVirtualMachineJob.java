@@ -29,6 +29,7 @@ import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
 import models.generic.RemoteState;
@@ -135,7 +136,11 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         final RemoteConnection remoteConnection =
             computeService.remoteConnection(tenant, virtualMachine);
 
-        Installers.of(remoteConnection, virtualMachine, tenant).installAll();
+        try {
+            Installers.of(remoteConnection, virtualMachine, tenant).installAll();
+        } catch (RemoteException e) {
+            throw new JobException(e);
+        }
 
         virtualMachine.setRemoteState(RemoteState.OK);
         modelService.save(virtualMachine);

@@ -25,7 +25,6 @@ import cloud.resources.VirtualMachineInLocation;
 import cloud.strategies.KeyPairStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
-import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
@@ -79,7 +78,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             BaseColosseumVirtualMachineTemplate.builder();
         TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
         if (keyPairOptional.isPresent()) {
-            templateOptionsBuilder.keyPairName(keyPairOptional.get().getRemoteId());
+            templateOptionsBuilder.keyPairName(keyPairOptional.get().getCloudProviderId());
         }
         templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
         builder.templateOptions(templateOptionsBuilder.build());
@@ -97,17 +96,21 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         for (String ip : cloudVirtualMachine.publicAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
         }
-        if (cloudVirtualMachine.loginCredential().isPresent()) {
-            LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
-            virtualMachine.setGeneratedLoginUsername(loginCredential.username());
-            if (loginCredential.isPasswordCredential()) {
-                virtualMachine.setGeneratedPassword(loginCredential.password().get());
-            } else {
-                //todo: if a private key and a public key are returned, we need to store them
-                throw new UnsupportedOperationException(
-                    "Virtual Machine that started with key credentials is not yet supported.");
-            }
-        }
+
+        //todo we cannot trust the response of sword, as jclouds returns wrong usernames.
+        //fix this in sword. until fixed we do not read the login credentials.
+        //this will cause flexiant jobs to fail....
+        //if (cloudVirtualMachine.loginCredential().isPresent()) {
+        //    LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
+        //    virtualMachine.setGeneratedLoginUsername(loginCredential.username());
+        //    if (loginCredential.isPasswordCredential()) {
+        //        virtualMachine.setGeneratedPassword(loginCredential.password().get());
+        //    } else {
+        //        //todo: if a private key and a public key are returned, we need to store them
+        //        throw new UnsupportedOperationException(
+        //            "Virtual Machine that started with key credentials is not yet supported.");
+        //    }
+        //}
 
         modelService.save(virtualMachine);
 

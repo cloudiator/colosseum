@@ -66,13 +66,15 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
 
         //check if we can create a keypair
         com.google.common.base.Optional<KeyPairService> keyPairServiceOptional =
-            colosseumComputeService.getKeyPairService(cloudCredential.get().getUuid());
+            colosseumComputeService.getKeyPairService(cloudCredential.get());
 
         if (keyPairServiceOptional.isPresent()) {
             final de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
                 keyPairServiceOptional.get().create(tenant.getUuid());
+
             KeyPair keyPair = new KeyPair(cloud, tenant, remoteKeyPair.privateKey().get(),
-                remoteKeyPair.publicKey(), remoteKeyPair.name());
+                remoteKeyPair.publicKey(), remoteKeyPair.id());
+            keyPair.setCloudProviderId(remoteKeyPair.name());
             this.keyPairModelService.save(keyPair);
             return Optional.of(keyPair);
         }

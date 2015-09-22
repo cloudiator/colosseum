@@ -74,6 +74,11 @@ public class InitialData {
                 new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu", null);
             operatingSystemVendorModelService.save(ubuntu);
 
+            OperatingSystemVendor ubuntuRoot =
+                new OperatingSystemVendor("UbuntuRoot", OperatingSystemVendorType.NIX, "root",
+                    null);
+            operatingSystemVendorModelService.save(ubuntuRoot);
+
             //ubuntu 14.04 amd64
             OperatingSystem ubuntu1404amd64 =
                 new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
@@ -83,6 +88,11 @@ public class InitialData {
             OperatingSystem ubuntu14042amd64 =
                 new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04.2");
             operatingSystemModelService.save(ubuntu14042amd64);
+
+            //ubuntu 14.04.2 amd64
+            OperatingSystem ubuntu14042amd64Root =
+                new OperatingSystem(ubuntuRoot, OperatingSystemArchitecture.AMD64, "14.04.2");
+            operatingSystemModelService.save(ubuntu14042amd64Root);
 
             //load windows
             OperatingSystemVendor windows =

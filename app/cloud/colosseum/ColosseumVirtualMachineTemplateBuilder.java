@@ -115,7 +115,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
         }
         if (cloud != null && hardwareOffer != null) {
             for (Hardware searchHardware : cloud.hardware()) {
-                if (searchHardware.getHardwareOffer().equals(hardwareOffer)) {
+                if (searchHardware.hardwareOffer().equals(hardwareOffer)) {
                     return searchHardware;
                 }
             }
@@ -129,7 +129,8 @@ public class ColosseumVirtualMachineTemplateBuilder {
         }
         if (cloud != null && operatingSystem != null) {
             for (Image searchImage : cloud.images()) {
-                if (operatingSystem.equals(searchImage.getOperatingSystem())) {
+                if (searchImage.operatingSystem().isPresent() && operatingSystem
+                    .equals(searchImage.operatingSystem().get())) {
                     return searchImage;
                 }
             }
@@ -144,7 +145,8 @@ public class ColosseumVirtualMachineTemplateBuilder {
         }
         if (cloud != null && geoLocation != null) {
             for (Location searchLocation : cloud.locations()) {
-                if (geoLocation.equals(searchLocation.getGeoLocation())) {
+                if (searchLocation.geoLocation().isPresent() && geoLocation
+                    .equals(searchLocation.geoLocation().get())) {
                     return searchLocation;
                 }
             }

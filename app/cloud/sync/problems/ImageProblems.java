@@ -80,13 +80,4 @@ public class ImageProblems {
             super(imageInLocation);
         }
     }
-
-
-    public static class ImageMissesLocation extends BaseImageProblem {
-        public ImageMissesLocation(ImageInLocation imageInLocation) {
-            super(imageInLocation);
-        }
-    }
-
-
 }

@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
 import dtos.generic.RemoteDto;
-import dtos.validation.ValidateBuilder;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
+import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.Cloud;
 import models.CloudCredential;
@@ -37,9 +37,10 @@ import java.util.List;
 
 public class HardwareDto extends RemoteDto {
 
+    private String name;
     private Long cloud;
     private Long hardwareOffer;
-    private List<Long> locations;
+    private Long location;
     private List<Long> cloudCredentials;
 
     public HardwareDto() {
@@ -48,21 +49,24 @@ public class HardwareDto extends RemoteDto {
 
     @Override public void validation() {
         super.validation();
+        validator(String.class).validate(name).withValidator(new NotNullOrEmptyValidator());
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
-
-
-        final ValidateBuilder<List<Long>> validator = validator(new TypeLiteral<List<Long>>() {
-        });
-
-        validator(new TypeLiteral<List<Long>>() {
-        }).validate(locations).withValidator(
-            new IterableValidator<>(new ModelIdValidator<>(References.locationService.get())));
+        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.locationService.get()));
         validator(new TypeLiteral<List<Long>>() {
         }).validate(cloudCredentials).withValidator(new IterableValidator<>(
             new ModelIdValidator<>(References.cloudCredentialService.get())));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getCloud() {
@@ -81,12 +85,12 @@ public class HardwareDto extends RemoteDto {
         this.hardwareOffer = hardwareOffer;
     }
 
-    public List<Long> getLocations() {
-        return locations;
+    public Long getLocation() {
+        return location;
     }
 
-    public void setLocations(List<Long> locations) {
-        this.locations = locations;
+    public void setLocation(Long location) {
+        this.location = location;
     }
 
     public List<Long> getCloudCredentials() {

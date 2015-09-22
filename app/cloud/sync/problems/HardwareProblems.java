@@ -81,13 +81,4 @@ public class HardwareProblems {
             super(hardwareInLocation);
         }
     }
-
-
-    public static class HardwareMissesLocation extends BaseHardwareProblem {
-        public HardwareMissesLocation(HardwareInLocation hardwareInLocation) {
-            super(hardwareInLocation);
-        }
-    }
-
-
 }

@@ -20,8 +20,8 @@ package cloud.sync.config;
 
 import cloud.sync.Problem;
 import cloud.sync.ProblemQueue;
-import cloud.sync.Solution;
 import cloud.sync.ProblemSolver;
+import cloud.sync.Solution;
 import cloud.sync.solutions.*;
 import cloud.sync.watchdogs.HardwareWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
@@ -62,10 +62,8 @@ public class SolutionModule extends AbstractModule {
         solutionBinder.addBinding().to(ConnectLocationToCredential.class);
         solutionBinder.addBinding().to(CreateHardwareInDatabase.class);
         solutionBinder.addBinding().to(ConnectHardwareToCredential.class);
-        solutionBinder.addBinding().to(ConnectHardwareToLocation.class);
         solutionBinder.addBinding().to(CreateImageInDatabase.class);
         solutionBinder.addBinding().to(ConnectImageToCredential.class);
-        solutionBinder.addBinding().to(ConnectImageToLocation.class);
     }
 
 

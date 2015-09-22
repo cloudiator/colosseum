@@ -18,25 +18,21 @@
 
 package models;
 
-import models.generic.RemoteModel;
+import com.google.common.collect.ImmutableList;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Hardware extends RemoteModel {
+@Entity public class Hardware extends RemoteResourceInLocation {
 
-    @Nullable @Column(updatable = false, nullable = true) private String name;
+    @Column(updatable = false, nullable = false) private String name;
 
     @ManyToOne(optional = false) private HardwareOffer hardwareOffer;
-
-    @ManyToOne(optional = false) private Cloud cloud;
-
-    @ManyToMany private List<Location> locations;
-
-    @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @OneToMany(mappedBy = "hardware", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
@@ -47,60 +43,27 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Hardware() {
     }
 
-    public Hardware(String remoteId, Cloud cloud, HardwareOffer hardwareOffer, @Nullable String name) {
-        super(remoteId);
-        checkNotNull(cloud);
-        checkNotNull(hardwareOffer);
-        this.cloud = cloud;
-        this.hardwareOffer = hardwareOffer;
+    public Hardware(String remoteId, Cloud cloud, Location location, String name,
+        HardwareOffer hardwareOffer) {
+        super(remoteId, cloud, location);
+
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+
         this.name = name;
+        this.hardwareOffer = hardwareOffer;
     }
 
-    public HardwareOffer getHardwareOffer() {
+    public HardwareOffer hardwareOffer() {
         return hardwareOffer;
     }
 
-    public void setHardwareOffer(HardwareOffer hardwareOffer) {
-        this.hardwareOffer = hardwareOffer;
+    public List<VirtualMachineTemplate> virtualMachineTemplatesUsedFor() {
+        return ImmutableList.copyOf(virtualMachineTemplates);
     }
 
-    public Cloud getCloud() {
-        return cloud;
-    }
-
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
-    }
-
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
-    @Nullable public String getName() {
+    public String name() {
         return name;
     }
 
-    public void setName(@Nullable String name) {
-        this.name = name;
-    }
 }

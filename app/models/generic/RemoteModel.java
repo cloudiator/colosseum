@@ -21,9 +21,6 @@ package models.generic;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Created by daniel on 12.05.15.
  */
@@ -60,8 +57,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public RemoteModel(String remoteId) {
-        checkNotNull(remoteId);
-        checkArgument(!remoteId.isEmpty());
         this.remoteId = remoteId;
     }
 

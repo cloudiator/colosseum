@@ -50,19 +50,15 @@ public class ImageConverter extends RemoteConverter<Image, ImageDto> {
     }
 
     @Override public void configure() {
-
         super.configure();
-
         binding().fromField("name").toField("name");
         binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
         binding(Long.class, OperatingSystem.class).fromField("operatingSystem")
             .toField("operatingSystem")
             .withTransformation(new IdToModelTransformer<>(operatingSystemModelService));
-        binding(new TypeLiteral<List<Long>>() {
-        }, new TypeLiteral<List<Location>>() {
-        }).fromField("locations").toField("locations").withTransformation(
-            new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
+        binding(Long.class, Location.class).fromField("location").toField("location")
+            .withTransformation(new IdToModelTransformer<>(locationModelService));
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<CloudCredential>>() {
         }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(

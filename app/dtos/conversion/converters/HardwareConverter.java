@@ -49,19 +49,15 @@ public class HardwareConverter extends RemoteConverter<Hardware, HardwareDto> {
     }
 
     @Override public void configure() {
-
         super.configure();
+        binding().fromField("name").toField("name");
         binding(Long.class, HardwareOffer.class).fromMethod("hardwareOffer")
             .toMethod("hardwareOffer")
             .withTransformation(new IdToModelTransformer<>(hardwareOfferModelService));
         binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-
-        binding(new TypeLiteral<List<Long>>() {
-        }, new TypeLiteral<List<Location>>() {
-        }).fromField("locations").toField("locations").withTransformation(
-            new ModelToListIdTransformer<>(new IdToModelTransformer<>(locationModelService)));
-
+        binding(Long.class, Location.class).fromField("location").toField("location")
+            .withTransformation(new IdToModelTransformer<>(locationModelService));
         binding(new TypeLiteral<List<Long>>() {
         }, new TypeLiteral<List<CloudCredential>>() {
         }).fromField("cloudCredentials").toField("cloudCredentials").withTransformation(

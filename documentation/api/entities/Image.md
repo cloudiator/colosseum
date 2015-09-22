@@ -35,9 +35,7 @@ A list of all image entities stored in the database.
       "cloud":1,
       "imageOffer":2,
       "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
-      "locations": [
-        1
-      ],
+      "location":1,
       "cloudCredentials": [
         1
       ],      
@@ -54,10 +52,7 @@ A list of all image entities stored in the database.
       "cloud":1,
       "imageOffer":3,
       "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
-      "locations": [
-        1,
-        2
-      ],
+      "location":1,
       "cloudCredentials": [
         1
       ],  
@@ -105,10 +100,7 @@ The image entity identified by the given id.
    "cloud":1,
    "imageOffer":2,
    "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
-   "locations": [
-     1,
-     2
-   ],
+   "location":1,
    "cloudCredentials": [
      1
    ],     
@@ -138,7 +130,7 @@ name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 remoteId        | The UUID of the image.
-locations        | The locations at which the image is available.
+location        | The location at which the image is available.
 cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
 
@@ -150,9 +142,7 @@ operatingSystem  | The operating system used by the image.
    "cloud":1,
    "imageOffer":2,
    "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
-   "locations": [
-     1
-   ],
+   "location":1,
    "cloudCredentials": [
      1
    ],     
@@ -187,7 +177,7 @@ name             | The name of the image.
 cloud            | The cloud associated with the image.
 imageOffer       | The image associated with the image.
 remoteId        | The UUID of the image.
-locations        | The locations at which the image is available.
+location        | The location at which the image is available.
 cloudCredentials | The cloud credentials used for retrieving the image.
 operatingSystem  | The operating system used by the image.
 
@@ -201,10 +191,7 @@ PUT /api/image/1
    "cloud":1,
    "imageOffer":2,
    "remoteId":"1bbdd137-9eed-494b-b4eb-70a5fbe285d2",
-   "locations" : [
-     1,
-     2
-   ],
+   "location":1,
    "cloudCredentials": [
      1
    ],

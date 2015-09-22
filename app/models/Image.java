@@ -18,7 +18,8 @@
 
 package models;
 
-import models.generic.RemoteModel;
+import com.google.common.collect.ImmutableList;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -28,17 +29,11 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Image extends RemoteModel {
+@Entity public class Image extends RemoteResourceInLocation {
 
-    @Nullable @Column(updatable = false, nullable = true) private String name;
+    @Column(updatable = false, nullable = false) private String name;
 
     @Nullable @ManyToOne(optional = true) private OperatingSystem operatingSystem;
-
-    @ManyToOne(optional = false) private Cloud cloud;
-
-    @ManyToMany private List<Location> locations;
-
-    @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
@@ -51,18 +46,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Image() {
     }
 
-    public Image(String remoteId, @Nullable String name, Cloud cloud,
+    public Image(String remoteId, Cloud cloud, Location location, String name,
         @Nullable OperatingSystem operatingSystem, @Nullable String defaultUsername) {
-        super(remoteId);
-        checkNotNull(cloud);
+        super(remoteId, cloud, location);
 
-        if (name != null) {
-            checkArgument(!name.isEmpty());
-        }
-
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
 
         this.name = name;
-        this.cloud = cloud;
         this.operatingSystem = operatingSystem;
         this.defaultUsername = defaultUsername;
     }
@@ -71,51 +62,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return Optional.ofNullable(defaultUsername);
     }
 
-    public Cloud getCloud() {
-        return cloud;
+    public List<VirtualMachineTemplate> virtualMachineTemplatesUsedFor() {
+        return ImmutableList.copyOf(virtualMachineTemplates);
     }
 
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
+    public Optional<OperatingSystem> operatingSystem() {
+        return Optional.ofNullable(operatingSystem);
     }
 
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
-    }
-
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
-    @Nullable public OperatingSystem getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public void setOperatingSystem(@Nullable OperatingSystem operatingSystem) {
-        this.operatingSystem = operatingSystem;
-    }
-
-    @Nullable public String getName() {
+    public String name() {
         return name;
-    }
-
-    public void setName(@Nullable String name) {
-        this.name = name;
     }
 }

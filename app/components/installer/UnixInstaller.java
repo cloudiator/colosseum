@@ -19,6 +19,7 @@
 package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -49,25 +50,26 @@ public class UnixInstaller extends AbstractInstaller {
 
         //java
         this.sourcesList
-            .add("wget " + UnixInstaller.JAVA_DOWNLOAD + " -O " + UnixInstaller.JAVA_ARCHIVE);
+            .add("wget " + UnixInstaller.JAVA_DOWNLOAD + "  -O " + UnixInstaller.JAVA_ARCHIVE);
         //lance
         this.sourcesList
-            .add("wget " + UnixInstaller.LANCE_DOWNLOAD + " -O " + UnixInstaller.LANCE_JAR);
+            .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
         //docker
         this.sourcesList
-            .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + " -O " + UnixInstaller.DOCKER_INSTALL);
+            .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + "  -O " + UnixInstaller.DOCKER_INSTALL);
         //kairosDB
-        this.sourcesList.add(
-            "wget " + UnixInstaller.KAIROSDB_DOWNLOAD + " -O " + UnixInstaller.KAIROSDB_ARCHIVE);
+        this.sourcesList.
+            add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O "
+                + UnixInstaller.KAIROSDB_ARCHIVE);
         //visor
         this.sourcesList
-            .add("wget " + UnixInstaller.VISOR_DOWNLOAD + " -O " + UnixInstaller.VISOR_JAR);
+            .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
 
     }
 
 
 
-    @Override public void installJava() {
+    @Override public void installJava() throws RemoteException {
 
         Logger.debug("Starting Java installation...");
         //create directory
@@ -83,7 +85,7 @@ public class UnixInstaller extends AbstractInstaller {
         Logger.debug("Java was successfully installed!");
     }
 
-    @Override public void installVisor() {
+    @Override public void installVisor() throws RemoteException {
 
         Logger.debug("setting up Visor...");
 
@@ -98,7 +100,7 @@ public class UnixInstaller extends AbstractInstaller {
         Logger.debug("Visor started successfully!");
     }
 
-    @Override public void installKairosDb() {
+    @Override public void installKairosDb() throws RemoteException {
 
         Logger.debug("Installing and starting KairosDB...");
         this.remoteConnection.executeCommand("mkdir " + UnixInstaller.KAIRROSDB_DIR);
@@ -112,7 +114,7 @@ public class UnixInstaller extends AbstractInstaller {
         Logger.debug("KairosDB started successfully!");
     }
 
-    @Override public void installLance() {
+    @Override public void installLance() throws RemoteException {
 
         //install Lance
         Logger.debug("Installing and starting Lance: Docker...");
@@ -138,7 +140,7 @@ public class UnixInstaller extends AbstractInstaller {
         Logger.debug("Lance installed and started successfully!");
     }
 
-    @Override public void installAll() {
+    @Override public void installAll() throws RemoteException {
 
         Logger.debug("Starting installation of all tools on UNIX...");
 
@@ -152,10 +154,6 @@ public class UnixInstaller extends AbstractInstaller {
         this.installKairosDb();
 
         this.installVisor();
-
-        this.finishInstallation();
-
-
     }
 }
 

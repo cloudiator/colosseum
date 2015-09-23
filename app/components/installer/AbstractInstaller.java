@@ -35,7 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by Daniel Seybold on 19.05.2015.
  */
-abstract class AbstractInstaller implements InstallApi {
+abstract class AbstractInstaller implements InstallApi, AutoCloseable {
 
     protected final RemoteConnection remoteConnection;
     protected final VirtualMachine virtualMachine;
@@ -44,21 +44,25 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected final List<String> sourcesList = new ArrayList<>();
 
+    //parallel download threads
+    private static final int NUMBER_OF_DOWNLOAD_THREADS = Play.application().configuration()
+            .getInt("colosseum.installer.download.threads");
+
     //KairosDB
     protected static final String KAIROSDB_ARCHIVE = "kairosdb.tar.gz";
     protected static final String KAIRROSDB_DIR = "kairosdb";
     protected static final String KAIROSDB_DOWNLOAD = Play.application().configuration()
-        .getString("colosseum.installer.abstract.kairosdb.download");
+            .getString("colosseum.installer.abstract.kairosdb.download");
 
     //Visor
     protected static final String VISOR_JAR = "visor.jar";
     protected static final String VISOR_DOWNLOAD =
-        Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
+            Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
 
     //Lance
     protected static final String LANCE_JAR = "lance.jar";
     protected static final String LANCE_DOWNLOAD =
-        Play.application().configuration().getString("colosseum.installer.abstract.lance.download");
+            Play.application().configuration().getString("colosseum.installer.abstract.lance.download");
 
     //Java
     protected static final String JAVA_DIR = "jre8";
@@ -67,15 +71,15 @@ abstract class AbstractInstaller implements InstallApi {
     protected static final String VISOR_PROPERTIES = "default.properties";
 
     public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
-        Tenant tenant) {
+                             Tenant tenant) {
 
         checkNotNull(remoteConnection);
         checkNotNull(virtualMachine);
         checkNotNull(tenant);
         checkArgument(virtualMachine.publicIpAddress().isPresent(),
-            "VirtualMachine has no public ip.");
+                "VirtualMachine has no public ip.");
         checkArgument(virtualMachine.loginName().isPresent(),
-            "No login name is present on virtual machine.");
+                "No login name is present on virtual machine.");
 
         this.remoteConnection = remoteConnection;
         this.virtualMachine = virtualMachine;
@@ -83,17 +87,18 @@ abstract class AbstractInstaller implements InstallApi {
 
     }
 
-    @Override public void downloadSources() {
+    @Override
+    public void downloadSources() {
 
         Logger.debug("Start downloading sources...");
-        ExecutorService executorService = Executors.newCachedThreadPool();
+        ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_DOWNLOAD_THREADS);
 
         List<Callable<Integer>> tasks = new ArrayList<>();
 
         for (final String downloadCommand : this.sourcesList) {
 
             Callable<Integer> downloadTask =
-                new DownloadTask(this.remoteConnection, downloadCommand);
+                    new DownloadTask(this.remoteConnection, downloadCommand);
             tasks.add(downloadTask);
         }
         try {
@@ -105,12 +110,11 @@ abstract class AbstractInstaller implements InstallApi {
                 }
             }
             Logger.debug("All sources downloaded successfully!");
+            executorService.shutdown();
         } catch (InterruptedException e) {
-            Logger.error(e.getMessage());
-            e.printStackTrace();
+            Logger.error("Installer: Interrupted Exception while downloading sources!", e);
         } catch (ExecutionException e) {
-            Logger.error(e.getMessage());
-            e.printStackTrace();
+            Logger.error("Installer: Execution Exception while downloading sources!", e);
         }
 
     }
@@ -132,21 +136,21 @@ abstract class AbstractInstaller implements InstallApi {
         */
 
         String config = "executionThreads = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.executionThreads") + "\n" +
-            "reportingInterval = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingInterval") + "\n" +
-            "telnetPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.telnetPort") + "\n" +
-            "restHost = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.restHost") + "\n" +
-            "restPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.restPort") + "\n" +
-            "kairosServer = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.kairosServer") + "\n" +
-            "kairosPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.kairosPort") + "\n" +
-            "reportingModule = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingModule");
+                .getString("colosseum.installer.abstract.visor.config.executionThreads") + "\n" +
+                "reportingInterval = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.reportingInterval") + "\n" +
+                "telnetPort = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.telnetPort") + "\n" +
+                "restHost = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.restHost") + "\n" +
+                "restPort = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.restPort") + "\n" +
+                "kairosServer = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.kairosServer") + "\n" +
+                "kairosPort = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.kairosPort") + "\n" +
+                "reportingModule = " + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.reportingModule");
 
 
         return config;
@@ -155,6 +159,11 @@ abstract class AbstractInstaller implements InstallApi {
 
     public void finishInstallation() {
         Logger.debug("Finished installation of all tools, closing remote connection.");
+        this.remoteConnection.close();
+    }
+
+    @Override
+    public void close() throws Exception {
         this.remoteConnection.close();
     }
 }

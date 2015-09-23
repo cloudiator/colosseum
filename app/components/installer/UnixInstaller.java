@@ -50,19 +50,20 @@ public class UnixInstaller extends AbstractInstaller {
 
         //java
         this.sourcesList
-                .add("wget " + UnixInstaller.JAVA_DOWNLOAD + "  -O " + UnixInstaller.JAVA_ARCHIVE);
+            .add("wget " + UnixInstaller.JAVA_DOWNLOAD + "  -O " + UnixInstaller.JAVA_ARCHIVE);
         //lance
         this.sourcesList
-                .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
+            .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
         //docker
         this.sourcesList
-                .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + "  -O " + UnixInstaller.DOCKER_INSTALL);
+            .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + "  -O " + UnixInstaller.DOCKER_INSTALL);
         //kairosDB
         this.sourcesList.
-                add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O " + UnixInstaller.KAIROSDB_ARCHIVE);
+            add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O "
+                + UnixInstaller.KAIROSDB_ARCHIVE);
         //visor
         this.sourcesList
-                .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
+            .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
 
     }
 
@@ -153,10 +154,6 @@ public class UnixInstaller extends AbstractInstaller {
         this.installKairosDb();
 
         this.installVisor();
-
-        this.finishInstallation();
-
-
     }
 }
 

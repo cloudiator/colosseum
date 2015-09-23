@@ -25,6 +25,7 @@ import cloud.resources.VirtualMachineInLocation;
 import cloud.strategies.KeyPairStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
+import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
@@ -136,8 +137,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         final RemoteConnection remoteConnection =
             computeService.remoteConnection(tenant, virtualMachine);
 
-        try {
-            Installers.of(remoteConnection, virtualMachine, tenant).installAll();
+        try (InstallApi installApi = Installers.of(remoteConnection, virtualMachine, tenant)) {
+            installApi.installAll();
         } catch (RemoteException e) {
             throw new JobException(e);
         }

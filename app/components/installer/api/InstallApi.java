@@ -23,48 +23,43 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 /**
  * Created by Daniel Seybold on 19.05.2015.
  */
-public interface InstallApi {
+public interface InstallApi extends AutoCloseable {
 
     /**
      * Place all download commands in the download queue
      */
-    public void initSources();
+    void initSources();
 
     /**
      * download all sources in parallel
      */
-    public void downloadSources();
+    void downloadSources();
 
     /**
      * extract Java archive, set Java environement
      */
-    public void installJava() throws RemoteException;
+    void installJava() throws RemoteException;
 
     /**
      * create the visor configuration file and start visor
      */
-    public void installVisor() throws RemoteException;
+    void installVisor() throws RemoteException;
 
     /**
      * extract and start kairosDB
      */
-    public void installKairosDb() throws RemoteException;
+    void installKairosDb() throws RemoteException;
 
     /**
      * download, setup and start Lance (LifecycleAgent - Unix:Docker, Windows: not yet decided)
      */
-    public void installLance() throws RemoteException;
+    void installLance() throws RemoteException;
 
     /**
      * Download and install all necessary software for cloudiator (java, visor, lifecycle agent)
      */
-    public void installAll() throws RemoteException;
+    void installAll() throws RemoteException;
 
-
-    /**
-     * Closes all open remote connections
-     */
-    public void finishInstallation();
-
+    @Override void close() throws RemoteException;
 }
 

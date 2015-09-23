@@ -175,7 +175,7 @@ public class WindowsInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
         Logger.debug("KairosDB successfully started!");
 
-        
+
     }
 
     @Override public void installLance() throws RemoteException {
@@ -225,10 +225,6 @@ public class WindowsInstaller extends AbstractInstaller {
         this.installKairosDb();
 
         this.installVisor();
-
-        this.finishInstallation();
-
-
     }
 
     private void waitForSchtaskCreation() {

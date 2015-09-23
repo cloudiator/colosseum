@@ -50,19 +50,19 @@ public class UnixInstaller extends AbstractInstaller {
 
         //java
         this.sourcesList
-                .add("curl " + UnixInstaller.JAVA_DOWNLOAD + "  -o " + UnixInstaller.JAVA_ARCHIVE);
+                .add("wget " + UnixInstaller.JAVA_DOWNLOAD + "  -O " + UnixInstaller.JAVA_ARCHIVE);
         //lance
         this.sourcesList
-                .add("curl " + UnixInstaller.LANCE_DOWNLOAD + "  -o " + UnixInstaller.LANCE_JAR);
+                .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
         //docker
         this.sourcesList
-                .add("curl " + UnixInstaller.DOCKER_DOWNLOAD + "  -o " + UnixInstaller.DOCKER_INSTALL);
+                .add("wget " + UnixInstaller.DOCKER_DOWNLOAD + "  -O " + UnixInstaller.DOCKER_INSTALL);
         //kairosDB
         this.sourcesList.
-                add("curl " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -o " + UnixInstaller.KAIROSDB_ARCHIVE);
+                add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O " + UnixInstaller.KAIROSDB_ARCHIVE);
         //visor
         this.sourcesList
-                .add("curl " + UnixInstaller.VISOR_DOWNLOAD + "  -o " + UnixInstaller.VISOR_JAR);
+                .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
 
     }
 

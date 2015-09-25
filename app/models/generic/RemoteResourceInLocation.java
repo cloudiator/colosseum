@@ -21,12 +21,13 @@ package models.generic;
 import models.Cloud;
 import models.Location;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
 /**
  * Created by daniel on 22.09.15.
  */
-public abstract class RemoteResourceInLocation extends RemoteResourceInCloud {
+@Entity public abstract class RemoteResourceInLocation extends RemoteResourceInCloud {
 
     @ManyToOne private Location location;
 

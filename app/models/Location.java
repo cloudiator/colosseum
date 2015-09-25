@@ -20,6 +20,7 @@ package models;
 
 import com.google.common.collect.ImmutableList;
 import models.generic.RemoteResourceInCloud;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -42,10 +43,8 @@ import java.util.Optional;
     @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
-    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Image> images;
-
-    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE) private List<Hardware>
-        hardwareList;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
+    private List<RemoteResourceInLocation> remoteResources;
 
     /**
      * Empty constructor for hibernate.
@@ -86,11 +85,7 @@ import java.util.Optional;
         return ImmutableList.copyOf(virtualMachineTemplates);
     }
 
-    public List<Image> imagesInLocation() {
-        return ImmutableList.copyOf(images);
-    }
-
-    public List<Hardware> hardwareInLocation() {
-        return ImmutableList.copyOf(hardwareList);
+    public List<RemoteResourceInLocation> remoteResourcesUsedFor() {
+        return ImmutableList.copyOf(remoteResources);
     }
 }

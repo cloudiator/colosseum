@@ -37,7 +37,7 @@ public class DefaultImageModelService extends BaseRemoteModelService<Image>
     public Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud) {
         for (Image image : getAll()) {
-            if (image.getRemoteId().equals(cloudUuid) && image.getCloud().getUuid()
+            if (image.getRemoteId().equals(cloudUuid) && image.cloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return image;
             }

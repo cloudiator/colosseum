@@ -138,7 +138,7 @@ import java.util.*;
         return loginPasswordCandidates().stream().findFirst();
     }
 
-    public OperatingSystemVendorType getOperatingSystemVendorTypeOrDefault() {
+    public OperatingSystemVendorType operatingSystemVendorTypeOrDefault() {
         if (image != null && image.operatingSystem().isPresent()) {
             return image.operatingSystemVendorTypeOrDefault();
         }

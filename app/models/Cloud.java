@@ -21,6 +21,7 @@ package models;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import models.generic.Model;
+import models.generic.RemoteResourceInCloud;
 
 import javax.persistence.*;
 import java.util.List;
@@ -34,13 +35,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Column(unique = true, nullable = false) private String name;
     @Column(nullable = false) private String endpoint;
     @ManyToOne(optional = false) private Api api;
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Image> images;
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Location> locations;
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<Hardware> hardware;
+    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<RemoteResourceInCloud>
+        remoteResources;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
-    @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<VirtualMachine>
-        virtualMachines;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudCredential>
         cloudCredentials;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<CloudProperty>
@@ -83,24 +81,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return api;
     }
 
-    public List<Image> images() {
-        return images;
+    public List<RemoteResourceInCloud> remoteResources() {
+        return ImmutableList.copyOf(remoteResources);
     }
 
-    public List<Location> locations() {
-        return ImmutableList.copyOf(locations);
-    }
-
-    public List<Hardware> hardware() {
-        return hardware;
-    }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return ImmutableList.copyOf(virtualMachineTemplates);
-    }
-
-    public List<VirtualMachine> getVirtualMachines() {
-        return ImmutableList.copyOf(virtualMachines);
+    public void setRemoteResources(List<RemoteResourceInCloud> remoteResources) {
+        this.remoteResources = remoteResources;
     }
 
     public List<CloudCredential> getCloudCredentials() {

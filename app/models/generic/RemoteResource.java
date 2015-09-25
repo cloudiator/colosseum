@@ -19,12 +19,12 @@
 package models.generic;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import javax.persistence.Entity;
 
 /**
  * Created by daniel on 12.05.15.
  */
-@MappedSuperclass public abstract class RemoteResource extends Model {
+@Entity public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState;
     @Column(unique = true, nullable = true) private String remoteId;

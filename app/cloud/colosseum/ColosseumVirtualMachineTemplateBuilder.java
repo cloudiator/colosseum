@@ -21,6 +21,7 @@ package cloud.colosseum;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import models.*;
+import models.generic.RemoteResourceInCloud;
 
 import javax.annotation.Nullable;
 
@@ -116,12 +117,14 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return hardware;
         }
         if (cloud != null && hardwareOffer != null) {
-            for (Hardware searchHardware : cloud.hardware()) {
-                if (searchHardware.hardwareOffer().equals(hardwareOffer)) {
-                    return searchHardware;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Hardware && ((Hardware) remoteResourceInCloud)
+                    .hardwareOffer().equals(hardwareOffer)) {
+                    return (Hardware) remoteResourceInCloud;
                 }
             }
         }
+
         return null;
     }
 
@@ -130,10 +133,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return image;
         }
         if (cloud != null && operatingSystem != null) {
-            for (Image searchImage : cloud.images()) {
-                if (searchImage.operatingSystem().isPresent() && operatingSystem
-                    .equals(searchImage.operatingSystem().get())) {
-                    return searchImage;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Image && ((Image) remoteResourceInCloud)
+                    .operatingSystem().isPresent() && operatingSystem
+                    .equals(((Image) remoteResourceInCloud).operatingSystem().get())) {
+                    return (Image) remoteResourceInCloud;
                 }
             }
         }
@@ -146,10 +150,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return location;
         }
         if (cloud != null && geoLocation != null) {
-            for (Location searchLocation : cloud.locations()) {
-                if (searchLocation.geoLocation().isPresent() && geoLocation
-                    .equals(searchLocation.geoLocation().get())) {
-                    return searchLocation;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Location && ((Location) remoteResourceInCloud)
+                    .geoLocation().isPresent() && geoLocation
+                    .equals(((Location) remoteResourceInCloud).geoLocation().get())) {
+                    return (Location) remoteResourceInCloud;
                 }
             }
         }

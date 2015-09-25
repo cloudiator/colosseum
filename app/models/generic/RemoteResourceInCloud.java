@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import models.Cloud;
 import models.CloudCredential;
 
+import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.util.List;
@@ -29,7 +30,7 @@ import java.util.List;
 /**
  * Created by daniel on 22.09.15.
  */
-public abstract class RemoteResourceInCloud extends RemoteResource {
+@Entity public abstract class RemoteResourceInCloud extends RemoteResource {
 
     @ManyToOne(optional = false) private Cloud cloud;
     @ManyToMany private List<CloudCredential> cloudCredentials;

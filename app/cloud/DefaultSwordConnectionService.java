@@ -22,6 +22,7 @@ import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
 
 /**
@@ -37,7 +38,7 @@ public class DefaultSwordConnectionService implements SwordConnectionService {
 
     @Override
     public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily,
-        LoginCredential loginCredential) {
+        LoginCredential loginCredential) throws RemoteException {
         return delegate.getRemoteConnection(hostAndPort, osFamily, loginCredential);
     }
 }

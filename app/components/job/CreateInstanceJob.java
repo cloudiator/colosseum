@@ -95,7 +95,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         client
             .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
                 buildDeployableComponent(instance),
-                instance.getVirtualMachine().getOperatingSystemVendorTypeOrDefault().lanceOs(),
+                instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
                 instance.getApplicationComponent().containerTypeOrDefault());
 
         return client;
@@ -142,7 +142,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         //build a lifecycle store from the application component
         builder.addLifecycleStore(new LifecycleComponentToLifecycleStoreConverter(
-            instance.getVirtualMachine().getOperatingSystemVendorTypeOrDefault().lanceOs())
+            instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs())
             .apply((LifecycleComponent) instance.getApplicationComponent().getComponent()));
 
         return builder.build();

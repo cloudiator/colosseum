@@ -19,6 +19,7 @@
 package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -76,7 +77,7 @@ public class WindowsInstaller extends AbstractInstaller {
 
     }
 
-    @Override public void installJava() {
+    @Override public void installJava() throws RemoteException {
 
         Logger.debug("Installing Java...");
         this.remoteConnection.executeCommand(
@@ -94,7 +95,7 @@ public class WindowsInstaller extends AbstractInstaller {
 
     }
 
-    private void install7Zip() {
+    private void install7Zip() throws RemoteException {
         Logger.debug("Unzipping 7zip...");
         this.remoteConnection.executeCommand(
             "powershell -command & { Add-Type -A 'System.IO.Compression.FileSystem'; [IO.Compression.ZipFile]::ExtractToDirectory('"
@@ -103,7 +104,7 @@ public class WindowsInstaller extends AbstractInstaller {
         Logger.debug("7zip successfully unzipped!");
     }
 
-    @Override public void installVisor() {
+    @Override public void installVisor() throws RemoteException {
 
         Logger.debug("Setting up and starting Visor");
 
@@ -141,7 +142,7 @@ public class WindowsInstaller extends AbstractInstaller {
 
     }
 
-    @Override public void installKairosDb() {
+    @Override public void installKairosDb() throws RemoteException {
 
         Logger.debug("Extract, setup and start KairosDB...");
         //extract kairosdb
@@ -174,9 +175,10 @@ public class WindowsInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
         Logger.debug("KairosDB successfully started!");
 
+
     }
 
-    @Override public void installLance() {
+    @Override public void installLance() throws RemoteException {
         Logger.error("Setting up Lance...");
 
         Logger.error("Opening Firewall ports for Lance...");
@@ -208,7 +210,7 @@ public class WindowsInstaller extends AbstractInstaller {
 
     }
 
-    @Override public void installAll() {
+    @Override public void installAll() throws RemoteException {
 
         Logger.debug("Starting installation of all tools on WINDOWS...");
 
@@ -223,10 +225,6 @@ public class WindowsInstaller extends AbstractInstaller {
         this.installKairosDb();
 
         this.installVisor();
-
-        this.finishInstallation();
-
-
     }
 
     private void waitForSchtaskCreation() {

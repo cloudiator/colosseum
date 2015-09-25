@@ -23,6 +23,7 @@ import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import models.Tenant;
 import models.VirtualMachine;
@@ -50,14 +51,18 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
         checkArgument(virtualMachine.publicIpAddress().isPresent());
         checkArgument(virtualMachine.loginName().isPresent());
         checkArgument(virtualMachine.loginPassword().isPresent());
-        int remotePort = virtualMachine.remotePort();
-        OSFamily osFamily = virtualMachine.operatingSystemVendorType();
+        int remotePort = virtualMachine.remotePortOrDefault();
+        OSFamily osFamily = virtualMachine.operatingSystemVendorTypeOrDefault().osFamily();
 
-        return connectionService.getRemoteConnection(
-            HostAndPort.fromParts(virtualMachine.publicIpAddress().get().getIp(), remotePort),
-            osFamily,
-            LoginCredentialBuilder.newBuilder().password(virtualMachine.loginPassword().get())
-                .username(virtualMachine.loginName().get()).build());
+        try {
+            return connectionService.getRemoteConnection(
+                HostAndPort.fromParts(virtualMachine.publicIpAddress().get().getIp(), remotePort),
+                osFamily,
+                LoginCredentialBuilder.newBuilder().password(virtualMachine.loginPassword().get())
+                    .username(virtualMachine.loginName().get()).build());
+        } catch (RemoteException e) {
+            throw new RemoteRuntimeException(e);
+        }
     }
 
     public static class PasswordRemoteConnectionStrategyFactory

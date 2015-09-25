@@ -25,7 +25,7 @@ import models.Location;
 /**
  * Created by bwpc on 09.12.2014.
  */
-class LocationRepositoryJpa extends BaseRemoteModelRepositoryJpa<Location>
+class LocationRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Location>
     implements LocationRepository {
 
 

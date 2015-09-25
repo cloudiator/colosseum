@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class DefaultImageModelService extends BaseRemoteModelService<Image>
     implements ImageModelService {
 
-    @Inject public DefaultImageModelService(RemoteModelRepository<Image> imageRepository) {
+    @Inject public DefaultImageModelService(RemoteResourceRepository<Image> imageRepository) {
         super(imageRepository);
     }
 

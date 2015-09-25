@@ -27,7 +27,7 @@ import models.Location;
 public class DefaultLocationModelService extends BaseRemoteModelService<Location>
     implements LocationModelService {
 
-    @Inject public DefaultLocationModelService(RemoteModelRepository<Location> locationRepository) {
+    @Inject public DefaultLocationModelService(RemoteResourceRepository<Location> locationRepository) {
         super(locationRepository);
     }
 

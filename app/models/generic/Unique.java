@@ -25,7 +25,7 @@ import java.util.UUID;
 /**
  * Created by daniel on 08.01.15.
  */
-@MappedSuperclass public abstract class Resource {
+@MappedSuperclass public abstract class Unique {
 
     @Column(unique = true, nullable = false, updatable = false) private final String uuid =
         UUID.randomUUID().toString();
@@ -33,7 +33,7 @@ import java.util.UUID;
     /**
      * Empty constructor for hibernate.
      */
-    protected Resource() {
+    protected Unique() {
     }
 
     public String getUuid() {
@@ -45,13 +45,13 @@ import java.util.UUID;
             return true;
         }
 
-        if (!(o instanceof Resource)) {
+        if (!(o instanceof Unique)) {
             return false;
         }
 
-        Resource resource = (Resource) o;
+        Unique unique = (Unique) o;
 
-        return this.getUuid().equals(resource.getUuid());
+        return this.getUuid().equals(unique.getUuid());
 
     }
 

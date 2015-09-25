@@ -55,7 +55,7 @@ import models.service.ImageModelService;
                 report(new ImageProblems.ImageNotInDatabase(imageInLocation));
             } else {
                 CloudCredential credentialToSearchFor = null;
-                for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {
+                for (CloudCredential cloudCredential : modelImage.cloudCredentials()) {
                     if (cloudCredential.getUuid().equals(imageInLocation.credential())) {
                         credentialToSearchFor = cloudCredential;
                         break;

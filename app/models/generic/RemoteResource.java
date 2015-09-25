@@ -24,7 +24,7 @@ import javax.persistence.MappedSuperclass;
 /**
  * Created by daniel on 12.05.15.
  */
-@MappedSuperclass public abstract class RemoteModel extends Model {
+@MappedSuperclass public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState;
     @Column(unique = true, nullable = true) private String remoteId;
@@ -53,10 +53,10 @@ import javax.persistence.MappedSuperclass;
     /**
      * Empty constructor for hibernate
      */
-    protected RemoteModel() {
+    protected RemoteResource() {
     }
 
-    public RemoteModel(String remoteId) {
+    public RemoteResource(String remoteId) {
         this.remoteId = remoteId;
     }
 

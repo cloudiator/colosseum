@@ -34,7 +34,7 @@ public class Installers {
 
     public static InstallApi of(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
-        switch (virtualMachine.osFamily()) {
+        switch (virtualMachine.operatingSystemVendorType()) {
             case UNIX:
                 return new UnixInstaller(remoteConnection, virtualMachine, tenant);
             case WINDOWS:

@@ -94,7 +94,9 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
         client
             .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
-                buildDeployableComponent(instance), OperatingSystem.UBUNTU_14_04);
+                buildDeployableComponent(instance),
+                instance.getVirtualMachine().getOperatingSystemVendorTypeOrDefault().lanceOs(),
+                instance.getApplicationComponent().containerTypeOrDefault());
 
         return client;
 
@@ -139,7 +141,8 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         }
 
         //build a lifecycle store from the application component
-        builder.addLifecycleStore(new LifecycleComponentToLifecycleStoreConverter()
+        builder.addLifecycleStore(new LifecycleComponentToLifecycleStoreConverter(
+            instance.getVirtualMachine().getOperatingSystemVendorTypeOrDefault().lanceOs())
             .apply((LifecycleComponent) instance.getApplicationComponent().getComponent()));
 
         return builder.build();
@@ -172,6 +175,12 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
     private static class LifecycleComponentToLifecycleStoreConverter
         implements OneWayConverter<LifecycleComponent, LifecycleStore> {
+
+        private final OperatingSystem os;
+
+        public LifecycleComponentToLifecycleStoreConverter(OperatingSystem os) {
+            this.os = os;
+        }
 
         private Map<LifecycleHandlerType, String> buildCommandMap(LifecycleComponent lc) {
             Map<LifecycleHandlerType, String> commands = Maps.newHashMap();
@@ -213,7 +222,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
             for (Map.Entry<LifecycleHandlerType, String> entry : buildCommandMap(lc).entrySet()) {
                 final BashBasedHandlerBuilder bashBasedHandlerBuilder =
                     new BashBasedHandlerBuilder();
-                bashBasedHandlerBuilder.setOperatingSystem(OperatingSystem.UBUNTU_14_04);
+                bashBasedHandlerBuilder.setOperatingSystem(os);
                 bashBasedHandlerBuilder.addCommand(entry.getValue());
                 final LifecycleHandler lifecycleHandler =
                     bashBasedHandlerBuilder.build(entry.getKey());

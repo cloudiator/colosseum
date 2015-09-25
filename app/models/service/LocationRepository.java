@@ -23,6 +23,6 @@ import models.Location;
 /**
  * Created by bwpc on 09.12.2014.
  */
-public interface LocationRepository extends RemoteModelRepository<Location> {
+public interface LocationRepository extends RemoteResourceRepository<Location> {
 
 }

@@ -18,11 +18,14 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
 import models.generic.Model;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
+import java.util.Stack;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -37,7 +40,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Column(unique = true, nullable = false) private String name;
     @Enumerated(EnumType.STRING) @Column(nullable = false) private OperatingSystemVendorType
         operatingSystemVendorType;
-    @Nullable private String defaultUserName;
+    @Nullable private String defaultLoginName;
     @Nullable private String defaultPassword;
 
     /**
@@ -47,51 +50,47 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public OperatingSystemVendor(String name, OperatingSystemVendorType operatingSystemVendorType,
-        @Nullable String defaultUserName, @Nullable String defaultPassword) {
+        @Nullable String defaultLoginName, @Nullable String defaultLoginPassword) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;
         checkNotNull(operatingSystemVendorType);
         this.operatingSystemVendorType = operatingSystemVendorType;
-        if (defaultUserName != null) {
-            checkArgument(!defaultUserName.isEmpty());
+        if (defaultLoginName != null) {
+            checkArgument(!defaultLoginName.isEmpty());
         }
-        this.defaultUserName = defaultUserName;
+        this.defaultLoginName = defaultLoginName;
+        if (defaultLoginPassword != null) {
+            checkArgument(!defaultLoginPassword.isEmpty());
+        }
+        this.defaultPassword = defaultLoginPassword;
     }
 
-    public OperatingSystemVendorType getOperatingSystemVendorType() {
+    public OperatingSystemVendorType operatingSystemVendorType() {
         return operatingSystemVendorType;
     }
 
-    public void setOperatingSystemVendorType(OperatingSystemVendorType operatingSystemVendorType) {
-        this.operatingSystemVendorType = operatingSystemVendorType;
-    }
-
-    public List<OperatingSystem> getOperatingSystems() {
-        return operatingSystems;
-    }
-
-    public void setOperatingSystems(List<OperatingSystem> operatingSystems) {
-        this.operatingSystems = operatingSystems;
+    public List<OperatingSystem> operatingSystemsUsedFor() {
+        return ImmutableList.copyOf(operatingSystems);
     }
 
     public String getName() {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Collection<String> getLoginNameCandidates() {
+        Collection<String> loginNameCandidates = new Stack<>();
+        if (defaultLoginName != null) {
+            loginNameCandidates.add(defaultLoginName);
+        }
+        return loginNameCandidates;
     }
 
-    @Nullable public String getDefaultUserName() {
-        return defaultUserName;
-    }
-
-    @Nullable public String getDefaultPassword() {
-        return defaultPassword;
-    }
-
-    public void setDefaultPassword(@Nullable String defaultPassword) {
-        this.defaultPassword = defaultPassword;
+    public Collection<String> getLoginPasswordCandidates() {
+        Collection<String> loginPasswordCandidates = new Stack<>();
+        if (defaultPassword != null) {
+            loginPasswordCandidates.add(defaultPassword);
+        }
+        return loginPasswordCandidates;
     }
 }

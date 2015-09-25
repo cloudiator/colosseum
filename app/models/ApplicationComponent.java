@@ -19,12 +19,16 @@
 package models;
 
 import com.google.common.collect.Collections2;
+import com.google.common.collect.ImmutableList;
+import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -34,14 +38,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class ApplicationComponent extends Model {
 
+    @Nullable private ContainerType containerType;
+
+    /**
+     * Owned relations
+     */
     @ManyToOne(optional = false) private Application application;
-
     @ManyToOne(optional = false) private Component component;
-
-    @OneToMany(mappedBy = "applicationComponent") private List<Instance> instances;
-
     @ManyToOne(optional = false) private VirtualMachineTemplate virtualMachineTemplate;
 
+    /**
+     * Foreign relations
+     */
+    @OneToMany(mappedBy = "applicationComponent") private List<Instance> instances;
     @OneToMany(mappedBy = "applicationComponent") private List<Port> ports;
 
     /**
@@ -50,56 +59,43 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected ApplicationComponent() {
     }
 
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
+    public ApplicationComponent(Application application, Component component,
+        VirtualMachineTemplate virtualMachineTemplate, @Nullable ContainerType containerType) {
         checkNotNull(application);
         this.application = application;
+        checkNotNull(component);
+        this.component = component;
+        checkNotNull(virtualMachineTemplate);
+        this.virtualMachineTemplate = virtualMachineTemplate;
+        this.containerType = containerType;
+    }
+
+    public Application getApplication() {
+        return application;
     }
 
     public Component getComponent() {
         return component;
     }
 
-    public void setComponent(Component component) {
-        checkNotNull(component);
-        this.component = component;
-    }
-
-
     public VirtualMachineTemplate getVirtualMachineTemplate() {
         return virtualMachineTemplate;
     }
 
-    public void setVirtualMachineTemplate(VirtualMachineTemplate virtualMachineTemplate) {
-        this.virtualMachineTemplate = virtualMachineTemplate;
-    }
-
     public List<Instance> getInstances() {
-        return instances;
-    }
-
-    public void setInstances(List<Instance> instances) {
-        this.instances = instances;
+        return ImmutableList.copyOf(instances);
     }
 
     public List<Port> getPorts() {
-        return ports;
-    }
-
-    public void setPorts(List<Port> ports) {
-        this.ports = ports;
+        return ImmutableList.copyOf(ports);
     }
 
     public List<PortProvided> getProvidedPorts() {
-
         //noinspection unchecked
         final List<Port> ports =
             new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortProvided));
         //noinspection unchecked todo
-        return (List<PortProvided>) (Object) ports;
+        return ImmutableList.copyOf((Iterator<PortProvided>) ports);
     }
 
     public List<PortRequired> getRequiredPorts() {
@@ -107,6 +103,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
         final List<Port> ports =
             new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortRequired));
         //noinspection unchecked todo
-        return (List<PortRequired>) (Object) ports;
+        return ImmutableList.copyOf((Iterator<PortRequired>) ports);
+    }
+
+    public ContainerType containerTypeOrDefault() {
+        if (containerType != null) {
+            return containerType;
+        }
+        return virtualMachineTemplate.image().operatingSystemVendorTypeOrDefault().containerType();
     }
 }

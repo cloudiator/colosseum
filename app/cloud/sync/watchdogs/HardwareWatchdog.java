@@ -57,7 +57,7 @@ import models.service.HardwareModelService;
                 report(new HardwareProblems.HardwareNotInDatabase(hardwareInLocation));
             } else {
                 CloudCredential credentialToSearchFor = null;
-                for (CloudCredential cloudCredential : modelHardware.getCloudCredentials()) {
+                for (CloudCredential cloudCredential : modelHardware.cloudCredentials()) {
                     if (cloudCredential.getUuid().equals(hardwareInLocation.credential())) {
                         credentialToSearchFor = cloudCredential;
                         break;

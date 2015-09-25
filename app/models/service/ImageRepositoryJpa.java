@@ -25,7 +25,7 @@ import models.Image;
 /**
  * Created by daniel on 31.10.14.
  */
-class ImageRepositoryJpa extends BaseRemoteModelRepositoryJpa<Image> implements ImageRepository {
+class ImageRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Image> implements ImageRepository {
 
 
     @Inject ImageRepositoryJpa(TypeLiteral<Image> type) {

@@ -63,7 +63,7 @@ public class ConnectImageToCredential implements Solution {
             throw new SolutionException();
         }
 
-        modelImage.getCloudCredentials().add(cloudCredential);
+        modelImage.cloudCredentials().add(cloudCredential);
         imageModelService.save(modelImage);
     }
 

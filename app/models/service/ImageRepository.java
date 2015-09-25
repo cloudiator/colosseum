@@ -23,6 +23,6 @@ import models.Image;
 /**
  * Created by daniel on 31.10.14.
  */
-public interface ImageRepository extends RemoteModelRepository<Image> {
+public interface ImageRepository extends RemoteResourceRepository<Image> {
 
 }

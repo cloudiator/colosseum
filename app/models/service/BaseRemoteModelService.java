@@ -19,22 +19,22 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.generic.RemoteModel;
+import models.generic.RemoteResource;
 
 /**
  * Created by daniel on 21.06.15.
  */
-public class BaseRemoteModelService<T extends RemoteModel> extends BaseModelService<T>
+public class BaseRemoteModelService<T extends RemoteResource> extends BaseModelService<T>
     implements RemoteModelService<T> {
 
-    protected final RemoteModelRepository<T> tRemoteModelRepository;
+    protected final RemoteResourceRepository<T> tRemoteResourceRepository;
 
-    @Inject public BaseRemoteModelService(RemoteModelRepository<T> tRemoteModelRepository) {
-        super(tRemoteModelRepository);
-        this.tRemoteModelRepository = tRemoteModelRepository;
+    @Inject public BaseRemoteModelService(RemoteResourceRepository<T> tRemoteResourceRepository) {
+        super(tRemoteResourceRepository);
+        this.tRemoteResourceRepository = tRemoteResourceRepository;
     }
 
     @Override public T getByRemoteId(String remoteId) {
-        return tRemoteModelRepository.findByRemoteId(remoteId);
+        return tRemoteResourceRepository.findByRemoteId(remoteId);
     }
 }

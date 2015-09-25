@@ -52,7 +52,7 @@ public class HardwareController
         return Optional.of(hardware -> {
             for (Tenant tenant : getUser().getTenants()) {
                 for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
-                    if (hardware.getCloudCredentials().contains(cloudCredential)) {
+                    if (hardware.cloudCredentials().contains(cloudCredential)) {
                         return true;
                     }
                 }

@@ -70,7 +70,7 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
 
         return connectionService.getRemoteConnection(HostAndPort
                 .fromParts(virtualMachine.publicIpAddress().get().getIp(),
-                    virtualMachine.remotePort()), virtualMachine.osFamily(),
+                    virtualMachine.remotePort()), virtualMachine.operatingSystemVendorType(),
             LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
                 .privateKey(keyPair.get().getPrivateKey()).build());
     }

@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * Created by daniel on 22.09.15.
  */
-public abstract class RemoteResourceInCloud extends RemoteModel {
+public abstract class RemoteResourceInCloud extends RemoteResource {
 
     @ManyToOne(optional = false) private Cloud cloud;
     @ManyToMany private List<CloudCredential> cloudCredentials;
@@ -49,7 +49,7 @@ public abstract class RemoteResourceInCloud extends RemoteModel {
         return cloud;
     }
 
-    public List<CloudCredential> getCloudCredentials() {
+    public List<CloudCredential> cloudCredentials() {
         return ImmutableList.copyOf(cloudCredentials);
     }
 

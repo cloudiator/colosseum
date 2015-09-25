@@ -37,9 +37,9 @@ public class DefaultOperatingSystemService extends BaseModelService<OperatingSys
     @Override public OperatingSystem findByImageName(String imageName) {
         Set<OperatingSystem> matches = new HashSet<>();
         for (OperatingSystem operatingSystem : getAll()) {
-            String[] needsToContain = {operatingSystem.getVersion(),
-                operatingSystem.getOperatingSystemArchitecture().toString(),
-                operatingSystem.getOperatingSystemVendor().getName()};
+            String[] needsToContain = {operatingSystem.version(),
+                operatingSystem.operatingSystemArchitecture().toString(),
+                operatingSystem.operatingSystemVendor().getName()};
             boolean isMatch = true;
             for (String check : needsToContain) {
                 if (!imageName.toLowerCase().contains(check.toLowerCase())) {

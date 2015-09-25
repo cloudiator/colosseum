@@ -18,14 +18,14 @@
 
 package models.service;
 
-import models.generic.RemoteModel;
+import models.generic.RemoteResource;
 
 import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 21.06.15.
  */
-interface RemoteModelRepository<T extends RemoteModel> extends ModelRepository<T>{
+interface RemoteResourceRepository<T extends RemoteResource> extends ModelRepository<T>{
 
     @Nullable T findByRemoteId(String remoteId);
 

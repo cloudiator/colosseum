@@ -51,7 +51,7 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
         checkArgument(virtualMachine.loginName().isPresent());
         checkArgument(virtualMachine.loginPassword().isPresent());
         int remotePort = virtualMachine.remotePort();
-        OSFamily osFamily = virtualMachine.osFamily();
+        OSFamily osFamily = virtualMachine.operatingSystemVendorType();
 
         return connectionService.getRemoteConnection(
             HostAndPort.fromParts(virtualMachine.publicIpAddress().get().getIp(), remotePort),

@@ -57,9 +57,9 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
         //check that the credential is correct
         checkArgument(cloudCredential.getCloud().equals(cloud));
-        checkArgument(image.getCloudCredentials().contains(cloudCredential));
-        checkArgument(location.getCloudCredentials().contains(cloudCredential));
-        checkArgument(hardware.getCloudCredentials().contains(cloudCredential));
+        checkArgument(image.cloudCredentials().contains(cloudCredential));
+        checkArgument(location.cloudCredentials().contains(cloudCredential));
+        checkArgument(hardware.cloudCredentials().contains(cloudCredential));
 
         //check that the location is correct
         checkArgument(image.location().equals(location));

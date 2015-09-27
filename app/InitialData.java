@@ -30,12 +30,14 @@ public class InitialData {
     private final ModelService<Tenant> tenantModelService;
     private final ModelService<OperatingSystem> operatingSystemModelService;
     private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
+	
     private static final String DEFAULT_GROUP = "admin";
 
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
         ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService
+    		) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
         this.operatingSystemModelService = operatingSystemModelService;
@@ -105,7 +107,6 @@ public class InitialData {
                 new OperatingSystem(windows, OperatingSystemArchitecture.AMD64, "Server 2012 R2");
             operatingSystemModelService.save(windowsServer2012R2);
         }
-
 
     }
 }

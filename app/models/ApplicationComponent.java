@@ -49,6 +49,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
      */
     protected ApplicationComponent() {
     }
+    
+    public ApplicationComponent(Application application, Component component, VirtualMachineTemplate virtualMachineTemplate){
+    	this.application = application;
+    	this.component = component;
+    	this.virtualMachineTemplate = virtualMachineTemplate;
+    }
 
     public Application getApplication() {
         return application;

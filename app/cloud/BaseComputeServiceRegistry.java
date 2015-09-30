@@ -25,7 +25,9 @@ import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
 import models.service.ModelService;
 
@@ -54,6 +56,16 @@ public class BaseComputeServiceRegistry implements ComputeServiceRegistry {
     @Override
     public Set<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getComputeServices() {
         return getComputeServices(cloudCredentialModelService.getAll());
+    }
+
+    @Override
+    public Iterable<DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getDiscoveryServices() {
+        Set<DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>>
+            discoveryServices = Sets.newHashSet();
+        for (ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> computeService : getComputeServices()) {
+            discoveryServices.add(computeService.discoveryService());
+        }
+        return discoveryServices;
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
+import play.Logger;
 import play.db.jpa.Transactional;
 
 /**
@@ -31,6 +32,7 @@ public class ProblemSolver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;
+    private final Logger.ALogger LOGGER = Logger.of(this.getClass());
 
     @Inject public ProblemSolver(SolutionDatabase solutionDatabase,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {
@@ -54,7 +56,7 @@ public class ProblemSolver implements Runnable {
             } catch (SolutionNotFoundException e) {
                 throw new IllegalStateException(e);
             } catch (SolutionException e) {
-                this.problemQueue.add(problemToSolve);
+                LOGGER.warn("Could not solve problem " + problemToSolve, e);
             }
         }
     }

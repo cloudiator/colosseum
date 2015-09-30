@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,13 +16,10 @@
  * under the License.
  */
 
-package models.service;
-
-import models.Location;
+package cloud.sync;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel on 30.09.15.
  */
-public interface LocationModelService extends RemoteModelService<Location> {
-
+public class TemporarySolutionException extends Exception {
 }

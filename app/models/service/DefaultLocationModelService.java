@@ -31,13 +31,4 @@ public class DefaultLocationModelService extends BaseRemoteModelService<Location
         super(locationRepository);
     }
 
-    @Override public Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud) {
-        for (Location location : getAll()) {
-            if (location.getRemoteId().equals(cloudUuid) && location.cloud().getUuid()
-                .equals(UuidOfCloud)) {
-                return location;
-            }
-        }
-        return null;
-    }
 }

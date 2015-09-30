@@ -67,12 +67,20 @@ public class LocationProblems {
         public LocationNotInDatabase(LocationInCloud locationInCloud) {
             super(locationInCloud);
         }
+
+        @Override public String toString() {
+            return "LocationNotInDatabase";
+        }
     }
 
 
     public static class LocationMissesCredential extends BaseLocationProblem {
         public LocationMissesCredential(LocationInCloud locationInCloud) {
             super(locationInCloud);
+        }
+
+        @Override public String toString() {
+            return "LocationMissesCredential";
         }
     }
 

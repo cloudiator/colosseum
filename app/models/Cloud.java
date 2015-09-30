@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 @Entity public class Cloud extends Model {
 
-    @Column(unique = true, nullable = false) private String name;
+    @Column(unique = true, nullable = false, updatable = false) private String name;
     @Column(nullable = false) private String endpoint;
     @ManyToOne(optional = false) private Api api;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<RemoteResourceInCloud>

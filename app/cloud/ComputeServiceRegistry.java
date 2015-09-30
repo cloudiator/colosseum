@@ -23,6 +23,7 @@ import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
 
 import java.util.List;
@@ -35,6 +36,8 @@ public interface ComputeServiceRegistry extends
     Iterable<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> {
 
     Set<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getComputeServices();
+
+    Iterable<DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getDiscoveryServices();
 
     ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getComputeService(
         String cloudCredentialUuid);

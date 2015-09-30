@@ -77,7 +77,7 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
 
     @Override public Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential) {
         final Optional<KeyPairService> keyPairService =
-            this.computeServices.getComputeService(cloudCredential.getUuid()).getKeyPairService();
+            this.computeServices.getComputeService(cloudCredential.getUuid()).keyPairService();
         if (!keyPairService.isPresent()) {
             return Optional.absent();
         }
@@ -87,7 +87,7 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
 
     @Override public Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid) {
         Optional<PublicIpService> publicIpService =
-            computeServices.getComputeService(cloudCredentialUuid).getPublicIpService();
+            computeServices.getComputeService(cloudCredentialUuid).publicIpService();
         if (!publicIpService.isPresent()) {
             return Optional.absent();
         }

@@ -27,6 +27,7 @@ import models.Cloud;
 import models.Image;
 import models.Location;
 import models.OperatingSystem;
+import models.service.LocationModelService;
 import models.service.ModelService;
 import models.service.OperatingSystemService;
 
@@ -40,11 +41,11 @@ public class CreateImageInDatabase implements Solution {
     private final ModelService<Image> imageModelService;
     private final ModelService<Cloud> cloudModelService;
     private final OperatingSystemService operatingSystemService;
-    private final ModelService<Location> locationModelService;
+    private final LocationModelService locationModelService;
 
     @Inject public CreateImageInDatabase(ModelService<Image> imageModelService,
         ModelService<Cloud> cloudModelService, OperatingSystemService operatingSystemService,
-        ModelService<Location> locationModelService) {
+        LocationModelService locationModelService) {
         this.imageModelService = imageModelService;
         this.cloudModelService = cloudModelService;
         this.operatingSystemService = operatingSystemService;
@@ -67,7 +68,7 @@ public class CreateImageInDatabase implements Solution {
         }
         //todo check this
         Location location =
-            locationModelService.getByUuid(imageNotInDatabase.getImageInLocation().location());
+            locationModelService.getByRemoteId(imageNotInDatabase.getImageInLocation().location());
         if (location == null) {
             throw new SolutionException();
         }

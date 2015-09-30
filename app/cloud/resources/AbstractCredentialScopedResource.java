@@ -50,7 +50,7 @@ public class AbstractCredentialScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return DecoratedId.of(credential, cloud, id).colosseumId();
+        return DecoratedId.of(cloud, id).colosseumId();
     }
 
     @Override public String name() {

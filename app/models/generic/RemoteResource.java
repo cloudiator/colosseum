@@ -20,11 +20,13 @@ package models.generic;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 
 /**
  * Created by daniel on 12.05.15.
  */
-@Entity public abstract class RemoteResource extends Model {
+@Entity @Inheritance(strategy = javax.persistence.InheritanceType.TABLE_PER_CLASS)
+public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState;
     @Column(unique = true, nullable = true) private String remoteId;

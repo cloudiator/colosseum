@@ -27,6 +27,7 @@ import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
 import models.Location;
+import models.service.LocationModelService;
 import models.service.ModelService;
 
 import javax.annotation.Nullable;
@@ -41,11 +42,11 @@ public class CreateHardwareInDatabase implements Solution {
     private final ModelService<Hardware> hardwareModelService;
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final ModelService<Cloud> cloudModelService;
-    private final ModelService<Location> locationModelService;
+    private final LocationModelService locationModelService;
 
     @Inject public CreateHardwareInDatabase(ModelService<Hardware> hardwareModelService,
         ModelService<HardwareOffer> hardwareOfferModelService,
-        ModelService<Cloud> cloudModelService, ModelService<Location> locationModelService) {
+        ModelService<Cloud> cloudModelService, LocationModelService locationModelService) {
         this.hardwareModelService = hardwareModelService;
         this.hardwareOfferModelService = hardwareOfferModelService;
         this.cloudModelService = cloudModelService;
@@ -69,7 +70,7 @@ public class CreateHardwareInDatabase implements Solution {
         }
         //todo check this
         Location location = locationModelService
-            .getByUuid(hardwareNotInDatabase.getHardwareInLocation().location());
+            .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location());
         if (location == null) {
             throw new SolutionException();
         }

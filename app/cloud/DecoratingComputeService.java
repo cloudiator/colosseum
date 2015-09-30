@@ -24,14 +24,12 @@ import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Function;
 import com.google.common.base.Optional;
-import com.google.common.collect.Iterables;
-import com.google.common.net.HostAndPort;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 
 import javax.annotation.Nullable;
 
@@ -64,58 +62,12 @@ public class DecoratingComputeService implements
         this.cloudId = cloudId;
     }
 
-    @Nullable @Override public ImageInLocation getImage(String s) {
-        //TODO: implement this.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
-    @Nullable @Override public VirtualMachineInLocation getVirtualMachine(String s) {
-        //TODO: implement this.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
 
-    @Nullable @Override public LocationInCloud getLocation(String s) {
-        //TODO: implement this.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Nullable @Override public HardwareInLocation getHardwareFlavor(String s) {
-        //TODO: implement this.
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override public Iterable<HardwareInLocation> listHardwareFlavors() {
-        return Iterables.transform(delegate.listHardwareFlavors(),
-            new Function<HardwareFlavor, HardwareInLocation>() {
-                @Nullable @Override
-                public HardwareInLocation apply(@Nullable HardwareFlavor hardwareFlavor) {
-                    checkNotNull(hardwareFlavor);
-                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential);
-                }
-            });
-    }
-
-    @Override public Iterable<ImageInLocation> listImages() {
-        return Iterables.transform(delegate.listImages(), new Function<Image, ImageInLocation>() {
-            @Nullable @Override public ImageInLocation apply(@Nullable Image image) {
-                checkNotNull(image);
-                return new ImageInLocation(image, cloudId, cloudCredential);
-            }
-        });
-    }
-
-    @Override public Iterable<LocationInCloud> listLocations() {
-        return Iterables
-            .transform(delegate.listLocations(), new Function<Location, LocationInCloud>() {
-                @Nullable @Override public LocationInCloud apply(@Nullable Location location) {
-                    checkNotNull(location);
-                    return new LocationInCloud(location, cloudId, cloudCredential);
-                }
-            });
-    }
-
-    @Override public Iterable<VirtualMachineInLocation> listVirtualMachines() {
-        return Iterables.transform(delegate.listVirtualMachines(), new VirtualMachineDecorator());
+    @Override
+    public DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> discoveryService() {
+        return new DecoratingDiscoveryService(delegate.discoveryService(), cloudId,
+            cloudCredential);
     }
 
     @Override public void deleteVirtualMachine(String s) {
@@ -125,28 +77,38 @@ public class DecoratingComputeService implements
 
     @Override public VirtualMachineInLocation createVirtualMachine(
         VirtualMachineTemplate virtualMachineTemplate) {
-        return new VirtualMachineDecorator()
+        return new VirtualMachineDecorator(cloudId, cloudCredential)
             .apply(this.delegate.createVirtualMachine(virtualMachineTemplate));
     }
 
-    @Override public ConnectionService getConnectionService() {
-        return this.delegate.getConnectionService();
+    @Override public ConnectionService connectionService() {
+        return this.delegate.connectionService();
     }
 
-    @Override public Optional<PublicIpService> getPublicIpService() {
-        return this.delegate.getPublicIpService();
+    @Override public Optional<PublicIpService> publicIpService() {
+        return this.delegate.publicIpService();
     }
 
-    @Override public Optional<KeyPairService> getKeyPairService() {
-        return this.delegate.getKeyPairService();
+    @Override public Optional<KeyPairService> keyPairService() {
+        return this.delegate.keyPairService();
     }
 
-    private class VirtualMachineDecorator
+    static class VirtualMachineDecorator
         implements Function<VirtualMachine, VirtualMachineInLocation> {
+
+        private final String cloudId;
+        private final String cloudCredentialId;
+
+
+        public VirtualMachineDecorator(String cloudId, String cloudCredentialId) {
+            this.cloudId = cloudId;
+            this.cloudCredentialId = cloudCredentialId;
+        }
+
         @Nullable @Override
         public VirtualMachineInLocation apply(@Nullable VirtualMachine virtualMachine) {
             checkNotNull(virtualMachine);
-            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredential);
+            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredentialId);
         }
     }
 }

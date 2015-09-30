@@ -63,7 +63,7 @@ public class ConnectLocationToCredential implements Solution {
             throw new SolutionException();
         }
 
-        location.cloudCredentials().add(cloudCredential);
+        location.addCloudCredential(cloudCredential);
         locationModelService.save(location);
     }
 }

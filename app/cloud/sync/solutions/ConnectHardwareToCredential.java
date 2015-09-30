@@ -61,7 +61,7 @@ public class ConnectHardwareToCredential implements Solution {
         if (modelHardware == null || cloudCredential == null) {
             throw new SolutionException();
         }
-        modelHardware.cloudCredentials().add(cloudCredential);
+        modelHardware.addCloudCredential(cloudCredential);
         hardwareModelService.save(modelHardware);
     }
 

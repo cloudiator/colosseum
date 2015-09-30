@@ -72,12 +72,20 @@ public class ImageProblems {
         public ImageNotInDatabase(ImageInLocation imageInLocation) {
             super(imageInLocation);
         }
+
+        @Override public String toString() {
+            return "ImageNotInDatabase";
+        }
     }
 
 
     public static class ImageMissesCredential extends BaseImageProblem {
         public ImageMissesCredential(ImageInLocation imageInLocation) {
             super(imageInLocation);
+        }
+
+        @Override public String toString() {
+            return "ImageMissesCredential";
         }
     }
 }

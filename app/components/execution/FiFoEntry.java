@@ -45,4 +45,25 @@ class FiFoEntry<E extends Comparable<? super E>> implements Comparable<FiFoEntry
         }
         return res;
     }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+
+        FiFoEntry<?> fiFoEntry = (FiFoEntry<?>) o;
+
+        if (seqNum != fiFoEntry.seqNum)
+            return false;
+        //noinspection EqualsBetweenInconvertibleTypes
+        return entry.equals(fiFoEntry.entry);
+
+    }
+
+    @Override public int hashCode() {
+        int result = (int) (seqNum ^ (seqNum >>> 32));
+        result = 31 * result + (entry != null ? entry.hashCode() : 0);
+        return result;
+    }
 }

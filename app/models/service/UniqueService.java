@@ -18,23 +18,15 @@
 
 package models.service;
 
-import com.google.inject.Inject;
-import models.generic.RemoteResource;
+import models.generic.Unique;
+
+import javax.annotation.Nullable;
 
 /**
- * Created by daniel on 21.06.15.
+ * Created by daniel on 08.05.15.
  */
-public class BaseRemoteModelService<T extends RemoteResource> extends BaseModelService<T>
-    implements RemoteModelService<T> {
+public interface UniqueService<T extends Unique> {
 
-    protected final RemoteResourceRepository<T> tRemoteResourceRepository;
+    @Nullable T getByUuid(String uuid);
 
-    @Inject public BaseRemoteModelService(RemoteResourceRepository<T> tRemoteResourceRepository) {
-        super(tRemoteResourceRepository);
-        this.tRemoteResourceRepository = tRemoteResourceRepository;
-    }
-
-    @Override public T getByRemoteId(String remoteId) {
-        return tRemoteResourceRepository.findByRemoteId(remoteId);
-    }
 }

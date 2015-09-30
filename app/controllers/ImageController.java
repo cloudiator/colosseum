@@ -51,7 +51,7 @@ public class ImageController extends GenericApiController<Image, ImageDto, Image
         return Optional.of(image -> {
             for (Tenant tenant : getUser().getTenants()) {
                 for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
-                    if (image.getCloudCredentials().contains(cloudCredential)) {
+                    if (image.cloudCredentials().contains(cloudCredential)) {
                         return true;
                     }
                 }

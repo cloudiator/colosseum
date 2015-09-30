@@ -25,6 +25,4 @@ import models.Location;
  */
 public interface LocationModelService extends RemoteModelService<Location> {
 
-    Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud);
-
 }

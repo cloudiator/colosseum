@@ -21,6 +21,7 @@ package cloud.colosseum;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import models.*;
+import models.generic.RemoteResourceInCloud;
 
 import javax.annotation.Nullable;
 
@@ -99,12 +100,14 @@ public class ColosseumVirtualMachineTemplateBuilder {
     public ColosseumVirtualMachineTemplateBuilder virtualMachineModel(
         VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
+        checkArgument(virtualMachine.image().isPresent());
+        this.image = virtualMachine.image().get();
         checkArgument(virtualMachine.cloudCredentials().size() == 1);
-        this.cloud = virtualMachine.cloud();
-        this.image = virtualMachine.image();
-        this.location = virtualMachine.location();
-        this.hardware = virtualMachine.hardware();
         this.cloudCredential = virtualMachine.cloudCredentials().get(0);
+        this.cloud = virtualMachine.cloud();
+        this.location = virtualMachine.location();
+        checkArgument(virtualMachine.hardware().isPresent());
+        this.hardware = virtualMachine.hardware().get();
         return this;
     }
 
@@ -114,12 +117,14 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return hardware;
         }
         if (cloud != null && hardwareOffer != null) {
-            for (Hardware searchHardware : cloud.hardware()) {
-                if (searchHardware.getHardwareOffer().equals(hardwareOffer)) {
-                    return searchHardware;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Hardware && ((Hardware) remoteResourceInCloud)
+                    .hardwareOffer().equals(hardwareOffer)) {
+                    return (Hardware) remoteResourceInCloud;
                 }
             }
         }
+
         return null;
     }
 
@@ -128,9 +133,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return image;
         }
         if (cloud != null && operatingSystem != null) {
-            for (Image searchImage : cloud.images()) {
-                if (operatingSystem.equals(searchImage.getOperatingSystem())) {
-                    return searchImage;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Image && ((Image) remoteResourceInCloud)
+                    .operatingSystem().isPresent() && operatingSystem
+                    .equals(((Image) remoteResourceInCloud).operatingSystem().get())) {
+                    return (Image) remoteResourceInCloud;
                 }
             }
         }
@@ -143,9 +150,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
             return location;
         }
         if (cloud != null && geoLocation != null) {
-            for (Location searchLocation : cloud.locations()) {
-                if (geoLocation.equals(searchLocation.getGeoLocation())) {
-                    return searchLocation;
+            for (RemoteResourceInCloud remoteResourceInCloud : cloud.remoteResources()) {
+                if (remoteResourceInCloud instanceof Location && ((Location) remoteResourceInCloud)
+                    .geoLocation().isPresent() && geoLocation
+                    .equals(((Location) remoteResourceInCloud).geoLocation().get())) {
+                    return (Location) remoteResourceInCloud;
                 }
             }
         }

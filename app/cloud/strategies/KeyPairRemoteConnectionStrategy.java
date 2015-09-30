@@ -72,7 +72,8 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
         try {
             return connectionService.getRemoteConnection(HostAndPort
                     .fromParts(virtualMachine.publicIpAddress().get().getIp(),
-                        virtualMachine.remotePort()), virtualMachine.osFamily(),
+                        virtualMachine.remotePortOrDefault()),
+                virtualMachine.operatingSystemVendorTypeOrDefault().osFamily(),
                 LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
                     .privateKey(keyPair.get().getPrivateKey()).build());
         } catch (RemoteException e) {

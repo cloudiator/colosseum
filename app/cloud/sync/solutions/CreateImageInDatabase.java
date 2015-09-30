@@ -25,7 +25,9 @@ import cloud.sync.problems.ImageProblems;
 import com.google.inject.Inject;
 import models.Cloud;
 import models.Image;
+import models.Location;
 import models.OperatingSystem;
+import models.service.LocationModelService;
 import models.service.ModelService;
 import models.service.OperatingSystemService;
 
@@ -39,12 +41,15 @@ public class CreateImageInDatabase implements Solution {
     private final ModelService<Image> imageModelService;
     private final ModelService<Cloud> cloudModelService;
     private final OperatingSystemService operatingSystemService;
+    private final LocationModelService locationModelService;
 
     @Inject public CreateImageInDatabase(ModelService<Image> imageModelService,
-        ModelService<Cloud> cloudModelService, OperatingSystemService operatingSystemService) {
+        ModelService<Cloud> cloudModelService, OperatingSystemService operatingSystemService,
+        LocationModelService locationModelService) {
         this.imageModelService = imageModelService;
         this.cloudModelService = cloudModelService;
         this.operatingSystemService = operatingSystemService;
+        this.locationModelService = locationModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -61,13 +66,19 @@ public class CreateImageInDatabase implements Solution {
         if (cloud == null) {
             throw new SolutionException();
         }
+        //todo check this
+        Location location =
+            locationModelService.getByRemoteId(imageNotInDatabase.getImageInLocation().location());
+        if (location == null) {
+            throw new SolutionException();
+        }
 
         OperatingSystem operatingSystem =
             operatingSystemService.findByImageName(imageNotInDatabase.getImageInLocation().name());
 
-        Image image = new Image(imageNotInDatabase.getImageInLocation().id(),
-            imageNotInDatabase.getImageInLocation().name(), cloud, operatingSystem, null);
-        image.setCloudProviderId(imageNotInDatabase.getImageInLocation().cloudProviderId());
+        //todo check this
+        Image image = new Image(imageNotInDatabase.getImageInLocation().id(), cloud, location,
+            imageNotInDatabase.getImageInLocation().name(), operatingSystem, null, null);
         imageModelService.save(image);
     }
 }

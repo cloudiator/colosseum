@@ -30,7 +30,7 @@ import java.io.Serializable;
  * Defines the auto generated id for
  * each model class.
  */
-@MappedSuperclass public abstract class Model extends Resource implements Serializable {
+@MappedSuperclass public abstract class Model extends Unique implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.TABLE) private Long id;
 

@@ -18,12 +18,12 @@
 
 package models.service;
 
-import models.generic.RemoteModel;
+import models.generic.RemoteResource;
 
 /**
  * Created by daniel on 21.06.15.
  */
-public interface RemoteModelService<T extends RemoteModel> extends ModelService<T> {
+public interface RemoteModelService<T extends RemoteResource> extends ModelService<T> {
 
     T getByRemoteId(String remoteId);
 

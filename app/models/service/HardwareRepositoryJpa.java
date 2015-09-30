@@ -25,7 +25,7 @@ import models.Hardware;
 /**
  * Created by daniel on 31.10.14.
  */
-class HardwareRepositoryJpa extends BaseRemoteModelRepositoryJpa<Hardware>
+class HardwareRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Hardware>
     implements HardwareRepository {
 
 

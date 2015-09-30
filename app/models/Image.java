@@ -18,32 +18,38 @@
 
 package models;
 
-import models.generic.RemoteModel;
+import com.google.common.collect.ImmutableList;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Stack;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Image extends RemoteModel {
+@Entity public class Image extends RemoteResourceInLocation {
 
-    @Nullable @Column(updatable = false, nullable = true) private String name;
+    /**
+     * Own attributes
+     */
+    @Column(updatable = false, nullable = false) private String name;
+    @Nullable private String defaultLoginUsername;
+    @Nullable private String defaultLoginPassword;
 
+    /**
+     * Owned relations
+     */
     @Nullable @ManyToOne(optional = true) private OperatingSystem operatingSystem;
 
-    @ManyToOne(optional = false) private Cloud cloud;
-
-    @ManyToMany private List<Location> locations;
-
-    @ManyToMany private List<CloudCredential> cloudCredentials;
-
+    /**
+     * Foreign relations
+     */
     @OneToMany(mappedBy = "image", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
-
-    @Nullable private String defaultUsername;
 
     /**
      * Empty constructor for hibernate.
@@ -51,71 +57,74 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Image() {
     }
 
-    public Image(String remoteId, @Nullable String name, Cloud cloud,
-        @Nullable OperatingSystem operatingSystem, @Nullable String defaultUsername) {
-        super(remoteId);
-        checkNotNull(cloud);
+    public Image(String remoteId, Cloud cloud, Location location, String name,
+        @Nullable OperatingSystem operatingSystem, @Nullable String defaultLoginUsername,
+        @Nullable String defaultLoginPassword) {
+        super(remoteId, cloud, location);
 
-        if (name != null) {
-            checkArgument(!name.isEmpty());
-        }
-
-
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
         this.name = name;
-        this.cloud = cloud;
+
         this.operatingSystem = operatingSystem;
-        this.defaultUsername = defaultUsername;
+
+        if (defaultLoginUsername != null) {
+            checkArgument(!defaultLoginUsername.isEmpty());
+        }
+        this.defaultLoginUsername = defaultLoginUsername;
+
+        if (defaultLoginPassword != null) {
+            checkArgument(!defaultLoginPassword.isEmpty());
+        }
+        this.defaultLoginPassword = defaultLoginPassword;
     }
 
-    public Optional<String> defaultUsername() {
-        return Optional.ofNullable(defaultUsername);
+    public Collection<String> getLoginNameCandidates() {
+        Collection<String> loginNameCandidates;
+        if (operatingSystem != null) {
+            loginNameCandidates = operatingSystem.operatingSystemVendor().getLoginNameCandidates();
+        } else {
+            loginNameCandidates = new Stack<>();
+        }
+        if (defaultLoginUsername != null) {
+            loginNameCandidates.add(defaultLoginUsername);
+        }
+        return loginNameCandidates;
     }
 
-    public Cloud getCloud() {
-        return cloud;
+    public Collection<String> getLoginPasswordCandidates() {
+        Collection<String> loginPasswordCandidates;
+        if (operatingSystem != null) {
+            loginPasswordCandidates =
+                operatingSystem.operatingSystemVendor().getLoginPasswordCandidates();
+        } else {
+            loginPasswordCandidates = new Stack<>();
+        }
+        if (defaultLoginPassword != null) {
+            loginPasswordCandidates.add(defaultLoginPassword);
+        }
+        return loginPasswordCandidates;
     }
 
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
-    }
 
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
-    }
-
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
-    @Nullable public OperatingSystem getOperatingSystem() {
-        return operatingSystem;
-    }
-
-    public void setOperatingSystem(@Nullable OperatingSystem operatingSystem) {
-        this.operatingSystem = operatingSystem;
-    }
-
-    @Nullable public String getName() {
+    public String name() {
         return name;
     }
 
-    public void setName(@Nullable String name) {
-        this.name = name;
+    public Optional<OperatingSystem> operatingSystem() {
+        return Optional.ofNullable(operatingSystem);
     }
+
+    public List<VirtualMachineTemplate> virtualMachineTemplatesUsedFor() {
+        return ImmutableList.copyOf(virtualMachineTemplates);
+    }
+
+    public OperatingSystemVendorType operatingSystemVendorTypeOrDefault() {
+        if (operatingSystem().isPresent()) {
+            return operatingSystem().get().operatingSystemVendor().operatingSystemVendorType();
+        }
+        return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE;
+    }
+
+
 }

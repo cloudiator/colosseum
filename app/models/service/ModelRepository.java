@@ -26,7 +26,7 @@ import java.util.List;
 /**
  * Created by daniel on 31.10.14.
  */
-interface ModelRepository<T extends Model> extends ResourceRepository<T> {
+interface ModelRepository<T extends Model> extends UniqueRepository<T> {
 
     @Nullable T findById(Long id);
 

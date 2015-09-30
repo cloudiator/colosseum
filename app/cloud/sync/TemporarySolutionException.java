@@ -16,17 +16,10 @@
  * under the License.
  */
 
-package models.service;
-
-import models.generic.RemoteModel;
-
-import javax.annotation.Nullable;
+package cloud.sync;
 
 /**
- * Created by daniel on 21.06.15.
+ * Created by daniel on 30.09.15.
  */
-interface RemoteModelRepository<T extends RemoteModel> extends ModelRepository<T>{
-
-    @Nullable T findByRemoteId(String remoteId);
-
+public class TemporarySolutionException extends Exception {
 }

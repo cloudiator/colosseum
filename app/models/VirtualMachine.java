@@ -18,37 +18,25 @@
 
 package models;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
-import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
-import models.generic.RemoteModel;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.List;
-import java.util.Optional;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.*;
 
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends RemoteModel {
+@Entity public class VirtualMachine extends RemoteResourceInLocation {
 
-    private static final OSFamily defaultOsFamily = OSFamily.UNIX;
-    private static final int defaultPort = 22;
-
-    @ManyToOne(optional = true) private Cloud cloud;
     @Column(unique = true, nullable = false) private String name;
-    @ManyToMany private List<CloudCredential> cloudCredentials;
 
     @Nullable @Column(nullable = true) private String generatedLoginUsername;
     @Nullable @Column(nullable = true) private String generatedLoginPassword;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
-    @Nullable @ManyToOne(optional = true) private Location location;
 
     /**
      * Use cascade type merge due to bug in all
@@ -63,39 +51,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected VirtualMachine() {
     }
 
-    public VirtualMachine(String name, Cloud cloud, @Nullable String cloudUuid,
-        @Nullable Hardware hardware, @Nullable Image image, @Nullable Location location,
-        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword) {
-        super(cloudUuid);
-        checkNotNull(name);
-        checkArgument(!name.isEmpty());
+    public VirtualMachine(String remoteId, Cloud cloud, Location location, String name,
+        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword,
+        @Nullable Image image, @Nullable Hardware hardware) {
+        super(remoteId, cloud, location);
         this.name = name;
-        checkNotNull(cloud);
-        this.cloud = cloud;
-        this.hardware = hardware;
-        this.image = image;
-        this.location = location;
         this.generatedLoginUsername = generatedLoginUsername;
         this.generatedLoginPassword = generatedLoginPassword;
+        this.image = image;
+        this.hardware = hardware;
     }
 
-    public Cloud cloud() {
-        return cloud;
+    public Optional<Image> image() {
+        return Optional.ofNullable(image);
     }
 
-    @Nullable public Image image() {
-        return image;
-    }
-
-    @Nullable public Hardware hardware() {
-        return hardware;
-    }
-
-    @Nullable public Location location() {
-        return location;
+    public Optional<Hardware> hardware() {
+        return Optional.ofNullable(hardware);
     }
 
     public void addIpAddress(IpAddress ipAddress) {
+        if (ipAddresses == null) {
+            this.ipAddresses = new ArrayList<>();
+        }
         this.ipAddresses.add(ipAddress);
     }
 
@@ -122,68 +100,68 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return Optional.empty();
     }
 
-    public List<CloudCredential> cloudCredentials() {
-        return ImmutableList.copyOf(cloudCredentials);
-    }
-
-    public void addCloudCredential(CloudCredential cloudCredential) {
-        this.cloudCredentials.add(cloudCredential);
-    }
-
     public String name() {
         return name;
     }
 
-    public Optional<String> loginName() {
+    public Collection<String> loginNameCandidates() {
+        Collection<String> loginNameCandidates;
+        if (image != null) {
+            loginNameCandidates = image.getLoginNameCandidates();
+        } else {
+            loginNameCandidates = new Stack<>();
+        }
         if (generatedLoginUsername != null) {
-            return Optional.of(generatedLoginUsername);
+            loginNameCandidates.add(generatedLoginPassword);
         }
-        if (image != null && image.getOperatingSystem() != null
-            && image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName() != null) {
-            return Optional
-                .of(image.getOperatingSystem().getOperatingSystemVendor().getDefaultUserName());
+        return loginNameCandidates;
+    }
+
+    public Collection<String> loginPasswordCandidates() {
+        Collection<String> loginPasswordCandidates;
+        if (image != null) {
+            loginPasswordCandidates = image.getLoginPasswordCandidates();
+        } else {
+            loginPasswordCandidates = new Stack<>();
         }
-        return Optional.empty();
+        if (generatedLoginPassword != null) {
+            loginPasswordCandidates.add(generatedLoginPassword);
+        }
+        return loginPasswordCandidates;
+    }
+
+    public Optional<String> loginName() {
+        return loginNameCandidates().stream().findFirst();
     }
 
     public Optional<String> loginPassword() {
-        if (generatedLoginPassword != null) {
-            return Optional.of(generatedLoginPassword);
+        return loginPasswordCandidates().stream().findFirst();
+    }
+
+    public OperatingSystemVendorType operatingSystemVendorTypeOrDefault() {
+        if (image != null && image.operatingSystem().isPresent()) {
+            return image.operatingSystemVendorTypeOrDefault();
         }
-        if (image != null && image.getOperatingSystem() != null
-            && image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword() != null) {
-            return Optional
-                .of(image.getOperatingSystem().getOperatingSystemVendor().getDefaultPassword());
+        return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE;
+    }
+
+    public boolean supportsKeyPair() {
+        return image != null && image.operatingSystem().isPresent() && image.operatingSystem().get()
+            .operatingSystemVendor().operatingSystemVendorType().supportsKeyPair();
+    }
+
+    public Optional<Integer> remotePort() {
+        if (image != null && image.operatingSystem().isPresent()) {
+            return Optional.of(image.operatingSystem().get().operatingSystemVendor()
+                .operatingSystemVendorType().port());
         }
         return Optional.empty();
     }
 
-    public OSFamily osFamily() {
-        if (image != null && image.getOperatingSystem() != null) {
-            return image.getOperatingSystem().getOperatingSystemVendor()
-                .getOperatingSystemVendorType().osFamily();
+    public Integer remotePortOrDefault() {
+        if (remotePort().isPresent()) {
+            return remotePort().get();
         }
-        return defaultOsFamily;
-    }
-
-    public boolean supportsKeyPair() {
-        return image != null && image.getOperatingSystem() != null && image.getOperatingSystem()
-            .getOperatingSystemVendor().getOperatingSystemVendorType().supportsKeyPair();
-    }
-
-    public int remotePort() {
-        if (image != null && image.getOperatingSystem() != null) {
-            return image.getOperatingSystem().getOperatingSystemVendor()
-                .getOperatingSystemVendorType().port();
-        }
-        return defaultPort;
-    }
-
-    public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
-        this.generatedLoginUsername = generatedLoginUsername;
-    }
-
-    public void setGeneratedPassword(@Nullable String generatedLoginPassword) {
-        this.generatedLoginPassword = generatedLoginPassword;
+        return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE.port();
     }
 }

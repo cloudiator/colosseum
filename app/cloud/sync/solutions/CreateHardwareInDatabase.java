@@ -26,6 +26,8 @@ import com.google.inject.Inject;
 import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
+import models.Location;
+import models.service.LocationModelService;
 import models.service.ModelService;
 
 import javax.annotation.Nullable;
@@ -40,13 +42,15 @@ public class CreateHardwareInDatabase implements Solution {
     private final ModelService<Hardware> hardwareModelService;
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final ModelService<Cloud> cloudModelService;
+    private final LocationModelService locationModelService;
 
     @Inject public CreateHardwareInDatabase(ModelService<Hardware> hardwareModelService,
         ModelService<HardwareOffer> hardwareOfferModelService,
-        ModelService<Cloud> cloudModelService) {
+        ModelService<Cloud> cloudModelService, LocationModelService locationModelService) {
         this.hardwareModelService = hardwareModelService;
         this.hardwareOfferModelService = hardwareOfferModelService;
         this.cloudModelService = cloudModelService;
+        this.locationModelService = locationModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -64,14 +68,20 @@ public class CreateHardwareInDatabase implements Solution {
         if (cloud == null) {
             throw new SolutionException();
         }
+        //todo check this
+        Location location = locationModelService
+            .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location());
+        if (location == null) {
+            throw new SolutionException();
+        }
 
-        Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud,
-            getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
-                hardwareNotInDatabase.getHardwareInLocation().mbRam(),
-                hardwareNotInDatabase.getHardwareInLocation().gbDisk()),
-            hardwareNotInDatabase.getHardwareInLocation().name());
-        hardware
-            .setCloudProviderId(hardwareNotInDatabase.getHardwareInLocation().cloudProviderId());
+        //todo check this
+        Hardware hardware =
+            new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud, location,
+                hardwareNotInDatabase.getHardwareInLocation().name(),
+                getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
+                    hardwareNotInDatabase.getHardwareInLocation().mbRam(),
+                    hardwareNotInDatabase.getHardwareInLocation().gbDisk()));
 
         hardwareModelService.save(hardware);
 

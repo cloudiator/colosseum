@@ -74,25 +74,15 @@ public class InitialData {
                 new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu", null);
             operatingSystemVendorModelService.save(ubuntu);
 
-            OperatingSystemVendor ubuntuRoot =
-                new OperatingSystemVendor("UbuntuRoot", OperatingSystemVendorType.NIX, "root",
-                    null);
-            operatingSystemVendorModelService.save(ubuntuRoot);
-
             //ubuntu 14.04 amd64
             OperatingSystem ubuntu1404amd64 =
-                new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04");
+                new OperatingSystem(OperatingSystemArchitecture.AMD64, ubuntu, "14.04");
             operatingSystemModelService.save(ubuntu1404amd64);
 
             //ubuntu 14.04.2 amd64
             OperatingSystem ubuntu14042amd64 =
-                new OperatingSystem(ubuntu, OperatingSystemArchitecture.AMD64, "14.04.2");
+                new OperatingSystem(OperatingSystemArchitecture.AMD64, ubuntu, "14.04.2");
             operatingSystemModelService.save(ubuntu14042amd64);
-
-            //ubuntu 14.04.2 amd64
-            OperatingSystem ubuntu14042amd64Root =
-                new OperatingSystem(ubuntuRoot, OperatingSystemArchitecture.AMD64, "14.04.2");
-            operatingSystemModelService.save(ubuntu14042amd64Root);
 
             //load windows
             OperatingSystemVendor windows =
@@ -102,7 +92,7 @@ public class InitialData {
 
             //Windows Server 2012 R2
             OperatingSystem windowsServer2012R2 =
-                new OperatingSystem(windows, OperatingSystemArchitecture.AMD64, "Server 2012 R2");
+                new OperatingSystem(OperatingSystemArchitecture.AMD64, windows, "Server 2012 R2");
             operatingSystemModelService.save(windowsServer2012R2);
         }
 

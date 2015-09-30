@@ -72,6 +72,10 @@ public class HardwareProblems {
         public HardwareNotInDatabase(HardwareInLocation hardwareInLocation) {
             super(hardwareInLocation);
         }
+
+        @Override public String toString() {
+            return "HardwareNotInDatabase";
+        }
     }
 
 
@@ -80,14 +84,9 @@ public class HardwareProblems {
         public HardwareMissesCredential(HardwareInLocation hardwareInLocation) {
             super(hardwareInLocation);
         }
-    }
 
-
-    public static class HardwareMissesLocation extends BaseHardwareProblem {
-        public HardwareMissesLocation(HardwareInLocation hardwareInLocation) {
-            super(hardwareInLocation);
+        @Override public String toString() {
+            return "HardwareMissesCredential";
         }
     }
-
-
 }

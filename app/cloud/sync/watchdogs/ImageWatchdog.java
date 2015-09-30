@@ -28,7 +28,6 @@ import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.execution.Stable;
 import models.CloudCredential;
-import models.Location;
 import models.service.ImageModelService;
 
 /**
@@ -56,7 +55,7 @@ import models.service.ImageModelService;
                 report(new ImageProblems.ImageNotInDatabase(imageInLocation));
             } else {
                 CloudCredential credentialToSearchFor = null;
-                for (CloudCredential cloudCredential : modelImage.getCloudCredentials()) {
+                for (CloudCredential cloudCredential : modelImage.cloudCredentials()) {
                     if (cloudCredential.getUuid().equals(imageInLocation.credential())) {
                         credentialToSearchFor = cloudCredential;
                         break;
@@ -66,23 +65,7 @@ import models.service.ImageModelService;
                 if (credentialToSearchFor == null) {
                     report(new ImageProblems.ImageMissesCredential(imageInLocation));
                 }
-
-                Location locationToSearchFor = null;
-                for (Location location : modelImage.getLocations()) {
-                    if (location.getCloud().getUuid().equals(imageInLocation.cloud()) && location
-                        .getRemoteId().equals(imageInLocation.location())) {
-                        locationToSearchFor = location;
-                        break;
-                    }
-                }
-
-                if (locationToSearchFor == null) {
-                    report(new ImageProblems.ImageMissesLocation(imageInLocation));
-                }
             }
-
-
-
         }
     }
 

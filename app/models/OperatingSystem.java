@@ -18,6 +18,7 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
 import models.generic.Model;
 
 import javax.persistence.*;
@@ -31,42 +32,45 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class OperatingSystem extends Model {
 
-    @Enumerated(EnumType.STRING) private OperatingSystemArchitecture operatingSystemArchitecture;
+    @Column(nullable = false) @Enumerated(EnumType.STRING) private OperatingSystemArchitecture
+        operatingSystemArchitecture;
+
     @OneToMany(mappedBy = "operatingSystem") private List<Image> images;
-    @ManyToOne private OperatingSystemVendor operatingSystemVendor;
-    private String version;
 
+    @ManyToOne(optional = false) private OperatingSystemVendor operatingSystemVendor;
 
+    @Column(nullable = false) private String version;
+    
     /**
      * Empty constructor for hibernate.
      */
     protected OperatingSystem() {
     }
 
-    public OperatingSystem(OperatingSystemVendor operatingSystemVendor,
-        OperatingSystemArchitecture operatingSystemArchitecture, String version) {
+    public OperatingSystem(OperatingSystemArchitecture operatingSystemArchitecture,
+        OperatingSystemVendor operatingSystemVendor, String version) {
         checkNotNull(operatingSystemVendor);
         checkNotNull(operatingSystemArchitecture);
         checkNotNull(version);
         checkArgument(!version.isEmpty());
-        this.operatingSystemVendor = operatingSystemVendor;
         this.operatingSystemArchitecture = operatingSystemArchitecture;
+        this.operatingSystemVendor = operatingSystemVendor;
         this.version = version;
     }
 
-    public OperatingSystemArchitecture getOperatingSystemArchitecture() {
+    public OperatingSystemArchitecture operatingSystemArchitecture() {
         return operatingSystemArchitecture;
     }
 
-    public List<Image> getImages() {
-        return images;
+    public List<Image> imagesUsedFor() {
+        return ImmutableList.copyOf(images);
     }
 
-    public String getVersion() {
+    public String version() {
         return version;
     }
 
-    public OperatingSystemVendor getOperatingSystemVendor() {
+    public OperatingSystemVendor operatingSystemVendor() {
         return operatingSystemVendor;
     }
 }

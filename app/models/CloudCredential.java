@@ -18,7 +18,9 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
 import models.generic.Model;
+import models.generic.RemoteResourceInCloud;
 
 import javax.persistence.*;
 import java.util.List;
@@ -29,8 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
  */
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "tenant_id"}))
-@Entity public class CloudCredential extends Model {
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "tenant_id"})) @Entity
+public class CloudCredential extends Model {
 
     @Column(nullable = false) private String user;
 
@@ -40,13 +42,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @ManyToOne(optional = false) private Tenant tenant;
 
-    @ManyToMany(mappedBy = "cloudCredentials") private List<Image> images;
-
-    @ManyToMany(mappedBy = "cloudCredentials") private List<Hardware> hardware;
-
-    @ManyToMany(mappedBy = "cloudCredentials") private List<Location> locations;
-
-    @ManyToMany(mappedBy = "cloudCredentials") private List<VirtualMachine> virtualMachines;
+    @ManyToMany(mappedBy = "cloudCredentials") private List<RemoteResourceInCloud> remoteResources;
 
     /**
      * Empty constructor for hibernate.
@@ -101,35 +97,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.tenant = tenant;
     }
 
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
-
-    public List<Hardware> getHardware() {
-        return hardware;
-    }
-
-    public void setHardware(List<Hardware> hardware) {
-        this.hardware = hardware;
-    }
-
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<VirtualMachine> getVirtualMachines() {
-        return virtualMachines;
-    }
-
-    public void setVirtualMachines(List<VirtualMachine> virtualMachines) {
-        this.virtualMachines = virtualMachines;
+    public List<RemoteResourceInCloud> remoteResources()
+    {
+        return ImmutableList.copyOf(remoteResources);
     }
 }

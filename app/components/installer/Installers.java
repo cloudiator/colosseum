@@ -29,13 +29,13 @@ import models.VirtualMachine;
 public class Installers {
 
     private Installers() {
-        
+
     }
 
     public static InstallApi of(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
-        switch (virtualMachine.osFamily()) {
-            case UNIX:
+        switch (virtualMachine.operatingSystemVendorTypeOrDefault()) {
+            case NIX:
                 return new UnixInstaller(remoteConnection, virtualMachine, tenant);
             case WINDOWS:
                 return new WindowsInstaller(remoteConnection, virtualMachine, tenant);

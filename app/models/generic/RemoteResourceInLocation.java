@@ -16,15 +16,34 @@
  * under the License.
  */
 
-package models.service;
+package models.generic;
 
-import models.generic.Resource;
+import models.Cloud;
+import models.Location;
 
-import javax.annotation.Nullable;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 /**
- * Created by daniel on 08.05.15.
+ * Created by daniel on 22.09.15.
  */
-public interface ResourceRepository<T extends Resource> {
-    @Nullable T findByUuid(String uuid);
+@Entity public abstract class RemoteResourceInLocation extends RemoteResourceInCloud {
+
+    @ManyToOne private Location location;
+
+    /**
+     * No-arg constructor for hibernate.
+     */
+    protected RemoteResourceInLocation() {
+    }
+
+    public RemoteResourceInLocation(String remoteId, Cloud cloud, Location location) {
+        super(remoteId, cloud);
+        this.location = location;
+    }
+
+    public Location location() {
+        return location;
+    }
+
 }

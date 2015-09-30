@@ -41,10 +41,10 @@ public class AbstractLocationScopedResource<T extends Resource>
     }
 
     @Override public String id() {
-        return DecoratedId.of(credential(), cloud(), location, id).colosseumId();
+        return DecoratedId.of(cloud(), location, id).colosseumId();
     }
 
     @Override public String location() {
-        return DecoratedId.of(credential(), cloud(), location, id).colosseumLocation();
+        return DecoratedId.of(cloud(), location, id).colosseumLocation();
     }
 }

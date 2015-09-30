@@ -27,17 +27,8 @@ import models.Location;
 public class DefaultLocationModelService extends BaseRemoteModelService<Location>
     implements LocationModelService {
 
-    @Inject public DefaultLocationModelService(RemoteModelRepository<Location> locationRepository) {
+    @Inject public DefaultLocationModelService(RemoteResourceRepository<Location> locationRepository) {
         super(locationRepository);
     }
 
-    @Override public Location getByUuidInCloudAndUuidOfCloud(String cloudUuid, String UuidOfCloud) {
-        for (Location location : getAll()) {
-            if (location.getRemoteId().equals(cloudUuid) && location.getCloud().getUuid()
-                .equals(UuidOfCloud)) {
-                return location;
-            }
-        }
-        return null;
-    }
 }

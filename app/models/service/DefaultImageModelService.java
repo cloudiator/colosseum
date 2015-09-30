@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 public class DefaultImageModelService extends BaseRemoteModelService<Image>
     implements ImageModelService {
 
-    @Inject public DefaultImageModelService(RemoteModelRepository<Image> imageRepository) {
+    @Inject public DefaultImageModelService(RemoteResourceRepository<Image> imageRepository) {
         super(imageRepository);
     }
 
@@ -37,7 +37,7 @@ public class DefaultImageModelService extends BaseRemoteModelService<Image>
     public Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud) {
         for (Image image : getAll()) {
-            if (image.getRemoteId().equals(cloudUuid) && image.getCloud().getUuid()
+            if (image.getRemoteId().equals(cloudUuid) && image.cloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return image;
             }

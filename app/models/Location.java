@@ -18,17 +18,16 @@
 
 package models;
 
-import models.generic.RemoteModel;
+import com.google.common.collect.ImmutableList;
+import models.generic.RemoteResourceInCloud;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
+import java.util.Optional;
 
-import static com.google.common.base.Preconditions.checkNotNull;
-
-@Entity public class Location extends RemoteModel {
-
-    @ManyToOne(optional = false) private Cloud cloud;
+@Entity public class Location extends RemoteResourceInCloud {
 
     @Nullable @ManyToOne(optional = true) private GeoLocation geoLocation;
 
@@ -41,15 +40,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @Column(nullable = false, updatable = false) private Boolean isAssignable;
 
-    @ManyToMany private List<CloudCredential> cloudCredentials;
-
     @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
     private List<VirtualMachineTemplate> virtualMachineTemplates;
 
-    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Image> images;
-
-    @ManyToMany(mappedBy = "locations", cascade = CascadeType.REMOVE) private List<Hardware>
-        hardwareList;
+    @OneToMany(mappedBy = "location", cascade = CascadeType.REMOVE)
+    private List<RemoteResourceInLocation> remoteResources;
 
     /**
      * Empty constructor for hibernate.
@@ -57,95 +52,40 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Location() {
     }
 
-    public Location(Cloud cloud, String remoteId, @Nullable GeoLocation geoLocation,
-        @Nullable Location parent, @Nullable LocationScope locationScope, boolean isAssignable) {
-        super(remoteId);
-
-        checkNotNull(cloud);
-        this.cloud = cloud;
+    public Location(String remoteId, Cloud cloud, @Nullable GeoLocation geoLocation,
+        @Nullable Location parent, @Nullable LocationScope locationScope, Boolean isAssignable) {
+        super(remoteId, cloud);
         this.geoLocation = geoLocation;
         this.parent = parent;
         this.locationScope = locationScope;
         this.isAssignable = isAssignable;
     }
 
-    public Cloud getCloud() {
-        return cloud;
+    public Optional<GeoLocation> geoLocation() {
+        return Optional.ofNullable(geoLocation);
     }
 
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
+    public Optional<Location> getParent() {
+        return Optional.ofNullable(parent);
     }
 
-    @Nullable public GeoLocation getGeoLocation() {
-        return geoLocation;
+    public List<Location> children() {
+        return ImmutableList.copyOf(children);
     }
 
-    public void setGeoLocation(@Nullable GeoLocation geoLocation) {
-        this.geoLocation = geoLocation;
-    }
-
-    @Nullable public Location getParent() {
-        return parent;
-    }
-
-    public void setParent(@Nullable Location parent) {
-        this.parent = parent;
-    }
-
-    public List<Location> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<Location> children) {
-        this.children = children;
-    }
-
-    @Nullable public LocationScope getLocationScope() {
-        return locationScope;
-    }
-
-    public void setLocationScope(@Nullable LocationScope locationScope) {
-        this.locationScope = locationScope;
+    public Optional<LocationScope> locationScope() {
+        return Optional.ofNullable(locationScope);
     }
 
     public boolean isAssignable() {
         return isAssignable;
     }
 
-    public void setIsAssignable(boolean isAssignable) {
-        this.isAssignable = isAssignable;
+    public List<VirtualMachineTemplate> virtualMachineTemplatesUsedFor() {
+        return ImmutableList.copyOf(virtualMachineTemplates);
     }
 
-    public List<CloudCredential> getCloudCredentials() {
-        return cloudCredentials;
-    }
-
-    public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
-        this.cloudCredentials = cloudCredentials;
-    }
-
-    public List<VirtualMachineTemplate> getVirtualMachineTemplates() {
-        return virtualMachineTemplates;
-    }
-
-    public void setVirtualMachineTemplates(List<VirtualMachineTemplate> virtualMachineTemplates) {
-        this.virtualMachineTemplates = virtualMachineTemplates;
-    }
-
-    public List<Image> getImages() {
-        return images;
-    }
-
-    public void setImages(List<Image> images) {
-        this.images = images;
-    }
-
-    public List<Hardware> getHardwareList() {
-        return hardwareList;
-    }
-
-    public void setHardwareList(List<Hardware> hardwareList) {
-        this.hardwareList = hardwareList;
+    public List<RemoteResourceInLocation> remoteResourcesUsedFor() {
+        return ImmutableList.copyOf(remoteResources);
     }
 }

@@ -52,7 +52,7 @@ public class LocationController
         return Optional.of(location -> {
             for (Tenant tenant : getUser().getTenants()) {
                 for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
-                    if (location.getCloudCredentials().contains(cloudCredential)) {
+                    if (location.cloudCredentials().contains(cloudCredential)) {
                         return true;
                     }
                 }

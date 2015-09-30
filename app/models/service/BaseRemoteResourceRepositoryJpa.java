@@ -19,7 +19,7 @@
 package models.service;
 
 import com.google.inject.TypeLiteral;
-import models.generic.RemoteModel;
+import models.generic.RemoteResource;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
@@ -31,10 +31,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 21.06.15.
  */
-class BaseRemoteModelRepositoryJpa<T extends RemoteModel> extends BaseModelRepositoryJpa<T>
-    implements RemoteModelRepository<T> {
+class BaseRemoteResourceRepositoryJpa<T extends RemoteResource> extends BaseModelRepositoryJpa<T>
+    implements RemoteResourceRepository<T> {
 
-    @Inject BaseRemoteModelRepositoryJpa(TypeLiteral<T> type) {
+    @Inject BaseRemoteResourceRepositoryJpa(TypeLiteral<T> type) {
         super(type);
     }
 

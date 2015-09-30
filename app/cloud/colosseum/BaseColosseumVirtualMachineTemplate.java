@@ -51,19 +51,19 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         checkNotNull(cloudCredential);
 
         //check that the image, the hardware and the location are in the cloud
-        checkArgument(image.getCloud().equals(cloud));
-        checkArgument(location.getCloud().equals(cloud));
-        checkArgument(hardware.getCloud().equals(cloud));
+        checkArgument(image.cloud().equals(cloud));
+        checkArgument(location.cloud().equals(cloud));
+        checkArgument(hardware.cloud().equals(cloud));
 
         //check that the credential is correct
         checkArgument(cloudCredential.getCloud().equals(cloud));
-        checkArgument(image.getCloudCredentials().contains(cloudCredential));
-        checkArgument(location.getCloudCredentials().contains(cloudCredential));
-        checkArgument(hardware.getCloudCredentials().contains(cloudCredential));
+        checkArgument(image.cloudCredentials().contains(cloudCredential));
+        checkArgument(location.cloudCredentials().contains(cloudCredential));
+        checkArgument(hardware.cloudCredentials().contains(cloudCredential));
 
         //check that the location is correct
-        checkArgument(image.getLocations().contains(location));
-        checkArgument(hardware.getLocations().contains(location));
+        checkArgument(image.location().equals(location));
+        checkArgument(hardware.location().equals(location));
         checkArgument(location.isAssignable());
 
         this.image = image;

@@ -29,10 +29,7 @@ import components.execution.SimpleBlockingQueue;
 import components.execution.Stable;
 import models.CloudCredential;
 import models.Hardware;
-import models.Location;
 import models.service.HardwareModelService;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daniel on 07.05.15.
@@ -60,7 +57,7 @@ import java.util.concurrent.TimeUnit;
                 report(new HardwareProblems.HardwareNotInDatabase(hardwareInLocation));
             } else {
                 CloudCredential credentialToSearchFor = null;
-                for (CloudCredential cloudCredential : modelHardware.getCloudCredentials()) {
+                for (CloudCredential cloudCredential : modelHardware.cloudCredentials()) {
                     if (cloudCredential.getUuid().equals(hardwareInLocation.credential())) {
                         credentialToSearchFor = cloudCredential;
                         break;
@@ -69,19 +66,6 @@ import java.util.concurrent.TimeUnit;
 
                 if (credentialToSearchFor == null) {
                     report(new HardwareProblems.HardwareMissesCredential(hardwareInLocation));
-                }
-
-                Location locationToSearchFor = null;
-                for (Location location : modelHardware.getLocations()) {
-                    if (location.getCloud().getUuid().equals(hardwareInLocation.cloud()) && location
-                        .getRemoteId().equals(hardwareInLocation.location())) {
-                        locationToSearchFor = location;
-                        break;
-                    }
-                }
-
-                if (locationToSearchFor == null) {
-                    report(new HardwareProblems.HardwareMissesLocation(hardwareInLocation));
                 }
             }
         }

@@ -60,7 +60,8 @@ public class DefaultCloudService implements CloudService {
     @Override
     public DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> getDiscoveryService() {
         return new CompositeDiscoveryService(
-            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService));
+            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService)
+                .getDiscoveryServices());
     }
 
     @Override public ColosseumComputeService computeService() {

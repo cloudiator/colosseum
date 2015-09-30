@@ -2,12 +2,12 @@ package dtos.conversion.converters;
 
 import dtos.conversion.AbstractConverter;
 import dtos.generic.RemoteDto;
-import models.generic.RemoteModel;
+import models.generic.RemoteResource;
 
 /**
  * Created by daniel on 10.08.15.
  */
-public abstract class RemoteConverter<T extends RemoteModel, S extends RemoteDto>
+public abstract class RemoteConverter<T extends RemoteResource, S extends RemoteDto>
     extends AbstractConverter<T, S> {
 
     protected RemoteConverter(Class<T> t, Class<S> s) {

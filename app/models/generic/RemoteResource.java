@@ -19,15 +19,14 @@
 package models.generic;
 
 import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
 
 /**
  * Created by daniel on 12.05.15.
  */
-@MappedSuperclass public abstract class RemoteModel extends Model {
+@Entity @Inheritance(strategy = javax.persistence.InheritanceType.TABLE_PER_CLASS)
+public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState;
     @Column(unique = true, nullable = true) private String remoteId;
@@ -56,12 +55,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
     /**
      * Empty constructor for hibernate
      */
-    protected RemoteModel() {
+    protected RemoteResource() {
     }
 
-    public RemoteModel(String remoteId) {
-        checkNotNull(remoteId);
-        checkArgument(!remoteId.isEmpty());
+    public RemoteResource(String remoteId) {
         this.remoteId = remoteId;
     }
 

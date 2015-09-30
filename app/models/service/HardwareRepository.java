@@ -20,6 +20,6 @@ package models.service;
 
 import models.Hardware;
 
-public interface HardwareRepository extends RemoteModelRepository<Hardware> {
+public interface HardwareRepository extends RemoteResourceRepository<Hardware> {
 
 }

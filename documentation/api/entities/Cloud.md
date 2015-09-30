@@ -2,7 +2,7 @@
 ***
 
 ##Description
-The Clound entity represents possible cloud providers like amazon or flexiant.
+The Cloud entity represents possible cloud providers like amazon or flexiant.
 
 ## GET /api/cloud
 

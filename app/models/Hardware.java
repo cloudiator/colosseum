@@ -54,8 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.hardwareOffer = hardwareOffer;
     }
 
-
-    public HardwareOffer getHardwareOffer() {
+    public HardwareOffer hardwareOffer() {
         return hardwareOffer;
     }
 

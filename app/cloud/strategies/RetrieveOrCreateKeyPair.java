@@ -73,8 +73,7 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
                 keyPairServiceOptional.get().create(tenant.getUuid());
 
             KeyPair keyPair = new KeyPair(cloud, tenant, remoteKeyPair.privateKey().get(),
-                remoteKeyPair.publicKey(), remoteKeyPair.id());
-            keyPair.setCloudProviderId(remoteKeyPair.name());
+                remoteKeyPair.publicKey(), remoteKeyPair.id(), remoteKeyPair.name());
             this.keyPairModelService.save(keyPair);
             return Optional.of(keyPair);
         }

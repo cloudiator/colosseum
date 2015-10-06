@@ -52,9 +52,10 @@ import java.util.Optional;
     protected Location() {
     }
 
-    public Location(String remoteId, Cloud cloud, @Nullable GeoLocation geoLocation,
-        @Nullable Location parent, @Nullable LocationScope locationScope, Boolean isAssignable) {
-        super(remoteId, cloud);
+    public Location(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
+        @Nullable GeoLocation geoLocation, @Nullable Location parent,
+        @Nullable LocationScope locationScope, Boolean isAssignable) {
+        super(remoteId, cloudProviderId, cloud);
         this.geoLocation = geoLocation;
         this.parent = parent;
         this.locationScope = locationScope;

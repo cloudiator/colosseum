@@ -18,9 +18,13 @@
 
 package models.generic;
 
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.05.15.
@@ -29,8 +33,8 @@ import javax.persistence.Inheritance;
 public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState;
-    @Column(unique = true, nullable = true) private String remoteId;
-    @Column(updatable = false) private String cloudProviderId;
+    @Nullable @Column(unique = true, nullable = true) private String remoteId;
+    @Nullable @Column(nullable = true) private String cloudProviderId;
 
     public RemoteState getRemoteState() {
         return remoteState;
@@ -40,33 +44,36 @@ public abstract class RemoteResource extends Model {
         this.remoteState = remoteState;
     }
 
-    public String getRemoteId() {
-        return remoteId;
+    public Optional<String> remoteId() {
+        return Optional.ofNullable(remoteId);
     }
 
-    public void setRemoteId(String remoteId) {
+    public void bindRemoteId(String remoteId) {
+        checkNotNull(remoteId, "Binding null remoteId is not allowed.");
         if (this.remoteId != null) {
-            throw new IllegalStateException(
-                "Changing the remoteId of a RemoteModel is not allowed.");
+            throw new IllegalStateException("RemoteId was already bound.");
         }
         this.remoteId = remoteId;
     }
 
-    /**
-     * Empty constructor for hibernate
-     */
-    protected RemoteResource() {
+    public RemoteResource() {
+
     }
 
-    public RemoteResource(String remoteId) {
+    public RemoteResource(@Nullable String remoteId, @Nullable String cloudProviderId) {
         this.remoteId = remoteId;
+        this.cloudProviderId = cloudProviderId;
     }
 
-    public String getCloudProviderId() {
-        return cloudProviderId;
+    public Optional<String> cloudProviderId() {
+        return Optional.ofNullable(cloudProviderId);
     }
 
-    public void setCloudProviderId(String cloudProviderId) {
+    public void bindCloudProviderId(String cloudProviderId) {
+        checkNotNull(cloudProviderId, "Binding null cloudProviderId is not allowed");
+        if (this.cloudProviderId != null) {
+            throw new IllegalStateException("Changing the cloudProviderId is not allowed.");
+        }
         this.cloudProviderId = cloudProviderId;
     }
 }

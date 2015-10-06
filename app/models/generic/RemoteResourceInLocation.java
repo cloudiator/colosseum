@@ -21,6 +21,7 @@ package models.generic;
 import models.Cloud;
 import models.Location;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -37,8 +38,14 @@ import javax.persistence.ManyToOne;
     protected RemoteResourceInLocation() {
     }
 
-    public RemoteResourceInLocation(String remoteId, Cloud cloud, Location location) {
-        super(remoteId, cloud);
+    public RemoteResourceInLocation(Cloud cloud, Location location) {
+        super(null, null, cloud);
+        this.location = location;
+    }
+
+    public RemoteResourceInLocation(@Nullable String remoteId, @Nullable String cloudProviderId,
+        Cloud cloud, Location location) {
+        super(remoteId, cloudProviderId, cloud);
         this.location = location;
     }
 

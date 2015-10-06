@@ -23,10 +23,7 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.Hardware;
-import models.Image;
-import models.Location;
+import models.*;
 import models.service.ModelService;
 
 /**
@@ -38,15 +35,9 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
     private Long image;
     private Long location;
     private Long hardware;
+    private Long templateOptions;
 
     public VirtualMachineTemplateDto() {
-    }
-
-    public VirtualMachineTemplateDto(Long cloud, Long image, Long location, Long hardware) {
-        this.cloud = cloud;
-        this.image = image;
-        this.location = location;
-        this.hardware = hardware;
     }
 
     public Long getCloud() {
@@ -81,6 +72,14 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
         this.hardware = hardware;
     }
 
+    public Long getTemplateOptions() {
+        return templateOptions;
+    }
+
+    public void setTemplateOptions(Long templateOptions) {
+        this.templateOptions = templateOptions;
+    }
+
     @Override public void validation() {
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
@@ -90,6 +89,9 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
         validator(Long.class).validate(hardware).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
+        validator(Long.class).validate(templateOptions, "templateOptions")
+            .withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.templateOptionsService.get()));
     }
 
     public static class References {
@@ -98,6 +100,7 @@ public class VirtualMachineTemplateDto extends ValidatableDto {
         @Inject private static Provider<ModelService<Image>> imageService;
         @Inject private static Provider<ModelService<Location>> locationService;
         @Inject private static Provider<ModelService<Hardware>> hardwareService;
+        @Inject private static Provider<ModelService<TemplateOptions>> templateOptionsService;
 
         private References() {
         }

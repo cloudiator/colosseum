@@ -76,12 +76,12 @@ public class CreateHardwareInDatabase implements Solution {
         }
 
         //todo check this
-        Hardware hardware =
-            new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(), cloud, location,
-                hardwareNotInDatabase.getHardwareInLocation().name(),
-                getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
-                    hardwareNotInDatabase.getHardwareInLocation().mbRam(),
-                    hardwareNotInDatabase.getHardwareInLocation().gbDisk()));
+        Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(),
+            hardwareNotInDatabase.getHardwareInLocation().cloudProviderId(), cloud, location,
+            hardwareNotInDatabase.getHardwareInLocation().name(),
+            getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
+                hardwareNotInDatabase.getHardwareInLocation().mbRam(),
+                hardwareNotInDatabase.getHardwareInLocation().gbDisk()));
 
         hardwareModelService.save(hardware);
 

@@ -35,15 +35,18 @@ public class VirtualMachineTemplateConverter
     private final ModelService<Image> imageModelService;
     private final ModelService<Location> locationModelService;
     private final ModelService<Hardware> hardwareModelService;
+    private final ModelService<TemplateOptions> templateOptionsModelService;
 
     @Inject protected VirtualMachineTemplateConverter(ModelService<Cloud> cloudModelService,
         ModelService<Image> imageModelService, ModelService<Location> locationModelService,
-        ModelService<Hardware> hardwareModelService) {
+        ModelService<Hardware> hardwareModelService,
+        ModelService<TemplateOptions> templateOptionsModelService) {
         super(VirtualMachineTemplate.class, VirtualMachineTemplateDto.class);
         this.cloudModelService = cloudModelService;
         this.imageModelService = imageModelService;
         this.locationModelService = locationModelService;
         this.hardwareModelService = hardwareModelService;
+        this.templateOptionsModelService = templateOptionsModelService;
     }
 
     @Override public void configure() {
@@ -55,5 +58,8 @@ public class VirtualMachineTemplateConverter
             .withTransformation(new IdToModelTransformer<>(hardwareModelService));
         binding(Long.class, Location.class).fromField("location").toField("location")
             .withTransformation(new IdToModelTransformer<>(locationModelService));
+        binding(Long.class, TemplateOptions.class).fromField("templateOptions")
+            .toField("templateOptions")
+            .withTransformation(new IdToModelTransformer<>(templateOptionsModelService));
     }
 }

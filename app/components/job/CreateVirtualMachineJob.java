@@ -80,9 +80,12 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             BaseColosseumVirtualMachineTemplate.builder();
         TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
         if (keyPairOptional.isPresent()) {
-            templateOptionsBuilder.keyPairName(keyPairOptional.get().getCloudProviderId());
+            templateOptionsBuilder.keyPairName(keyPairOptional.get().cloudProviderId().get());
         }
         templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
+        if (virtualMachine.templateOptions().isPresent()) {
+            templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());
+        }
         builder.templateOptions(templateOptionsBuilder.build());
 
         // create the virtual machine
@@ -90,8 +93,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
 
         // set values to the model
-        virtualMachine.setRemoteId(cloudVirtualMachine.id());
-        virtualMachine.setCloudProviderId(cloudVirtualMachine.cloudProviderId());
+        virtualMachine.bindRemoteId(cloudVirtualMachine.id());
+        virtualMachine.bindCloudProviderId(cloudVirtualMachine.cloudProviderId());
         for (String ip : cloudVirtualMachine.privateAddresses()) {
             virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
         }
@@ -122,7 +125,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             if (publicIpService.isPresent()) {
                 try {
                     final String publicIp =
-                        publicIpService.get().addPublicIp(virtualMachine.getRemoteId());
+                        publicIpService.get().addPublicIp(virtualMachine.remoteId().get());
                     virtualMachine
                         .addIpAddress(new IpAddress(virtualMachine, publicIp, IpType.PUBLIC));
                 } catch (PublicIpException e) {

@@ -66,6 +66,11 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         checkArgument(hardware.location().equals(location));
         checkArgument(location.isAssignable());
 
+        //check that all cloudprovider ids are set
+        checkArgument(location.cloudProviderId().isPresent());
+        checkArgument(hardware.cloudProviderId().isPresent());
+        checkArgument(image.cloudProviderId().isPresent());
+
         this.image = image;
         this.hardware = hardware;
         this.location = location;
@@ -79,15 +84,15 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public String imageId() {
-        return image.getCloudProviderId();
+        return image.cloudProviderId().get();
     }
 
     @Override public String hardwareFlavorId() {
-        return hardware.getCloudProviderId();
+        return hardware.cloudProviderId().get();
     }
 
     @Override public String locationId() {
-        return location.getCloudProviderId();
+        return location.cloudProviderId().get();
     }
 
     @Override public Optional<TemplateOptions> templateOptions() {

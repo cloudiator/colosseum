@@ -38,6 +38,8 @@ import java.util.*;
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
 
+    @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
+
     /**
      * Use cascade type merge due to bug in all
      * https://hibernate.atlassian.net/browse/HHH-7404
@@ -51,15 +53,17 @@ import java.util.*;
     protected VirtualMachine() {
     }
 
-    public VirtualMachine(String remoteId, Cloud cloud, Location location, String name,
-        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword,
-        @Nullable Image image, @Nullable Hardware hardware) {
-        super(remoteId, cloud, location);
+    public VirtualMachine(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
+        Location location, String name, @Nullable String generatedLoginUsername,
+        @Nullable String generatedLoginPassword, @Nullable Image image, @Nullable Hardware hardware,
+        @Nullable TemplateOptions templateOptions) {
+        super(remoteId, cloudProviderId, cloud, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
         this.generatedLoginPassword = generatedLoginPassword;
         this.image = image;
         this.hardware = hardware;
+        this.templateOptions = templateOptions;
     }
 
     public Optional<Image> image() {
@@ -163,5 +167,9 @@ import java.util.*;
             return remotePort().get();
         }
         return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE.port();
+    }
+
+    public Optional<TemplateOptions> templateOptions() {
+        return Optional.ofNullable(templateOptions);
     }
 }

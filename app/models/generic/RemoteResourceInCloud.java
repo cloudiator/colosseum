@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import models.Cloud;
 import models.CloudCredential;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -41,8 +42,14 @@ import java.util.List;
     protected RemoteResourceInCloud() {
     }
 
-    public RemoteResourceInCloud(String remoteId, Cloud cloud) {
-        super(remoteId);
+    public RemoteResourceInCloud(Cloud cloud) {
+        super(null, null);
+        this.cloud = cloud;
+    }
+
+    public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String cloudProviderId,
+        Cloud cloud) {
+        super(remoteId, cloudProviderId);
         this.cloud = cloud;
     }
 

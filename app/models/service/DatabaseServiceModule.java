@@ -181,6 +181,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<SensorDescription>>() {
         }).to(new TypeLiteral<BaseModelService<SensorDescription>>() {
         });
+        //TemplateOptions
+        bind(new TypeLiteral<ModelService<TemplateOptions>>() {
+        }).to(new TypeLiteral<BaseModelService<TemplateOptions>>() {
+        });
         //TimeWindow
         bind(new TypeLiteral<ModelService<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelService<TimeWindow>>() {

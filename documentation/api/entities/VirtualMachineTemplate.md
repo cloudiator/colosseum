@@ -30,7 +30,8 @@ A list of all virtual machine template entities stored in the database.
       "cloud":1
       "image":1
       "location":2
-      "hardware":3
+      "hardware":3,
+      "templateOptions":1
    }
 ]
 ```
@@ -64,7 +65,8 @@ Shows the selected virtual machine template entity.
   "cloud":1
   "image":1
   "location":2
-  "hardware":3s
+  "hardware":3,
+  "templateOptions":1
 }
 ```
 ###Response Codes
@@ -85,14 +87,16 @@ cloud         | The cloud the virtual machine will be started in.
 image    | The cloud image that will be used to start the machine.
 location | The cloud location that will be used to start the machine.
 hardware | The cloud hardware that will be used to start the machine.
+templateOptions | An optional template options entity used to start the machine.
 
 ###Request Example
 ```
 {
-  "cloud":1
-  "image":1
-  "location":2
-  "hardware":3
+  "cloud":1,
+  "image":1,
+  "location":2,
+  "hardware":3,
+  "templateOptions":1
 }
 ```
 ###Response
@@ -117,6 +121,7 @@ cloud         | The cloud the virtual machine will be started in.
 image    | The cloud image that will be used to start the machine.
 location | The cloud location that will be used to start the machine.
 hardware | The cloud hardware that will be used to start the machine.
+templateOptions | An optional template options entity used to start the machine.
 
 ###Request Example
 ```
@@ -124,10 +129,11 @@ PUT /api/vmt/1
 ```
 ```
 {
-  "cloud":1
-  "image":1
-  "location":1
-  "hardware":1
+  "cloud":1,
+  "image":1,
+  "location":1,
+  "hardware":1,
+  "templateOptions":1
 }
 ```
 ###Response

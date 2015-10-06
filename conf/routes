@@ -112,6 +112,13 @@ POST          /api/tenant                                         @controllers.T
 PUT           /api/tenant/:id                                     @controllers.TenantController.put(id: Long)
 DELETE        /api/tenant/:id                                     @controllers.TenantController.delete(id: Long)
 
+#TemplateOptions
+GET           /api/templateOptions                                @controllers.TemplateOptionsController.list()
+GET           /api/templateOptions/:id                            @controllers.TemplateOptionsController.get(id: Long)
+POST          /api/templateOptions                                @controllers.TemplateOptionsController.post()
+PUT           /api/templateOptions/:id                            @controllers.TemplateOptionsController.put(id: Long)
+DELETE        /api/templateOptions/:id                            @controllers.TemplateOptionsController.delete(id: Long)
+
 #FrontendUser
 GET           /api/frontendUser                                   @controllers.FrontendUserController.list()
 GET           /api/frontendUser/:id                               @controllers.FrontendUserController.get(id: Long)

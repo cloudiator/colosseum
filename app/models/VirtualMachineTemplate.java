@@ -21,10 +21,12 @@ package models;
 import com.google.common.collect.ImmutableList;
 import models.generic.Model;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -40,6 +42,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = false) private Image image;
     @ManyToOne(optional = false) private Location location;
     @ManyToOne(optional = false) private Hardware hardware;
+    @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
 
     /**
      * Foreign relations
@@ -53,7 +56,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected VirtualMachineTemplate() {
     }
 
-    public VirtualMachineTemplate(Cloud cloud, Image image, Location location, Hardware hardware) {
+    public VirtualMachineTemplate(Cloud cloud, Image image, Location location, Hardware hardware,
+        @Nullable TemplateOptions templateOptions) {
         checkNotNull(cloud);
         this.cloud = cloud;
         checkNotNull(image);
@@ -62,6 +66,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.location = location;
         checkNotNull(hardware);
         this.hardware = hardware;
+        this.templateOptions = templateOptions;
     }
 
     public List<ApplicationComponent> getApplicationComponentsUsedFor() {
@@ -82,5 +87,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public Cloud cloud() {
         return cloud;
+    }
+
+    public Optional<TemplateOptions> templateOptions() {
+        return Optional.ofNullable(templateOptions);
     }
 }

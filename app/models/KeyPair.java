@@ -47,8 +47,8 @@ public class KeyPair extends RemoteResource {
     }
 
     public KeyPair(Cloud cloud, Tenant tenant, String privateKey, @Nullable String publicKey,
-        @Nullable String remoteId) {
-        super(remoteId);
+        @Nullable String remoteId, @Nullable String cloudProviderId) {
+        super(remoteId, cloudProviderId);
         this.cloud = cloud;
         this.tenant = tenant;
         this.privateKey = privateKey;

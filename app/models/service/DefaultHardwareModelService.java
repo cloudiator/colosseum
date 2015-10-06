@@ -37,7 +37,7 @@ public class DefaultHardwareModelService extends BaseRemoteModelService<Hardware
     public Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
         String UuidOfCloud) {
         for (Hardware hardware : getAll()) {
-            if (hardware.getRemoteId().equals(cloudUuid) && hardware.cloud().getUuid()
+            if (hardware.remoteId().equals(cloudUuid) && hardware.cloud().getUuid()
                 .equals(UuidOfCloud)) {
                 return hardware;
             }

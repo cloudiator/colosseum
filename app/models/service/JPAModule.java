@@ -183,6 +183,10 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<SensorDescription>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<SensorDescription>>() {
         });
+        //TemplateOptions
+        bind(new TypeLiteral<ModelRepository<TemplateOptions>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<TemplateOptions>>() {
+        });
         //TimeWindow
         bind(new TypeLiteral<ModelRepository<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<TimeWindow>>() {

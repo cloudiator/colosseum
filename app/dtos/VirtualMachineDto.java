@@ -24,10 +24,7 @@ import dtos.generic.RemoteDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.Hardware;
-import models.Image;
-import models.Location;
+import models.*;
 import models.service.ModelService;
 
 /**
@@ -40,17 +37,10 @@ public class VirtualMachineDto extends RemoteDto {
     private Long image;
     private Long hardware;
     private Long location;
+    private Long templateOptions;
 
     public VirtualMachineDto() {
         super();
-    }
-
-    public VirtualMachineDto(String name, Long cloud, Long image, Long hardware, Long location) {
-        this.name = name;
-        this.cloud = cloud;
-        this.image = image;
-        this.hardware = hardware;
-        this.location = location;
     }
 
     public String getName() {
@@ -93,6 +83,14 @@ public class VirtualMachineDto extends RemoteDto {
         this.location = location;
     }
 
+    public Long getTemplateOptions() {
+        return templateOptions;
+    }
+
+    public void setTemplateOptions(Long templateOptions) {
+        this.templateOptions = templateOptions;
+    }
+
     @Override public void validation() {
         super.validation();
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
@@ -104,6 +102,9 @@ public class VirtualMachineDto extends RemoteDto {
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
         validator(Long.class).validate(hardware, "hardware").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
+        validator(Long.class).validate(templateOptions, "templateOptions")
+            .withValidator(new NotNullValidator())
+            .withValidator(new ModelIdValidator<>(References.templateOptionsService.get()));
     }
 
     public static class References {
@@ -112,6 +113,7 @@ public class VirtualMachineDto extends RemoteDto {
         @Inject private static Provider<ModelService<Image>> imageService;
         @Inject private static Provider<ModelService<Location>> locationService;
         @Inject private static Provider<ModelService<Hardware>> hardwareService;
+        @Inject private static Provider<ModelService<TemplateOptions>> templateOptionsService;
 
         private References() {
         }

@@ -35,6 +35,13 @@ import java.util.Map;
     @ElementCollection @MapKeyColumn(name = "tagName") @Column(name = "tagValue")
     private Map<String, String> tags;
 
+    /**
+     * Empty constructor for hibernate.
+     */
+    protected TemplateOptions(){
+
+    }
+
     public Map<String, String> tags() {
         return ImmutableMap.copyOf(tags);
     }

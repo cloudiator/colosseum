@@ -103,7 +103,6 @@ public class VirtualMachineDto extends RemoteDto {
         validator(Long.class).validate(hardware, "hardware").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareService.get()));
         validator(Long.class).validate(templateOptions, "templateOptions")
-            .withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.templateOptionsService.get()));
     }
 

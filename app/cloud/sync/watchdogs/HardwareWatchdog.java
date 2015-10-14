@@ -48,7 +48,7 @@ import models.service.HardwareModelService;
 
 
     @Override protected void watch(CloudService cloudService) {
-        for (HardwareInLocation hardwareInLocation : cloudService.getDiscoveryService()
+        for (HardwareInLocation hardwareInLocation : cloudService.discoveryService()
             .listHardwareFlavors()) {
 
             Hardware modelHardware = hardwareModelService.getByRemoteId(hardwareInLocation.id());

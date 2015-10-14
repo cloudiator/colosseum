@@ -35,6 +35,8 @@ public interface ColosseumComputeService {
     VirtualMachineInLocation createVirtualMachine(
         ColosseumVirtualMachineTemplate virtualMachineTemplate);
 
+    void deleteVirtualMachine(VirtualMachine virtualMachine);
+
     //todo: check if virtual machine should be closed to a tenant
     RemoteConnection remoteConnection(Tenant tenant, VirtualMachine virtualMachine);
 

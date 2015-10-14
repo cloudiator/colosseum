@@ -72,12 +72,10 @@ public abstract class GenericJob<T extends Model> implements Job {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            System.out.println(resourceUuid);
             t = this.modelService.getByUuid(resourceUuid);
         }
         this.doWork(t, modelService, colosseumComputeService,
             tenantModelService.getById(tenant.getId()));
-        this.modelService.save(t);
     }
 
     protected abstract void doWork(T t, ModelService<T> modelService,

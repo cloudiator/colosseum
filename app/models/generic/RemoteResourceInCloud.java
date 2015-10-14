@@ -27,6 +27,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import java.util.List;
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 22.09.15.
@@ -35,6 +38,7 @@ import java.util.List;
 
     @ManyToOne(optional = false) private Cloud cloud;
     @ManyToMany private List<CloudCredential> cloudCredentials;
+    @ManyToOne private CloudCredential owner;
 
     /**
      * No-args constructor for hibernate.
@@ -48,9 +52,10 @@ import java.util.List;
     }
 
     public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String cloudProviderId,
-        Cloud cloud) {
+        Cloud cloud, @Nullable CloudCredential owner) {
         super(remoteId, cloudProviderId);
         this.cloud = cloud;
+        this.owner = owner;
     }
 
     public Cloud cloud() {
@@ -63,5 +68,17 @@ import java.util.List;
 
     public void addCloudCredential(CloudCredential cloudCredential) {
         this.cloudCredentials.add(cloudCredential);
+    }
+
+    public Optional<CloudCredential> owner() {
+        return Optional.ofNullable(owner);
+    }
+
+    public void bindOwner(CloudCredential owner) {
+        checkNotNull("Setting a null owner is not allowed");
+        if (this.owner != null) {
+            throw new IllegalStateException("Changing the owner is not allowed.");
+        }
+        this.owner = owner;
     }
 }

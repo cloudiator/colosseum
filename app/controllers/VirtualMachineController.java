@@ -54,7 +54,13 @@ public class VirtualMachineController extends
 
     @Override protected void postPost(VirtualMachine virtualMachine) {
         virtualMachine.addCloudCredential(getCloudCredential(virtualMachine.cloud()));
+        virtualMachine.bindOwner(getCloudCredential(virtualMachine.cloud()));
         this.virtualMachineModelService.save(virtualMachine);
         this.jobService.newVirtualMachineJob(virtualMachine, getActiveTenant());
+    }
+
+    @Override protected boolean preDelete(VirtualMachine entity) {
+        this.jobService.newDeleteVirtualMachineJob(entity, getActiveTenant());
+        return false;
     }
 }

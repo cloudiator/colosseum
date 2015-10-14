@@ -7,6 +7,8 @@ name := "colosseum"
 
 version := "0.1.0-SNAPSHOT"
 
+resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
+
 resolvers := (
   "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
   ) +: resolvers.value

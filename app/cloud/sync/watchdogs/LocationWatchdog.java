@@ -49,7 +49,7 @@ import models.service.LocationModelService;
 
     @Override protected void watch(CloudService cloudService) {
 
-        for (LocationInCloud location : cloudService.getDiscoveryService().listLocations()) {
+        for (LocationInCloud location : cloudService.discoveryService().listLocations()) {
             Location modelLocation = locationModelService.getByRemoteId(location.id());
 
             if (modelLocation == null) {

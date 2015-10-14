@@ -16,22 +16,18 @@
  * under the License.
  */
 
-package cloud;
-
-import cloud.colosseum.ColosseumComputeService;
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
-
+package controllers.generic;
 
 /**
- * Created by daniel on 20.05.15.
+ * Created by daniel on 14.10.15.
  */
-public interface CloudService {
+public class BadRequestException extends Exception {
 
-    DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> discoveryService();
+    public BadRequestException(String message) {
+        super(message);
+    }
 
-    ColosseumComputeService computeService();
+    public BadRequestException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }

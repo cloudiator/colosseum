@@ -19,6 +19,7 @@
 package models.generic;
 
 import models.Cloud;
+import models.CloudCredential;
 import models.Location;
 
 import javax.annotation.Nullable;
@@ -39,13 +40,13 @@ import javax.persistence.ManyToOne;
     }
 
     public RemoteResourceInLocation(Cloud cloud, Location location) {
-        super(null, null, cloud);
+        super(cloud);
         this.location = location;
     }
 
     public RemoteResourceInLocation(@Nullable String remoteId, @Nullable String cloudProviderId,
-        Cloud cloud, Location location) {
-        super(remoteId, cloudProviderId, cloud);
+        Cloud cloud, @Nullable CloudCredential owner, Location location) {
+        super(remoteId, cloudProviderId, cloud, owner);
         this.location = location;
     }
 

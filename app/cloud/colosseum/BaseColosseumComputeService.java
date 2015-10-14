@@ -31,6 +31,7 @@ import models.CloudCredential;
 import models.Tenant;
 import models.VirtualMachine;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -57,6 +58,13 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
         ColosseumVirtualMachineTemplate virtualMachineTemplate) {
         return this.computeServices.getComputeService(virtualMachineTemplate.cloudCredentialUuid())
             .createVirtualMachine(virtualMachineTemplate);
+    }
+
+    @Override public void deleteVirtualMachine(VirtualMachine virtualMachine) {
+        checkArgument(virtualMachine.owner().isPresent());
+        checkArgument(virtualMachine.cloudProviderId().isPresent());
+        this.computeServices.getComputeService(virtualMachine.owner().get().getUuid())
+            .deleteVirtualMachine(virtualMachine.cloudProviderId().get());
     }
 
     @Override

@@ -64,4 +64,9 @@ import models.service.ModelService;
             colosseumComputeService, tenant));
     }
 
+    @Override public void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
+        this.jobQueue.add(new DeleteVirtualMachineJob(virtualMachine, virtualMachineModelService,
+            tenantModelService, colosseumComputeService, tenant));
+    }
+
 }

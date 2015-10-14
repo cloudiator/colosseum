@@ -47,7 +47,7 @@ import models.service.ImageModelService;
 
 
     @Override protected void watch(CloudService cloudService) {
-        for (ImageInLocation imageInLocation : cloudService.getDiscoveryService().listImages()) {
+        for (ImageInLocation imageInLocation : cloudService.discoveryService().listImages()) {
 
             models.Image modelImage = imageModelService.getByRemoteId(imageInLocation.id());
 

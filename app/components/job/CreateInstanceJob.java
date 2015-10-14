@@ -67,6 +67,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         } catch (RegistrationException | LcaException | ContainerException e) {
             throw new JobException(e);
         }
+        modelService.save(instance);
     }
 
     private LifecycleClient buildClient(Instance instance)

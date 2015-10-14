@@ -58,7 +58,7 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 // disable the generation of general scaladoc, due to bug
 // https://issues.scala-lang.org/browse/SI-4744
 // the api-doc task will still generate scala and java doc
-// but ignores the problamatic files.
+// but ignores the problematic files.
 
 publishArtifact in(Compile, packageDoc) := false
 

@@ -55,7 +55,7 @@ import java.util.Optional;
     public Location(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
         @Nullable GeoLocation geoLocation, @Nullable Location parent,
         @Nullable LocationScope locationScope, Boolean isAssignable) {
-        super(remoteId, cloudProviderId, cloud);
+        super(remoteId, cloudProviderId, cloud, null);
         this.geoLocation = geoLocation;
         this.parent = parent;
         this.locationScope = locationScope;

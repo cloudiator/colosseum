@@ -71,8 +71,7 @@ public class DecoratingComputeService implements
     }
 
     @Override public void deleteVirtualMachine(String s) {
-        //TODO: implement this.
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.delegate.deleteVirtualMachine(s);
     }
 
     @Override public VirtualMachineInLocation createVirtualMachine(

@@ -260,7 +260,16 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
             return badRequest(filledForm.errorsAsJson());
         }
 
-        final V postDto = prePost(filledForm.get());
+
+        final V postDto = filledForm.get();
+
+        try {
+            prePost(postDto);
+        } catch (BadRequestException e) {
+            return badRequest(e.getMessage());
+        }
+
+
         final T entity = this.conversionService.toModel(postDto, this.getInstance());
 
         this.modelService.save(entity);
@@ -303,7 +312,12 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
 
         final W putDto = filledForm.get();
-        prePut(putDto, entity);
+        try {
+            prePut(putDto, entity);
+        } catch (BadRequestException e) {
+            return badRequest(e.getMessage());
+        }
+
         entity = this.conversionService.toModel(putDto, entity);
         this.modelService.save(entity);
 
@@ -331,30 +345,76 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
             return this.notFound(id);
         }
 
-        this.modelService.delete(preDelete(entity));
-        postDelete();
+        if (preDelete(entity)) {
+            this.modelService.delete(entity);
+            postDelete();
+        }
+
         return ok();
     }
 
-    protected V prePost(V postDto) {
-        return postDto;
+    /**
+     * PrePost extension point. Allows modification of the dto before it is
+     * converted into an entity.
+     * <p>
+     * Allows to cancel the post operating by throwing {@link BadRequestException}.
+     *
+     * @param postDto the dto transmitted for the post operation.
+     * @throws BadRequestException if the request should be canceled.
+     */
+    protected void prePost(V postDto) throws BadRequestException {
+        //intentionally left empty
     }
 
+    /**
+     * PostPost extension points. Allows action to be added after the post method.
+     *
+     * @param entity the entity after the post operation.
+     */
     protected void postPost(T entity) {
         // intentionally left empty
     }
 
-    protected void prePut(W putDto, T entity) {
+    /**
+     * PrePut extension point. Allows modification of the dto as well as the entity
+     * before the dto is bound to the entity.
+     * <p>
+     * Allows to cancel the put operating by throwing {@link BadRequestException}.
+     *
+     * @param putDto the dto transmitted for the put operation.
+     * @param entity the entity state before the put operating.
+     * @throws BadRequestException if the request should be canceled.
+     */
+    protected void prePut(W putDto, T entity) throws BadRequestException {
+        //intentionally left empty
     }
 
+    /**
+     * PostPut extension point. Allows actions to be added after the put operation.
+     *
+     * @param entity the entity after the put operation.
+     */
     protected void postPut(T entity) {
         //intentionally left empty
     }
 
-    protected T preDelete(T entity) {
-        return entity;
+    /**
+     * PreDelete extension point. Allows actions to be executed before the delete operation.
+     * <p>
+     * Allows to cancel/postpone the delete operation in the database by return false.
+     *
+     * @param entity the entity to be deleted.
+     * @return true of the delete operation should continue, false if not.
+     */
+    protected boolean preDelete(T entity) {
+        return true;
     }
 
+    /**
+     * PostDelete extension point. Allows actions to be executed after the delete operation.
+     * <p>
+     * If the preDelete operation cancels the deletion, this method will NOT be called.
+     */
     protected void postDelete() {
         //intentionally left empty
     }

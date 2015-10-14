@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/cloudiator/colosseum.svg?branch=master)](https://travis-ci.org/cloudiator/colosseum)
+
 Colosseum
 =====================================
 

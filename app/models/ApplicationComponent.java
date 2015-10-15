@@ -18,7 +18,6 @@
 
 package models;
 
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ImmutableList;
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import models.generic.Model;
@@ -27,9 +26,8 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -91,19 +89,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public List<PortProvided> getProvidedPorts() {
-        //noinspection unchecked
-        final List<Port> ports =
-            new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortProvided));
-        //noinspection unchecked todo
-        return ImmutableList.copyOf((Iterator<PortProvided>) ports);
+        final List<PortProvided> ports =
+            getPorts().stream().filter(port -> port instanceof PortProvided)
+                .map(port -> (PortProvided) port).collect(Collectors.toList());
+        return ImmutableList.copyOf(ports);
     }
 
     public List<PortRequired> getRequiredPorts() {
-        //noinspection unchecked
-        final List<Port> ports =
-            new ArrayList<>(Collections2.filter(getPorts(), port -> port instanceof PortRequired));
-        //noinspection unchecked todo
-        return ImmutableList.copyOf((Iterator<PortRequired>) ports);
+        final List<PortRequired> ports =
+            getPorts().stream().filter(port -> port instanceof PortRequired)
+                .map(port -> (PortRequired) port).collect(Collectors.toList());
+        return ImmutableList.copyOf(ports);
     }
 
     public ContainerType containerTypeOrDefault() {

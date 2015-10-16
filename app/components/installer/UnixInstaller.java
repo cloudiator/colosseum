@@ -95,8 +95,8 @@ public class UnixInstaller extends AbstractInstaller {
 
         //start visor
         this.remoteConnection.executeCommand(
-            "java -jar " + UnixInstaller.VISOR_JAR + " -conf " + UnixInstaller.VISOR_PROPERTIES
-                + " &> /dev/null &");
+            "nohup bash -c 'java -jar " + UnixInstaller.VISOR_JAR + " -conf "
+                + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
         Logger.debug("Visor started successfully!");
     }
 
@@ -109,8 +109,8 @@ public class UnixInstaller extends AbstractInstaller {
             "tar  zxvf " + UnixInstaller.KAIROSDB_ARCHIVE + " -C " + UnixInstaller.KAIRROSDB_DIR
                 + " --strip-components=1");
 
-        this.remoteConnection
-            .executeCommand(" sudo " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
+        this.remoteConnection.executeCommand(
+            " sudo nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
         Logger.debug("KairosDB started successfully!");
     }
 
@@ -122,12 +122,13 @@ public class UnixInstaller extends AbstractInstaller {
         //install docker
         Logger.debug("Installing and starting Docker...");
         this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_INSTALL);
-        this.remoteConnection.executeCommand("sudo ./" + UnixInstaller.DOCKER_INSTALL);
-        this.remoteConnection.executeCommand("sudo service docker restart");
+        this.remoteConnection.executeCommand(
+            "sudo nohup ./" + UnixInstaller.DOCKER_INSTALL + " > docker_install.out 2>&1");
+        this.remoteConnection
+            .executeCommand("sudo nohup bash -c 'service docker restart' > docker_start.out 2>&1 ");
 
         //start Lance
-        Logger.debug("Installation of Docker finished, setting up Lance...");
-        this.remoteConnection.executeCommand("nohup sudo java " +
+        this.remoteConnection.executeCommand("nohup bash -c 'java " +
             " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
             " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
             " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +
@@ -135,7 +136,7 @@ public class UnixInstaller extends AbstractInstaller {
             " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
             " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
             " -jar " + UnixInstaller.LANCE_JAR +
-            " > lance.out 2>&1 &");
+            " > lance.out 2>&1 &' > lance.out 2>&1");
 
         Logger.debug("Lance installed and started successfully!");
     }

@@ -18,7 +18,6 @@
 
 package models;
 
-import com.google.common.collect.Iterables;
 import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
@@ -83,26 +82,23 @@ import java.util.*;
     }
 
     public Optional<IpAddress> publicIpAddress() {
-        final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
-            return ipAddress.getIpType().equals(IpType.PUBLIC);
-        });
-        if (ipAddresses.iterator().hasNext()) {
-            return Optional.of(ipAddresses.iterator().next());
-        }
-        return Optional.empty();
+        return ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PUBLIC))
+            .findAny();
     }
 
     public Optional<IpAddress> privateIpAddress(boolean fallbackToPublic) {
-        final Iterable<IpAddress> ipAddresses = Iterables.filter(this.ipAddresses, ipAddress -> {
-            return ipAddress.getIpType().equals(IpType.PRIVATE);
-        });
-        if (ipAddresses.iterator().hasNext()) {
-            Optional.of(ipAddresses.iterator().next());
+
+        final Optional<IpAddress> any =
+            ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
+                .findAny();
+
+        if (any.isPresent()) {
+            return any;
         }
+
         if (fallbackToPublic) {
             return publicIpAddress();
         }
-        return Optional.empty();
     }
 
     public String name() {

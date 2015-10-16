@@ -92,13 +92,10 @@ import java.util.*;
             ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
                 .findAny();
 
-        if (any.isPresent()) {
-            return any;
-        }
-
-        if (fallbackToPublic) {
+        if (!any.isPresent() && fallbackToPublic) {
             return publicIpAddress();
         }
+        return any;
     }
 
     public String name() {

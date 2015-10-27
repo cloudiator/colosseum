@@ -25,6 +25,8 @@ import models.VirtualMachine;
 import play.Logger;
 import play.Play;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
 /**
  * Created by Daniel Seybold on 20.05.2015.
  */
@@ -41,6 +43,8 @@ public class WindowsInstaller extends AbstractInstaller {
         Play.application().configuration().getString("colosseum.installer.windows.java.download");
     private static final String SEVEN_ZIP_DOWNLOAD =
         Play.application().configuration().getString("colosseum.installer.windows.7zip.download");
+    private final String user;
+    private final String password;
 
 
 
@@ -48,7 +52,12 @@ public class WindowsInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine, tenant);
 
-        this.homeDir = "C:\\Users\\" + virtualMachine.loginName().get();
+        this.user = virtualMachine.loginName().get();
+        checkArgument(virtualMachine.loginPassword().isPresent(), "Expected login password for WindowsInstaller");
+        this.password = virtualMachine.loginPassword().get();
+
+        this.homeDir = "C:\\Users\\" + this.user;
+
     }
 
     @Override public void initSources() {
@@ -135,8 +144,8 @@ public class WindowsInstaller extends AbstractInstaller {
                     "/create " +
                     "/st 00:00  " +
                     "/sc ONCE " +
-                    "/ru " + virtualMachine.loginName().get() +" " +
-                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/ru " + this.user +" " +
+                    "/rp " + this.password + " " +
                     "/tn " + visorJobId +
                     " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
         this.waitForSchtaskCreation();
@@ -177,8 +186,8 @@ public class WindowsInstaller extends AbstractInstaller {
             "schtasks.exe /create " +
                     "/st 00:00  " +
                     "/sc ONCE " +
-                    "/ru " + virtualMachine.loginName().get() +" " +
-                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/ru " + this.user +" " +
+                    "/rp " + this.password + " " +
                     "/tn " + kairosJobId + " " +
                     "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
         this.waitForSchtaskCreation();
@@ -216,8 +225,8 @@ public class WindowsInstaller extends AbstractInstaller {
                     "/create " +
                     "/st 00:00  " +
                     "/sc ONCE " +
-                    "/ru " + virtualMachine.loginName().get() +" " +
-                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/ru " + this.user +" " +
+                    "/rp " + this.password + " " +
                     "/tn " + lanceJobId + " " +
                     "/tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT + "\"");
         this.waitForSchtaskCreation();

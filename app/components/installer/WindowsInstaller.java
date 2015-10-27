@@ -124,10 +124,9 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //set firewall rules
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
+            "powershell -command netsh advfirewall firewall add rule name = 'Visor Rest Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.restPort"));
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=9001");
-
+            "powershell -command netsh advfirewall firewall add rule name = 'Visor Telnet Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.telnetPort"));
 
 
         //create schtaks
@@ -164,7 +163,7 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //set firewall rule
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Open Kairos Port 8080' dir = in action = allow protocol=TCP localport=8080");
+            "powershell -command netsh advfirewall firewall add rule name = 'Kairos Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.kairosPort"));
 
         //create a .bat file to start kairosDB, because it is not possible to pass schtasks paramters using overthere
         String startCommand =
@@ -194,9 +193,9 @@ public class WindowsInstaller extends AbstractInstaller {
 
         Logger.error("Opening Firewall ports for Lance...");
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=1099");
+            "powershell -command netsh advfirewall firewall add rule name = 'Lance RMI' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.lance.rmiPort"));
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=33033");
+            "powershell -command netsh advfirewall firewall add rule name = 'Open Visor Rest Port 9001' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.lance.serverPort"));
 
         //create a .bat file to start Lance, because it is not possible to pass schtasks paramters using overthere
         String startCommand = " java " +

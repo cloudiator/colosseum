@@ -157,6 +157,7 @@ abstract class AbstractInstaller implements InstallApi {
     }
 
     @Override public void close() {
+        Logger.info("Installation of all tools finished, closing remote connection!");
         this.remoteConnection.close();
     }
 }

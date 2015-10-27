@@ -132,8 +132,14 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //create schtaks
         this.remoteConnection.executeCommand(
-            "schtasks.exe /create /st 00:00  /sc ONCE /tn " + visorJobId + " /tr \"" + this.homeDir
-                + "\\" + WindowsInstaller.VISOR_BAT + "\"");
+            "schtasks.exe " +
+                    "/create " +
+                    "/st 00:00  " +
+                    "/sc ONCE " +
+                    "/ru " + virtualMachine.loginName().get() +" " +
+                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/tn " + visorJobId +
+                    " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
         this.waitForSchtaskCreation();
         //run schtask
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId);
@@ -169,8 +175,13 @@ public class WindowsInstaller extends AbstractInstaller {
         //start kairosdb in backround
         String kairosJobId = "kairosDB";
         this.remoteConnection.executeCommand(
-            "schtasks.exe /create /st 00:00  /sc ONCE /tn " + kairosJobId + " /tr \"" + this.homeDir
-                + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
+            "schtasks.exe /create " +
+                    "/st 00:00  " +
+                    "/sc ONCE " +
+                    "/ru " + virtualMachine.loginName().get() +" " +
+                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/tn " + kairosJobId + " " +
+                    "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
         this.waitForSchtaskCreation();
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
         Logger.debug("KairosDB successfully started!");
@@ -202,8 +213,14 @@ public class WindowsInstaller extends AbstractInstaller {
         //start lance in backround
         String lanceJobId = "lance";
         this.remoteConnection.executeCommand(
-            "schtasks.exe /create /st 00:00  /sc ONCE /tn " + lanceJobId + " /tr \"" + this.homeDir
-                + "\\" + WindowsInstaller.LANCE_BAT + "\"");
+            "schtasks.exe " +
+                    "/create " +
+                    "/st 00:00  " +
+                    "/sc ONCE " +
+                    "/ru " + virtualMachine.loginName().get() +" " +
+                    "/rp " + virtualMachine.loginPassword() + " " +
+                    "/tn " + lanceJobId + " " +
+                    "/tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT + "\"");
         this.waitForSchtaskCreation();
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + lanceJobId);
         Logger.debug("Lance successfully started!");

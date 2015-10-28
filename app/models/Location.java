@@ -27,9 +27,14 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Entity public class Location extends RemoteResourceInCloud {
 
     @Nullable @ManyToOne(optional = true) private GeoLocation geoLocation;
+
+    @Column(updatable = false, nullable = false) private String name;
 
     @ManyToOne @Nullable private Location parent;
 
@@ -53,9 +58,12 @@ import java.util.Optional;
     }
 
     public Location(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        @Nullable GeoLocation geoLocation, @Nullable Location parent,
+        String name, @Nullable GeoLocation geoLocation, @Nullable Location parent,
         @Nullable LocationScope locationScope, Boolean isAssignable) {
         super(remoteId, cloudProviderId, cloud, null);
+        checkNotNull(name);
+        checkArgument(!name.isEmpty());
+        this.name = name;
         this.geoLocation = geoLocation;
         this.parent = parent;
         this.locationScope = locationScope;

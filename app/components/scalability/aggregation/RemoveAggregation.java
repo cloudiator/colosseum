@@ -18,10 +18,16 @@
 
 package components.scalability.aggregation;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import controllers.ComposedMonitorController;
 import de.uniulm.omi.cloudiator.axe.aggregator.AggregatorService;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.ComposedMonitor;
 import models.Monitor;
+import models.service.ApiAccessTokenService;
+import models.service.FrontendUserService;
+import models.service.ModelService;
 
 import java.rmi.RemoteException;
 
@@ -37,8 +43,22 @@ public class RemoveAggregation extends MonitorAggregation {
     @Override public void execute(AggregatorServiceAccess service) {
         try {
             service.stopAggregation(getObject().getId());
+
+            ComposedMonitor entity = References.modelService.getById(getObject().getId());
+
+            if (entity == null) {
+                LOGGER.info("Could not remove stopped ComposedMonitor from DB, since it was not available.");
+                return;
+            }
+
+            References.modelService.delete(entity);
+
         } catch (RemoteException e) {
             LOGGER.error("Error when calling remote object to stop aggregation.");
         }
+    }
+
+    public static class References {
+        @Inject private static ModelService<ComposedMonitor> modelService;
     }
 }

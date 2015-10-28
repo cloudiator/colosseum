@@ -38,7 +38,12 @@ public class AggregationAccessService {
     private final static Map<String, AggregatorServiceAccess> services = new ConcurrentHashMap<String, AggregatorServiceAccess>();
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key){
+
+    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key) {
+        return getService(ip, port, key, false);
+    }
+
+    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key, boolean retry){
 
         String mapKey = ip + "_" + port + "_" + key;
 
@@ -54,6 +59,16 @@ public class AggregationAccessService {
                 LOGGER.error("Error while calling remote object.", e);
             } catch (NotBoundException e) {
                 LOGGER.error("Remote object was not bound in registry.", e);
+            }
+        } else {
+            if(retry == true){
+                LOGGER.error("Could not locate remote object even after a retry.");
+            } else {
+                try{
+                    services.get(mapKey).ping();
+                } catch (RemoteException re){ // TODO outsource exception handling into separate client class
+                    return getService(ip, port, key, true);
+                }
             }
         }
 

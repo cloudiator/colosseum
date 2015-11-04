@@ -16,49 +16,34 @@
  * under the License.
  */
 
-package cloud.sync.solutions;
+package cloud.sync.detectors;
 
 import cloud.resources.LocationInCloud;
 import cloud.sync.Problem;
-import cloud.sync.Solution;
-import cloud.sync.SolutionException;
+import cloud.sync.ProblemDetector;
 import cloud.sync.problems.LocationProblems;
 import com.google.inject.Inject;
-import models.CloudCredential;
 import models.Location;
 import models.service.LocationModelService;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import java.util.Optional;
 
 /**
- * Created by daniel on 07.05.15.
+ * Created by daniel on 04.11.15.
  */
-public class ConnectLocationToCredential implements Solution {
+public class LocationNotInDatabaseDetector implements ProblemDetector<LocationInCloud> {
 
     private final LocationModelService locationModelService;
 
-    @Inject public ConnectLocationToCredential(LocationModelService locationModelService) {
+    @Inject public LocationNotInDatabaseDetector(LocationModelService locationModelService) {
         this.locationModelService = locationModelService;
     }
 
-    @Override public boolean isSolutionFor(Problem problem) {
-        return problem instanceof LocationProblems.LocationMissesCredential;
-    }
-
-    @Override public void applyTo(Problem problem) throws SolutionException {
-        checkArgument(isSolutionFor(problem));
-
-        LocationInCloud locationInCloud =
-            ((LocationProblems.LocationMissesCredential) problem).getLocationInCloud();
-
+    @Override public Optional<Problem> apply(LocationInCloud locationInCloud) {
         Location location = locationModelService.getByRemoteId(locationInCloud.id());
-        CloudCredential cloudCredential = locationInCloud.credential();
-
-        if (location == null || cloudCredential == null) {
-            throw new SolutionException();
+        if (location == null) {
+            return Optional.of(new LocationProblems.LocationNotInDatabase(locationInCloud));
         }
-
-        location.addCloudCredential(cloudCredential);
-        locationModelService.save(location);
+        return Optional.empty();
     }
 }

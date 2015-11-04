@@ -27,7 +27,6 @@ import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Image;
 import models.service.ImageModelService;
-import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -37,13 +36,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class ConnectImageToCredential implements Solution {
 
     private final ImageModelService imageModelService;
-    private final ModelService<CloudCredential> cloudCredentialModelService;
 
-    @Inject public ConnectImageToCredential(ImageModelService imageModelService,
-        ModelService<CloudCredential> cloudCredentialModelService) {
+    @Inject public ConnectImageToCredential(ImageModelService imageModelService) {
 
         this.imageModelService = imageModelService;
-        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -56,8 +52,7 @@ public class ConnectImageToCredential implements Solution {
             ((ImageProblems.ImageMissesCredential) problem).getImageInLocation();
 
         Image modelImage = imageModelService.getByRemoteId(imageInLocation.id());
-        CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(imageInLocation.credential());
+        CloudCredential cloudCredential = imageInLocation.credential();
 
         if (modelImage == null || cloudCredential == null) {
             throw new SolutionException();

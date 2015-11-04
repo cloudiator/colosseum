@@ -35,12 +35,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class CreateLocationInDatabase implements Solution {
 
     private final ModelService<Location> locationModelService;
-    private final ModelService<Cloud> cloudModelService;
 
-    @Inject public CreateLocationInDatabase(ModelService<Location> locationModelService,
-        ModelService<Cloud> cloudModelService) {
+    @Inject public CreateLocationInDatabase(ModelService<Location> locationModelService) {
         this.locationModelService = locationModelService;
-        this.cloudModelService = cloudModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -52,8 +49,7 @@ public class CreateLocationInDatabase implements Solution {
         LocationProblems.LocationNotInDatabase locationNotInDatabase =
             (LocationProblems.LocationNotInDatabase) problem;
 
-        Cloud cloud =
-            cloudModelService.getByUuid(locationNotInDatabase.getLocationInCloud().cloud());
+        Cloud cloud = locationNotInDatabase.getLocationInCloud().cloud();
 
         String remoteId = locationNotInDatabase.getLocationInCloud().id();
         Location location =

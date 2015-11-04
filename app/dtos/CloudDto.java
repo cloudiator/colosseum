@@ -69,9 +69,7 @@ public class CloudDto extends ValidatableDto {
 
     @Override public void validation() {
         validator(String.class).validate(this.name).withValidator(new NotNullOrEmptyValidator());
-        validator(String.class).validate(this.endpoint)
-            .withValidator(new NotNullOrEmptyValidator());
-        validator(Long.class).validate(this.api,"api").withValidator(new NotNullValidator())
+        validator(Long.class).validate(this.api, "api").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.apiService.get()));
     }
 

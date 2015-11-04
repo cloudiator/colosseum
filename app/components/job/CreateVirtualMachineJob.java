@@ -120,8 +120,8 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         modelService.save(virtualMachine);
 
         if (!virtualMachine.publicIpAddress().isPresent()) {
-            final Optional<PublicIpService> publicIpService = computeService
-                .getPublicIpService(virtualMachine.cloudCredentials().get(0).getUuid());
+            final Optional<PublicIpService> publicIpService =
+                computeService.getPublicIpService(virtualMachine.owner().get());
             if (publicIpService.isPresent()) {
                 try {
                     final String publicIp =

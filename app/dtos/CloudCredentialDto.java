@@ -71,11 +71,12 @@ public class CloudCredentialDto extends ValidatableDto {
     }
 
     @Override public void validation() {
-        validator(String.class).validate(user).withValidator(new NotNullOrEmptyValidator());
-        validator(String.class).validate(secret).withValidator(new NotNullOrEmptyValidator());
-        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
+        validator(String.class).validate(user, "user").withValidator(new NotNullOrEmptyValidator());
+        validator(String.class).validate(secret, "secret")
+            .withValidator(new NotNullOrEmptyValidator());
+        validator(Long.class).validate(cloud, "cloud").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(tenant).withValidator(new NotNullValidator())
+        validator(Long.class).validate(tenant, "tenant").withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.frontendGroupService.get()));
     }
 

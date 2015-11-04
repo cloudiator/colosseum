@@ -21,9 +21,13 @@ package cloud;
 import cloud.resources.KeyPairInCloud;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -34,22 +38,37 @@ public class DecoratingKeyPairService implements KeyPairService {
     private final KeyPairService delegate;
     private final String cloud;
     private final String credential;
+    private final ModelService<Cloud> cloudModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
 
-    public DecoratingKeyPairService(KeyPairService delegate, String cloud, String credential) {
-        this.cloud = cloud;
-        this.credential = credential;
+    public DecoratingKeyPairService(KeyPairService delegate, String cloud, String credential,
+        ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
 
         checkNotNull(delegate);
+        checkNotNull(cloud);
+        checkArgument(!cloud.isEmpty());
+        checkNotNull(credential);
+        checkNotNull(!credential.isEmpty());
+        checkNotNull(cloudModelService);
+        checkNotNull(cloudCredentialModelService);
 
         this.delegate = delegate;
+        this.cloud = cloud;
+        this.credential = credential;
+        this.cloudModelService = cloudModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
+
     }
 
     @Override public KeyPairInCloud create(String name) throws KeyPairException {
-        return new KeyPairInCloud(this.delegate.create(name), cloud, credential);
+        return new KeyPairInCloud(this.delegate.create(name), cloud, credential, cloudModelService,
+            cloudCredentialModelService);
     }
 
     @Override public KeyPairInCloud create(String name, String publicKey) throws KeyPairException {
-        return new KeyPairInCloud(this.delegate.create(name, publicKey), cloud, credential);
+        return new KeyPairInCloud(this.delegate.create(name, publicKey), cloud, credential,
+            cloudModelService, cloudCredentialModelService);
     }
 
     @Override public boolean delete(String name) throws KeyPairException {

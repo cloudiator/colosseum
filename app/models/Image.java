@@ -57,8 +57,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Image() {
     }
 
-    public Image(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud, Location location,
-        String name, @Nullable OperatingSystem operatingSystem,
+    public Image(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
+        @Nullable Location location, String name, @Nullable OperatingSystem operatingSystem,
         @Nullable String defaultLoginUsername, @Nullable String defaultLoginPassword) {
         super(remoteId, cloudProviderId, cloud, null, location);
 

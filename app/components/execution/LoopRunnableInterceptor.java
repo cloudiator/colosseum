@@ -27,17 +27,25 @@ import play.Logger;
  */
 public class LoopRunnableInterceptor implements MethodInterceptor {
 
+    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
 
     @Override public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         if (!methodInvocation.getMethod().getName().equals("run")) {
             return methodInvocation.proceed();
         }
 
+        LOGGER.debug("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
+
         while (!Thread.currentThread().isInterrupted()) {
-            Logger.debug("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
-            methodInvocation.proceed();
+            try {
+                methodInvocation.proceed();
+            } catch (Throwable t) {
+                LOGGER.warn("Loop execution of " + methodInvocation.getThis().getClass()
+                    + "was interrupted due to an Exception", t);
+                throw t;
+            }
         }
-        Logger.debug("Interrupt loop execution of " + methodInvocation.getThis().getClass());
+        LOGGER.debug("Interrupt loop execution of " + methodInvocation.getThis().getClass());
         return null;
     }
 }

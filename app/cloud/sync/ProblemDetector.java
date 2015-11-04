@@ -6,7 +6,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,13 +16,13 @@
  * under the License.
  */
 
-package cloud.resources;
+package cloud.sync;
 
-import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
+import java.util.Optional;
+import java.util.function.Function;
 
 /**
- * Created by daniel on 11.03.15.
+ * Created by daniel on 04.11.15.
  */
-public interface LocationScoped extends Resource {
-    String location();
+public interface ProblemDetector<T> extends Function<T, Optional<Problem>> {
 }

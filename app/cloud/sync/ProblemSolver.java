@@ -32,7 +32,7 @@ public class ProblemSolver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;
-    private final Logger.ALogger LOGGER = Logger.of(this.getClass());
+    private final Logger.ALogger LOGGER = Logger.of("colosseum.sync");
 
     @Inject public ProblemSolver(SolutionDatabase solutionDatabase,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {
@@ -45,6 +45,7 @@ public class ProblemSolver implements Runnable {
         Problem problemToSolve = null;
         try {
             problemToSolve = this.problemQueue.take();
+            LOGGER.debug(String.format("%s starting to process problem %s", this, problemToSolve));
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
@@ -52,7 +53,11 @@ public class ProblemSolver implements Runnable {
         if (problemToSolve != null) {
             try {
                 final Solution solution = this.solutionDatabase.getSolution(problemToSolve);
+                LOGGER.debug(
+                    String.format("Found solution %s for problem %s", solution, problemToSolve));
                 solution.applyTo(problemToSolve);
+                LOGGER.debug(
+                    String.format("Solved problem %s using solution %s", problemToSolve, solution));
             } catch (SolutionNotFoundException e) {
                 throw new IllegalStateException(e);
             } catch (SolutionException e) {

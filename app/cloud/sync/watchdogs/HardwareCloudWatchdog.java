@@ -19,7 +19,7 @@
 package cloud.sync.watchdogs;
 
 import cloud.CloudService;
-import cloud.resources.LocationInCloud;
+import cloud.resources.HardwareInLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
@@ -32,22 +32,23 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by daniel on 05.05.15.
+ * Created by daniel on 07.05.15.
  */
-@Stable public class LocationWatchdog extends AbstractCloudServiceWatchdog<LocationInCloud> {
+@Stable public class HardwareCloudWatchdog
+    extends AbstractCloudServiceWatchdog<HardwareInLocation> {
 
-    @Inject protected LocationWatchdog(
+    @Inject protected HardwareCloudWatchdog(
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
-        Set<ProblemDetector<LocationInCloud>> problemDetectors, CloudService cloudService) {
+        Set<ProblemDetector<HardwareInLocation>> problemDetectors, CloudService cloudService) {
         super(problemQueue, problemDetectors, cloudService);
     }
-    
+
     @Override public String toString() {
-        return "LocationWatchdog";
+        return "HardwareWatchdog";
     }
 
-    @Override protected Iterable<LocationInCloud> toWatch() {
-        return cloudService().discoveryService().listLocations();
+    @Override protected Iterable<HardwareInLocation> toWatch() {
+        return cloudService().discoveryService().listHardwareFlavors();
     }
 
     @Override public long period() {

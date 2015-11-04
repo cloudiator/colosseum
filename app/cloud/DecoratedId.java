@@ -18,10 +18,11 @@
 
 package cloud;
 
-import de.uniulm.omi.cloudiator.sword.core.util.IdScopeByLocations;
+import de.uniulm.omi.cloudiator.sword.api.domain.Identifiable;
+import de.uniulm.omi.cloudiator.sword.api.domain.Location;
+import models.Cloud;
 
-import javax.annotation.Nullable;
-
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -32,53 +33,40 @@ public class DecoratedId {
     private final static String SEPARATOR = "/";
 
     private final String cloud;
-    @Nullable private final String location;
     private final String id;
 
 
-    private DecoratedId(String cloud, @Nullable String location, String id) {
+    private DecoratedId(String cloud, String id) {
         this.cloud = cloud;
-        this.location = location;
         this.id = id;
     }
 
-    static public DecoratedId of(String cloud, String id) {
-        return new DecoratedId(cloud, null, id);
+    static public DecoratedId of(Cloud cloud, Identifiable identifiable) {
+        return new DecoratedId(cloud.getUuid(), identifiable.id());
     }
 
-    static public DecoratedId of(String cloud, String location, String id) {
-        return new DecoratedId(cloud, location, id);
+    static public DecoratedId of(Cloud cloud, Location location) {
+        return new DecoratedId(cloud.getUuid(), location.id());
     }
 
-    static public DecoratedId of(String id) {
-        checkNotNull(id);
-        final String[] split = id.split(SEPARATOR);
-        switch (split.length) {
-            case 2:
-                return new DecoratedId(split[0], null, split[1]);
-            case 3:
-                return new DecoratedId(split[0], split[1], split[2]);
-            default:
-                throw new IllegalArgumentException();
-        }
-    }
-
-    public String colosseumLocation() {
-        if (location != null) {
-            return cloud + SEPARATOR + location;
-        } else {
-            return cloud;
-        }
+    static public DecoratedId of(String colosseumId) {
+        checkNotNull(colosseumId, "ColosseumId must not be null.");
+        checkArgument(!colosseumId.isEmpty(), "ColosseumId must not be empty");
+        final String[] parts = colosseumId.split(SEPARATOR, 2);
+        checkArgument(parts.length == 2,
+            String.format("ColosseumId does not contain separator %s", SEPARATOR));
+        return new DecoratedId(parts[0], parts[1]);
     }
 
     public String colosseumId() {
-        return colosseumLocation() + SEPARATOR + id;
+        return cloud + SEPARATOR + id;
     }
 
     public String swordId() {
-        return IdScopeByLocations.from(location, id).getIdWithLocation();
+        return id;
     }
 
-
-
+    @Override public String toString() {
+        return colosseumId();
+    }
 }

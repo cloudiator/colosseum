@@ -77,9 +77,9 @@ public class StableScheduledThreadExecutor implements ExecutionService {
                     String.format("Running %s in stable context", delegate.getClass().getName()));
                 delegate.run();
             } catch (Exception e) {
-                LOGGER.error(
-                    "Encountered error in stable schedulable, catched to allow further execution.",
-                    e);
+                LOGGER.error(String.format(
+                    "Encountered error in stable schedulable %s, catched to allow further execution.",
+                    delegate), e);
             }
         }
     }

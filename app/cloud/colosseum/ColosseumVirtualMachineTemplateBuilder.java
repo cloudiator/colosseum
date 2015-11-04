@@ -101,11 +101,12 @@ public class ColosseumVirtualMachineTemplateBuilder {
         VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
         checkArgument(virtualMachine.image().isPresent());
+        checkArgument(virtualMachine.location().isPresent());
         this.image = virtualMachine.image().get();
         checkArgument(virtualMachine.cloudCredentials().size() == 1);
         this.cloudCredential = virtualMachine.cloudCredentials().get(0);
         this.cloud = virtualMachine.cloud();
-        this.location = virtualMachine.location();
+        this.location = virtualMachine.location().get();
         checkArgument(virtualMachine.hardware().isPresent());
         this.hardware = virtualMachine.hardware().get();
         return this;

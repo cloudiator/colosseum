@@ -18,18 +18,25 @@
 
 package cloud.resources;
 
+import cloud.DecoratedId;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.KeyPair;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.ModelService;
 
 /**
  * Created by daniel on 10.09.15.
  */
-public class KeyPairInCloud extends AbstractCredentialScopedResource<KeyPair> implements KeyPair {
+public class KeyPairInCloud extends BaseCredentialScoped implements KeyPair {
+
     private final KeyPair keyPair;
 
-    public KeyPairInCloud(KeyPair resource, String cloud, String credential) {
-        super(resource, cloud, credential);
-        this.keyPair = resource;
+    public KeyPairInCloud(KeyPair keyPair, String cloud, String credential,
+        ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
+        super(cloud, credential, cloudModelService, cloudCredentialModelService);
+        this.keyPair = keyPair;
     }
 
     @Override public String publicKey() {
@@ -38,5 +45,17 @@ public class KeyPairInCloud extends AbstractCredentialScopedResource<KeyPair> im
 
     @Override public Optional<String> privateKey() {
         return keyPair.privateKey();
+    }
+
+    @Override public String id() {
+        return DecoratedId.of(cloud(), keyPair).colosseumId();
+    }
+
+    @Override public String name() {
+        return keyPair.name();
+    }
+
+    @Override public String cloudProviderId() {
+        return keyPair.id();
     }
 }

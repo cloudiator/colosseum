@@ -22,31 +22,25 @@ import com.google.inject.Singleton;
 import components.execution.SimpleBlockingQueue;
 import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.UniqueBlockingQueue;
-import models.Monitor;
-import models.RawMonitor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by daniel on 08.05.15.
  */
-@Singleton
-public class ProblemQueue implements SimpleBlockingQueue<Problem> {
+@Singleton public class ProblemQueueImpl implements SimpleBlockingQueue<Problem> {
 
-    private final SimpleBlockingQueue<Problem> simpleBlockingQueue;
+    private final SimpleBlockingQueue<Problem> problemsToSolve;
 
-    public ProblemQueue() {
-        this.simpleBlockingQueue = new UniqueBlockingQueue<Problem>(new SimpleFifoPriorityBlockingQueue<Problem>());
+    public ProblemQueueImpl() {
+        // using <> as expected leads to wrong inferred type and thus a compile error.
+        this.problemsToSolve =
+            new UniqueBlockingQueue<Problem>(new SimpleFifoPriorityBlockingQueue<Problem>());
     }
 
-    @Override
-    public void add(Problem t) {
-        this.simpleBlockingQueue.add(t);
+    @Override public void add(Problem t) {
+        this.problemsToSolve.add(t);
     }
 
-    @Override
-    public Problem take() throws InterruptedException {
-        return this.simpleBlockingQueue.take();
+    @Override public Problem take() throws InterruptedException {
+        return this.problemsToSolve.take();
     }
 }

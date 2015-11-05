@@ -33,7 +33,7 @@ public class OperatingSystemVendorDto extends ValidatableDto {
 
     private String name;
     private OperatingSystemVendorType operatingSystemVendorType;
-    @Nullable private String defaultUserName;
+    @Nullable private String defaultLoginName;
     @Nullable private String defaultPassword;
 
     @Override public void validation() {
@@ -59,12 +59,12 @@ public class OperatingSystemVendorDto extends ValidatableDto {
         this.operatingSystemVendorType = operatingSystemVendorType;
     }
 
-    @Nullable public String getDefaultUserName() {
-        return defaultUserName;
+    @Nullable public String getDefaultLoginName() {
+        return defaultLoginName;
     }
 
-    public void setDefaultUserName(@Nullable String defaultUserName) {
-        this.defaultUserName = defaultUserName;
+    public void setDefaultLoginName(@Nullable String defaultLoginName) {
+        this.defaultLoginName = defaultLoginName;
     }
 
     @Nullable public String getDefaultPassword() {

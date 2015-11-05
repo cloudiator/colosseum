@@ -31,7 +31,8 @@ import models.service.KeyPairModelService;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 31.08.15.
@@ -77,8 +78,6 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
             throw new IllegalStateException(String
                 .format("%s was called, even if its not applicable for %s", this, virtualMachine));
         }
-
-        checkState(keyPair.isPresent());
 
         try {
             return connectionService.getRemoteConnection(HostAndPort

@@ -33,7 +33,7 @@ import java.util.*;
 
     @Nullable @Column(nullable = true) private String generatedLoginUsername;
     @Nullable @Column(nullable = true) private String generatedLoginPassword;
-    @Nullable @Column(nullable = true) private String generatedPrivateKey;
+    @Nullable @Lob @Column(nullable = true) private String generatedPrivateKey;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
@@ -171,5 +171,26 @@ import java.util.*;
 
     public Optional<TemplateOptions> templateOptions() {
         return Optional.ofNullable(templateOptions);
+    }
+
+    public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
+        if (this.generatedLoginUsername != null) {
+            throw new IllegalStateException("Changing generatedLoginUsername not permitted.");
+        }
+        this.generatedLoginUsername = generatedLoginUsername;
+    }
+
+    public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
+        if (this.generatedLoginPassword != null) {
+            throw new IllegalStateException("Changing generatedLoginPassword not permitted.");
+        }
+        this.generatedLoginPassword = generatedLoginPassword;
+    }
+
+    public void setGeneratedPrivateKey(@Nullable String generatedPrivateKey) {
+        if (this.generatedPrivateKey != null) {
+            throw new IllegalStateException("Changing generatedPrivateKey not permitted.");
+        }
+        this.generatedPrivateKey = generatedPrivateKey;
     }
 }

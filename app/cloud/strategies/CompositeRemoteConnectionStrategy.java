@@ -62,21 +62,23 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
             .format("%s has found %s applicable strategies for virtual machine %s", this,
                 applicableStrategies.size(), virtualMachine));
         if (LOGGER.isDebugEnabled()) {
-            applicableStrategies.forEach(remoteConnectionStrategy -> LOGGER
-                .debug("%s found applicable strategy %s for virtual machine %s", this,
-                    remoteConnectionStrategy, virtualMachine));
+            applicableStrategies.forEach(remoteConnectionStrategy -> LOGGER.debug(String
+                .format("%s found applicable strategy %s for virtual machine %s", this,
+                    remoteConnectionStrategy, virtualMachine)));
 
         }
 
         Exception lastException = null;
         for (RemoteConnectionStrategy remoteConnectionStrategy : applicableStrategies) {
             try {
-                LOGGER.info("%s is using strategy %s to connect to virtual machine %s", this,
-                    remoteConnectionStrategy, virtualMachine);
+                LOGGER.info(String
+                    .format("%s is using strategy %s to connect to virtual machine %s", this,
+                        remoteConnectionStrategy, virtualMachine));
                 return remoteConnectionStrategy.apply(virtualMachine);
             } catch (Exception e) {
-                LOGGER.warn("%s failed connecting to virtual machine %s using strategy %s", this,
-                    virtualMachine, remoteConnectionStrategy, e);
+                LOGGER.warn(String
+                    .format("%s failed connecting to virtual machine %s using strategy %s", this,
+                        virtualMachine, remoteConnectionStrategy), e);
                 lastException = e;
             }
         }

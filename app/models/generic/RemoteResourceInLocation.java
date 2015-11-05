@@ -52,7 +52,7 @@ import java.util.Optional;
     }
 
     public Optional<Location> location() {
-        return Optional.of(location);
+        return Optional.ofNullable(location);
     }
 
 }

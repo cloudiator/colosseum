@@ -21,22 +21,25 @@ package components.execution;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
+import util.Loggers;
 
 /**
  * Created by daniel on 27.07.15.
  */
 public class LoopRunnableInterceptor implements MethodInterceptor {
 
-    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
+    private static final Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     @Override public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         if (!methodInvocation.getMethod().getName().equals("run")) {
             return methodInvocation.proceed();
         }
 
-        LOGGER.debug("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
+        LOGGER.info("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
 
         while (!Thread.currentThread().isInterrupted()) {
+            LOGGER.debug(String.format("Starting new loop iteration for %s",
+                methodInvocation.getThis().getClass()));
             try {
                 methodInvocation.proceed();
             } catch (Throwable t) {
@@ -45,7 +48,7 @@ public class LoopRunnableInterceptor implements MethodInterceptor {
                 throw t;
             }
         }
-        LOGGER.debug("Interrupt loop execution of " + methodInvocation.getThis().getClass());
+        LOGGER.warn("Interrupt loop execution of " + methodInvocation.getThis().getClass());
         return null;
     }
 }

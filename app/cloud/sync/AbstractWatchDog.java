@@ -25,6 +25,7 @@ import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
+import util.Loggers;
 
 import java.util.Optional;
 import java.util.Set;
@@ -34,7 +35,7 @@ import java.util.Set;
  */
 public abstract class AbstractWatchDog<T> implements Schedulable {
 
-    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.sync");
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_SYNC);
     private final SimpleBlockingQueue<Problem> problemQueue;
     private final Set<ProblemDetector<T>> detectors;
 
@@ -47,7 +48,7 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
 
     @Transactional(readOnly = true) @Override public void run() {
 
-        LOGGER.debug(String.format("%s is starting watching.", this));
+        LOGGER.info(String.format("%s is starting watching.", this));
 
         if (Iterables.size(toWatch()) > 0) {
 
@@ -70,7 +71,7 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
             LOGGER.debug(String.format("%s has nothing to watch", this));
         }
 
-        LOGGER.debug(String.format("%s finished watching", this));
+        LOGGER.info(String.format("%s finished watching", this));
     }
 
     /**

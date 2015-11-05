@@ -19,6 +19,7 @@
 package components.execution;
 
 import play.Logger;
+import util.Loggers;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class StableScheduledThreadExecutor implements ExecutionService {
 
-    private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.execution");
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     private final ExecutionService executionService;
 
@@ -73,7 +74,7 @@ public class StableScheduledThreadExecutor implements ExecutionService {
 
         @Override public void run() {
             try {
-                LOGGER.debug(
+                LOGGER.info(
                     String.format("Running %s in stable context", delegate.getClass().getName()));
                 delegate.run();
             } catch (Exception e) {

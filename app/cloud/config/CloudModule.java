@@ -48,7 +48,7 @@ public class CloudModule extends AbstractModule {
     @Provides
     public RemoteConnectionStrategy.RemoteConnectionStrategyFactory provideConnectionFactory(
         Injector injector) {
-        return new RemoteConnectionStrategies.RemoteConnectionStrategiesFactory(Sets.newHashSet(
+        return new CompositeRemoteConnectionStrategy.RemoteConnectionStrategiesFactory(Sets.newHashSet(
             injector.getInstance(
                 KeyPairRemoteConnectionStrategy.KeyPairRemoteConnectionStrategyFactory.class),
             injector.getInstance(

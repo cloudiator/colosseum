@@ -24,6 +24,7 @@ import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
+import util.Loggers;
 
 /**
  * Created by daniel on 05.05.15.
@@ -32,7 +33,7 @@ public class ProblemSolver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;
-    private final Logger.ALogger LOGGER = Logger.of("colosseum.sync");
+    private final Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_SYNC);
 
     @Inject public ProblemSolver(SolutionDatabase solutionDatabase,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {

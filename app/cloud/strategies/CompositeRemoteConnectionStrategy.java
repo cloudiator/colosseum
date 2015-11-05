@@ -21,6 +21,8 @@ package cloud.strategies;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.Tenant;
 import models.VirtualMachine;
+import play.Logger;
+import util.Loggers;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,11 +30,21 @@ import java.util.stream.Collectors;
 /**
  * Created by daniel on 02.09.15.
  */
-public class RemoteConnectionStrategies implements RemoteConnectionStrategy {
+public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrategy {
+
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_REMOTE);
 
     private final Set<RemoteConnectionStrategy> strategySet;
 
-    private RemoteConnectionStrategies(Set<RemoteConnectionStrategy> strategySet) {
+    private CompositeRemoteConnectionStrategy(Set<RemoteConnectionStrategy> strategySet) {
+        LOGGER.debug(String
+            .format("%s is loading available strategy set. Contains %s strategies.", this,
+                strategySet.size()));
+        if (Logger.isTraceEnabled()) {
+            strategySet.forEach(remoteConnectionStrategy -> Logger
+                .trace(String.format("%s is loading strategy %s", this, remoteConnectionStrategy)));
+        }
+
         this.strategySet = strategySet;
     }
 
@@ -43,17 +55,29 @@ public class RemoteConnectionStrategies implements RemoteConnectionStrategy {
 
     @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
 
-
         final Set<RemoteConnectionStrategy> applicableStrategies = strategySet.stream().filter(
             remoteConnectionStrategy -> remoteConnectionStrategy.isApplicable(virtualMachine))
             .collect(Collectors.toSet());
+        LOGGER.debug(String
+            .format("%s has found %s applicable strategies for virtual machine %s", this,
+                applicableStrategies.size(), virtualMachine));
+        if (LOGGER.isDebugEnabled()) {
+            applicableStrategies.forEach(remoteConnectionStrategy -> LOGGER
+                .debug("%s found applicable strategy %s for virtual machine %s", this,
+                    remoteConnectionStrategy, virtualMachine));
+
+        }
 
         Exception lastException = null;
         for (RemoteConnectionStrategy remoteConnectionStrategy : applicableStrategies) {
             try {
+                LOGGER.info("%s is using strategy %s to connect to virtual machine %s", this,
+                    remoteConnectionStrategy, virtualMachine);
                 return remoteConnectionStrategy.apply(virtualMachine);
-            } catch (Exception last) {
-                lastException = last;
+            } catch (Exception e) {
+                LOGGER.warn("%s failed connecting to virtual machine %s using strategy %s", this,
+                    virtualMachine, remoteConnectionStrategy, e);
+                lastException = e;
             }
         }
 
@@ -76,7 +100,7 @@ public class RemoteConnectionStrategies implements RemoteConnectionStrategy {
             Set<RemoteConnectionStrategy> strategies =
                 remoteConnectionStrategyFactories.stream().map(factory -> factory.create(tenant))
                     .collect(Collectors.toSet());
-            return new RemoteConnectionStrategies(strategies);
+            return new CompositeRemoteConnectionStrategy(strategies);
         }
     }
 }

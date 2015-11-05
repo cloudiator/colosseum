@@ -75,8 +75,8 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
 
         if (!remoteConnectionStrategy.isApplicable(virtualMachine)) {
             throw new IllegalArgumentException(String
-                .format("Selected connection strategy does not support the virtual machine %s",
-                    virtualMachine));
+                .format("Selected connection %s strategy does not support the virtual machine %s",
+                    remoteConnectionStrategy, virtualMachine));
         }
         return remoteConnectionStrategy.apply(virtualMachine);
     }

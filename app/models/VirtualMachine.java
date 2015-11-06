@@ -112,7 +112,7 @@ import java.util.*;
             loginNameCandidates = new Stack<>();
         }
         if (generatedLoginUsername != null) {
-            loginNameCandidates.add(generatedLoginPassword);
+            loginNameCandidates.add(generatedLoginUsername);
         }
         return loginNameCandidates;
     }

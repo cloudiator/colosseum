@@ -63,10 +63,10 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
         //check that the location is correct
         if (image.location().isPresent()) {
-            checkArgument(image.location().get().equals(location));
+            checkArgument(location.hierachy().contains(image.location().get()));
         }
         if (hardware.location().isPresent()) {
-            checkArgument(hardware.location().get().equals(location));
+            checkArgument(location.hierachy().contains(hardware.location().get()));
         }
 
         checkArgument(location.isAssignable());

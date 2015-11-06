@@ -50,13 +50,15 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
 
         LOGGER.info(String.format("%s is starting watching.", this));
 
-        if (Iterables.size(toWatch()) > 0) {
+        Iterable<T> toWatch = toWatch();
 
-
+        if (Iterables.size(toWatch) > 0) {
+            LOGGER
+                .debug(String.format("%s is watching %s entities.", this, Iterables.size(toWatch)));
             for (T t : toWatch()) {
-                LOGGER.debug(String.format("%s is starting to watch %s", this, t));
+                LOGGER.trace(String.format("%s is starting to watch %s", this, t));
                 for (ProblemDetector<T> problemDetector : detectors) {
-                    LOGGER.debug(String
+                    LOGGER.trace(String
                         .format("%s is applying problem detector %s on %s", this, problemDetector,
                             t));
                     final Optional<Problem> problem = problemDetector.apply(t);

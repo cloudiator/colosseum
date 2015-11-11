@@ -32,9 +32,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public interface Prioritized extends Comparable<Prioritized> {
 
     class Priority {
+
         public static final int HIGH = 2;
         public static final int MEDIUM = 1;
         public static final int LOW = 0;
+
+        private Priority() {
+            throw new AssertionError("Intentionally left empty.");
+        }
     }
 
     int getPriority();

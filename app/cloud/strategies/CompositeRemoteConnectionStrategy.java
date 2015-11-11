@@ -18,6 +18,9 @@
 
 package cloud.strategies;
 
+import com.google.common.base.MoreObjects;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.Tenant;
 import models.VirtualMachine;
@@ -37,6 +40,11 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
     private final Set<RemoteConnectionStrategy> strategySet;
 
     private CompositeRemoteConnectionStrategy(Set<RemoteConnectionStrategy> strategySet) {
+        if (strategySet.isEmpty()) {
+            LOGGER.warn(String.format(
+                "%s is initializing with an empty strategy set. This is likely to cause errors.",
+                this));
+        }
         LOGGER.debug(String
             .format("%s is loading available strategy set. Contains %s strategies.", this,
                 strategySet.size()));
@@ -45,7 +53,8 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
                 .trace(String.format("%s is loading strategy %s", this, remoteConnectionStrategy)));
         }
 
-        this.strategySet = strategySet;
+        // wrap in immutable sorted set to ensure comparability.
+        this.strategySet = ImmutableSet.copyOf(Sets.newTreeSet(strategySet));
     }
 
     @Override public boolean isApplicable(VirtualMachine virtualMachine) {
@@ -88,6 +97,13 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
             lastException);
     }
 
+    @Override public int getPriority() {
+        if (!strategySet.isEmpty()) {
+            return strategySet.stream().findFirst().get().getPriority();
+        }
+        return Priority.MEDIUM;
+    }
+
     public static class RemoteConnectionStrategiesFactory
         implements RemoteConnectionStrategyFactory {
 
@@ -104,5 +120,9 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
                     .collect(Collectors.toSet());
             return new CompositeRemoteConnectionStrategy(strategies);
         }
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("strategies", strategySet).toString();
     }
 }

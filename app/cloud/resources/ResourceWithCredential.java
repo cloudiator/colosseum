@@ -20,6 +20,7 @@ package cloud.resources;
 
 
 import cloud.DecoratedId;
+import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 import models.Cloud;
 import models.CloudCredential;
@@ -54,5 +55,9 @@ public abstract class ResourceWithCredential extends BaseLocationScoped implemen
 
     @Override public String cloudProviderId() {
         return resource.id();
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
     }
 }

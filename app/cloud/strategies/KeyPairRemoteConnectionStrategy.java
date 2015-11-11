@@ -91,6 +91,10 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
         }
     }
 
+    @Override public int getPriority() {
+        return Priority.HIGH;
+    }
+
     public static class KeyPairRemoteConnectionStrategyFactory
         implements RemoteConnectionStrategyFactory {
 

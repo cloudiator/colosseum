@@ -18,6 +18,7 @@
 
 package cloud.strategies;
 
+import components.execution.Prioritized;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.Tenant;
 import models.VirtualMachine;
@@ -27,12 +28,12 @@ import java.util.function.Function;
 /**
  * Created by daniel on 01.09.15.
  */
-public interface RemoteConnectionStrategy extends Function<VirtualMachine, RemoteConnection> {
+public interface RemoteConnectionStrategy
+    extends Function<VirtualMachine, RemoteConnection>, Prioritized {
 
     boolean isApplicable(VirtualMachine virtualMachine);
 
     interface RemoteConnectionStrategyFactory {
         RemoteConnectionStrategy create(Tenant tenant);
     }
-
 }

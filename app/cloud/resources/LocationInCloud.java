@@ -19,6 +19,7 @@
 package cloud.resources;
 
 import cloud.DecoratedId;
+import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import models.Cloud;
 import models.CloudCredential;
@@ -72,5 +73,9 @@ public class LocationInCloud extends BaseCredentialScoped implements Location {
 
     @Override public String cloudProviderId() {
         return location.id();
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
     }
 }

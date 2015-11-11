@@ -18,6 +18,7 @@
 
 package cloud.resources;
 
+import com.google.common.base.MoreObjects;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
@@ -63,5 +64,10 @@ public abstract class BaseCredentialScoped implements CredentialScoped {
         checkState(ret != null,
             String.format("Cloud with UUID = %s could not be found in database", cloud));
         return ret;
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("cloud", cloud).add("credential", credential)
+            .toString();
     }
 }

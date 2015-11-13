@@ -127,12 +127,4 @@ public class LocationDto extends RemoteDto {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Boolean getAssignable() {
-        return isAssignable;
-    }
-
-    public void setAssignable(Boolean assignable) {
-        isAssignable = assignable;
-    }
 }

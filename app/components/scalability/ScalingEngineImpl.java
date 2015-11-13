@@ -158,6 +158,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
 
             for (MonitorInstance monitorInstance : monitorInstances) {
+                /*TODO: dangerous, what happens if this vm changes the IP address? */
                 String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
 
                 AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",

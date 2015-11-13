@@ -58,6 +58,8 @@ public class LocationConverter extends RemoteConverter<Location, LocationDto> {
         binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
 
+        binding().fromField("name").toField("name");
+
         binding(Long.class, Location.class).fromField("parent").toField("parent")
             .withTransformation(new IdToModelTransformer<>(locationModelService));
 

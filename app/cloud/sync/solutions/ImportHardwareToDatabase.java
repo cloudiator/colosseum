@@ -66,6 +66,12 @@ public class ImportHardwareToDatabase implements Solution {
         if (hardwareNotInDatabase.getHardwareInLocation().location().isPresent()) {
             location = locationModelService
                 .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location().get().id());
+            if (location == null) {
+                throw new SolutionException(String
+                    .format("Could not import hardware %s as location %s is not (yet) imported.",
+                        hardwareNotInDatabase.getHardwareInLocation(),
+                        hardwareNotInDatabase.getHardwareInLocation().location().get()));
+            }
         }
 
         //todo check this

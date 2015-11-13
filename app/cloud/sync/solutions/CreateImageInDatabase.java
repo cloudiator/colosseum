@@ -71,6 +71,12 @@ public class CreateImageInDatabase implements Solution {
         if (imageNotInDatabase.getImageInLocation().location().isPresent()) {
             location = locationModelService
                 .getByRemoteId(imageNotInDatabase.getImageInLocation().location().get().id());
+            if (location == null) {
+                throw new SolutionException(String
+                    .format("Could not import image %s as location %s is not (yet) imported.",
+                        imageNotInDatabase.getImageInLocation(),
+                        imageNotInDatabase.getImageInLocation().location().get()));
+            }
         }
 
         OperatingSystem operatingSystem =

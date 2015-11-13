@@ -18,23 +18,28 @@
 
 package cloud.resources;
 
-import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.LocationModelService;
+import models.service.ModelService;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
  * Created by daniel on 28.05.15.
  */
-public class VirtualMachineInLocation extends AbstractLocationScopedResource<VirtualMachine>
-    implements VirtualMachine {
+public class VirtualMachineInLocation extends ResourceWithCredential implements VirtualMachine {
 
     private final VirtualMachine virtualMachine;
 
-    public VirtualMachineInLocation(VirtualMachine resource, String cloud, String credential) {
-        super(resource, cloud, credential);
-        this.virtualMachine = resource;
+    public VirtualMachineInLocation(VirtualMachine virtualMachine, String cloud, String credential,
+        ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
+        super(virtualMachine, cloud, credential, cloudModelService, cloudCredentialModelService);
+        this.virtualMachine = virtualMachine;
     }
 
     @Override public Set<String> publicAddresses() {
@@ -45,7 +50,7 @@ public class VirtualMachineInLocation extends AbstractLocationScopedResource<Vir
         return virtualMachine.privateAddresses();
     }
 
-    @Override public Optional<LoginCredential> loginCredential() {
+    @Override public java.util.Optional<LoginCredential> loginCredential() {
         return virtualMachine.loginCredential();
     }
 }

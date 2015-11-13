@@ -22,16 +22,20 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.ModelService;
 
 import javax.annotation.Nullable;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
@@ -43,13 +47,27 @@ public class DecoratingDiscoveryService implements
     private final DiscoveryService<HardwareFlavor, Image, Location, VirtualMachine> delegate;
     private final String cloudId;
     private final String cloudCredential;
+    private final ModelService<Cloud> cloudModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
 
     public DecoratingDiscoveryService(
         DiscoveryService<HardwareFlavor, Image, Location, VirtualMachine> delegate, String cloudId,
-        String cloudCredential) {
+        String cloudCredential, ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
+
+        checkNotNull(delegate);
+        checkNotNull(cloudId);
+        checkArgument(!cloudId.isEmpty());
+        checkNotNull(cloudCredential);
+        checkArgument(!cloudCredential.isEmpty());
+        checkNotNull(cloudModelService);
+        checkNotNull(cloudCredentialModelService);
+
         this.delegate = delegate;
         this.cloudId = cloudId;
         this.cloudCredential = cloudCredential;
+        this.cloudModelService = cloudModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Nullable @Override public ImageInLocation getImage(String s) {
@@ -73,37 +91,26 @@ public class DecoratingDiscoveryService implements
     }
 
     @Override public Iterable<HardwareInLocation> listHardwareFlavors() {
-        return Iterables.transform(delegate.listHardwareFlavors(),
-            new Function<HardwareFlavor, HardwareInLocation>() {
-                @Nullable @Override
-                public HardwareInLocation apply(@Nullable HardwareFlavor hardwareFlavor) {
-                    checkNotNull(hardwareFlavor);
-                    return new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential);
-                }
-            });
+        return StreamSupport.stream(delegate.listHardwareFlavors().spliterator(), false).map(
+            hardwareFlavor -> new HardwareInLocation(hardwareFlavor, cloudId, cloudCredential,
+                cloudModelService, cloudCredentialModelService)).collect(Collectors.toList());
     }
 
     @Override public Iterable<ImageInLocation> listImages() {
-        return Iterables.transform(delegate.listImages(), new Function<Image, ImageInLocation>() {
-            @Nullable @Override public ImageInLocation apply(@Nullable Image image) {
-                checkNotNull(image);
-                return new ImageInLocation(image, cloudId, cloudCredential);
-            }
-        });
+        return StreamSupport.stream(delegate.listImages().spliterator(), false).map(
+            image -> new ImageInLocation(image, cloudId, cloudCredential, cloudModelService,
+                cloudCredentialModelService)).collect(Collectors.toList());
     }
 
     @Override public Iterable<LocationInCloud> listLocations() {
-        return Iterables
-            .transform(delegate.listLocations(), new Function<Location, LocationInCloud>() {
-                @Nullable @Override public LocationInCloud apply(@Nullable Location location) {
-                    checkNotNull(location);
-                    return new LocationInCloud(location, cloudId, cloudCredential);
-                }
-            });
+        return StreamSupport.stream(delegate.listLocations().spliterator(), false).map(
+            location -> new LocationInCloud(location, cloudId, cloudCredential, cloudModelService,
+                cloudCredentialModelService)).collect(Collectors.toList());
     }
 
     @Override public Iterable<VirtualMachineInLocation> listVirtualMachines() {
-        return Iterables.transform(delegate.listVirtualMachines(),
-            new DecoratingComputeService.VirtualMachineDecorator(cloudId, cloudCredential));
+        return StreamSupport.stream(delegate.listVirtualMachines().spliterator(), false).map(
+            new DecoratingComputeService.VirtualMachineDecorator(cloudId, cloudCredential,
+                cloudCredentialModelService, cloudModelService)).collect(Collectors.toList());
     }
 }

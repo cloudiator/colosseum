@@ -33,6 +33,7 @@ import java.util.*;
 
     @Nullable @Column(nullable = true) private String generatedLoginUsername;
     @Nullable @Column(nullable = true) private String generatedLoginPassword;
+    @Nullable @Lob @Column(nullable = true) private String generatedPrivateKey;
 
     @Nullable @ManyToOne(optional = true) private Image image;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
@@ -55,12 +56,13 @@ import java.util.*;
     public VirtualMachine(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
         @Nullable CloudCredential owner, Location location, String name,
         @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword,
-        @Nullable Image image, @Nullable Hardware hardware,
+        @Nullable String generatedPrivateKey, @Nullable Image image, @Nullable Hardware hardware,
         @Nullable TemplateOptions templateOptions) {
         super(remoteId, cloudProviderId, cloud, owner, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
         this.generatedLoginPassword = generatedLoginPassword;
+        this.generatedPrivateKey = generatedPrivateKey;
         this.image = image;
         this.hardware = hardware;
         this.templateOptions = templateOptions;
@@ -110,7 +112,7 @@ import java.util.*;
             loginNameCandidates = new Stack<>();
         }
         if (generatedLoginUsername != null) {
-            loginNameCandidates.add(generatedLoginPassword);
+            loginNameCandidates.add(generatedLoginUsername);
         }
         return loginNameCandidates;
     }
@@ -134,6 +136,10 @@ import java.util.*;
 
     public Optional<String> loginPassword() {
         return loginPasswordCandidates().stream().findFirst();
+    }
+
+    public Optional<String> loginPrivateKey() {
+        return Optional.ofNullable(generatedPrivateKey);
     }
 
     public OperatingSystemVendorType operatingSystemVendorTypeOrDefault() {
@@ -165,5 +171,26 @@ import java.util.*;
 
     public Optional<TemplateOptions> templateOptions() {
         return Optional.ofNullable(templateOptions);
+    }
+
+    public void setGeneratedLoginUsername(@Nullable String generatedLoginUsername) {
+        if (this.generatedLoginUsername != null) {
+            throw new IllegalStateException("Changing generatedLoginUsername not permitted.");
+        }
+        this.generatedLoginUsername = generatedLoginUsername;
+    }
+
+    public void setGeneratedLoginPassword(@Nullable String generatedLoginPassword) {
+        if (this.generatedLoginPassword != null) {
+            throw new IllegalStateException("Changing generatedLoginPassword not permitted.");
+        }
+        this.generatedLoginPassword = generatedLoginPassword;
+    }
+
+    public void setGeneratedPrivateKey(@Nullable String generatedPrivateKey) {
+        if (this.generatedPrivateKey != null) {
+            throw new IllegalStateException("Changing generatedPrivateKey not permitted.");
+        }
+        this.generatedPrivateKey = generatedPrivateKey;
     }
 }

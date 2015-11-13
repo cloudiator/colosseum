@@ -18,9 +18,8 @@
 
 package cloud.resources;
 
-import cloud.DecoratedId;
-import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
+import de.uniulm.omi.cloudiator.sword.api.domain.LocationScoped;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
@@ -30,52 +29,33 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by daniel on 28.05.15.
+ * Created by daniel on 02.11.15.
  */
-public class LocationInCloud extends BaseCredentialScoped implements Location {
+public abstract class BaseLocationScoped extends BaseCredentialScoped implements LocationScoped {
 
-    private final Location location;
+    private final LocationScoped locationScoped;
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<CloudCredential> cloudCredentialModelService;
 
-
-    public LocationInCloud(Location location, String cloud, String credential,
+    public BaseLocationScoped(LocationScoped locationScoped, String cloud, String credential,
         ModelService<Cloud> cloudModelService,
         ModelService<CloudCredential> cloudCredentialModelService) {
         super(cloud, credential, cloudModelService, cloudCredentialModelService);
 
-        checkNotNull(location, "Location must not be null.");
+        checkNotNull(locationScoped, "LocationScoped must not be null.");
 
-        this.location = location;
+        this.locationScoped = locationScoped;
         this.cloudModelService = cloudModelService;
         this.cloudCredentialModelService = cloudCredentialModelService;
+
     }
 
-    @Override public boolean isAssignable() {
-        return location.isAssignable();
-    }
-
-    @Override public Optional<Location> parent() {
-        if (location.parent().isPresent()) {
-            return Optional.of(new LocationInCloud(location.parent().get(), cloud().getUuid(),
-                credential().getUuid(), cloudModelService, cloudCredentialModelService));
+    @Override public Optional<Location> location() {
+        if (locationScoped.location().isPresent()) {
+            return Optional
+                .of(new LocationInCloud(locationScoped.location().get(), cloud().getUuid(),
+                    credential().getUuid(), cloudModelService, cloudCredentialModelService));
         }
         return Optional.empty();
-    }
-
-    @Override public String id() {
-        return DecoratedId.of(cloud(), location).colosseumId();
-    }
-
-    @Override public String name() {
-        return location.name();
-    }
-
-    @Override public String cloudProviderId() {
-        return location.id();
-    }
-
-    @Override public String toString() {
-        return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
     }
 }

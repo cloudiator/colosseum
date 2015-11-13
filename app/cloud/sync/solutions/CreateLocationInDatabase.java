@@ -22,10 +22,11 @@ import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.LocationProblems;
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import models.Cloud;
 import models.Location;
-import models.service.ModelService;
+import models.service.LocationModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -34,13 +35,10 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class CreateLocationInDatabase implements Solution {
 
-    private final ModelService<Location> locationModelService;
-    private final ModelService<Cloud> cloudModelService;
+    private final LocationModelService locationModelService;
 
-    @Inject public CreateLocationInDatabase(ModelService<Location> locationModelService,
-        ModelService<Cloud> cloudModelService) {
+    @Inject public CreateLocationInDatabase(LocationModelService locationModelService) {
         this.locationModelService = locationModelService;
-        this.cloudModelService = cloudModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -52,14 +50,26 @@ public class CreateLocationInDatabase implements Solution {
         LocationProblems.LocationNotInDatabase locationNotInDatabase =
             (LocationProblems.LocationNotInDatabase) problem;
 
-        Cloud cloud =
-            cloudModelService.getByUuid(locationNotInDatabase.getLocationInCloud().cloud());
-
+        Cloud cloud = locationNotInDatabase.getLocationInCloud().cloud();
         String remoteId = locationNotInDatabase.getLocationInCloud().id();
+        Optional<Location> parent;
+        if (locationNotInDatabase.getLocationInCloud().parent().isPresent()) {
+            parent = Optional.fromNullable(locationModelService
+                .getByRemoteId(locationNotInDatabase.getLocationInCloud().parent().get().id()));
+            if (!parent.isPresent()) {
+                throw new SolutionException(String
+                    .format("Could not import %s as parent %s was not found.",
+                        locationNotInDatabase.getLocationInCloud(),
+                        locationNotInDatabase.getLocationInCloud().parent().get()));
+            }
+        } else {
+            parent = Optional.absent();
+        }
+
         Location location =
             new Location(remoteId, locationNotInDatabase.getLocationInCloud().cloudProviderId(),
-                cloud, locationNotInDatabase.getLocationInCloud().name(), null, null, null,
-                locationNotInDatabase.getLocationInCloud().isAssignable());
+                cloud, locationNotInDatabase.getLocationInCloud().name(), null, parent.orNull(),
+                null, locationNotInDatabase.getLocationInCloud().isAssignable());
 
         this.locationModelService.save(location);
     }

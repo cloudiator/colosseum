@@ -18,12 +18,13 @@
 
 package cloud.sync.config;
 
-import cloud.sync.Problem;
-import cloud.sync.ProblemQueue;
-import cloud.sync.ProblemSolver;
-import cloud.sync.Solution;
+import cloud.resources.HardwareInLocation;
+import cloud.resources.ImageInLocation;
+import cloud.resources.LocationInCloud;
+import cloud.sync.*;
+import cloud.sync.detectors.*;
 import cloud.sync.solutions.*;
-import cloud.sync.watchdogs.HardwareWatchdog;
+import cloud.sync.watchdogs.HardwareCloudWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
 import cloud.sync.watchdogs.LocationWatchdog;
 import com.google.inject.AbstractModule;
@@ -42,13 +43,31 @@ public class SolutionModule extends AbstractModule {
         this.bindSolutions();
 
         bind(new TypeLiteral<SimpleBlockingQueue<Problem>>() {
-        }).annotatedWith(Names.named("problemQueue")).to(ProblemQueue.class);
+        }).annotatedWith(Names.named("problemQueue")).to(ProblemQueueImpl.class);
 
         Multibinder<Schedulable> schedulableMultibinder =
             Multibinder.newSetBinder(binder(), Schedulable.class);
-        schedulableMultibinder.addBinding().to(HardwareWatchdog.class);
+        schedulableMultibinder.addBinding().to(HardwareCloudWatchdog.class);
         schedulableMultibinder.addBinding().to(ImageWatchdog.class);
         schedulableMultibinder.addBinding().to(LocationWatchdog.class);
+
+        Multibinder<ProblemDetector<HardwareInLocation>> hardwareProblemDetectorBinder = Multibinder
+            .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
+            });
+        hardwareProblemDetectorBinder.addBinding().to(HardwareNotInDatabaseDetector.class);
+        hardwareProblemDetectorBinder.addBinding().to(HardwareMissesCredentialDetector.class);
+
+        Multibinder<ProblemDetector<ImageInLocation>> imageProblemDetectorBinder =
+            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<ImageInLocation>>() {
+            });
+        imageProblemDetectorBinder.addBinding().to(ImageNotInDatabaseDetector.class);
+        imageProblemDetectorBinder.addBinding().to(ImageMissesCredentialDetector.class);
+
+        Multibinder<ProblemDetector<LocationInCloud>> locationProblemDetectorBinder =
+            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<LocationInCloud>>() {
+            });
+        locationProblemDetectorBinder.addBinding().to(LocationNotInDatabaseDetector.class);
+        locationProblemDetectorBinder.addBinding().to(LocationMissesCredentialDetector.class);
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);
@@ -60,7 +79,7 @@ public class SolutionModule extends AbstractModule {
         Multibinder<Solution> solutionBinder = Multibinder.newSetBinder(binder(), Solution.class);
         solutionBinder.addBinding().to(CreateLocationInDatabase.class);
         solutionBinder.addBinding().to(ConnectLocationToCredential.class);
-        solutionBinder.addBinding().to(CreateHardwareInDatabase.class);
+        solutionBinder.addBinding().to(ImportHardwareToDatabase.class);
         solutionBinder.addBinding().to(ConnectHardwareToCredential.class);
         solutionBinder.addBinding().to(CreateImageInDatabase.class);
         solutionBinder.addBinding().to(ConnectImageToCredential.class);

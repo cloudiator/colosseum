@@ -23,7 +23,6 @@ import com.google.common.collect.Table;
 import com.google.inject.Singleton;
 import dtos.api.Dto;
 import models.generic.Model;
-import play.Logger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -45,9 +44,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @Override public <T extends Model, S extends Dto> void addConverter(final Class<T> modelClass,
         final Class<S> dtoClass, final DtoConverter<T, S> dtoConverter) {
-        Logger.debug(String
-            .format("Registered new converter for model: %s and dto %s: %s", modelClass.getName(),
-                dtoClass.getName(), dtoConverter.getClass().getName()));
         checkNotNull(modelClass);
         checkNotNull(dtoClass);
         checkNotNull(dtoConverter);

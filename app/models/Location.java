@@ -19,6 +19,7 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 import models.generic.RemoteResourceInCloud;
 import models.generic.RemoteResourceInLocation;
 
@@ -26,6 +27,7 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -76,6 +78,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public Optional<Location> getParent() {
         return Optional.ofNullable(parent);
+    }
+
+    public Set<Location> hierachy() {
+        final ImmutableSet.Builder<Location> builder = ImmutableSet.builder();
+        Location location = this;
+        do {
+            builder.add(location);
+            location = location.getParent().orElse(null);
+        } while (location != null);
+        return builder.build();
     }
 
     public List<Location> children() {

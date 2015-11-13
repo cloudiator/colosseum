@@ -16,15 +16,31 @@
  * under the License.
  */
 
-package cloud.resources;
+package util;
 
-import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
+import play.Logger;
 
 /**
- * Created by daniel on 03.07.15.
+ * Created by daniel on 05.11.15.
  */
-public interface RemoteResource extends Resource {
+public class Loggers {
 
-    String cloudProviderId();
+    public static final String CLOUD_SYNC = "colosseum.cloud.sync";
+    public static final String CLOUD_REMOTE = "colosseum.cloud.remote";
+    public static final String EXECUTION = "colosseum.execution";
+
+    private Loggers() {
+        throw new AssertionError("Intentionally left empty.");
+    }
+
+    public static Logger.ALogger of(String name) {
+        return play.Logger.of(name);
+    }
+
+    public static Logger.ALogger of(Class<?> clazz) {
+        return play.Logger.of(clazz);
+    }
+
+
 
 }

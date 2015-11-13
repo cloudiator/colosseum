@@ -18,9 +18,14 @@
 
 package cloud.resources;
 
+import models.Cloud;
+
 /**
  * Created by daniel on 28.04.15.
  */
 public interface CloudScoped {
-    String cloud();
+
+    Cloud cloud();
+
+    String cloudProviderId();
 }

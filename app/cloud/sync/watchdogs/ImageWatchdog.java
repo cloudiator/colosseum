@@ -22,54 +22,43 @@ import cloud.CloudService;
 import cloud.resources.ImageInLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
-import cloud.sync.problems.ImageProblems;
+import cloud.sync.ProblemDetector;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.execution.Stable;
-import models.CloudCredential;
-import models.service.ImageModelService;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daniel on 07.05.15.
  */
-@Stable public class ImageWatchdog extends AbstractCloudServiceWatchdog {
+@Stable public class ImageWatchdog extends AbstractCloudServiceWatchdog<ImageInLocation> {
 
-    private final ImageModelService imageModelService;
-
-    @Inject protected ImageWatchdog(CloudService cloudService,
-        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue,
-        ImageModelService imageModelService) {
-        super(cloudService, simpleBlockingQueue);
-        this.imageModelService = imageModelService;
-    }
-
-
-
-    @Override protected void watch(CloudService cloudService) {
-        for (ImageInLocation imageInLocation : cloudService.discoveryService().listImages()) {
-
-            models.Image modelImage = imageModelService.getByRemoteId(imageInLocation.id());
-
-            if (modelImage == null) {
-                report(new ImageProblems.ImageNotInDatabase(imageInLocation));
-            } else {
-                CloudCredential credentialToSearchFor = null;
-                for (CloudCredential cloudCredential : modelImage.cloudCredentials()) {
-                    if (cloudCredential.getUuid().equals(imageInLocation.credential())) {
-                        credentialToSearchFor = cloudCredential;
-                        break;
-                    }
-                }
-
-                if (credentialToSearchFor == null) {
-                    report(new ImageProblems.ImageMissesCredential(imageInLocation));
-                }
-            }
-        }
+    @Inject protected ImageWatchdog(
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
+        Set<ProblemDetector<ImageInLocation>> problemDetectors, CloudService cloudService) {
+        super(problemQueue, problemDetectors, cloudService);
     }
 
     @Override public String toString() {
         return "ImageWatchdog";
+    }
+
+    @Override protected Iterable<ImageInLocation> toWatch() {
+        return cloudService().discoveryService().listImages();
+    }
+
+    @Override public long period() {
+        return 60;
+    }
+
+    @Override public long delay() {
+        return 20;
+    }
+
+    @Override public TimeUnit timeUnit() {
+        return TimeUnit.SECONDS;
     }
 }

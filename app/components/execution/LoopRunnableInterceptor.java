@@ -21,23 +21,34 @@ package components.execution;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
+import util.Loggers;
 
 /**
  * Created by daniel on 27.07.15.
  */
 public class LoopRunnableInterceptor implements MethodInterceptor {
 
+    private static final Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     @Override public Object invoke(MethodInvocation methodInvocation) throws Throwable {
         if (!methodInvocation.getMethod().getName().equals("run")) {
             return methodInvocation.proceed();
         }
 
+        LOGGER.info("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
+
         while (!Thread.currentThread().isInterrupted()) {
-            Logger.debug("Running " + methodInvocation.getThis().getClass() + " in endless loop.");
-            methodInvocation.proceed();
+            LOGGER.debug(String.format("Starting new loop iteration for %s",
+                methodInvocation.getThis().getClass()));
+            try {
+                methodInvocation.proceed();
+            } catch (Throwable t) {
+                LOGGER.warn("Loop execution of " + methodInvocation.getThis().getClass()
+                    + "was interrupted due to an Exception", t);
+                throw t;
+            }
         }
-        Logger.debug("Interrupt loop execution of " + methodInvocation.getThis().getClass());
+        LOGGER.warn("Interrupt loop execution of " + methodInvocation.getThis().getClass());
         return null;
     }
 }

@@ -23,9 +23,11 @@ import com.google.common.collect.Maps;
 import models.generic.Model;
 import models.generic.RemoteResourceInCloud;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,7 +35,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class Cloud extends Model {
 
     @Column(unique = true, nullable = false, updatable = false) private String name;
-    @Column(nullable = false) private String endpoint;
+    @Nullable @Column(nullable = true) private String endpoint;
     @ManyToOne(optional = false) private Api api;
     @OneToMany(mappedBy = "cloud", cascade = CascadeType.REMOVE) private List<RemoteResourceInCloud>
         remoteResources;
@@ -50,11 +52,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Cloud() {
     }
 
-    public Cloud(String name, String endpoint, Api api) {
+    public Cloud(String name, @Nullable String endpoint, Api api) {
         checkNotNull(name);
         checkArgument(!name.isEmpty());
-        checkNotNull(endpoint);
-        checkArgument(!endpoint.isEmpty());
+        if (endpoint != null) {
+            checkArgument(!endpoint.isEmpty());
+        }
         checkNotNull(api);
         this.name = name;
         this.endpoint = endpoint;
@@ -69,12 +72,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.name = name;
     }
 
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
+    public Optional<String> getEndpoint() {
+        return Optional.ofNullable(endpoint);
     }
 
     public Api api() {

@@ -20,6 +20,7 @@ package components.execution;
 
 import com.google.inject.Singleton;
 import play.Logger;
+import util.Loggers;
 
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -30,7 +31,7 @@ import java.util.concurrent.ScheduledExecutorService;
 
     private final ScheduledExecutorService scheduledExecutorService;
 
-    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
+    private static final Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     public ScheduledThreadPoolExecutorExecutionService(
         ScheduledExecutorService scheduledExecutorService) {
@@ -38,16 +39,16 @@ import java.util.concurrent.ScheduledExecutorService;
     }
 
     @Override public void schedule(Schedulable schedulable) {
-        LOGGER.debug(String
-            .format("Scheduling %s with initial delay of %s and period of %s %s", schedulable,
-                schedulable.delay(), schedulable.period(), schedulable.timeUnit()));
+        LOGGER.info(String
+            .format("%s is scheduling %s with initial delay of %s and period of %s %s", this,
+                schedulable, schedulable.delay(), schedulable.period(), schedulable.timeUnit()));
         this.scheduledExecutorService
             .scheduleAtFixedRate(schedulable, schedulable.delay(), schedulable.period(),
                 schedulable.timeUnit());
     }
 
     @Override public void execute(Runnable runnable) {
-        LOGGER.debug("Executing " + runnable);
+        LOGGER.info(String.format("%s is executing %s", this, runnable));
         this.scheduledExecutorService.execute(runnable);
     }
 }

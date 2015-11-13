@@ -26,6 +26,4 @@ import javax.annotation.Nullable;
  * Created by daniel on 03.11.14.
  */
 public interface HardwareModelService extends RemoteModelService<Hardware> {
-    @Nullable Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
-        String UuidOfCloud);
 }

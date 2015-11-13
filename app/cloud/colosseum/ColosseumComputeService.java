@@ -42,5 +42,5 @@ public interface ColosseumComputeService {
 
     Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential);
 
-    Optional<PublicIpService> getPublicIpService(String cloudCredentialUuid);
+    Optional<PublicIpService> getPublicIpService(CloudCredential cloudCredential);
 }

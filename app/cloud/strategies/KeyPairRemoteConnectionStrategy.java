@@ -31,7 +31,8 @@ import models.service.KeyPairModelService;
 
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 31.08.15.
@@ -55,8 +56,9 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
     }
 
     @Override public boolean isApplicable(VirtualMachine virtualMachine) {
-        return virtualMachine.supportsKeyPair() && keyPairModelService
-            .getKeyPair(virtualMachine.cloud(), tenant).isPresent();
+        return virtualMachine.supportsKeyPair() && (
+            keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant).isPresent()
+                || virtualMachine.loginPrivateKey().isPresent());
     }
 
     @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
@@ -65,9 +67,17 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
         checkArgument(virtualMachine.publicIpAddress().isPresent());
         checkArgument(virtualMachine.loginName().isPresent());
 
+        String privateKey;
         final Optional<KeyPair> keyPair =
             keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant);
-        checkState(keyPair.isPresent());
+        if (keyPair.isPresent()) {
+            privateKey = keyPair.get().getPrivateKey();
+        } else if (virtualMachine.loginPrivateKey().isPresent()) {
+            privateKey = virtualMachine.loginPrivateKey().get();
+        } else {
+            throw new IllegalStateException(String
+                .format("%s was called, even if its not applicable for %s", this, virtualMachine));
+        }
 
         try {
             return connectionService.getRemoteConnection(HostAndPort
@@ -75,10 +85,14 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
                         virtualMachine.remotePortOrDefault()),
                 virtualMachine.operatingSystemVendorTypeOrDefault().osFamily(),
                 LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
-                    .privateKey(keyPair.get().getPrivateKey()).build());
+                    .privateKey(privateKey).build());
         } catch (RemoteException e) {
             throw new RemoteRuntimeException(e);
         }
+    }
+
+    @Override public int getPriority() {
+        return Priority.HIGH;
     }
 
     public static class KeyPairRemoteConnectionStrategyFactory

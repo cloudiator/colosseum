@@ -40,7 +40,7 @@ public class AggregatorEntitiesConverter {
             convert(cm.getQuantifier()),
             convert(cm.getWindow()),
             convert(cm.getMonitors()),
-            convert(cm.getScalingActions())
+            convertScalingActions(cm.getScalingActions())
         );
     }
 

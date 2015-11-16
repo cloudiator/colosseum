@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 import play.Logger;
 import play.db.jpa.Transactional;
 import util.Loggers;
@@ -29,7 +30,7 @@ import util.Loggers;
 /**
  * Created by daniel on 05.05.15.
  */
-public class ProblemSolver implements Runnable {
+@Stable public class ProblemSolver implements Runnable {
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;

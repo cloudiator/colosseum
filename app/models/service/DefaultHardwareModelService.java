@@ -21,8 +21,6 @@ package models.service;
 import com.google.inject.Inject;
 import models.Hardware;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by daniel on 03.11.14.
  */
@@ -33,15 +31,4 @@ public class DefaultHardwareModelService extends BaseRemoteModelService<Hardware
         super(hardwareRepository);
     }
 
-    @Override @Nullable
-    public Hardware getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
-        String UuidOfCloud) {
-        for (Hardware hardware : getAll()) {
-            if (hardware.remoteId().equals(cloudUuid) && hardware.cloud().getUuid()
-                .equals(UuidOfCloud)) {
-                return hardware;
-            }
-        }
-        return null;
-    }
 }

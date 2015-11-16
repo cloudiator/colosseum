@@ -37,6 +37,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStore;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
+import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
@@ -137,7 +138,18 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         //add all outgoing ports / required ports
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
             //check if something better for null todo
-            builder.addOutport(portRequired.name(), DeploymentHelper.getEmptyPortUpdateHandler(),
+            final PortUpdateHandler portUpdateHandler;
+            if (!portRequired.updateAction().isPresent()) {
+                portUpdateHandler = DeploymentHelper.getEmptyPortUpdateHandler();
+            } else {
+                BashBasedHandlerBuilder portUpdateBuilder = new BashBasedHandlerBuilder();
+                portUpdateBuilder.setOperatingSystem(
+                    instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs());
+                portUpdateBuilder.addCommand(portRequired.updateAction().get());
+                portUpdateHandler = portUpdateBuilder.buildPortUpdateHandler();
+            }
+
+            builder.addOutport(portRequired.name(), portUpdateHandler,
                 PortProperties.INFINITE_CARDINALITY);
         }
 

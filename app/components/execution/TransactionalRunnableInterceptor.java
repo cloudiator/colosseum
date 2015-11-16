@@ -24,13 +24,14 @@ import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
+import util.Loggers;
 
 /**
  * Created by daniel on 24.07.15.
  */
 public class TransactionalRunnableInterceptor implements MethodInterceptor {
 
-    private static final Logger.ALogger LOGGER = Logger.of("colosseum.execution");
+    private static final Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     public TransactionalRunnableInterceptor() {
     }

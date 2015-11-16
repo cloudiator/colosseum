@@ -27,7 +27,6 @@ import com.google.inject.Inject;
 import models.CloudCredential;
 import models.Hardware;
 import models.service.HardwareModelService;
-import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -37,12 +36,9 @@ import static com.google.common.base.Preconditions.checkArgument;
 public class ConnectHardwareToCredential implements Solution {
 
     private final HardwareModelService hardwareModelService;
-    private final ModelService<CloudCredential> cloudCredentialModelService;
 
-    @Inject public ConnectHardwareToCredential(HardwareModelService hardwareModelService,
-        ModelService<CloudCredential> cloudCredentialModelService) {
+    @Inject public ConnectHardwareToCredential(HardwareModelService hardwareModelService) {
         this.hardwareModelService = hardwareModelService;
-        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
     @Override public boolean isSolutionFor(Problem problem) {
@@ -55,8 +51,7 @@ public class ConnectHardwareToCredential implements Solution {
             ((HardwareProblems.HardwareMissesCredential) problem).getHardwareInLocation();
 
         Hardware modelHardware = hardwareModelService.getByRemoteId(hardwareInLocation.id());
-        CloudCredential cloudCredential =
-            cloudCredentialModelService.getByUuid(hardwareInLocation.credential());
+        CloudCredential cloudCredential = hardwareInLocation.credential();
 
         if (modelHardware == null || cloudCredential == null) {
             throw new SolutionException();

@@ -18,18 +18,20 @@
 
 package components.execution;
 
-import java.util.HashSet;
+import com.google.common.collect.Sets;
+
+import java.util.Set;
 
 /**
  * Created by daniel on 08.05.15.
  */
 public class UniqueBlockingQueue<T> implements SimpleBlockingQueue<T> {
 
-    private final HashSet<T> set;
+    private final Set<T> set;
     private final SimpleBlockingQueue<T> queue;
 
     public UniqueBlockingQueue(SimpleBlockingQueue<T> queue) {
-        set = new HashSet<>();
+        set = Sets.newConcurrentHashSet();
         this.queue = queue;
     }
 

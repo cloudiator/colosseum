@@ -65,6 +65,10 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
         }
     }
 
+    @Override public int getPriority() {
+        return Priority.LOW;
+    }
+
     public static class PasswordRemoteConnectionStrategyFactory
         implements RemoteConnectionStrategyFactory {
 

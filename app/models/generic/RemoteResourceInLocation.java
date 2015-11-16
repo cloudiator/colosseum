@@ -25,6 +25,7 @@ import models.Location;
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.util.Optional;
 
 /**
  * Created by daniel on 22.09.15.
@@ -45,13 +46,13 @@ import javax.persistence.ManyToOne;
     }
 
     public RemoteResourceInLocation(@Nullable String remoteId, @Nullable String cloudProviderId,
-        Cloud cloud, @Nullable CloudCredential owner, Location location) {
+        Cloud cloud, @Nullable CloudCredential owner, @Nullable Location location) {
         super(remoteId, cloudProviderId, cloud, owner);
         this.location = location;
     }
 
-    public Location location() {
-        return location;
+    public Optional<Location> location() {
+        return Optional.ofNullable(location);
     }
 
 }

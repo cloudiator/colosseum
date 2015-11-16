@@ -62,15 +62,21 @@ public class CreateImageInDatabase implements Solution {
         ImageProblems.ImageNotInDatabase imageNotInDatabase =
             (ImageProblems.ImageNotInDatabase) problem;
 
-        Cloud cloud = cloudModelService.getByUuid(imageNotInDatabase.getImageInLocation().cloud());
+        Cloud cloud = imageNotInDatabase.getImageInLocation().cloud();
         if (cloud == null) {
             throw new SolutionException();
         }
         //todo check this
-        Location location =
-            locationModelService.getByRemoteId(imageNotInDatabase.getImageInLocation().location());
-        if (location == null) {
-            throw new SolutionException();
+        Location location = null;
+        if (imageNotInDatabase.getImageInLocation().location().isPresent()) {
+            location = locationModelService
+                .getByRemoteId(imageNotInDatabase.getImageInLocation().location().get().id());
+            if (location == null) {
+                throw new SolutionException(String
+                    .format("Could not import image %s as location %s is not (yet) imported.",
+                        imageNotInDatabase.getImageInLocation(),
+                        imageNotInDatabase.getImageInLocation().location().get()));
+            }
         }
 
         OperatingSystem operatingSystem =

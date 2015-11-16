@@ -18,8 +18,10 @@
 
 package models;
 
+import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
+import java.util.Optional;
 
 /**
  * Created by daniel on 03.08.15.
@@ -27,6 +29,7 @@ import javax.persistence.OneToOne;
 @Entity public class PortRequired extends Port {
 
     @OneToOne(mappedBy = "requiredPort") Communication requiredCommunication;
+    @Nullable String updateAction;
 
     /**
      * Default constructor for hibernate.
@@ -34,11 +37,17 @@ import javax.persistence.OneToOne;
     protected PortRequired() {
     }
 
-    public PortRequired(String name, ApplicationComponent applicationComponent) {
+    public PortRequired(String name, ApplicationComponent applicationComponent,
+        @Nullable String updateAction) {
         super(name, applicationComponent);
+        this.updateAction = updateAction;
     }
 
     @Override public Communication getAttachedCommunication() {
         return requiredCommunication;
+    }
+
+    public Optional<String> updateAction() {
+        return Optional.ofNullable(updateAction);
     }
 }

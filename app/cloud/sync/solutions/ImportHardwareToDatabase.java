@@ -37,19 +37,17 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * Created by daniel on 07.05.15.
  */
-public class CreateHardwareInDatabase implements Solution {
+public class ImportHardwareToDatabase implements Solution {
 
     private final ModelService<Hardware> hardwareModelService;
     private final ModelService<HardwareOffer> hardwareOfferModelService;
-    private final ModelService<Cloud> cloudModelService;
     private final LocationModelService locationModelService;
 
-    @Inject public CreateHardwareInDatabase(ModelService<Hardware> hardwareModelService,
+    @Inject public ImportHardwareToDatabase(ModelService<Hardware> hardwareModelService,
         ModelService<HardwareOffer> hardwareOfferModelService,
-        ModelService<Cloud> cloudModelService, LocationModelService locationModelService) {
+        LocationModelService locationModelService) {
         this.hardwareModelService = hardwareModelService;
         this.hardwareOfferModelService = hardwareOfferModelService;
-        this.cloudModelService = cloudModelService;
         this.locationModelService = locationModelService;
     }
 
@@ -63,16 +61,17 @@ public class CreateHardwareInDatabase implements Solution {
         HardwareProblems.HardwareNotInDatabase hardwareNotInDatabase =
             (HardwareProblems.HardwareNotInDatabase) problem;
 
-        Cloud cloud =
-            cloudModelService.getByUuid(hardwareNotInDatabase.getHardwareInLocation().cloud());
-        if (cloud == null) {
-            throw new SolutionException();
-        }
-        //todo check this
-        Location location = locationModelService
-            .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location());
-        if (location == null) {
-            throw new SolutionException();
+        Cloud cloud = hardwareNotInDatabase.getHardwareInLocation().cloud();
+        Location location = null;
+        if (hardwareNotInDatabase.getHardwareInLocation().location().isPresent()) {
+            location = locationModelService
+                .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location().get().id());
+            if (location == null) {
+                throw new SolutionException(String
+                    .format("Could not import hardware %s as location %s is not (yet) imported.",
+                        hardwareNotInDatabase.getHardwareInLocation(),
+                        hardwareNotInDatabase.getHardwareInLocation().location().get()));
+            }
         }
 
         //todo check this

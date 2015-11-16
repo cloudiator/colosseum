@@ -20,37 +20,33 @@ package cloud.resources;
 
 
 import cloud.DecoratedId;
+import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.ModelService;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.03.15.
  */
-public class AbstractCredentialScopedResource<T extends Resource>
-    implements CredentialScoped, RemoteResource {
+public abstract class ResourceWithCredential extends BaseLocationScoped implements Resource {
 
-    private final String cloud;
-    private final String credential;
-    private final String id;
-    private final T resource;
+    private final Resource resource;
 
+    public ResourceWithCredential(Resource resource, String cloud, String credential,
+        ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
+        super(resource, cloud, credential, cloudModelService, cloudCredentialModelService);
 
-    public AbstractCredentialScopedResource(T resource, String cloud, String credential) {
+        checkNotNull(resource, "Resource must not be null");
+
         this.resource = resource;
-        this.id = resource.id();
-        this.cloud = cloud;
-        this.credential = credential;
-    }
-
-    @Override public String cloud() {
-        return cloud;
-    }
-
-    @Override public String credential() {
-        return credential;
     }
 
     @Override public String id() {
-        return DecoratedId.of(cloud, id).colosseumId();
+        return DecoratedId.of(cloud(), resource).colosseumId();
     }
 
     @Override public String name() {
@@ -58,6 +54,10 @@ public class AbstractCredentialScopedResource<T extends Resource>
     }
 
     @Override public String cloudProviderId() {
-        return id;
+        return resource.id();
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
     }
 }

@@ -22,10 +22,13 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
+import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
 import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
+import models.Cloud;
 import models.CloudCredential;
+import models.service.ModelService;
 import play.Configuration;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -35,6 +38,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by daniel on 19.06.15.
  */
 public class SwordComputeServiceFactory implements ComputeServiceFactory {
+
+    private final ModelService<Cloud> cloudModelService;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
+
+    @Inject SwordComputeServiceFactory(ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
+
+        checkNotNull(cloudModelService);
+        checkNotNull(cloudCredentialModelService);
+
+        this.cloudModelService = cloudModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
+    }
 
     private String getNodeGroup() {
         //TODO: wrong place? config should probably checked during init of app
@@ -49,12 +65,13 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
 
         return new DecoratingComputeService(ServiceBuilder
             .newServiceBuilder(cloudCredential.getCloud().api().getInternalProviderName())
-            .endpoint(cloudCredential.getCloud().getEndpoint())
+            .endpoint(cloudCredential.getCloud().getEndpoint().orElse(null))
             .credentials(cloudCredential.getUser(), cloudCredential.getSecret()).properties(
                 PropertiesBuilder.newBuilder()
                     .putProperties(cloudCredential.getCloud().properties()).build())
             .loggingModule(new SwordLoggingModule()).nodeGroup(getNodeGroup()).build(),
-            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid());
+            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid(), cloudModelService,
+            cloudCredentialModelService);
     }
 
 }

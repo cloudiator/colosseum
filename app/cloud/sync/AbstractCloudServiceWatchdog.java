@@ -21,51 +21,30 @@ package cloud.sync;
 import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
-import play.db.jpa.Transactional;
 
-import java.util.concurrent.TimeUnit;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import java.util.Set;
 
 
 
 /**
  * Created by daniel on 27.04.15.
  */
-public abstract class AbstractCloudServiceWatchdog implements Schedulable {
+public abstract class AbstractCloudServiceWatchdog<T> extends AbstractWatchDog<T> {
 
     private final CloudService cloudService;
-    private final SimpleBlockingQueue<Problem> problemQueue;
 
-    @Inject protected AbstractCloudServiceWatchdog(CloudService cloudService,
-        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> simpleBlockingQueue) {
-        checkNotNull(cloudService);
-        checkNotNull(simpleBlockingQueue);
+    @Inject protected AbstractCloudServiceWatchdog(
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
+        Set<ProblemDetector<T>> problemDetectors, CloudService cloudService) {
+        super(problemQueue, problemDetectors);
         this.cloudService = cloudService;
-        this.problemQueue = simpleBlockingQueue;
     }
 
-    @Transactional(readOnly = true) @Override public void run() {
-        watch(this.cloudService);
+    protected final CloudService cloudService() {
+        return cloudService;
     }
 
-    protected abstract void watch(CloudService cloudService);
-
-    protected void report(Problem problem) {
-        this.problemQueue.add(problem);
-    }
-
-    @Override public long period() {
-        return 20;
-    }
-
-    @Override public long delay() {
-        return 0;
-    }
-
-    @Override public TimeUnit timeUnit() {
-        return TimeUnit.SECONDS;
-    }
 }
+
+

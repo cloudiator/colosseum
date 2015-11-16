@@ -36,7 +36,8 @@ import java.util.List;
  */
 public class LocationDto extends RemoteDto {
 
-    protected Long cloud;
+    private Long cloud;
+    private String name;
     private Long parent;
     private LocationScope locationScope;
     private Boolean isAssignable;
@@ -47,14 +48,6 @@ public class LocationDto extends RemoteDto {
         super();
     }
 
-    public LocationDto(Long cloud, Long parent, LocationScope locationScope, Boolean isAssignable,
-        Long geoLocation) {
-        this.cloud = cloud;
-        this.parent = parent;
-        this.locationScope = locationScope;
-        this.isAssignable = isAssignable;
-        this.geoLocation = geoLocation;
-    }
 
     @Override public void validation() {
         super.validation();
@@ -125,5 +118,13 @@ public class LocationDto extends RemoteDto {
 
     public void setCloudCredentials(List<Long> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

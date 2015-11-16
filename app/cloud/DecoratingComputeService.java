@@ -22,7 +22,6 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.common.base.Function;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.*;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
@@ -30,8 +29,11 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import models.Cloud;
+import models.CloudCredential;
+import models.service.ModelService;
 
-import javax.annotation.Nullable;
+import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,29 +47,34 @@ public class DecoratingComputeService implements
     private final ComputeService<HardwareFlavor, Image, Location, VirtualMachine> delegate;
     private final String cloudId;
     private final String cloudCredential;
+    private final ModelService<CloudCredential> cloudCredentialModelService;
+    private final ModelService<Cloud> cloudModelService;
 
 
     public DecoratingComputeService(
         ComputeService<HardwareFlavor, Image, Location, VirtualMachine> delegate, String cloudId,
-        String cloudCredential) {
+        String cloudCredential, ModelService<Cloud> cloudModelService,
+        ModelService<CloudCredential> cloudCredentialModelService) {
 
         checkNotNull(delegate);
         checkNotNull(cloudId);
         checkArgument(!cloudId.isEmpty());
         checkNotNull(cloudCredential);
         checkArgument(!cloudCredential.isEmpty());
+        checkNotNull(cloudModelService);
+        checkNotNull(cloudCredentialModelService);
 
         this.delegate = delegate;
         this.cloudCredential = cloudCredential;
         this.cloudId = cloudId;
+        this.cloudModelService = cloudModelService;
+        this.cloudCredentialModelService = cloudCredentialModelService;
     }
-
-
 
     @Override
     public DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> discoveryService() {
-        return new DecoratingDiscoveryService(delegate.discoveryService(), cloudId,
-            cloudCredential);
+        return new DecoratingDiscoveryService(delegate.discoveryService(), cloudId, cloudCredential,
+            cloudModelService, cloudCredentialModelService);
     }
 
     @Override public void deleteVirtualMachine(String s) {
@@ -76,8 +83,8 @@ public class DecoratingComputeService implements
 
     @Override public VirtualMachineInLocation createVirtualMachine(
         VirtualMachineTemplate virtualMachineTemplate) {
-        return new VirtualMachineDecorator(cloudId, cloudCredential)
-            .apply(this.delegate.createVirtualMachine(virtualMachineTemplate));
+        return new VirtualMachineDecorator(cloudId, cloudCredential, cloudCredentialModelService,
+            cloudModelService).apply(this.delegate.createVirtualMachine(virtualMachineTemplate));
     }
 
     @Override public ConnectionService connectionService() {
@@ -85,11 +92,19 @@ public class DecoratingComputeService implements
     }
 
     @Override public Optional<PublicIpService> publicIpService() {
-        return this.delegate.publicIpService();
+        Optional<PublicIpService> publicIpService = delegate.publicIpService();
+        if (!publicIpService.isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DecoratingPublicIpService(publicIpService.get()));
     }
 
     @Override public Optional<KeyPairService> keyPairService() {
-        return this.delegate.keyPairService();
+        if (!delegate.keyPairService().isPresent()) {
+            return Optional.absent();
+        }
+        return Optional.of(new DecoratingKeyPairService(delegate.keyPairService().get(), cloudId,
+            cloudCredential, cloudModelService, cloudCredentialModelService));
     }
 
     static class VirtualMachineDecorator
@@ -97,17 +112,23 @@ public class DecoratingComputeService implements
 
         private final String cloudId;
         private final String cloudCredentialId;
+        private final ModelService<CloudCredential> cloudCredentialModelService;
+        private final ModelService<Cloud> cloudModelService;
 
 
-        public VirtualMachineDecorator(String cloudId, String cloudCredentialId) {
+        public VirtualMachineDecorator(String cloudId, String cloudCredentialId,
+            ModelService<CloudCredential> cloudCredentialModelService,
+            ModelService<Cloud> cloudModelService) {
+
             this.cloudId = cloudId;
             this.cloudCredentialId = cloudCredentialId;
+            this.cloudCredentialModelService = cloudCredentialModelService;
+            this.cloudModelService = cloudModelService;
         }
 
-        @Nullable @Override
-        public VirtualMachineInLocation apply(@Nullable VirtualMachine virtualMachine) {
-            checkNotNull(virtualMachine);
-            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredentialId);
+        @Override public VirtualMachineInLocation apply(VirtualMachine virtualMachine) {
+            return new VirtualMachineInLocation(virtualMachine, cloudId, cloudCredentialId,
+                cloudModelService, cloudCredentialModelService);
         }
     }
 }

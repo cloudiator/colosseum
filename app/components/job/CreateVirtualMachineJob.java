@@ -26,6 +26,7 @@ import cloud.strategies.KeyPairStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
 import components.installer.api.InstallApi;
+import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
@@ -105,23 +106,18 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         //todo we cannot trust the response of sword, as jclouds returns wrong usernames.
         //fix this in sword. until fixed we do not read the login credentials.
         //this will cause flexiant jobs to fail....
-        //if (cloudVirtualMachine.loginCredential().isPresent()) {
-        //    LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
-        //    virtualMachine.setGeneratedLoginUsername(loginCredential.username());
-        //    if (loginCredential.isPasswordCredential()) {
-        //        virtualMachine.setGeneratedPassword(loginCredential.password().get());
-        //    } else {
-        //        //todo: if a private key and a public key are returned, we need to store them
-        //        throw new UnsupportedOperationException(
-        //            "Virtual Machine that started with key credentials is not yet supported.");
-        //    }
-        //}
+        if (cloudVirtualMachine.loginCredential().isPresent()) {
+            LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
+            virtualMachine.setGeneratedLoginUsername(loginCredential.username().orElse(null));
+            virtualMachine.setGeneratedLoginPassword(loginCredential.password().orElse(null));
+            virtualMachine.setGeneratedPrivateKey(loginCredential.privateKey().orElse(null));
+        }
 
         modelService.save(virtualMachine);
 
         if (!virtualMachine.publicIpAddress().isPresent()) {
-            final Optional<PublicIpService> publicIpService = computeService
-                .getPublicIpService(virtualMachine.cloudCredentials().get(0).getUuid());
+            final Optional<PublicIpService> publicIpService =
+                computeService.getPublicIpService(virtualMachine.owner().get());
             if (publicIpService.isPresent()) {
                 try {
                     final String publicIp =

@@ -71,6 +71,10 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<ComponentHorizontalOutScalingAction>>() {
         }).to(new TypeLiteral<BaseModelService<ComponentHorizontalOutScalingAction>>() {
         });
+        //ComponentHorizontalOutScalingAction
+        bind(new TypeLiteral<ModelService<ComponentHorizontalInScalingAction>>() {
+        }).to(new TypeLiteral<BaseModelService<ComponentHorizontalInScalingAction>>() {
+        });
         //ComposedMonitor
         bind(new TypeLiteral<ModelService<ComposedMonitor>>() {
         }).to(new TypeLiteral<BaseModelService<ComposedMonitor>>() {

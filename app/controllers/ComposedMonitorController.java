@@ -78,10 +78,17 @@ public class ComposedMonitorController extends
     }
 
     @Override @Transactional public Result delete(final Long id){
-        se.removeMonitor(id); // moved here because access to monitor is still needed
+        Result result = this.get(id);
+        if(!result.equals(this.notFound(id))) {
+            se.removeMonitor(id); // moved here because access to monitor is still needed
+            return ok();
+        } else {
+            return this.notFound(id);
+        }
 
-        Result parent = super.delete(id);
+        // Is now done asynchronous in RemoveAggregation
+        //Result parent = super.delete(id);
 
-        return parent;
+        //return parent;
     }
 }

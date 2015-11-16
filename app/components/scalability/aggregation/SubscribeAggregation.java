@@ -20,6 +20,8 @@ package components.scalability.aggregation;
 
 import components.scalability.AggregatorEntitiesConverter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
 import models.Monitor;
@@ -77,9 +79,26 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
                         VISOR_TELNET_PORT,
                         subscription.getId().toString())
                 );
+            } else if(this.subscription.getType() == SubscriptionType.SCALING) {
+                ColosseumDetails cd =new ColosseumDetails(
+                        Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.protocol"),
+                        Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.ip"),
+                        Play.application().configuration().getInt("colosseum.scalability.aggregator.scalingaction.port"),
+                        Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.username"),
+                        Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.tenant"),
+                        Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.password")
+                );
+
+                service.addObserver(
+                    monitor.getId(),
+                    new ScalingObserverParameter(
+                        subscription.getFilterValue(),
+                        AggregatorEntitiesConverter.convert(subscription.getFilterType()),
+                        cd)
+                );
             }
         } catch (RemoteException e) {
-            LOGGER.error("Error when calling remote object to add observer.");
+            LOGGER.error("Error when calling remote object to add observer. " + e);
         }
     }
 }

@@ -39,7 +39,8 @@ public class AggregatorEntitiesConverter {
             convert(cm.getFunction()),
             convert(cm.getQuantifier()),
             convert(cm.getWindow()),
-            convert(cm.getMonitors())
+            convert(cm.getMonitors()),
+            convertScalingActions(cm.getScalingActions())
         );
     }
 
@@ -141,5 +142,60 @@ public class AggregatorEntitiesConverter {
         }
 
         return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.SUM; /* TODO add any to formula operator enums */
+    }
+
+    public static List<de.uniulm.omi.cloudiator.axe.aggregator.entities.ScalingAction> convertScalingActions(List<ScalingAction> obj){
+        List<de.uniulm.omi.cloudiator.axe.aggregator.entities.ScalingAction> result = new ArrayList();
+
+        for(ScalingAction sa : obj) {
+            de.uniulm.omi.cloudiator.axe.aggregator.entities.ScalingAction _sa = convert(sa);
+            if(_sa != null){
+                result.add(_sa);
+            }
+        }
+
+        return result;
+    }
+
+
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.ScalingAction convert(ScalingAction sa){
+        if (sa instanceof ComponentHorizontalInScalingAction) {
+            return (convert((ComponentHorizontalInScalingAction) sa));
+        } else if (sa instanceof ComponentHorizontalOutScalingAction) {
+            return (convert((ComponentHorizontalOutScalingAction) sa));
+        } else {
+            // TODO currently others not supported
+            return null;
+        }
+    }
+
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalInScalingAction convert(ComponentHorizontalInScalingAction sa) {
+        de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalInScalingAction result;
+
+        result = new de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalInScalingAction(
+                sa.getId(),
+                sa.getAmount(),
+                sa.getMin(),
+                sa.getMax(),
+                sa.getCount(),
+                sa.getApplicationComponent().getId()
+        );
+
+        return result;
+    }
+
+    public static de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalOutScalingAction convert(ComponentHorizontalOutScalingAction sa) {
+        de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalOutScalingAction result;
+
+        result = new de.uniulm.omi.cloudiator.axe.aggregator.entities.ComponentHorizontalOutScalingAction(
+                sa.getId(),
+                sa.getAmount(),
+                sa.getMin(),
+                sa.getMax(),
+                sa.getCount(),
+                sa.getApplicationComponent().getId()
+        );
+
+        return result;
     }
 }

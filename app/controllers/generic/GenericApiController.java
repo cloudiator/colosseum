@@ -254,7 +254,8 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      * @param value     the value for the attribute
      * @return A JSON representation if the matching entities.N
      */
-    public Result search(final String attribute, final String value) {
+    @Transactional(readOnly = true) @BodyParser.Of(BodyParser.Empty.class) public Result search(
+        final String attribute, final String value) {
 
         final List<T> entities = this.searchEntity(attribute, value);
         List<Dto> dtos = new ArrayList<>(entities.size());

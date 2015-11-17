@@ -209,6 +209,7 @@ GET           /api/location/:id                                   @controllers.L
 POST          /api/location                                       @controllers.LocationController.post()
 PUT           /api/location/:id                                   @controllers.LocationController.put(id: Long)
 DELETE        /api/location/:id                                   @controllers.LocationController.delete(id: Long)
+GET           /api/location/:attribute/:value                     @controllers.LocationController.search(attribute: String, value: String)
 
 #Operating System
 GET           /api/os                                             @controllers.OperatingSystemController.list()

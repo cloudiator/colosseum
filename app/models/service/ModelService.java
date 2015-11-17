@@ -30,6 +30,8 @@ public interface ModelService<T extends Model> extends UniqueService<T> {
 
     @Nullable T getById(Long id);
 
+    List<T> getByAttributeValue(String attribute, Object value);
+
     List<T> getAll();
 
     void save(T t);

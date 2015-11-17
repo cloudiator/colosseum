@@ -26,8 +26,8 @@ import play.db.jpa.JPA;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.Parameter;
+import javax.persistence.Query;
 import java.util.List;
 import java.util.Set;
 
@@ -52,6 +52,15 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
     @Override @Nullable public T findById(Long id) {
         checkNotNull(id);
         return em().find(type, id);
+    }
+
+    @Override public List<T> findByColumn(String columnName, Object value) {
+        String queryString = String.format("from %s where :columnName = :value", type.getName());
+        Query query = em().createQuery(queryString);
+        query.setParameter("columnName", columnName);
+        query.setParameter("value", value);
+        //noinspection unchecked
+        return query.getResultList();
     }
 
     protected void persist(final T t) {
@@ -86,6 +95,8 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         checkNotNull(t);
         em().remove(t);
     }
+
+
 
     @Override public List<T> findAll() {
         String queryString = String.format("from %s", type.getName());

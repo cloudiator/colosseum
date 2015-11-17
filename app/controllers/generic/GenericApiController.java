@@ -18,10 +18,6 @@
 
 package controllers.generic;
 
-import com.google.common.base.Optional;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
 import controllers.security.SecuredSessionOrToken;
@@ -44,6 +40,8 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -123,6 +121,16 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
     }
 
+    private List<T> searchEntity(String attribute, Object value) {
+        checkNotNull(attribute);
+        checkNotNull(value);
+        List<T> ts = modelService.getByAttributeValue(attribute, value);
+        if (filter().isPresent()) {
+            return ts.stream().filter(filter().get()).collect(Collectors.toList());
+        }
+        return ts;
+    }
+
     /**
      * Loads the model identified by the given id from the
      * database.
@@ -136,7 +144,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         checkNotNull(id);
         T t = modelService.getById(id);
         if (filter().isPresent()) {
-            if (filter().get().apply(t)) {
+            if (filter().get().test(t)) {
                 return t;
             } else {
                 return null;
@@ -154,7 +162,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     private List<T> loadEntities() {
         List<T> ts = modelService.getAll();
         if (filter().isPresent()) {
-            return Lists.newArrayList(Iterables.filter(ts, filter().get()));
+            return ts.stream().filter(filter().get()).collect(Collectors.toList());
         }
         return ts;
     }
@@ -162,10 +170,10 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     /**
      * Extension Point for a filter used when retrieving entities.
      *
-     * @return an optional filter applied when retrieving entities.
+     * @return an {@link Optional} filter applied when retrieving entities.
      */
     protected Optional<Predicate<T>> filter() {
-        return Optional.absent();
+        return Optional.empty();
     }
 
     /**
@@ -234,6 +242,25 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
 
         return ok(Json.toJson(this.convertToDto(entity)));
+    }
+
+    /**
+     * Returns a list of entities matching the search criteria.
+     * <p>
+     * Retrieves all entities where the attribute defined matches
+     * the value defined.
+     *
+     * @param attribute the attribute
+     * @param value     the value for the attribute
+     * @return A JSON representation if the matching entities.N
+     */
+    public Result search(final String attribute, final String value) {
+
+        final List<T> entities = this.searchEntity(attribute, value);
+        List<Dto> dtos = new ArrayList<>(entities.size());
+        dtos.addAll(entities.stream().map(this::convertToDto).collect(Collectors.toList()));
+        return ok(Json.toJson(dtos));
+
     }
 
     /**

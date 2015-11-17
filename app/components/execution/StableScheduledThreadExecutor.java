@@ -52,6 +52,10 @@ public class StableScheduledThreadExecutor implements ExecutionService {
         executionService.execute(runnable);
     }
 
+    @Override public void shutdown() {
+        executionService.shutdown();
+    }
+
     private static class StableSchedulable implements Schedulable {
 
         private final Schedulable delegate;

@@ -30,7 +30,7 @@ interface ModelRepository<T extends Model> extends UniqueRepository<T> {
 
     @Nullable T findById(Long id);
 
-    List<T> findByColumn(String columnName, Object value);
+    List<T> findByColumn(String columnName, String value) throws IllegalColumnException;
 
     void delete(T t);
 

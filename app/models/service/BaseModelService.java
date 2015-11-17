@@ -20,6 +20,7 @@ package models.service;
 
 import com.google.inject.Inject;
 import models.generic.Model;
+import util.Loggers;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -30,6 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by daniel on 31.10.14.
  */
 public class BaseModelService<T extends Model> implements ModelService<T> {
+
+    play.Logger.ALogger LOGGER = Loggers.of(Loggers.DATABASE);
 
     protected final ModelRepository<T> modelRepository;
 
@@ -42,8 +45,16 @@ public class BaseModelService<T extends Model> implements ModelService<T> {
         return modelRepository.findById(id);
     }
 
-    @Override public List<T> getByAttributeValue(String attribute, Object value) {
-        return modelRepository.findByColumn(attribute, value);
+    @Override public List<T> getByAttributeValue(String attribute, String value)
+        throws IllegalSearchException {
+        try {
+            return modelRepository.findByColumn(attribute, value);
+        } catch (IllegalColumnException e) {
+            throw new IllegalSearchException(e);
+        } catch (Exception e) {
+            LOGGER.warn("Unexpected error during execution of search.", e);
+            throw new IllegalSearchException(e);
+        }
     }
 
     @Override @Nullable public T getByUuid(String uuid) {

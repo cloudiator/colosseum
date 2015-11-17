@@ -27,6 +27,7 @@ import dtos.generic.LinkDecoratorDto;
 import models.Tenant;
 import models.generic.Model;
 import models.service.FrontendUserService;
+import models.service.IllegalSearchException;
 import models.service.ModelService;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -121,7 +122,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
     }
 
-    private List<T> searchEntity(String attribute, Object value) {
+    private List<T> searchEntity(String attribute, String value) throws IllegalSearchException {
         checkNotNull(attribute);
         checkNotNull(value);
         List<T> ts = modelService.getByAttributeValue(attribute, value);
@@ -257,7 +258,12 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     @Transactional(readOnly = true) @BodyParser.Of(BodyParser.Empty.class) public Result search(
         final String attribute, final String value) {
 
-        final List<T> entities = this.searchEntity(attribute, value);
+        final List<T> entities;
+        try {
+            entities = this.searchEntity(attribute, value);
+        } catch (IllegalSearchException e) {
+            return badRequest(e.getMessage());
+        }
         List<Dto> dtos = new ArrayList<>(entities.size());
         dtos.addAll(entities.stream().map(this::convertToDto).collect(Collectors.toList()));
         return ok(Json.toJson(dtos));

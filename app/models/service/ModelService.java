@@ -30,7 +30,7 @@ public interface ModelService<T extends Model> extends UniqueService<T> {
 
     @Nullable T getById(Long id);
 
-    List<T> getByAttributeValue(String attribute, Object value);
+    List<T> getByAttributeValue(String attribute, String value) throws IllegalSearchException;
 
     List<T> getAll();
 

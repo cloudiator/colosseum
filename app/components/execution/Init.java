@@ -20,6 +20,8 @@ package components.execution;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import play.Logger;
+import util.Loggers;
 
 import java.util.Set;
 
@@ -30,18 +32,38 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Singleton public class Init {
 
+    private final ExecutionService executionService;
+    private static Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
+
     @Inject public Init(ExecutionService executionService, Set<Runnable> runnables,
         Set<Schedulable> schedulables) {
+
+        LOGGER.info("Initializing execution system.");
+
+        this.executionService = executionService;
+
+        LOGGER.debug(String.format("Using %s as execution service", executionService));
 
         checkNotNull(executionService);
         checkNotNull(runnables);
         checkNotNull(schedulables);
 
+        LOGGER.debug(String.format("Running %s tasks.", runnables.size() + schedulables.size()));
+
         for (Runnable runnable : runnables) {
+            LOGGER.trace(String.format("Starting initializing of runnable %s", runnable));
             executionService.execute(runnable);
         }
         for (Schedulable schedulable : schedulables) {
+            LOGGER.trace(String.format("Starting initialization of schedulable %s", schedulable));
             executionService.schedule(schedulable);
         }
     }
+
+    public void shutdown() {
+        LOGGER.info("Shutting down execution service.");
+        executionService.shutdown();
+    }
+
+
 }

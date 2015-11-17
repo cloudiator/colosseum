@@ -51,4 +51,8 @@ import java.util.concurrent.ScheduledExecutorService;
         LOGGER.info(String.format("%s is executing %s", this, runnable));
         this.scheduledExecutorService.execute(runnable);
     }
+
+    @Override public void shutdown() {
+        this.scheduledExecutorService.shutdown();
+    }
 }

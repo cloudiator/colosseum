@@ -18,12 +18,11 @@
 
 package dtos.conversion;
 
+import de.uniulm.omi.cloudiator.common.FieldFinder;
 import dtos.api.Dto;
 import models.generic.Model;
 
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,15 +41,18 @@ public class DefaultFieldConverter<T extends Model, S extends Dto> implements Dt
 
     private Iterable<Field> getFieldsToBind() {
 
-        Set<Field> dtoFields = new FieldFinder(sClass).getFields();
-        Set<Field> modelFields = new FieldFinder(tClass).getFields();
+        Set<Field> dtoFields = FieldFinder.of(sClass).getFields();
+        Set<Field> modelFields = FieldFinder.of(tClass).getFields();
 
-        Set<String> dtoFieldNames = dtoFields.stream().map(Field::getName).collect(Collectors.toSet());
-        Set<String> modelFieldNames = modelFields.stream().map(Field::getName).collect(Collectors.toSet());
+        Set<String> dtoFieldNames =
+            dtoFields.stream().map(Field::getName).collect(Collectors.toSet());
+        Set<String> modelFieldNames =
+            modelFields.stream().map(Field::getName).collect(Collectors.toSet());
 
         dtoFieldNames.retainAll(modelFieldNames);
 
-        return dtoFields.stream().filter(field -> dtoFieldNames.contains(field.getName())).collect(Collectors.toList());
+        return dtoFields.stream().filter(field -> dtoFieldNames.contains(field.getName()))
+            .collect(Collectors.toList());
 
     }
 
@@ -72,43 +74,20 @@ public class DefaultFieldConverter<T extends Model, S extends Dto> implements Dt
         return model;
     }
 
-    @Override
-    public final T toModel(S dto) {
+    @Override public final T toModel(S dto) {
         return bindFromDtoToModel(dto, new TypeBuilder<T>().getInstance(tClass));
     }
 
-    @Override
-    public final T toModel(S dto, T model) {
+    @Override public final T toModel(S dto, T model) {
         return bindFromDtoToModel(dto, model);
     }
 
-    @Override
-    public final S toDto(T model) {
+    @Override public final S toDto(T model) {
         return bindFromModelToDto(model, new TypeBuilder<S>().getInstance(sClass));
     }
 
-    @Override
-    public final S toDto(T model, S dto) {
+    @Override public final S toDto(T model, S dto) {
         return bindFromModelToDto(model, dto);
     }
 
-    private static class FieldFinder {
-
-        private final Class c;
-
-        private FieldFinder(Class c) {
-            this.c = c;
-        }
-
-        private Set<Field> getFields() {
-            Class clazz = c;
-            Set<Field> fields = new HashSet<>();
-            while (clazz != null) {
-                Collections.addAll(fields, clazz.getDeclaredFields());
-                clazz = clazz.getSuperclass();
-            }
-            return fields;
-        }
-
-    }
 }

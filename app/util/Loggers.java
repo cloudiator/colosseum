@@ -28,6 +28,7 @@ public class Loggers {
     public static final String CLOUD_SYNC = "colosseum.cloud.sync";
     public static final String CLOUD_REMOTE = "colosseum.cloud.remote";
     public static final String EXECUTION = "colosseum.execution";
+    public static final String DATABASE = "colosseum.database";
 
     private Loggers() {
         throw new AssertionError("Intentionally left empty.");

@@ -21,6 +21,7 @@ import cloud.sync.config.SolutionModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import components.execution.ExecutionModule;
+import components.execution.Init;
 import components.job.config.JobModule;
 import components.scalability.AggregationModule;
 import components.scalability.ScalingEngineModule;
@@ -29,11 +30,14 @@ import models.service.DatabaseServiceModule;
 import models.service.JPAModule;
 import play.Application;
 import play.GlobalSettings;
+import play.Logger;
 import play.data.format.Formatters;
 import play.db.jpa.JPA;
+import util.Loggers;
 
 import java.text.ParseException;
 import java.util.Locale;
+
 
 /**
  * The Global class.
@@ -74,6 +78,12 @@ public class Global extends GlobalSettings {
 
         // register formatters
         this.registerFormatters();
+    }
+
+    @Override public void onStop(Application application) {
+        super.onStop(application);
+
+        injector.getInstance(Init.class).shutdown();
     }
 
     /**

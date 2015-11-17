@@ -26,4 +26,6 @@ interface ExecutionService {
     void schedule(Schedulable schedulable);
 
     void execute(Runnable runnable);
+
+    void shutdown();
 }

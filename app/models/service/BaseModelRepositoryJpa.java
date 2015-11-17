@@ -18,17 +18,24 @@
 
 package models.service;
 
+import com.github.drapostolos.typeparser.TypeParser;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+import de.uniulm.omi.cloudiator.common.FieldFinder;
 import models.generic.Model;
 import play.db.jpa.JPA;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
 import javax.persistence.Parameter;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.lang.reflect.Field;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -52,6 +59,26 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
     @Override @Nullable public T findById(Long id) {
         checkNotNull(id);
         return em().find(type, id);
+    }
+
+    @Override public List<T> findByColumn(String columnName, String value)
+        throws IllegalColumnException {
+        CriteriaBuilder criteriaBuilder = em().getCriteriaBuilder();
+        CriteriaQuery<T> criteria = criteriaBuilder.createQuery(type);
+        Root<T> tRoot = criteria.from(type);
+        criteria.select(tRoot);
+        TypeParser typeParser = TypeParser.newBuilder().build();
+        Optional<Field> field = FieldFinder.of(type).getField(columnName);
+
+        if (!field.isPresent()) {
+            throw new IllegalColumnException(
+                String.format("Type %s does not hold column %s", type, columnName));
+        }
+
+        Object o = typeParser.parseType(value, field.get().getType());
+        criteria.where(criteriaBuilder.equal(tRoot.get(columnName), o));
+
+        return em().createQuery(criteria).getResultList();
     }
 
     protected void persist(final T t) {
@@ -86,6 +113,8 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         checkNotNull(t);
         em().remove(t);
     }
+
+
 
     @Override public List<T> findAll() {
         String queryString = String.format("from %s", type.getName());

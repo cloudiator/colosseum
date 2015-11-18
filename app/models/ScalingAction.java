@@ -21,13 +21,9 @@ package models;
 import models.generic.ModelWithExternalReference;
 
 import javax.persistence.Entity;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 
 /**
  * Created by Frank on 20.05.2015.
  */
-@Entity
-public abstract class ScalingAction extends ModelWithExternalReference {
+@Entity public abstract class ScalingAction extends ModelWithExternalReference {
 }

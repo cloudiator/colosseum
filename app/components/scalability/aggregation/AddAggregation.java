@@ -19,7 +19,6 @@
 package components.scalability.aggregation;
 
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
-import models.ComposedMonitor;
 import models.Monitor;
 
 import java.rmi.RemoteException;

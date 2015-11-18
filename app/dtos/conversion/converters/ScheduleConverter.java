@@ -22,9 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import models.Api;
 import models.Schedule;
-import models.service.ModelService;
 
 
 @Singleton public class ScheduleConverter extends AbstractConverter<Schedule, ScheduleDto> {

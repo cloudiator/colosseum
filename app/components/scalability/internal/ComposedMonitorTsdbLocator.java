@@ -20,7 +20,6 @@ package components.scalability.internal;
 
 import models.ComposedMonitor;
 import models.MonitorInstance;
-import models.RawMonitor;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +28,7 @@ import java.util.Map;
 /**
  * Created by Frank on 01.09.2015.
  */
-public class ComposedMonitorTsdbLocator implements TsdbLocator{
+public class ComposedMonitorTsdbLocator implements TsdbLocator {
     private final ComposedMonitor monitor;
 
     public ComposedMonitorTsdbLocator(ComposedMonitor monitor) {

@@ -36,7 +36,7 @@ import java.util.LinkedList;
  */
 public class IpV4AddressValidator implements Validator<String> {
 
-    private static final String IPV4Regex =
+    private static final String IPV4_REGEX =
         "^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$";
 
     @Override public Collection<ValidationErrorMessage> validate(String s)
@@ -45,7 +45,7 @@ public class IpV4AddressValidator implements Validator<String> {
             throw new ValidationException("Given ip address must not be null.");
         }
         Collection<ValidationErrorMessage> validationErrorMessages = new LinkedList<>();
-        if (!s.matches(IPV4Regex)) {
+        if (!s.matches(IPV4_REGEX)) {
             validationErrorMessages
                 .add(ValidationErrorMessage.of(String.format("%s is not a valid ipv4 address", s)));
         }

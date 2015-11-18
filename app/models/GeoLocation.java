@@ -39,7 +39,7 @@ import java.util.List;
 
     private Float locationLatitude;
 
-    private Float LocationLongitude;
+    private Float locationLongitude;
 
     @OneToMany(mappedBy = "geoLocation") private List<Location> locations;
 
@@ -56,7 +56,7 @@ import java.util.List;
         this.country = country;
         this.iso3166 = iso3166;
         this.locationLatitude = locationLatitude;
-        LocationLongitude = locationLongitude;
+        this.locationLongitude = locationLongitude;
     }
 
     public String getRegion() {
@@ -100,11 +100,11 @@ import java.util.List;
     }
 
     public Float getLocationLongitude() {
-        return LocationLongitude;
+        return locationLongitude;
     }
 
     public void setLocationLongitude(Float locationLongitude) {
-        LocationLongitude = locationLongitude;
+        this.locationLongitude = locationLongitude;
     }
 
     public List<Location> getLocations() {

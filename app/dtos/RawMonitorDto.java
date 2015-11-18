@@ -21,7 +21,6 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.MonitorDto;
-import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.service.ModelService;
@@ -41,7 +40,8 @@ public class RawMonitorDto extends MonitorDto {
         super();
     }
 
-    public RawMonitorDto(List<String> externalReferences, List<Long> monitorInstances, Long application, Long component, Long componentInstance, Long cloud,
+    public RawMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
+        Long application, Long component, Long componentInstance, Long cloud,
         Long sensorDescription, Long schedule) {
         super(externalReferences, monitorInstances);
         this.application = application;

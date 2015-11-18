@@ -89,17 +89,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public List<PortProvided> getProvidedPorts() {
-        final List<PortProvided> ports =
+        final List<PortProvided> providedPorts =
             getPorts().stream().filter(port -> port instanceof PortProvided)
                 .map(port -> (PortProvided) port).collect(Collectors.toList());
-        return ImmutableList.copyOf(ports);
+        return ImmutableList.copyOf(providedPorts);
     }
 
     public List<PortRequired> getRequiredPorts() {
-        final List<PortRequired> ports =
+        final List<PortRequired> requiredPorts =
             getPorts().stream().filter(port -> port instanceof PortRequired)
                 .map(port -> (PortRequired) port).collect(Collectors.toList());
-        return ImmutableList.copyOf(ports);
+        return ImmutableList.copyOf(requiredPorts);
     }
 
     public ContainerType containerTypeOrDefault() {

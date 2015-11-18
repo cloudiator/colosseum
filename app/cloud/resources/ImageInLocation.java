@@ -21,10 +21,7 @@ package cloud.resources;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 import models.Cloud;
 import models.CloudCredential;
-import models.service.LocationModelService;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 28.05.15.

@@ -26,7 +26,6 @@ import dtos.MonitorSubscriptionDto;
 import dtos.conversion.ModelDtoConversionService;
 import models.MonitorSubscription;
 import models.Tenant;
-import models.scalability.SubscriptionType;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 import play.db.jpa.Transactional;
@@ -52,7 +51,8 @@ public class MonitorSubscriptionController extends
         ModelService<Tenant> tenantModelService, ModelService<MonitorSubscription> modelService,
         TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
 
         this.se = se;
     }
@@ -76,7 +76,8 @@ public class MonitorSubscriptionController extends
 
     @Override @Transactional public Result delete(final Long id) {
         // for each mi : se.unsubscribe(id); // moved here because access to monitor is still needed
-        se.unsubscribe(id); //TODO currently misused monitor id here, since we dont know it anymore - preDelete?
+        se.unsubscribe(
+            id); //TODO currently misused monitor id here, since we dont know it anymore - preDelete?
 
         Result parent = super.delete(id);
 

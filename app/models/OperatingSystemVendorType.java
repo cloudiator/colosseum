@@ -31,7 +31,7 @@ public enum OperatingSystemVendorType {
     WINDOWS("windows", false, OSFamily.WINDOWS, 5985, OperatingSystem.WINDOWS_7,
         ContainerType.PLAIN);
 
-    public final static OperatingSystemVendorType DEFAULT_VENDOR_TYPE = NIX;
+    public static final OperatingSystemVendorType DEFAULT_VENDOR_TYPE = NIX;
     private final String text;
     private final boolean supportsKeyPair;
     private final OSFamily osFamily;

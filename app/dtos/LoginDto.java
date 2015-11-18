@@ -26,7 +26,7 @@ import play.Logger;
 /**
  * Created by daniel on 10.11.14.
  */
-final public class LoginDto {
+public final class LoginDto {
 
     private String email;
     private String password;

@@ -19,16 +19,9 @@
 package components.scalability;
 
 
-import de.uniulm.omi.cloudiator.visor.client.ClientBuilder;
-import de.uniulm.omi.cloudiator.visor.client.ClientController;
-import de.uniulm.omi.cloudiator.visor.client.entities.Context;
-import de.uniulm.omi.cloudiator.visor.client.entities.Interval;
 import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
 import models.MonitorInstance;
-import models.RawMonitor;
-import models.generic.ExternalReference;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -37,16 +30,31 @@ import java.util.concurrent.TimeUnit;
  */
 public interface AgentCommunicator {
 
-    void addMonitor(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit);
+    void addMonitor(String idMonitorInstance, String className, String metricName, long interval,
+        TimeUnit unit);
+
     void removeMonitor(String className, String metricName, long interval, TimeUnit unit);
-    void removeMonitorForComponent(String className, String metricName, long interval, TimeUnit unit, String componentId);
+
+    void removeMonitorForComponent(String className, String metricName, long interval,
+        TimeUnit unit, String componentId);
+
     void removeMonitor(Monitor monitor);
-    void addMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId);
-    List<Monitor> getMonitorWithSameValues(String className, String metricName, String componentName);
+
+    void addMonitorForComponent(String idMonitorInstance, String className, String metricName,
+        long interval, TimeUnit unit, String componentId);
+
+    List<Monitor> getMonitorWithSameValues(String className, String metricName,
+        String componentName);
+
     void updateMonitor(MonitorInstance mi);
+
     boolean hasSameContext(Monitor mon, String contextKey, String contextValue);
+
     Monitor copyValueFromMonitorInstance(Monitor m, MonitorInstance mi);
+
     int getPort();
+
     String getIp();
+
     String getProtocol();
 }

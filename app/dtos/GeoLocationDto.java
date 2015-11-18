@@ -30,7 +30,7 @@ public class GeoLocationDto extends ValidatableDto {
     private String country;
     private String iso3166;
     private Float locationLatitude;
-    private Float LocationLongitude;
+    private Float locationLongitude;
 
     @Override public void validation() {
         //todo implement validation
@@ -77,10 +77,10 @@ public class GeoLocationDto extends ValidatableDto {
     }
 
     public Float getLocationLongitude() {
-        return LocationLongitude;
+        return locationLongitude;
     }
 
     public void setLocationLongitude(Float locationLongitude) {
-        LocationLongitude = locationLongitude;
+        this.locationLongitude = locationLongitude;
     }
 }

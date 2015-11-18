@@ -50,10 +50,8 @@ public class ExecutionModule extends AbstractModule {
             new ScheduledThreadPoolExecutorExecutionService(new LoggingScheduledThreadPoolExecutor(
                 configuration.getInt("colosseum.execution.thread", 10)))));
         bind(Init.class).asEagerSingleton();
-
-        Multibinder<Runnable> runnableMultibinder =
-            Multibinder.newSetBinder(binder(), Runnable.class);
-        Multibinder<Schedulable> schedulableMultibinder =
-            Multibinder.newSetBinder(binder(), Schedulable.class);
+        
+        Multibinder.newSetBinder(binder(), Runnable.class);
+        Multibinder.newSetBinder(binder(), Schedulable.class);
     }
 }

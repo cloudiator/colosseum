@@ -41,13 +41,17 @@ public class ReflectionMethods {
     }
 
     @Nullable private static Method getMethod(Class clazz, String methodToFind) {
-        while (clazz != null) {
-            for (Method method : clazz.getDeclaredMethods()) {
+
+        //todo refactor: implement method finder equal to field finder
+        Class currentClass = clazz;
+
+        while (currentClass != null) {
+            for (Method method : currentClass.getDeclaredMethods()) {
                 if (method.getName().equals(methodToFind)) {
                     return method;
                 }
             }
-            clazz = clazz.getSuperclass();
+            currentClass = currentClass.getSuperclass();
         }
         return null;
     }

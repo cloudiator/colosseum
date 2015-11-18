@@ -32,8 +32,6 @@ import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Implementation of the GenericApiController for the RawMonitor model class.
  *
@@ -56,7 +54,8 @@ public class RawMonitorController
         ModelService<Tenant> tenantModelService, ModelService<RawMonitor> modelService,
         TypeLiteral<RawMonitor> typeLiteral, ModelDtoConversionService conversionService,
         ScalingEngine se, ModelService<MonitorInstance> monitorInstanceModelService) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
 
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.se = se;
@@ -78,7 +77,7 @@ public class RawMonitorController
         se.updateMonitor(entity);
     }
 
-    @Override @Transactional public Result delete(final Long id){
+    @Override @Transactional public Result delete(final Long id) {
         se.removeMonitor(id); // moved here because access to monitor is still needed
 
         //TODO implement postDelete with true/false if delete worked

@@ -30,10 +30,8 @@ import models.service.DatabaseServiceModule;
 import models.service.JPAModule;
 import play.Application;
 import play.GlobalSettings;
-import play.Logger;
 import play.data.format.Formatters;
 import play.db.jpa.JPA;
-import util.Loggers;
 
 import java.text.ParseException;
 import java.util.Locale;
@@ -107,18 +105,20 @@ public class Global extends GlobalSettings {
          * A formatter for the string class.
          *
          * If a string is left empty, this formatter makes it null.
+         * It also automatically trims the string
          */
         Formatters.register(String.class, new Formatters.SimpleFormatter<String>() {
 
-            @Override public String parse(String text, Locale locale) throws ParseException {
-                text = text.trim();
-                if (text.isEmpty()) {
+            @Override public String parse(final String text, final Locale locale)
+                throws ParseException {
+                String trim = text.trim();
+                if (trim.isEmpty()) {
                     return null;
                 }
-                return text;
+                return trim;
             }
 
-            @Override public String print(String string, Locale locale) {
+            @Override public String print(final String string, final Locale locale) {
                 if (string == null) {
                     return "";
                 }

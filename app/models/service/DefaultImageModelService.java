@@ -21,8 +21,6 @@ package models.service;
 import com.google.inject.Inject;
 import models.Image;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by daniel on 03.11.14.
  */
@@ -33,15 +31,4 @@ public class DefaultImageModelService extends BaseRemoteModelService<Image>
         super(imageRepository);
     }
 
-    @Nullable @Override
-    public Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
-        String UuidOfCloud) {
-        for (Image image : getAll()) {
-            if (image.remoteId().equals(cloudUuid) && image.cloud().getUuid()
-                .equals(UuidOfCloud)) {
-                return image;
-            }
-        }
-        return null;
-    }
 }

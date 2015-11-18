@@ -36,10 +36,11 @@ public class StableScheduledThreadExecutor implements ExecutionService {
         this.executionService = executionService;
     }
 
-    private Schedulable wrapSchedulableIfNeeded(Schedulable schedulable) {
+    private Schedulable wrapSchedulableIfNeeded(final Schedulable schedulable) {
 
+        Schedulable wrappedSchedulable = schedulable;
         if (schedulable.getClass().isAnnotationPresent(Stable.class)) {
-            schedulable = new StableSchedulable(schedulable);
+            wrappedSchedulable = new StableSchedulable(schedulable);
         }
         return schedulable;
     }

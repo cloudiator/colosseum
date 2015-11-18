@@ -34,7 +34,7 @@ import util.Loggers;
 
     private final SolutionDatabase solutionDatabase;
     private final SimpleBlockingQueue<Problem> problemQueue;
-    private final Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_SYNC);
+    private static final Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_SYNC);
 
     @Inject public ProblemSolver(SolutionDatabase solutionDatabase,
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue) {

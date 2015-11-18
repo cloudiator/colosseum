@@ -18,37 +18,51 @@
 
 package components.scalability;
 
-import models.*;
-import models.scalability.FormulaOperator;
-import models.scalability.SubscriptionType;
-
-import java.util.List;
+import models.ComposedMonitor;
+import models.Monitor;
+import models.MonitorSubscription;
+import models.RawMonitor;
 
 /**
  * Created by Frank on 22.06.2015.
  */
 public interface ScalingEngine {
 
-    /** most simple map and reduce **/
+    /**
+     * most simple map and reduce
+     **/
     Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances);
+
     void updateAggregation(ComposedMonitor monitor);
 
-    /** remove a monitor */
+    /**
+     * remove a monitor
+     */
     void removeMonitor(long monitorId);
 
-    /** update a monitor */
+    /**
+     * update a monitor
+     */
     void updateMonitor(RawMonitor monitor);
 
-    /** add an external ID to a monitor / monitor instance based on discriminator */
+    /**
+     * add an external ID to a monitor / monitor instance based on discriminator
+     */
     void addExternalIdToMonitor(Long monitorId, String externalId);
+
     void addExternalId(Long monitorInstanceId, String externalId);
+
     void addExternalId(Long monitorId, String externalId, Long virtualMachine);
+
     void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId);
 
     Monitor doMonitor(RawMonitor monitor);
+
     Monitor doMonitorComponents(RawMonitor monitor);
+
     Monitor doMonitorVms(RawMonitor monitor);
 
     void subscribe(Monitor monitor, MonitorSubscription subscription);
+
     void unsubscribe(Long idSubscription);
 }

@@ -30,7 +30,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class DecoratedId {
 
-    private final static String SEPARATOR = "/";
+    private static final String SEPARATOR = "/";
 
     private final String cloud;
     private final String id;
@@ -41,15 +41,15 @@ public class DecoratedId {
         this.id = id;
     }
 
-    static public DecoratedId of(Cloud cloud, Identifiable identifiable) {
+    public static DecoratedId of(Cloud cloud, Identifiable identifiable) {
         return new DecoratedId(cloud.getUuid(), identifiable.id());
     }
 
-    static public DecoratedId of(Cloud cloud, Location location) {
+    public static DecoratedId of(Cloud cloud, Location location) {
         return new DecoratedId(cloud.getUuid(), location.id());
     }
 
-    static public DecoratedId of(String colosseumId) {
+    public static DecoratedId of(String colosseumId) {
         checkNotNull(colosseumId, "ColosseumId must not be null.");
         checkArgument(!colosseumId.isEmpty(), "ColosseumId must not be empty");
         final String[] parts = colosseumId.split(SEPARATOR, 2);

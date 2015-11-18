@@ -27,7 +27,6 @@ import models.Schedule;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
-import models.service.ModelService;
 
 /**
  * Implementation of the GenericApiController for the Schedule model class.
@@ -48,7 +47,8 @@ public class ScheduleController
     @Inject public ScheduleController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Schedule> modelService,
         TypeLiteral<Schedule> typeLiteral, ModelDtoConversionService conversionService) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {

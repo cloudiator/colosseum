@@ -18,9 +18,7 @@
 
 package dtos.conversion.transformers;
 
-import com.google.inject.Inject;
 import models.generic.ExternalReference;
-import models.service.ModelService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,10 +32,10 @@ public class StringToExternalReferenceTransformer
 
     //private final ModelService<ExternalReference> externalReferenceModelService;
 
-//    public StringToExternalReferenceTransformer(
-//        ModelService<ExternalReference> externalReferenceModelService) {
-//        this.externalReferenceModelService = externalReferenceModelService;
-//    }
+    //    public StringToExternalReferenceTransformer(
+    //        ModelService<ExternalReference> externalReferenceModelService) {
+    //        this.externalReferenceModelService = externalReferenceModelService;
+    //    }
 
     @Override public List<ExternalReference> transform(List<String> strings) {
         if (strings == null) {

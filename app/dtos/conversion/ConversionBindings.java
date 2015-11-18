@@ -19,7 +19,6 @@
 package dtos.conversion;
 
 import com.google.common.collect.ImmutableList;
-import com.google.inject.TypeLiteral;
 
 import java.util.Collection;
 import java.util.LinkedList;
@@ -33,7 +32,7 @@ public class ConversionBindings implements ConversionBinding {
 
     private boolean isBuild = false;
     private Collection<BindingBuilder> builders;
-    private Collection<ConversionBinding> conversionBindings;
+    private Collection<ConversionBinding> bindings;
 
     public ConversionBindings() {
         this.builders = new LinkedList<>();
@@ -52,20 +51,20 @@ public class ConversionBindings implements ConversionBinding {
         for (BindingBuilder bindingBuilder : builders) {
             builder.add(bindingBuilder.build());
         }
-        this.conversionBindings = builder.build();
+        this.bindings = builder.build();
         isBuild = true;
     }
 
     @Override public void bind(Object from, Object to) {
         build();
-        for (ConversionBinding conversionBinding : conversionBindings) {
+        for (ConversionBinding conversionBinding : bindings) {
             conversionBinding.bind(from, to);
         }
     }
 
     @Override public void bindReverse(Object from, Object to) {
         build();
-        for (ConversionBinding conversionBinding : conversionBindings) {
+        for (ConversionBinding conversionBinding : bindings) {
             conversionBinding.bindReverse(from, to);
         }
     }

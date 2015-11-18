@@ -51,13 +51,17 @@ public class ReflectionField<T> implements Getter<T>, Setter<T> {
     }
 
     @Nullable private Field getField(Class clazz, String fieldToFind) {
-        while (clazz != null) {
-            for (Field field : clazz.getDeclaredFields()) {
+
+        Class currentClass = clazz;
+
+        //todo refactor to use field finder
+        while (currentClass != null) {
+            for (Field field : currentClass.getDeclaredFields()) {
                 if (field.getName().equals(fieldToFind)) {
                     return field;
                 }
             }
-            clazz = clazz.getSuperclass();
+            currentClass = currentClass.getSuperclass();
         }
         return null;
     }

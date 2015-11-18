@@ -44,8 +44,9 @@ public class LoggingScheduledThreadPoolExecutor extends ScheduledThreadPoolExecu
         super(corePoolSize, threadFactory, handler);
     }
 
-    @Override protected void afterExecute(Runnable r, Throwable t) {
+    @Override protected void afterExecute(final Runnable r, final Throwable t) {
         super.afterExecute(r, t);
+        Throwable tToLog = t;
         if (t == null && r instanceof Future<?>) {
             try {
                 if (((Future) r).isDone() && !((Future) r).isCancelled()) {
@@ -54,11 +55,11 @@ public class LoggingScheduledThreadPoolExecutor extends ScheduledThreadPoolExecu
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             } catch (ExecutionException e) {
-                t = e.getCause();
+                tToLog = e.getCause();
             }
         }
         if (t != null) {
-            Logger.error("Uncaught exception occurred during the execution of task.", t);
+            Logger.error("Uncaught exception occurred during the execution of task.", tToLog);
         }
     }
 }

@@ -41,11 +41,10 @@ public class ImageMissesCredentialDetector implements ProblemDetector<ImageInLoc
 
     @Override public Optional<Problem> apply(ImageInLocation imageInLocation) {
         Image image = imageModelService.getByRemoteId(imageInLocation.id());
-        if (image != null) {
-            if (!image.cloudCredentials().contains(imageInLocation.credential())) {
-                return Optional.of(new ImageProblems.ImageMissesCredential(imageInLocation));
-            }
+        if (image != null && !image.cloudCredentials().contains(imageInLocation.credential())) {
+            return Optional.of(new ImageProblems.ImageMissesCredential(imageInLocation));
         }
+
         return Optional.empty();
     }
 }

@@ -41,11 +41,9 @@ public class HardwareMissesCredentialDetector implements ProblemDetector<Hardwar
 
     @Override public Optional<Problem> apply(HardwareInLocation hardwareInLocation) {
         Hardware hardware = hardwareModelService.getByRemoteId(hardwareInLocation.id());
-        if (hardware != null) {
-            if (!hardware.cloudCredentials().contains(hardwareInLocation.credential())) {
-                return Optional
-                    .of(new HardwareProblems.HardwareMissesCredential(hardwareInLocation));
-            }
+        if (hardware != null && !hardware.cloudCredentials()
+            .contains(hardwareInLocation.credential())) {
+            return Optional.of(new HardwareProblems.HardwareMissesCredential(hardwareInLocation));
         }
         return Optional.empty();
     }

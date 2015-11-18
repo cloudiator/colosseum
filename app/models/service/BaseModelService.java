@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseModelService<T extends Model> implements ModelService<T> {
 
-    play.Logger.ALogger LOGGER = Loggers.of(Loggers.DATABASE);
+    private static final play.Logger.ALogger LOGGER = Loggers.of(Loggers.DATABASE);
 
     protected final ModelRepository<T> modelRepository;
 

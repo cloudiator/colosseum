@@ -22,10 +22,8 @@ import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import models.Cloud;
 import models.CloudCredential;
-import models.service.LocationModelService;
 import models.service.ModelService;
 
-import javax.annotation.Nullable;
 import java.util.Set;
 
 /**

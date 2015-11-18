@@ -41,10 +41,9 @@ public class LocationMissesCredentialDetector implements ProblemDetector<Locatio
 
     @Override public Optional<Problem> apply(LocationInCloud locationInCloud) {
         Location location = locationModelService.getByRemoteId(locationInCloud.id());
-        if (location != null) {
-            if (!location.cloudCredentials().contains(locationInCloud.credential())) {
-                return Optional.of(new LocationProblems.LocationMissesCredential(locationInCloud));
-            }
+        if (location != null && !location.cloudCredentials()
+            .contains(locationInCloud.credential())) {
+            return Optional.of(new LocationProblems.LocationMissesCredential(locationInCloud));
         }
         return Optional.empty();
     }

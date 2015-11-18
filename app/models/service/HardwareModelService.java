@@ -20,8 +20,6 @@ package models.service;
 
 import models.Hardware;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by daniel on 03.11.14.
  */

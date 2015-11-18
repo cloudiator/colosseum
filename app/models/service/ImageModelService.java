@@ -20,12 +20,8 @@ package models.service;
 
 import models.Image;
 
-import javax.annotation.Nullable;
-
 /**
  * Created by daniel on 03.11.14.
  */
 public interface ImageModelService extends RemoteModelService<Image> {
-    @Nullable Image getByUuidInCloudAndUuidOfCloudAndUuidOfLocation(String cloudUuid,
-        String UuidOfCloud);
 }

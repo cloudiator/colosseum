@@ -20,10 +20,8 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import dtos.ConstantMonitorDto;
 import dtos.ExternalReferenceDto;
 import dtos.conversion.AbstractConverter;
-import models.ConstantMonitor;
 import models.generic.ExternalReference;
 
 

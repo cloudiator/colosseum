@@ -33,70 +33,70 @@ public class SwordLoggingModule extends AbstractLoggingModule {
 
     private static class SwordColosseumLogger implements Logger {
 
-        private final play.Logger.ALogger Logger;
+        private final play.Logger.ALogger logger;
 
         public SwordColosseumLogger(String s) {
-            this.Logger = play.Logger.of(s);
+            this.logger = play.Logger.of(s);
         }
 
         @Override public boolean isTraceEnabled() {
-            return Logger.isTraceEnabled();
+            return logger.isTraceEnabled();
         }
 
         @Override public boolean isDebugEnabled() {
-            return Logger.isDebugEnabled();
+            return logger.isDebugEnabled();
         }
 
         @Override public boolean isInfoEnabled() {
-            return Logger.isInfoEnabled();
+            return logger.isInfoEnabled();
         }
 
         @Override public boolean isWarnEnabled() {
-            return Logger.isWarnEnabled();
+            return logger.isWarnEnabled();
         }
 
         @Override public boolean isErrorEnabled() {
-            return Logger.isErrorEnabled();
+            return logger.isErrorEnabled();
         }
 
         @Override public boolean isFatalEnabled() {
-            return Logger.isErrorEnabled();
+            return logger.isErrorEnabled();
         }
 
         @Override public void trace(String s) {
-            Logger.trace(s);
+            logger.trace(s);
         }
 
         @Override public void debug(String s) {
-            Logger.debug(s);
+            logger.debug(s);
         }
 
         @Override public void info(String s) {
-            Logger.info(s);
+            logger.info(s);
         }
 
         @Override public void warn(String s) {
-            Logger.warn(s);
+            logger.warn(s);
         }
 
         @Override public void warn(String s, Throwable throwable) {
-            Logger.warn(s, throwable);
+            logger.warn(s, throwable);
         }
 
         @Override public void error(String s) {
-            Logger.error(s);
+            logger.error(s);
         }
 
         @Override public void error(String s, Throwable throwable) {
-            Logger.error(s, throwable);
+            logger.error(s, throwable);
         }
 
         @Override public void fatal(String s) {
-            Logger.error(s);
+            logger.error(s);
         }
 
         @Override public void fatal(String s, Throwable throwable) {
-            Logger.error(s, throwable);
+            logger.error(s, throwable);
         }
     }
 }

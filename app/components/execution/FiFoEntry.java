@@ -52,7 +52,7 @@ class FiFoEntry<E extends Comparable<? super E>> implements Comparable<FiFoEntry
         return entry;
     }
 
-    public int compareTo(@Nonnull FiFoEntry<E> other) {
+    @Override public int compareTo(@Nonnull FiFoEntry<E> other) {
         checkNotNull(other);
         int res = entry.compareTo(other.entry);
         if (res == 0 && other.entry != this.entry) {

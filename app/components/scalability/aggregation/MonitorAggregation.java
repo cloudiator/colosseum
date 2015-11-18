@@ -19,7 +19,6 @@
 package components.scalability.aggregation;
 
 
-import models.ComposedMonitor;
 import models.Monitor;
 import play.Logger;
 
@@ -35,8 +34,7 @@ public abstract class MonitorAggregation implements Aggregation<Monitor> {
         this.monitor = monitor;
     }
 
-    @Override
-    public Monitor getObject() {
+    @Override public Monitor getObject() {
         return this.monitor;
     }
 

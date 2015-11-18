@@ -19,8 +19,6 @@
 package components.scalability.aggregation;
 
 import components.execution.Prioritized;
-import components.scalability.AggregationAccessService;
-import de.uniulm.omi.cloudiator.axe.aggregator.AggregatorService;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import models.Monitor;
 
@@ -29,5 +27,6 @@ import models.Monitor;
  */
 public interface Aggregation<T extends Monitor> extends Prioritized {
     T getObject();
+
     void execute(AggregatorServiceAccess service);
 }

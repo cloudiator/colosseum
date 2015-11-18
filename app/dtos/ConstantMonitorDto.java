@@ -18,8 +18,6 @@
 
 package dtos;
 
-import dtos.generic.ValidatableDto;
-
 import java.util.List;
 
 public class ConstantMonitorDto extends ModelWithExternalReferenceDto {

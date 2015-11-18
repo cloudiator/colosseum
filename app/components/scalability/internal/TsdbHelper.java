@@ -18,10 +18,8 @@
 
 package components.scalability.internal;
 
-import models.ComposedMonitor;
 import models.Monitor;
 import models.MonitorInstance;
-import models.RawMonitor;
 import play.Play;
 
 import java.util.ArrayList;
@@ -37,15 +35,16 @@ public class TsdbHelper {
         Play.application().configuration().getString("colosseum.scalability.tsdb.host.default");
 
 
-    private TsdbHelper(){
+    private TsdbHelper() {
         //no instantiation of this class
     }
 
     //TODO use instances as filter - does this make sense?
-    public static Map<String, List<MonitorInstance>> getIpOfTSDB(Monitor mon, List<MonitorInstance> instances){
+    public static Map<String, List<MonitorInstance>> getIpOfTSDB(Monitor mon,
+        List<MonitorInstance> instances) {
         Map<String, List<MonitorInstance>> result = new HashMap<>();
 
-        if(mon == null){
+        if (mon == null) {
             // TODO
             // because sometimes for the aggregation e.g. in subscription, the
             // monitor is not available anymore. There must be a way to access
@@ -58,12 +57,13 @@ public class TsdbHelper {
         return result;
     }
 
-    public static void addMonitorInstanceToIP(Map<String, List<MonitorInstance>> map, String ip, MonitorInstance mi){
-        if(!map.containsKey(ip)){
+    public static void addMonitorInstanceToIP(Map<String, List<MonitorInstance>> map, String ip,
+        MonitorInstance mi) {
+        if (!map.containsKey(ip)) {
             map.put(ip, new ArrayList<MonitorInstance>());
         }
 
-        if(mi != null){
+        if (mi != null) {
             map.get(ip).add(mi);
         }
     }

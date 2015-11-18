@@ -21,9 +21,7 @@ package models;
 import models.generic.ModelWithExternalReference;
 
 import javax.annotation.Nullable;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 /**

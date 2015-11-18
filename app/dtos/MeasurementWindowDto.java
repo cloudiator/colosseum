@@ -20,8 +20,6 @@ package dtos;
 
 import dtos.generic.ValidatableDto;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Created by Frank on 10.08.2015.
  */

@@ -18,20 +18,16 @@
 
 package dtos;
 
-import dtos.generic.ValidatableDto;
+import dtos.api.Dto;
 
 import java.util.Map;
 
 /**
  * Created by daniel on 06.10.15.
  */
-public class TemplateOptionsDto extends ValidatableDto {
+public class TemplateOptionsDto implements Dto {
 
     private Map<String, String> tags;
-
-    @Override public void validation() {
-
-    }
 
     public Map<String, String> getTags() {
         return tags;

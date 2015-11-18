@@ -19,8 +19,6 @@
 package components.scalability;
 
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.Constants;
 import play.Logger;
 import play.Play;
 
@@ -35,18 +33,20 @@ import java.util.concurrent.ConcurrentHashMap;
  * Created by Frank on 24.08.2015.
  */
 public class AggregationAccessService {
-    private final static Map<String, AggregatorServiceAccess> services = new ConcurrentHashMap<String, AggregatorServiceAccess>();
+    private final static Map<String, AggregatorServiceAccess> services =
+        new ConcurrentHashMap<String, AggregatorServiceAccess>();
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key){
+    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key) {
         return getService(ip, port, key, false);
     }
 
-    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key, boolean retry){
+    public synchronized static AggregatorServiceAccess getService(String ip, int port, String key,
+        boolean retry) {
 
         String mapKey = ip + "_" + port + "_" + key;
 
-        if(!services.containsKey(mapKey)){
+        if (!services.containsKey(mapKey)) {
             Registry reg = null;
             try {
                 reg = LocateRegistry.getRegistry(ip, port);
@@ -59,11 +59,11 @@ public class AggregationAccessService {
             } catch (NotBoundException e) {
                 LOGGER.error("Remote object was not bound in registry.", e);
             }
-        }else {
-            try{
+        } else {
+            try {
                 services.get(mapKey).ping();
-            } catch (RemoteException re){ // TODO outsource exception handling into separate client class
-                if(retry){
+            } catch (RemoteException re) { // TODO outsource exception handling into separate client class
+                if (retry) {
                     LOGGER.error("Could not locate remote object even after a retry.");
                 } else {
                     services.remove(mapKey);
@@ -76,17 +76,16 @@ public class AggregationAccessService {
         return services.get(mapKey);
     }
 
-    public synchronized static AggregatorServiceAccess getLocalService(){
+    public synchronized static AggregatorServiceAccess getLocalService() {
 
-        final String LOCALHOST =
-            Play.application().configuration().getString(
-                "colosseum.scalability.aggregator.rmi.host");
+        final String LOCALHOST = Play.application().configuration()
+            .getString("colosseum.scalability.aggregator.rmi.host");
         //TODO: use RMI default port on home domain?
         //final int RMI_PORT =
         //    Play.application().configuration().getInt("colosseum.scalability.aggregator.rmi.port");
         final int RMI_PORT = Registry.REGISTRY_PORT;
-        final String RMI_KEY =
-            Play.application().configuration().getString("colosseum.scalability.aggregator.rmi.key");
+        final String RMI_KEY = Play.application().configuration()
+            .getString("colosseum.scalability.aggregator.rmi.key");
 
         return getService(LOCALHOST, RMI_PORT, RMI_KEY);
     }

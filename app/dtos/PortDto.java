@@ -61,7 +61,7 @@ public class PortDto extends ValidatableDto {
         this.applicationComponent = applicationComponent;
     }
 
-    public final static class References {
+    public static final class References {
 
         @Inject private static Provider<ModelService<ApplicationComponent>>
             applicationComponentServiceProvider;

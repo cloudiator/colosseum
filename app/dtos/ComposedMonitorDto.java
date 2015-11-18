@@ -21,7 +21,6 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import dtos.generic.MonitorDto;
-import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import models.*;
 import models.scalability.FlowOperator;
@@ -46,8 +45,8 @@ public class ComposedMonitorDto extends MonitorDto {
     }
 
     public ComposedMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
-        FlowOperator flowOperator, FormulaOperator function, Long quantifier,
-        Long schedule, Long window, List<Long> monitors, List<Long> scalingActions) {
+        FlowOperator flowOperator, FormulaOperator function, Long quantifier, Long schedule,
+        Long window, List<Long> monitors, List<Long> scalingActions) {
         super(externalReferences, monitorInstances);
         this.flowOperator = flowOperator;
         this.function = function;

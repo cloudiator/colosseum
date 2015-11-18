@@ -258,7 +258,6 @@ public class WindowsInstaller extends AbstractInstaller {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             Logger.error("Error while waiting for schtask to be created!", e);
-            e.printStackTrace();
         }
     }
 }

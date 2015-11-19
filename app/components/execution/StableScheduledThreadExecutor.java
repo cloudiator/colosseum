@@ -42,7 +42,7 @@ public class StableScheduledThreadExecutor implements ExecutionService {
         if (schedulable.getClass().isAnnotationPresent(Stable.class)) {
             wrappedSchedulable = new StableSchedulable(schedulable);
         }
-        return schedulable;
+        return wrappedSchedulable;
     }
 
     @Override public void schedule(Schedulable schedulable) {

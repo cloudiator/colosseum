@@ -24,7 +24,6 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.CloudCredential;
-import models.Tenant;
 import models.VirtualMachine;
 
 /**
@@ -38,7 +37,7 @@ public interface ColosseumComputeService {
     void deleteVirtualMachine(VirtualMachine virtualMachine);
 
     //todo: check if virtual machine should be closed to a tenant
-    RemoteConnection remoteConnection(Tenant tenant, VirtualMachine virtualMachine);
+    RemoteConnection remoteConnection(VirtualMachine virtualMachine);
 
     Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential);
 

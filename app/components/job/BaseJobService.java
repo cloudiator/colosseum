@@ -29,22 +29,23 @@ import models.Instance;
 import models.Tenant;
 import models.VirtualMachine;
 import models.service.ModelService;
+import models.service.RemoteModelService;
 
 /**
  * Created by daniel on 03.07.15.
  */
 @Singleton public class BaseJobService implements JobService {
 
-    private final ModelService<VirtualMachine> virtualMachineModelService;
+    private final RemoteModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Tenant> tenantModelService;
-    private final ModelService<Instance> instanceModelService;
+    private final RemoteModelService<Instance> instanceModelService;
     private final ColosseumComputeService colosseumComputeService;
     private final SimpleBlockingQueue<Job> jobQueue;
     private final KeyPairStrategy keyPairStrategy;
 
-    @Inject public BaseJobService(ModelService<VirtualMachine> virtualMachineModelService,
+    @Inject public BaseJobService(RemoteModelService<VirtualMachine> virtualMachineModelService,
         CloudService cloudService, ModelService<Tenant> tenantModelService,
-        ModelService<Instance> instanceModelService,
+        RemoteModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;

@@ -18,9 +18,8 @@
 
 package models.service;
 
-import models.Cloud;
+import models.CloudCredential;
 import models.KeyPair;
-import models.Tenant;
 
 import java.util.Optional;
 
@@ -30,13 +29,12 @@ import java.util.Optional;
 public interface KeyPairModelService extends ModelService<KeyPair> {
 
     /**
-     * Searches the database for an {@link Optional} keypair for the given cloud and the given tenant.
+     * Searches the database for an {@link Optional} keypair for the given cloud credential.
      *
-     * @param cloud  the cloud for the keypair (mandatory)
-     * @param tenant the tenant for the keypair (mandatory)
+     * @param cloudCredential the cloudCredential for the keypair (mandatory)
      * @return the optional keypair.
-     * @throws NullPointerException if cloud or tenant are null.
+     * @throws NullPointerException if cloudCredential is null.
      */
-    Optional<KeyPair> getKeyPair(Cloud cloud, Tenant tenant);
+    Optional<KeyPair> getKeyPair(CloudCredential cloudCredential);
 
 }

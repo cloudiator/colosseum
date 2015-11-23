@@ -36,9 +36,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE) private List<CloudCredential>
         cloudCredentials;
-
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE) private List<KeyPair> keyPairs;
-
     /**
      * Empty constructor for hibernate.
      */
@@ -74,13 +71,5 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setCloudCredentials(List<CloudCredential> cloudCredentials) {
         this.cloudCredentials = cloudCredentials;
-    }
-
-    public List<KeyPair> getKeyPairs() {
-        return keyPairs;
-    }
-
-    public void setKeyPairs(List<KeyPair> keyPairs) {
-        this.keyPairs = keyPairs;
     }
 }

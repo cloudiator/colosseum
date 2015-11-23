@@ -23,15 +23,13 @@ import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-import models.Cloud;
 import models.CloudCredential;
 import models.KeyPair;
-import models.Tenant;
-import models.service.CloudCredentialModelService;
 import models.service.KeyPairModelService;
 
 import java.util.Optional;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -41,39 +39,38 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
 
     private final KeyPairModelService keyPairModelService;
     private final ColosseumComputeService colosseumComputeService;
-    private final CloudCredentialModelService cloudCredentialModelService;
 
     @Inject public RetrieveOrCreateKeyPair(KeyPairModelService keyPairModelService,
-        CloudService cloudService, CloudCredentialModelService cloudCredentialModelService) {
+        CloudService cloudService) {
         this.keyPairModelService = keyPairModelService;
         this.colosseumComputeService = cloudService.computeService();
-        this.cloudCredentialModelService = cloudCredentialModelService;
     }
 
-    @Override public Optional<KeyPair> retrieve(Cloud cloud, Tenant tenant)
+    @Override public Optional<KeyPair> retrieve(CloudCredential cloudCredential)
         throws KeyPairException {
 
-        Optional<KeyPair> exists = keyPairModelService.getKeyPair(cloud, tenant);
+        checkNotNull(cloudCredential);
+
+        Optional<KeyPair> exists = keyPairModelService.getKeyPair(cloudCredential);
 
         if (exists.isPresent()) {
             return exists;
         }
 
-        //retrieve the cloud credential used for creating the keypair
-        final Optional<CloudCredential> cloudCredential =
-            cloudCredentialModelService.get(cloud, tenant);
-        checkState(cloudCredential.isPresent());
-
         //check if we can create a keypair
         com.google.common.base.Optional<KeyPairService> keyPairServiceOptional =
-            colosseumComputeService.getKeyPairService(cloudCredential.get());
+            colosseumComputeService.getKeyPairService(cloudCredential);
 
         if (keyPairServiceOptional.isPresent()) {
             final de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                keyPairServiceOptional.get().create(tenant.getUuid());
+                keyPairServiceOptional.get().create(cloudCredential.getUuid());
 
-            KeyPair keyPair = new KeyPair(cloud, tenant, remoteKeyPair.privateKey().get(),
-                remoteKeyPair.publicKey(), remoteKeyPair.id(), remoteKeyPair.name());
+            checkState(remoteKeyPair.privateKey().isPresent(),
+                "Expected remote keypair to have a private key, but it has none.");
+
+            KeyPair keyPair =
+                new KeyPair(remoteKeyPair.id(), remoteKeyPair.id(), cloudCredential.getCloud(),
+                    cloudCredential, remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey());
             this.keyPairModelService.save(keyPair);
             return Optional.of(keyPair);
         }
@@ -81,5 +78,4 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
         return Optional.empty();
 
     }
-
 }

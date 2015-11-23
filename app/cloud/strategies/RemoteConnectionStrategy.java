@@ -20,7 +20,6 @@ package cloud.strategies;
 
 import components.execution.Prioritized;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import models.Tenant;
 import models.VirtualMachine;
 
 import java.util.function.Function;
@@ -34,6 +33,6 @@ public interface RemoteConnectionStrategy
     boolean isApplicable(VirtualMachine virtualMachine);
 
     interface RemoteConnectionStrategyFactory {
-        RemoteConnectionStrategy create(Tenant tenant);
+        RemoteConnectionStrategy create();
     }
 }

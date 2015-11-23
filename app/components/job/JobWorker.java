@@ -39,16 +39,26 @@ public class JobWorker implements Runnable {
     }
 
     @Loop @Transactional @Override public void run() {
+
+        Job job = null;
         try {
-            Job job = jobQueue.take();
-            Logger.info("Starting execution of job" + job);
-            job.execute();
-            Logger.info("Finished execution of job" + job);
+            job = jobQueue.take();
         } catch (InterruptedException e) {
             Logger.error("Job Execution got interrupted", e);
             Thread.currentThread().interrupt();
-        } catch (Exception e) {
-            Logger.error("Job Execution got error", e);
+        }
+
+        if (job != null) {
+            Logger.info(String.format("Starting execution of job %s", job));
+            try {
+                job.execute();
+                job.onSuccess();
+                Logger.info(String.format("Execution of job %s successfully finished", job));
+            } catch (Exception e) {
+                Logger.error(
+                    String.format("Error during execution of %s, calling onError handler", job), e);
+                job.onError();
+            }
         }
     }
 }

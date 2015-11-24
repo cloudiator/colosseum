@@ -41,6 +41,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
+import models.service.RemoteModelService;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class CreateInstanceJob extends GenericJob<Instance> {
 
     private final Instance instance;
 
-    @Inject public CreateInstanceJob(Instance instance, ModelService<Instance> modelService,
+    @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);

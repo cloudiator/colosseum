@@ -18,7 +18,7 @@
 
 package dtos.generic;
 
-import dtos.validation.validators.NotNullOrEmptyValidator;
+import models.generic.RemoteState;
 
 /**
  * Created by daniel on 10.08.15.
@@ -27,6 +27,7 @@ public abstract class RemoteDto extends ValidatableDto {
 
     private String remoteId;
     private String cloudProviderId;
+    private RemoteState remoteState;
 
 
     @Override public void validation() {
@@ -49,5 +50,13 @@ public abstract class RemoteDto extends ValidatableDto {
 
     public void setCloudProviderId(String cloudProviderId) {
         this.cloudProviderId = cloudProviderId;
+    }
+
+    public RemoteState getRemoteState() {
+        return remoteState;
+    }
+
+    public void setRemoteState(RemoteState remoteState) {
+        this.remoteState = remoteState;
     }
 }

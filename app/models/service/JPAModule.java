@@ -124,6 +124,9 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Instance>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Instance>>() {
         });
+        bind(new TypeLiteral<RemoteResourceRepository<Instance>>() {
+        }).to(new TypeLiteral<BaseRemoteResourceRepositoryJpa<Instance>>() {
+        });
         //Ip Address
         bind(new TypeLiteral<ModelRepository<IpAddress>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<IpAddress>>() {
@@ -202,6 +205,9 @@ public class JPAModule extends AbstractModule {
         //VirtualMachine
         bind(new TypeLiteral<ModelRepository<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<VirtualMachine>>() {
+        });
+        bind(new TypeLiteral<RemoteResourceRepository<VirtualMachine>>() {
+        }).to(new TypeLiteral<BaseRemoteResourceRepositoryJpa<VirtualMachine>>() {
         });
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelRepository<VirtualMachineTemplate>>() {

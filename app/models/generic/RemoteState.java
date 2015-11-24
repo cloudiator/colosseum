@@ -23,5 +23,6 @@ package models.generic;
  */
 public enum RemoteState {
     OK,
+    INPROGRESS,
     ERROR
 }

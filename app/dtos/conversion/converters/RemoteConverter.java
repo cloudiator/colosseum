@@ -35,5 +35,6 @@ public abstract class RemoteConverter<T extends RemoteResource, S extends Remote
     @Override public void configure() {
         binding().fromField("remoteId").toField("remoteId");
         binding().fromField("cloudProviderId").toField("cloudProviderId");
+        binding().fromField("remoteState").toField("remoteState");
     }
 }

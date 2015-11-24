@@ -18,7 +18,7 @@
 
 package models;
 
-import models.generic.Model;
+import models.generic.RemoteResource;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -29,7 +29,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 12.12.14.
  */
-@Entity public class Instance extends Model {
+@Entity public class Instance extends RemoteResource {
 
     @ManyToOne(optional = false) private ApplicationComponent applicationComponent;
     @ManyToOne(optional = false) private ApplicationInstance applicationInstance;

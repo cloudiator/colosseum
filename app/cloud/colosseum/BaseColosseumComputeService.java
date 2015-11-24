@@ -26,7 +26,6 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.CloudCredential;
-import models.Tenant;
 import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -65,14 +64,13 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
             .deleteVirtualMachine(virtualMachine.cloudProviderId().get());
     }
 
-    @Override
-    public RemoteConnection remoteConnection(Tenant tenant, VirtualMachine virtualMachine) {
-        checkNotNull(tenant);
+    @Override public RemoteConnection remoteConnection(VirtualMachine virtualMachine) {
         checkNotNull(virtualMachine);
 
         RemoteConnectionStrategy remoteConnectionStrategy =
-            remoteConnectionStrategyFactory.create(tenant);
+            remoteConnectionStrategyFactory.create();
 
+        //todo: this exception will be called if no supported strategy is found throw RemoteException instead?
         if (!remoteConnectionStrategy.isApplicable(virtualMachine)) {
             throw new IllegalArgumentException(String
                 .format("Selected connection %s strategy does not support the virtual machine %s",

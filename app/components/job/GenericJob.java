@@ -20,13 +20,15 @@ package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
-import models.generic.Model;
+import models.generic.RemoteResource;
+import models.generic.RemoteState;
 import models.service.ModelService;
+import models.service.RemoteModelService;
 
 /**
  * Created by daniel on 08.05.15.
  */
-public abstract class GenericJob<T extends Model> implements Job {
+public abstract class GenericJob<T extends RemoteResource> implements Job {
 
     private final String resourceUuid;
     private final ModelService<T> modelService;
@@ -34,9 +36,11 @@ public abstract class GenericJob<T extends Model> implements Job {
     private JobState jobState;
     private final Tenant tenant;
     private final ModelService<Tenant> tenantModelService;
+    private T t;
 
-    public GenericJob(T t, ModelService<T> modelService, ModelService<Tenant> tenantModelService,
-        ColosseumComputeService colosseumComputeService, Tenant tenant) {
+    public GenericJob(T t, RemoteModelService<T> modelService,
+        ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
+        Tenant tenant) {
         this.colosseumComputeService = colosseumComputeService;
         this.resourceUuid = t.getUuid();
         this.modelService = modelService;
@@ -61,7 +65,6 @@ public abstract class GenericJob<T extends Model> implements Job {
     }
 
     @Override public final void execute() throws JobException {
-        T t = null;
         /**
 
          * todo: find a better way for waiting for the database
@@ -72,12 +75,32 @@ public abstract class GenericJob<T extends Model> implements Job {
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            t = this.modelService.getByUuid(resourceUuid);
+            this.t = this.modelService.getByUuid(resourceUuid);
         }
+
+        t.setRemoteState(RemoteState.INPROGRESS);
+        modelService.save(t);
+
         this.doWork(t, modelService, colosseumComputeService,
             tenantModelService.getById(tenant.getId()));
     }
 
     protected abstract void doWork(T t, ModelService<T> modelService,
         ColosseumComputeService computeService, Tenant tenant) throws JobException;
+
+    @Override public void onSuccess() {
+        if (t == null) {
+            throw new IllegalStateException("On success called before initialization.");
+        }
+        t.setRemoteState(RemoteState.OK);
+        modelService.save(t);
+    }
+
+    @Override public void onError() {
+        if (t == null) {
+            throw new IllegalStateException("On error called before initialization.");
+        }
+        t.setRemoteState(RemoteState.ERROR);
+        modelService.save(t);
+    }
 }

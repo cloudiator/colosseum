@@ -23,6 +23,7 @@ import models.Cloud;
 import models.CloudCredential;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -37,6 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public abstract class RemoteResourceInCloud extends RemoteResource {
 
     @ManyToOne(optional = false) private Cloud cloud;
+    @Nullable @Column(nullable = true) private String cloudProviderId;
     @ManyToMany private List<CloudCredential> cloudCredentials;
     @ManyToOne private CloudCredential owner;
 
@@ -47,13 +49,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public RemoteResourceInCloud(Cloud cloud) {
-        super(null, null);
+        super(null);
         this.cloud = cloud;
     }
 
     public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String cloudProviderId,
         Cloud cloud, @Nullable CloudCredential owner) {
-        super(remoteId, cloudProviderId);
+        super(remoteId);
+        this.cloudProviderId = cloudProviderId;
         this.cloud = cloud;
         this.owner = owner;
     }
@@ -80,5 +83,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
             throw new IllegalStateException("Changing the owner is not allowed.");
         }
         this.owner = owner;
+    }
+
+    public Optional<String> cloudProviderId() {
+        return Optional.ofNullable(cloudProviderId);
+    }
+
+    public void bindCloudProviderId(String cloudProviderId) {
+        checkNotNull(cloudProviderId, "Binding null cloudProviderId is not allowed");
+        if (this.cloudProviderId != null) {
+            throw new IllegalStateException("Changing the cloudProviderId is not allowed.");
+        }
+        this.cloudProviderId = cloudProviderId;
     }
 }

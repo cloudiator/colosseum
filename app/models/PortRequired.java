@@ -20,6 +20,7 @@ package models;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import java.util.Optional;
 
@@ -29,7 +30,7 @@ import java.util.Optional;
 @Entity public class PortRequired extends Port {
 
     @OneToOne(mappedBy = "requiredPort") Communication requiredCommunication;
-    @Nullable String updateAction;
+    @Nullable @Lob String updateAction;
 
     /**
      * Default constructor for hibernate.

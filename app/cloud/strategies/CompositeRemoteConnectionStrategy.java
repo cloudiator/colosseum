@@ -22,7 +22,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
 import util.Loggers;
@@ -114,10 +113,9 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
             this.remoteConnectionStrategyFactories = remoteConnectionStrategyFactories;
         }
 
-        @Override public RemoteConnectionStrategy create(Tenant tenant) {
-            Set<RemoteConnectionStrategy> strategies =
-                remoteConnectionStrategyFactories.stream().map(factory -> factory.create(tenant))
-                    .collect(Collectors.toSet());
+        @Override public RemoteConnectionStrategy create() {
+            Set<RemoteConnectionStrategy> strategies = remoteConnectionStrategyFactories.stream()
+                .map(RemoteConnectionStrategyFactory::create).collect(Collectors.toSet());
             return new CompositeRemoteConnectionStrategy(strategies);
         }
     }

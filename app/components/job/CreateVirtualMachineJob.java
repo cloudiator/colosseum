@@ -36,11 +36,13 @@ import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
+import models.service.RemoteModelService;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 08.05.15.
@@ -50,7 +52,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
     private final KeyPairStrategy keyPairStrategy;
 
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
-        ModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
+        RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
         KeyPairStrategy keyPairStrategy) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
@@ -64,10 +66,13 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
     protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService, Tenant tenant) throws JobException {
 
+        checkState(virtualMachine.owner().isPresent(),
+            "Expected virtual machine to have an owner, but none is present.");
+
         final java.util.Optional<KeyPair> keyPairOptional;
         if (virtualMachine.supportsKeyPair()) {
             try {
-                keyPairOptional = keyPairStrategy.retrieve(virtualMachine.cloud(), tenant);
+                keyPairOptional = keyPairStrategy.retrieve(virtualMachine.owner().get());
             } catch (KeyPairException e) {
                 throw new JobException(e);
             }
@@ -81,7 +86,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             BaseColosseumVirtualMachineTemplate.builder();
         TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
         if (keyPairOptional.isPresent()) {
-            templateOptionsBuilder.keyPairName(keyPairOptional.get().cloudProviderId().get());
+            templateOptionsBuilder.keyPairName(keyPairOptional.get().name());
         }
         templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
         if (virtualMachine.templateOptions().isPresent()) {
@@ -133,8 +138,7 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
             }
         }
 
-        final RemoteConnection remoteConnection =
-            computeService.remoteConnection(tenant, virtualMachine);
+        final RemoteConnection remoteConnection = computeService.remoteConnection(virtualMachine);
 
         try (InstallApi installApi = Installers.of(remoteConnection, virtualMachine, tenant)) {
             installApi.installAll();

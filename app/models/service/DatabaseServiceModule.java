@@ -126,6 +126,9 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Instance>>() {
         }).to(new TypeLiteral<BaseModelService<Instance>>() {
         });
+        bind(new TypeLiteral<RemoteModelService<Instance>>() {
+        }).to(new TypeLiteral<BaseRemoteModelService<Instance>>() {
+        });
         //Ip Address
         bind(new TypeLiteral<ModelService<IpAddress>>() {
         }).to(new TypeLiteral<BaseModelService<IpAddress>>() {
@@ -204,6 +207,9 @@ public class DatabaseServiceModule extends AbstractModule {
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachine>>() {
+        });
+        bind(new TypeLiteral<RemoteModelService<VirtualMachine>>() {
+        }).to(new TypeLiteral<BaseRemoteModelService<VirtualMachine>>() {
         });
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelService<VirtualMachineTemplate>>() {

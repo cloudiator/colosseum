@@ -25,7 +25,6 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import models.KeyPair;
-import models.Tenant;
 import models.VirtualMachine;
 import models.service.KeyPairModelService;
 
@@ -40,36 +39,34 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy {
 
     private final SwordConnectionService connectionService;
-    private final Tenant tenant;
     private final KeyPairModelService keyPairModelService;
 
-    private KeyPairRemoteConnectionStrategy(SwordConnectionService connectionService, Tenant tenant,
+    private KeyPairRemoteConnectionStrategy(SwordConnectionService connectionService,
         KeyPairModelService keyPairModelService) {
 
         checkNotNull(keyPairModelService);
         checkNotNull(connectionService);
-        checkNotNull(tenant);
 
         this.keyPairModelService = keyPairModelService;
         this.connectionService = connectionService;
-        this.tenant = tenant;
     }
 
     @Override public boolean isApplicable(VirtualMachine virtualMachine) {
-        return virtualMachine.supportsKeyPair() && (
-            keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant).isPresent()
+        return virtualMachine.supportsKeyPair() && virtualMachine.owner().isPresent() && (
+            keyPairModelService.getKeyPair(virtualMachine.owner().get()).isPresent()
                 || virtualMachine.loginPrivateKey().isPresent());
     }
 
     @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
 
         checkArgument(virtualMachine.supportsKeyPair());
+        checkArgument(virtualMachine.owner().isPresent());
         checkArgument(virtualMachine.publicIpAddress().isPresent());
         checkArgument(virtualMachine.loginName().isPresent());
 
         String privateKey;
         final Optional<KeyPair> keyPair =
-            keyPairModelService.getKeyPair(virtualMachine.cloud(), tenant);
+            keyPairModelService.getKeyPair(virtualMachine.owner().get());
         if (keyPair.isPresent()) {
             privateKey = keyPair.get().getPrivateKey();
         } else if (virtualMachine.loginPrivateKey().isPresent()) {
@@ -113,9 +110,8 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
 
         }
 
-        @Override public RemoteConnectionStrategy create(Tenant tenant) {
-            return new KeyPairRemoteConnectionStrategy(connectionService, tenant,
-                keyPairModelService);
+        @Override public RemoteConnectionStrategy create() {
+            return new KeyPairRemoteConnectionStrategy(connectionService, keyPairModelService);
         }
     }
 }

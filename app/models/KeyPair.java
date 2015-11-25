@@ -18,24 +18,21 @@
 
 package models;
 
-import models.generic.RemoteResource;
+import cloud.DecoratedId;
+import com.google.common.collect.Lists;
+import models.generic.RemoteResourceInCloud;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by daniel on 18.05.15.
  */
-
-
-/**
- * @todo somehow validate this constraint, only have one credential per cloud and frontend group (or find a better relational schema)
- */
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"cloud_id", "tenant_id"})) @Entity
-public class KeyPair extends RemoteResource {
-
-    @ManyToOne(optional = false) private Cloud cloud;
-    @ManyToOne(optional = false) private Tenant tenant;
+@Entity public class KeyPair extends RemoteResourceInCloud {
 
     @Lob private String privateKey;
     @Lob @Nullable @Column(nullable = true) private String publicKey;
@@ -46,29 +43,11 @@ public class KeyPair extends RemoteResource {
     protected KeyPair() {
     }
 
-    public KeyPair(Cloud cloud, Tenant tenant, String privateKey, @Nullable String publicKey,
-        @Nullable String remoteId, @Nullable String cloudProviderId) {
-        super(remoteId, cloudProviderId);
-        this.cloud = cloud;
-        this.tenant = tenant;
+    public KeyPair(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
+        @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey) {
+        super(remoteId, cloudProviderId, cloud, owner);
         this.privateKey = privateKey;
         this.publicKey = publicKey;
-    }
-
-    public Cloud getCloud() {
-        return cloud;
-    }
-
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
-    }
-
-    public Tenant getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
     }
 
     public String getPrivateKey() {
@@ -85,5 +64,20 @@ public class KeyPair extends RemoteResource {
 
     public void setPublicKey(@Nullable String publicKey) {
         this.publicKey = publicKey;
+    }
+
+    @Override public List<CloudCredential> cloudCredentials() {
+        if (owner().isPresent()) {
+            return Lists.newArrayList(owner().get());
+        }
+        return Collections.emptyList();
+    }
+
+    /**
+     * @todo find a better way to undecorate the keypair for the virtual machine template.
+     * Maybe do it in the template itself?
+     */
+    public String name() {
+        return DecoratedId.of(cloudProviderId().get()).swordId();
     }
 }

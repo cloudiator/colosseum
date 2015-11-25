@@ -32,9 +32,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity @Inheritance(strategy = javax.persistence.InheritanceType.TABLE_PER_CLASS)
 public abstract class RemoteResource extends Model {
 
-    private RemoteState remoteState;
+    private RemoteState remoteState = RemoteState.INPROGRESS;
     @Nullable @Column(unique = true, nullable = true) private String remoteId;
-    @Nullable @Column(nullable = true) private String cloudProviderId;
+
 
     public RemoteState getRemoteState() {
         return remoteState;
@@ -60,20 +60,10 @@ public abstract class RemoteResource extends Model {
 
     }
 
-    public RemoteResource(@Nullable String remoteId, @Nullable String cloudProviderId) {
+    public RemoteResource(@Nullable String remoteId) {
         this.remoteId = remoteId;
-        this.cloudProviderId = cloudProviderId;
+
     }
 
-    public Optional<String> cloudProviderId() {
-        return Optional.ofNullable(cloudProviderId);
-    }
 
-    public void bindCloudProviderId(String cloudProviderId) {
-        checkNotNull(cloudProviderId, "Binding null cloudProviderId is not allowed");
-        if (this.cloudProviderId != null) {
-            throw new IllegalStateException("Changing the cloudProviderId is not allowed.");
-        }
-        this.cloudProviderId = cloudProviderId;
-    }
 }

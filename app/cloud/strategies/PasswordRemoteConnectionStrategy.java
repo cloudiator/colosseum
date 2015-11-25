@@ -25,7 +25,6 @@ import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
-import models.Tenant;
 import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -82,7 +81,7 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
             this.connectionService = connectionService;
         }
 
-        @Override public RemoteConnectionStrategy create(Tenant ignored) {
+        @Override public RemoteConnectionStrategy create() {
             return new PasswordRemoteConnectionStrategy(connectionService);
         }
     }

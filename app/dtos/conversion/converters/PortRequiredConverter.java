@@ -33,4 +33,9 @@ public class PortRequiredConverter extends PortConverter<PortRequired, PortRequi
         ModelService<ApplicationComponent> applicationComponentModelService) {
         super(PortRequired.class, PortRequiredDto.class, applicationComponentModelService);
     }
+
+    @Override public void configure() {
+        super.configure();
+        binding().fromField("updateAction").toField("updateAction");
+    }
 }

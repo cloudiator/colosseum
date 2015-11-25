@@ -23,6 +23,16 @@ package dtos;
  */
 public class PortRequiredDto extends PortDto {
 
+    private String updateAction;
+
     public PortRequiredDto() {
+    }
+
+    public String getUpdateAction() {
+        return updateAction;
+    }
+
+    public void setUpdateAction(String updateAction) {
+        this.updateAction = updateAction;
     }
 }

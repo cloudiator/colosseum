@@ -50,7 +50,7 @@ public class ImageDto extends RemoteDto {
         super.validation();
         validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+        validator(Long.class).validate(location)
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
         validator(new TypeLiteral<List<Long>>() {
         }).validate(cloudCredentials).withValidator(new IterableValidator<>(

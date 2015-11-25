@@ -20,7 +20,7 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
+import dtos.generic.RemoteDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.ApplicationComponent;
@@ -31,7 +31,7 @@ import models.service.BaseModelService;
 /**
  * Created by daniel seybold on 17.12.2014.
  */
-public class InstanceDto extends ValidatableDto {
+public class InstanceDto extends RemoteDto {
 
     private Long applicationComponent;
     private Long applicationInstance;

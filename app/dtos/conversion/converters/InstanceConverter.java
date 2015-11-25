@@ -20,7 +20,6 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.InstanceDto;
-import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.ApplicationComponent;
 import models.ApplicationInstance;
@@ -31,7 +30,7 @@ import models.service.ModelService;
 /**
  * Created by daniel on 14.04.15.
  */
-public class InstanceConverter extends AbstractConverter<Instance, InstanceDto> {
+public class InstanceConverter extends RemoteConverter<Instance, InstanceDto> {
 
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<ApplicationComponent> applicationComponentModelService;

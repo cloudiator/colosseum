@@ -54,7 +54,7 @@ public class HardwareDto extends RemoteDto {
             .withValidator(new ModelIdValidator<>(References.cloudService.get()));
         validator(Long.class).validate(hardwareOffer).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.hardwareOfferService.get()));
-        validator(Long.class).validate(location).withValidator(new NotNullValidator())
+        validator(Long.class).validate(location)
             .withValidator(new ModelIdValidator<>(References.locationService.get()));
         validator(new TypeLiteral<List<Long>>() {
         }).validate(cloudCredentials).withValidator(new IterableValidator<>(

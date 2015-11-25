@@ -37,7 +37,7 @@ Entity                                                       | URL
 [SensorDescription](entities/SensorDescription.md)           | /api/sensorDescription
 [TimeWindow](entities/TimeWindow.md)                         | /api/timeWindow
 [PortProvided](entities/PortProvided.md)                     | /api/portProv                                                         
-[PortOutbound](entities/PortRequired.md)                     | /api/portReq
+[PortRequired](entities/PortRequired.md)                     | /api/portReq
 [VirtualMachine](entities/VirtualMachine.md)                 | /api/virtualMachine
 [VirtualMachineTemplate](entities/VirtualMachineTemplate.md) | /api/vmt
 

@@ -34,9 +34,9 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
-import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.db.jpa.JPA;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -47,7 +47,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 08.05.15.
  */
-public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
+public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
     private final KeyPairStrategy keyPairStrategy;
 
@@ -62,96 +62,122 @@ public class CreateVirtualMachineJob extends GenericJob<VirtualMachine> {
         this.keyPairStrategy = keyPairStrategy;
     }
 
-    @Override
-    protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
-        ColosseumComputeService computeService, Tenant tenant) throws JobException {
-
-        checkState(virtualMachine.owner().isPresent(),
-            "Expected virtual machine to have an owner, but none is present.");
-
-        final java.util.Optional<KeyPair> keyPairOptional;
-        if (virtualMachine.supportsKeyPair()) {
-            try {
-                keyPairOptional = keyPairStrategy.retrieve(virtualMachine.owner().get());
-            } catch (KeyPairException e) {
-                throw new JobException(e);
-            }
-        } else {
-            keyPairOptional = java.util.Optional.empty();
-        }
-
-
-        // build the template
-        ColosseumVirtualMachineTemplateBuilder builder =
-            BaseColosseumVirtualMachineTemplate.builder();
-        TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
-        if (keyPairOptional.isPresent()) {
-            templateOptionsBuilder.keyPairName(keyPairOptional.get().name());
-        }
-        templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
-        if (virtualMachine.templateOptions().isPresent()) {
-            templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());
-        }
-        builder.templateOptions(templateOptionsBuilder.build());
-
-        // create the virtual machine
-        VirtualMachineInLocation cloudVirtualMachine = computeService
-            .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
-
-        // set values to the model
-        virtualMachine.bindRemoteId(cloudVirtualMachine.id());
-        virtualMachine.bindCloudProviderId(cloudVirtualMachine.cloudProviderId());
-        for (String ip : cloudVirtualMachine.privateAddresses()) {
-            virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
-        }
-        for (String ip : cloudVirtualMachine.publicAddresses()) {
-            virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
-        }
-
-        //todo we cannot trust the response of sword, as jclouds returns wrong usernames.
-        //fix this in sword. until fixed we do not read the login credentials.
-        //this will cause flexiant jobs to fail....
-        if (cloudVirtualMachine.loginCredential().isPresent()) {
-            LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
-            virtualMachine.setGeneratedLoginUsername(loginCredential.username().orElse(null));
-            virtualMachine.setGeneratedLoginPassword(loginCredential.password().orElse(null));
-            virtualMachine.setGeneratedPrivateKey(loginCredential.privateKey().orElse(null));
-        }
-
-        modelService.save(virtualMachine);
-
-        if (!virtualMachine.publicIpAddress().isPresent()) {
-            final Optional<PublicIpService> publicIpService =
-                computeService.getPublicIpService(virtualMachine.owner().get());
-            if (publicIpService.isPresent()) {
-                try {
-                    final String publicIp =
-                        publicIpService.get().addPublicIp(virtualMachine.remoteId().get());
-                    virtualMachine
-                        .addIpAddress(new IpAddress(virtualMachine, publicIp, IpType.PUBLIC));
-                } catch (PublicIpException e) {
-                    throw new JobException(e);
-                }
-            } else {
-                throw new JobException(
-                    "VirtualMachine started without public IP and IpService is not available.");
-            }
-        }
-
-        final RemoteConnection remoteConnection = computeService.remoteConnection(virtualMachine);
-
-        try (InstallApi installApi = Installers.of(remoteConnection, virtualMachine, tenant)) {
-            installApi.installAll();
-        } catch (RemoteException e) {
-            throw new JobException(e);
-        }
-
-        virtualMachine.setRemoteState(RemoteState.OK);
-        modelService.save(virtualMachine);
-    }
-
     @Override public boolean canStart() {
         return true;
+    }
+
+    @Override protected void doWork(ModelService<VirtualMachine> modelService,
+        ColosseumComputeService computeService) throws JobException {
+
+        java.util.Optional<KeyPair> keyPairOptional;
+        try {
+            keyPairOptional = JPA.withTransaction(() -> {
+                VirtualMachine virtualMachine = getT();
+                checkState(virtualMachine.owner().isPresent(),
+                    "Expected virtual machine to have an owner, but none is present.");
+                final java.util.Optional<KeyPair> keyPair;
+                if (virtualMachine.supportsKeyPair()) {
+                    try {
+                        keyPair = keyPairStrategy.retrieve(virtualMachine.owner().get());
+                    } catch (KeyPairException e) {
+                        throw new JobException(e);
+                    }
+                } else {
+                    keyPair = java.util.Optional.empty();
+                }
+                return keyPair;
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
+        }
+
+        VirtualMachineInLocation cloudVirtualMachine;
+        try {
+            cloudVirtualMachine = JPA.withTransaction("default", true, () -> {
+                VirtualMachine virtualMachine = getT();
+                // build the template
+                ColosseumVirtualMachineTemplateBuilder builder =
+                    BaseColosseumVirtualMachineTemplate.builder();
+                TemplateOptionsBuilder templateOptionsBuilder = TemplateOptionsBuilder.newBuilder();
+                if (keyPairOptional.isPresent()) {
+                    templateOptionsBuilder.keyPairName(keyPairOptional.get().name());
+                }
+                templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
+                if (virtualMachine.templateOptions().isPresent()) {
+                    templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());
+                }
+                builder.templateOptions(templateOptionsBuilder.build());
+
+                // create the virtual machine
+                return computeService
+                    .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
+        }
+
+
+        JPA.withTransaction(() -> {
+            VirtualMachine virtualMachine = getT();
+            // set values to the model
+            virtualMachine.bindRemoteId(cloudVirtualMachine.id());
+            virtualMachine.bindCloudProviderId(cloudVirtualMachine.cloudProviderId());
+            for (String ip : cloudVirtualMachine.privateAddresses()) {
+                virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
+            }
+            for (String ip : cloudVirtualMachine.publicAddresses()) {
+                virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PUBLIC));
+            }
+
+            //todo we cannot trust the response of sword, as jclouds returns wrong usernames.
+            //fix this in sword. until fixed we do not read the login credentials.
+            //this will cause flexiant jobs to fail....
+            if (cloudVirtualMachine.loginCredential().isPresent()) {
+                LoginCredential loginCredential = cloudVirtualMachine.loginCredential().get();
+                virtualMachine.setGeneratedLoginUsername(loginCredential.username().orElse(null));
+                virtualMachine.setGeneratedLoginPassword(loginCredential.password().orElse(null));
+                virtualMachine.setGeneratedPrivateKey(loginCredential.privateKey().orElse(null));
+            }
+
+            modelService.save(virtualMachine);
+
+            if (!virtualMachine.publicIpAddress().isPresent()) {
+                final Optional<PublicIpService> publicIpService =
+                    computeService.getPublicIpService(virtualMachine.owner().get());
+                if (publicIpService.isPresent()) {
+                    try {
+                        final String publicIp =
+                            publicIpService.get().addPublicIp(virtualMachine.remoteId().get());
+                        virtualMachine
+                            .addIpAddress(new IpAddress(virtualMachine, publicIp, IpType.PUBLIC));
+                    } catch (PublicIpException e) {
+                        throw new JobException(e);
+                    }
+                } else {
+                    throw new JobException(
+                        "VirtualMachine started without public IP and IpService is not available.");
+                }
+            }
+        });
+
+        try {
+            JPA.withTransaction("default", true, () -> {
+                VirtualMachine virtualMachine = getT();
+                Tenant tenant = getTenant();
+                final RemoteConnection remoteConnection =
+                    computeService.remoteConnection(virtualMachine);
+
+                try (InstallApi installApi = Installers
+                    .of(remoteConnection, virtualMachine, tenant)) {
+                    installApi.installAll();
+                } catch (RemoteException e) {
+                    throw new JobException(e);
+                }
+                return null;
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
+        }
     }
 
     /**

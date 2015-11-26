@@ -24,7 +24,7 @@ import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.VirtualMachine;
 import play.Logger;
-import util.Loggers;
+import util.logging.Loggers;
 
 import java.util.Set;
 import java.util.stream.Collectors;

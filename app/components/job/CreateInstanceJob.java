@@ -42,6 +42,7 @@ import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.db.jpa.JPA;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -51,58 +52,60 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 03.08.15.
  */
-public class CreateInstanceJob extends GenericJob<Instance> {
-
-    private final Instance instance;
+public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
-        this.instance = instance;
     }
 
-    @Override protected void doWork(Instance instance, ModelService<Instance> modelService,
-        ColosseumComputeService computeService, Tenant tenant) throws JobException {
+    @Override protected void doWork(ModelService<Instance> modelService,
+        ColosseumComputeService computeService) throws JobException {
+
         try {
-            buildClient(instance);
-        } catch (RegistrationException | LcaException | ContainerException e) {
-            throw new JobException(e);
+            JPA.withTransaction("default", true, () -> {
+
+                Instance instance = getT();
+
+                final LifecycleClient client = LifecycleClient.getClient();
+                final ApplicationInstanceId applicationInstanceId =
+                    ApplicationInstanceId.fromString(instance.getApplicationInstance().getUuid());
+
+                final ApplicationId applicationId = ApplicationId
+                    .fromString(instance.getApplicationInstance().getApplication().getUuid());
+
+                //register application instance
+                final boolean couldRegister;
+                try {
+                    couldRegister =
+                        client.registerApplicationInstance(applicationInstanceId, applicationId);
+                } catch (RegistrationException e) {
+                    throw new JobException(e);
+                }
+                if (couldRegister) {
+                    try {
+                        registerApplicationComponents(instance, applicationInstanceId, client);
+                    } catch (RegistrationException e) {
+                        throw new JobException(e);
+                    }
+                }
+                final DeploymentContext deploymentContext = buildDeploymentContext(instance,
+                    client.initDeploymentContext(applicationId, applicationInstanceId));
+                checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
+                try {
+                    client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
+                        deploymentContext, buildDeployableComponent(instance),
+                        instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
+                        instance.getApplicationComponent().containerTypeOrDefault());
+                } catch (LcaException | RegistrationException | ContainerException e) {
+                    throw new JobException(e);
+                }
+                return null;
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
         }
-        modelService.save(instance);
-    }
-
-    private LifecycleClient buildClient(Instance instance)
-        throws RegistrationException, LcaException, ContainerException {
-
-        final LifecycleClient client = LifecycleClient.getClient();
-        final ApplicationInstanceId applicationInstanceId =
-            ApplicationInstanceId.fromString(instance.getApplicationInstance().getUuid());
-
-        final ApplicationId applicationId =
-            ApplicationId.fromString(instance.getApplicationInstance().getApplication().getUuid());
-
-        //register application instance
-        final boolean couldRegister =
-            client.registerApplicationInstance(applicationInstanceId, applicationId);
-
-        if (couldRegister) {
-            registerApplicationComponents(instance, applicationInstanceId, client);
-        }
-
-        final DeploymentContext deploymentContext = buildDeploymentContext(instance,
-            client.initDeploymentContext(applicationId, applicationInstanceId));
-
-        checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
-
-        client
-            .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(), deploymentContext,
-                buildDeployableComponent(instance),
-                instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
-                instance.getApplicationComponent().containerTypeOrDefault());
-
-        return client;
-
     }
 
     private void registerApplicationComponents(Instance instance,
@@ -183,8 +186,13 @@ public class CreateInstanceJob extends GenericJob<Instance> {
         return deploymentContext;
     }
 
-    @Override public boolean canStart() {
-        return RemoteState.OK.equals(instance.getVirtualMachine().getRemoteState());
+    @Override public boolean canStart() throws JobException {
+        try {
+            return JPA.withTransaction(
+                () -> RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState()));
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
+        }
     }
 
     private static class LifecycleComponentToLifecycleStoreConverter

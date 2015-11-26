@@ -35,8 +35,8 @@ public interface Job extends Prioritized {
 
     boolean canStart() throws JobException;
 
-    void onSuccess();
+    void onSuccess() throws JobException;
 
-    void onError();
+    void onError() throws JobException;
 
 }

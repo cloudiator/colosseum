@@ -20,7 +20,6 @@ package components.installer;
 
 import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
 import play.Play;
@@ -39,7 +38,6 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected final RemoteConnection remoteConnection;
     protected final VirtualMachine virtualMachine;
-    protected final Tenant tenant;
 
 
     protected final List<String> sourcesList = new ArrayList<>();
@@ -70,12 +68,10 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected static final String VISOR_PROPERTIES = "default.properties";
 
-    public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
-        Tenant tenant) {
+    public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine) {
 
         checkNotNull(remoteConnection);
         checkNotNull(virtualMachine);
-        checkNotNull(tenant);
         checkArgument(virtualMachine.publicIpAddress().isPresent(),
             "VirtualMachine has no public ip.");
         checkArgument(virtualMachine.loginName().isPresent(),
@@ -83,7 +79,6 @@ abstract class AbstractInstaller implements InstallApi {
 
         this.remoteConnection = remoteConnection;
         this.virtualMachine = virtualMachine;
-        this.tenant = tenant;
 
     }
 

@@ -20,7 +20,7 @@ package models.service;
 
 import com.google.inject.Inject;
 import models.generic.Model;
-import util.Loggers;
+import util.logging.Loggers;
 
 import javax.annotation.Nullable;
 import java.util.List;

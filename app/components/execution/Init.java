@@ -21,7 +21,7 @@ package components.execution;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import play.Logger;
-import util.Loggers;
+import util.logging.Loggers;
 
 import java.util.Set;
 

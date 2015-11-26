@@ -21,7 +21,7 @@ package components.execution;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
-import util.Loggers;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 27.07.15.

@@ -25,7 +25,7 @@ import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
-import util.Loggers;
+import util.logging.Loggers;
 
 import java.util.Optional;
 import java.util.Set;

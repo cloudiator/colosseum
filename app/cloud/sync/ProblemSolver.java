@@ -24,7 +24,7 @@ import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
-import util.Loggers;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 05.05.15.

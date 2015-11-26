@@ -45,18 +45,21 @@ public class WindowsInstaller extends AbstractInstaller {
         Play.application().configuration().getString("colosseum.installer.windows.7zip.download");
     private final String user;
     private final String password;
+    private final Tenant tenant;
 
 
 
     public WindowsInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
-        super(remoteConnection, virtualMachine, tenant);
+        super(remoteConnection, virtualMachine);
 
         this.user = virtualMachine.loginName().get();
-        checkArgument(virtualMachine.loginPassword().isPresent(), "Expected login password for WindowsInstaller");
+        checkArgument(virtualMachine.loginPassword().isPresent(),
+            "Expected login password for WindowsInstaller");
         this.password = virtualMachine.loginPassword().get();
 
         this.homeDir = "C:\\Users\\" + this.user;
+        this.tenant = tenant;
 
     }
 
@@ -133,21 +136,24 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //set firewall rules
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Visor Rest Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.restPort"));
+            "powershell -command netsh advfirewall firewall add rule name = 'Visor Rest Port' dir = in action = allow protocol=TCP localport="
+                + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.restPort"));
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Visor Telnet Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.telnetPort"));
+            "powershell -command netsh advfirewall firewall add rule name = 'Visor Telnet Port' dir = in action = allow protocol=TCP localport="
+                + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.telnetPort"));
 
 
         //create schtaks
-        this.remoteConnection.executeCommand(
-            "schtasks.exe " +
-                    "/create " +
-                    "/st 00:00  " +
-                    "/sc ONCE " +
-                    "/ru " + this.user +" " +
-                    "/rp " + this.password + " " +
-                    "/tn " + visorJobId +
-                    " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
+        this.remoteConnection.executeCommand("schtasks.exe " +
+            "/create " +
+            "/st 00:00  " +
+            "/sc ONCE " +
+            "/ru " + this.user + " " +
+            "/rp " + this.password + " " +
+            "/tn " + visorJobId +
+            " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
         this.waitForSchtaskCreation();
         //run schtask
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId);
@@ -172,7 +178,9 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //set firewall rule
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Kairos Port' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.visor.config.kairosPort"));
+            "powershell -command netsh advfirewall firewall add rule name = 'Kairos Port' dir = in action = allow protocol=TCP localport="
+                + Play.application().configuration()
+                .getString("colosseum.installer.abstract.visor.config.kairosPort"));
 
         //create a .bat file to start kairosDB, because it is not possible to pass schtasks paramters using overthere
         String startCommand =
@@ -182,14 +190,13 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //start kairosdb in backround
         String kairosJobId = "kairosDB";
-        this.remoteConnection.executeCommand(
-            "schtasks.exe /create " +
-                    "/st 00:00  " +
-                    "/sc ONCE " +
-                    "/ru " + this.user +" " +
-                    "/rp " + this.password + " " +
-                    "/tn " + kairosJobId + " " +
-                    "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
+        this.remoteConnection.executeCommand("schtasks.exe /create " +
+            "/st 00:00  " +
+            "/sc ONCE " +
+            "/ru " + this.user + " " +
+            "/rp " + this.password + " " +
+            "/tn " + kairosJobId + " " +
+            "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
         this.waitForSchtaskCreation();
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
         Logger.debug("KairosDB successfully started!");
@@ -202,9 +209,13 @@ public class WindowsInstaller extends AbstractInstaller {
 
         Logger.error("Opening Firewall ports for Lance...");
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Lance RMI' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.lance.rmiPort"));
+            "powershell -command netsh advfirewall firewall add rule name = 'Lance RMI' dir = in action = allow protocol=TCP localport="
+                + Play.application().configuration()
+                .getString("colosseum.installer.abstract.lance.rmiPort"));
         this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Lance Server' dir = in action = allow protocol=TCP localport=" + Play.application().configuration().getString("colosseum.installer.abstract.lance.serverPort"));
+            "powershell -command netsh advfirewall firewall add rule name = 'Lance Server' dir = in action = allow protocol=TCP localport="
+                + Play.application().configuration()
+                .getString("colosseum.installer.abstract.lance.serverPort"));
 
         //create a .bat file to start Lance, because it is not possible to pass schtasks paramters using overthere
         String startCommand = " java " +
@@ -220,15 +231,14 @@ public class WindowsInstaller extends AbstractInstaller {
 
         //start lance in backround
         String lanceJobId = "lance";
-        this.remoteConnection.executeCommand(
-            "schtasks.exe " +
-                    "/create " +
-                    "/st 00:00  " +
-                    "/sc ONCE " +
-                    "/ru " + this.user +" " +
-                    "/rp " + this.password + " " +
-                    "/tn " + lanceJobId + " " +
-                    "/tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT + "\"");
+        this.remoteConnection.executeCommand("schtasks.exe " +
+            "/create " +
+            "/st 00:00  " +
+            "/sc ONCE " +
+            "/ru " + this.user + " " +
+            "/rp " + this.password + " " +
+            "/tn " + lanceJobId + " " +
+            "/tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT + "\"");
         this.waitForSchtaskCreation();
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + lanceJobId);
         Logger.debug("Lance successfully started!");

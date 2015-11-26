@@ -35,6 +35,6 @@ public class JobModule extends AbstractModule {
         }).annotatedWith(Names.named("jobQueue")).to(JobQueue.class);
         bind(JobService.class).to(BaseJobService.class);
         Multibinder<Runnable> runnables = Multibinder.newSetBinder(binder(), Runnable.class);
-        runnables.addBinding().to(JobWorker.class);
+        runnables.addBinding().to(JobDispatcher.class);
     }
 }

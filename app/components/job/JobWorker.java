@@ -18,47 +18,38 @@
 
 package components.job;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
-import components.execution.Loop;
-import components.execution.SimpleBlockingQueue;
 import play.Logger;
-import play.db.jpa.Transactional;
-
 
 /**
- * Created by daniel on 12.05.15.
+ * Created by daniel on 26.11.15.
  */
+class JobWorker implements Runnable {
 
-public class JobWorker implements Runnable {
+    private final Job job;
 
-    private final SimpleBlockingQueue<Job> jobQueue;
-
-    @Inject public JobWorker(@Named("jobQueue") SimpleBlockingQueue<Job> jobQueue) {
-        this.jobQueue = jobQueue;
+    public JobWorker(Job job) {
+        this.job = job;
     }
 
-    @Loop @Transactional @Override public void run() {
+    @Override public void run() {
 
-        Job job = null;
+        Logger.info(String.format("Starting execution of job %s", job));
         try {
-            job = jobQueue.take();
-        } catch (InterruptedException e) {
-            Logger.error("Job Execution got interrupted", e);
-            Thread.currentThread().interrupt();
-        }
-
-        if (job != null) {
-            Logger.info(String.format("Starting execution of job %s", job));
+            job.execute();
+            job.onSuccess();
+            Logger.info(String.format("Execution of job %s successfully finished", job));
+        } catch (Exception e) {
+            Logger
+                .error(String.format("Error during execution of %s, calling onError handler", job),
+                    e);
             try {
-                job.execute();
-                job.onSuccess();
-                Logger.info(String.format("Execution of job %s successfully finished", job));
-            } catch (Exception e) {
-                Logger.error(
-                    String.format("Error during execution of %s, calling onError handler", job), e);
                 job.onError();
+            } catch (JobException ignored) {
+                Logger.error("Error in onError handler. Ignoring", ignored);
             }
         }
+
+
+
     }
 }

@@ -21,7 +21,7 @@
  */
 package components.execution;
 
-interface ExecutionService {
+public interface ExecutionService {
 
     void schedule(Schedulable schedulable);
 

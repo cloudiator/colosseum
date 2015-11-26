@@ -77,7 +77,10 @@ public class DecoratingKeyPairService implements KeyPairService {
     }
 
     @Nullable @Override public KeyPairInCloud get(String name) throws KeyPairException {
-        //todo implement
-        throw new UnsupportedOperationException("Not yet implemented.");
+        if (delegate.get(name) != null) {
+            return new KeyPairInCloud(this.delegate.get(name), cloud, credential, cloudModelService,
+                cloudCredentialModelService);
+        }
+        return null;
     }
 }

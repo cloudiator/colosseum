@@ -24,28 +24,28 @@ import models.generic.RemoteResource;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.db.jpa.JPA;
 
 /**
  * Created by daniel on 08.05.15.
  */
-public abstract class GenericJob<T extends RemoteResource> implements Job {
+public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implements Job {
 
     private final String resourceUuid;
+    private final String tenantUuid;
     private final ModelService<T> modelService;
     private final ColosseumComputeService colosseumComputeService;
     private JobState jobState;
-    private final Tenant tenant;
     private final ModelService<Tenant> tenantModelService;
-    private T t;
 
-    public GenericJob(T t, RemoteModelService<T> modelService,
+    public AbstractRemoteResourceJob(T t, RemoteModelService<T> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
         this.colosseumComputeService = colosseumComputeService;
         this.resourceUuid = t.getUuid();
         this.modelService = modelService;
         this.tenantModelService = tenantModelService;
-        this.tenant = tenant;
+        this.tenantUuid = tenant.getUuid();
     }
 
     @Override public final String getResourceUuid() {
@@ -65,42 +65,54 @@ public abstract class GenericJob<T extends RemoteResource> implements Job {
     }
 
     @Override public final void execute() throws JobException {
-        /**
+        init();
+        this.doWork(modelService, colosseumComputeService);
+    }
 
+    protected final T getT() {
+        /**
          * todo: find a better way for waiting for the database
          */
+        T t = null;
         while (t == null) {
             try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
-            this.t = this.modelService.getByUuid(resourceUuid);
+            t = this.modelService.getByUuid(resourceUuid);
         }
-
-        t.setRemoteState(RemoteState.INPROGRESS);
-        modelService.save(t);
-
-        this.doWork(t, modelService, colosseumComputeService,
-            tenantModelService.getById(tenant.getId()));
+        return t;
     }
 
-    protected abstract void doWork(T t, ModelService<T> modelService,
-        ColosseumComputeService computeService, Tenant tenant) throws JobException;
-
-    @Override public void onSuccess() {
-        if (t == null) {
-            throw new IllegalStateException("On success called before initialization.");
-        }
-        t.setRemoteState(RemoteState.OK);
-        modelService.save(t);
+    protected final Tenant getTenant() {
+        return this.tenantModelService.getByUuid(tenantUuid);
     }
 
-    @Override public void onError() {
-        if (t == null) {
-            throw new IllegalStateException("On error called before initialization.");
-        }
-        t.setRemoteState(RemoteState.ERROR);
-        modelService.save(t);
+    public void init() {
+        JPA.withTransaction(() -> {
+            T t = getT();
+            t.setRemoteState(RemoteState.INPROGRESS);
+            modelService.save(t);
+        });
+    }
+
+    protected abstract void doWork(ModelService<T> modelService,
+        ColosseumComputeService computeService) throws JobException;
+
+    @Override public void onSuccess() throws JobException {
+        JPA.withTransaction(() -> {
+            T t = getT();
+            t.setRemoteState(RemoteState.OK);
+            modelService.save(t);
+        });
+    }
+
+    @Override public void onError() throws JobException {
+        JPA.withTransaction(() -> {
+            T t = getT();
+            t.setRemoteState(RemoteState.ERROR);
+            modelService.save(t);
+        });
     }
 }

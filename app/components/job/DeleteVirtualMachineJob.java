@@ -28,7 +28,7 @@ import models.service.RemoteModelService;
 /**
  * Created by daniel on 14.10.15.
  */
-public class DeleteVirtualMachineJob extends GenericJob<VirtualMachine> {
+public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
     @Inject public DeleteVirtualMachineJob(VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
@@ -36,13 +36,12 @@ public class DeleteVirtualMachineJob extends GenericJob<VirtualMachine> {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
     }
 
-    @Override
-    protected void doWork(VirtualMachine virtualMachine, ModelService<VirtualMachine> modelService,
-        ColosseumComputeService computeService, Tenant tenant) throws JobException {
+    @Override protected void doWork(ModelService<VirtualMachine> modelService,
+        ColosseumComputeService computeService) throws JobException {
 
+        VirtualMachine virtualMachine = getT();
         computeService.deleteVirtualMachine(virtualMachine);
         modelService.delete(virtualMachine);
-
     }
 
     @Override public boolean canStart() {

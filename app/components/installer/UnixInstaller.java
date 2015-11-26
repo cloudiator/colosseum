@@ -38,11 +38,12 @@ public class UnixInstaller extends AbstractInstaller {
     private static final String DOCKER_DOWNLOAD = Play.application().configuration()
         .getString("colosseum.installer.linux.lance.docker.download");
     private static final String DOCKER_INSTALL = "docker_install.sh";
+    private final Tenant tenant;
 
     public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
-        super(remoteConnection, virtualMachine, tenant);
-
+        super(remoteConnection, virtualMachine);
+        this.tenant = tenant;
         this.homeDir = "/home/" + virtualMachine.loginName().get();
     }
 

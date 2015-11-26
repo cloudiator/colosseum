@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package util;
+package util.logging;
 
 import play.Logger;
 
@@ -29,6 +29,7 @@ public class Loggers {
     public static final String CLOUD_REMOTE = "colosseum.cloud.remote";
     public static final String EXECUTION = "colosseum.execution";
     public static final String DATABASE = "colosseum.database";
+    public static final String API = "colosseum.api";
 
     private Loggers() {
         throw new AssertionError("Intentionally left empty.");

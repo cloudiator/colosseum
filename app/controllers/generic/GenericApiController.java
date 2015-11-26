@@ -29,12 +29,14 @@ import models.generic.Model;
 import models.service.FrontendUserService;
 import models.service.IllegalSearchException;
 import models.service.ModelService;
+import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Result;
 import play.mvc.Security;
+import util.logging.Loggers;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Constructor;
@@ -62,6 +64,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Security.Authenticated(SecuredSessionOrToken.class)
 public abstract class GenericApiController<T extends Model, U extends Dto, V extends Dto, W extends Dto>
     extends AuthenticationController {
+
+    private final Logger.ALogger LOGGER = Loggers.of(Loggers.API);
 
     private final ModelService<T> modelService;
     private final ModelDtoConversionService conversionService;

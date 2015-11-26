@@ -24,7 +24,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
-import util.Loggers;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 24.07.15.

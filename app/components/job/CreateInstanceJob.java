@@ -60,7 +60,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
     }
 
-    @Override protected void doWork(ModelService<Instance> modelService,
+    @Override protected synchronized void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
 
         try {

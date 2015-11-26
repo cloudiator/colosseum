@@ -20,36 +20,25 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
-import dtos.validation.validators.ModelIdValidator;
-import dtos.validation.validators.NotNullValidator;
+import dtos.generic.RemoteDto;
 import models.Cloud;
-import models.Tenant;
 import models.service.ModelService;
 
 /**
  * Created by daniel on 19.05.15.
  */
-public class KeyPairDto extends ValidatableDto {
+public class KeyPairDto extends RemoteDto {
 
     private Long cloud;
-    private Long tenant;
+    private Long virtualMachine;
     private String privateKey;
     private String publicKey;
-    private String cloudUuid;
 
     @Override public void validation() {
-        validator(Long.class).validate(cloud).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.cloudService.get()));
-        validator(Long.class).validate(tenant).withValidator(new NotNullValidator())
-            .withValidator(new ModelIdValidator<>(References.tenantService.get()));
-        //TODO: validate if valid ssh keys?
-        //TODO: validate with respect to public key or remoteId needs to be present?
     }
 
     public static class References {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
-        @Inject public static Provider<ModelService<Tenant>> tenantService;
     }
 
     public Long getCloud() {
@@ -58,6 +47,14 @@ public class KeyPairDto extends ValidatableDto {
 
     public void setCloud(Long cloud) {
         this.cloud = cloud;
+    }
+
+    public Long getVirtualMachine() {
+        return virtualMachine;
+    }
+
+    public void setVirtualMachine(Long virtualMachine) {
+        this.virtualMachine = virtualMachine;
     }
 
     public String getPrivateKey() {
@@ -74,21 +71,5 @@ public class KeyPairDto extends ValidatableDto {
 
     public void setPublicKey(String publicKey) {
         this.publicKey = publicKey;
-    }
-
-    public String getCloudUuid() {
-        return cloudUuid;
-    }
-
-    public void setCloudUuid(String cloudUuid) {
-        this.cloudUuid = cloudUuid;
-    }
-
-    public Long getTenant() {
-        return tenant;
-    }
-
-    public void setTenant(Long tenant) {
-        this.tenant = tenant;
     }
 }

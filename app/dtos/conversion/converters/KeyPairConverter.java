@@ -20,35 +20,34 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import dtos.KeyPairDto;
-import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import models.Cloud;
 import models.KeyPair;
-import models.Tenant;
+import models.VirtualMachine;
 import models.service.ModelService;
 
 /**
  * Created by daniel on 19.05.15.
  */
-public class KeyPairConverter extends AbstractConverter<KeyPair, KeyPairDto> {
+public class KeyPairConverter extends RemoteConverter<KeyPair, KeyPairDto> {
 
     private final ModelService<Cloud> cloudModelService;
-    private final ModelService<Tenant> tenantModelService;
+    private final ModelService<VirtualMachine> virtualMachineModelService;
 
     @Inject protected KeyPairConverter(ModelService<Cloud> cloudModelService,
-        ModelService<Tenant> tenantModelService) {
+        ModelService<VirtualMachine> virtualMachineModelService) {
         super(KeyPair.class, KeyPairDto.class);
         this.cloudModelService = cloudModelService;
-        this.tenantModelService = tenantModelService;
+        this.virtualMachineModelService = virtualMachineModelService;
     }
 
     @Override public void configure() {
         binding(Long.class, Cloud.class).fromField("cloud").toField("cloud")
             .withTransformation(new IdToModelTransformer<>(cloudModelService));
-        binding(Long.class, Tenant.class).fromField("tenant").toField("tenant")
-            .withTransformation(new IdToModelTransformer<>(tenantModelService));
+        binding(Long.class, VirtualMachine.class).fromField("virtualMachine")
+            .toField("virtualMachine")
+            .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
         binding().fromField("privateKey").toField("privateKey");
         binding().fromField("publicKey").toField("publicKey");
-        binding().fromField("remoteId").toField("remoteId");
     }
 }

@@ -70,28 +70,27 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         ColosseumComputeService computeService) throws JobException {
 
         java.util.Optional<KeyPair> keyPairOptional;
-        synchronized (this) {
-            try {
-                keyPairOptional = JPA.withTransaction(() -> {
-                    VirtualMachine virtualMachine = getT();
-                    checkState(virtualMachine.owner().isPresent(),
-                        "Expected virtual machine to have an owner, but none is present.");
-                    final java.util.Optional<KeyPair> keyPair;
-                    if (virtualMachine.supportsKeyPair()) {
-                        try {
-                            keyPair = keyPairStrategy.retrieve(virtualMachine);
-                        } catch (KeyPairException e) {
-                            throw new JobException(e);
-                        }
-                    } else {
-                        keyPair = java.util.Optional.empty();
+        try {
+            keyPairOptional = JPA.withTransaction(() -> {
+                VirtualMachine virtualMachine = getT();
+                checkState(virtualMachine.owner().isPresent(),
+                    "Expected virtual machine to have an owner, but none is present.");
+                final java.util.Optional<KeyPair> keyPair;
+                if (virtualMachine.supportsKeyPair()) {
+                    try {
+                        keyPair = keyPairStrategy.retrieve(virtualMachine);
+                    } catch (KeyPairException e) {
+                        throw new JobException(e);
                     }
-                    return keyPair;
-                });
-            } catch (Throwable throwable) {
-                throw new JobException(throwable);
-            }
+                } else {
+                    keyPair = java.util.Optional.empty();
+                }
+                return keyPair;
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
         }
+        
 
         VirtualMachineInLocation cloudVirtualMachine;
         try {
@@ -111,7 +110,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 builder.templateOptions(templateOptionsBuilder.build());
 
                 // create the virtual machine
-                synchronized (this) {
+                synchronized (CreateVirtualMachineJob.this) {
                     return computeService
                         .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
                 }

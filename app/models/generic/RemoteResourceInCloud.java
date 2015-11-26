@@ -27,6 +27,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,6 +67,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public List<CloudCredential> cloudCredentials() {
+        if (cloudCredentials == null) {
+            cloudCredentials = Collections.emptyList();
+        }
         return ImmutableList.copyOf(cloudCredentials);
     }
 

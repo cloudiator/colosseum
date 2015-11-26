@@ -111,8 +111,10 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 builder.templateOptions(templateOptionsBuilder.build());
 
                 // create the virtual machine
-                return computeService
-                    .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+                synchronized (this) {
+                    return computeService
+                        .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+                }
             });
         } catch (Throwable throwable) {
             throw new JobException(throwable);

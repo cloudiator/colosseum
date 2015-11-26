@@ -90,7 +90,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
-        
+
 
         VirtualMachineInLocation cloudVirtualMachine;
         try {
@@ -110,7 +110,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 builder.templateOptions(templateOptionsBuilder.build());
 
                 // create the virtual machine
-                synchronized (CreateVirtualMachineJob.this) {
+                synchronized (CreateVirtualMachineJob.class) {
                     return computeService
                         .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
                 }

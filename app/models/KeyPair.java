@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,6 +37,7 @@ import java.util.List;
 
     @Lob private String privateKey;
     @Lob @Nullable @Column(nullable = true) private String publicKey;
+    @ManyToOne(optional = false) private VirtualMachine virtualMachine;
 
     /**
      * No-args constructor for hibernate
@@ -44,10 +46,12 @@ import java.util.List;
     }
 
     public KeyPair(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey) {
+        @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey,
+        VirtualMachine virtualMachine) {
         super(remoteId, cloudProviderId, cloud, owner);
         this.privateKey = privateKey;
         this.publicKey = publicKey;
+        this.virtualMachine = virtualMachine;
     }
 
     public String getPrivateKey() {
@@ -79,5 +83,9 @@ import java.util.List;
      */
     public String name() {
         return DecoratedId.of(cloudProviderId().get()).swordId();
+    }
+
+    public VirtualMachine virtualMachine() {
+        return virtualMachine;
     }
 }

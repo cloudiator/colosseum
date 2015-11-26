@@ -53,8 +53,8 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
 
     @Override public boolean isApplicable(VirtualMachine virtualMachine) {
         return virtualMachine.supportsKeyPair() && virtualMachine.owner().isPresent() && (
-            keyPairModelService.getKeyPair(virtualMachine.owner().get()).isPresent()
-                || virtualMachine.loginPrivateKey().isPresent());
+            keyPairModelService.getKeyPair(virtualMachine).isPresent() || virtualMachine
+                .loginPrivateKey().isPresent());
     }
 
     @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
@@ -65,8 +65,7 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
         checkArgument(virtualMachine.loginName().isPresent());
 
         String privateKey;
-        final Optional<KeyPair> keyPair =
-            keyPairModelService.getKeyPair(virtualMachine.owner().get());
+        final Optional<KeyPair> keyPair = keyPairModelService.getKeyPair(virtualMachine);
         if (keyPair.isPresent()) {
             privateKey = keyPair.get().getPrivateKey();
         } else if (virtualMachine.loginPrivateKey().isPresent()) {

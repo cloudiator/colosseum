@@ -18,8 +18,8 @@
 
 package models.service;
 
-import models.CloudCredential;
 import models.KeyPair;
+import models.VirtualMachine;
 
 import java.util.Optional;
 
@@ -31,10 +31,10 @@ public interface KeyPairModelService extends ModelService<KeyPair> {
     /**
      * Searches the database for an {@link Optional} keypair for the given cloud credential.
      *
-     * @param cloudCredential the cloudCredential for the keypair (mandatory)
+     * @param virtualMachine the virtual machine for the keypair (mandatory)
      * @return the optional keypair.
      * @throws NullPointerException if cloudCredential is null.
      */
-    Optional<KeyPair> getKeyPair(CloudCredential cloudCredential);
+    Optional<KeyPair> getKeyPair(VirtualMachine virtualMachine);
 
 }

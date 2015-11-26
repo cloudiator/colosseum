@@ -19,8 +19,8 @@
 package cloud.strategies;
 
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
-import models.CloudCredential;
 import models.KeyPair;
+import models.VirtualMachine;
 
 import java.util.Optional;
 
@@ -29,5 +29,5 @@ import java.util.Optional;
  */
 public interface KeyPairStrategy {
 
-    Optional<KeyPair> retrieve(CloudCredential cloudCredential) throws KeyPairException;
+    Optional<KeyPair> retrieve(VirtualMachine virtualMachine) throws KeyPairException;
 }

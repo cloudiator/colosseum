@@ -19,8 +19,8 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.CloudCredential;
 import models.KeyPair;
+import models.VirtualMachine;
 
 import java.util.Optional;
 
@@ -36,11 +36,11 @@ public class DefaultKeyPairModelService extends BaseModelService<KeyPair>
         super(modelRepository);
     }
 
-    @Override public Optional<KeyPair> getKeyPair(CloudCredential cloudCredential) {
-        checkNotNull(cloudCredential);
+    @Override public Optional<KeyPair> getKeyPair(VirtualMachine virtualMachine) {
+        checkNotNull(virtualMachine);
 
         for (KeyPair keyPair : getAll()) {
-            if (keyPair.cloudCredentials().contains(cloudCredential)) {
+            if (keyPair.virtualMachine().equals(virtualMachine)) {
                 return Optional.of(keyPair);
             }
         }

@@ -46,7 +46,7 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
         this.colosseumComputeService = cloudService.computeService();
     }
 
-    @Override public synchronized Optional<KeyPair> retrieve(CloudCredential cloudCredential)
+    @Override public Optional<KeyPair> retrieve(CloudCredential cloudCredential)
         throws KeyPairException {
 
         checkNotNull(cloudCredential);
@@ -67,7 +67,7 @@ public class RetrieveOrCreateKeyPair implements KeyPairStrategy {
             if (remoteKeyPair == null) {
                 remoteKeyPair = keyPairServiceOptional.get().create(cloudCredential.getUuid());
             }
-            
+
             checkState(remoteKeyPair.privateKey().isPresent(),
                 "Expected remote keypair to have a private key, but it has none.");
 

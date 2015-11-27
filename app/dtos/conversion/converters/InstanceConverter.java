@@ -46,6 +46,7 @@ public class InstanceConverter extends RemoteConverter<Instance, InstanceDto> {
     }
 
     @Override public void configure() {
+        super.configure();
         binding(Long.class, ApplicationComponent.class).fromField("applicationComponent")
             .toField("applicationComponent")
             .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));

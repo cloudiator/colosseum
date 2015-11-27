@@ -67,32 +67,40 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             JPA.withTransaction("default", true, () -> {
 
                 Instance instance = getT();
+                LifecycleClient client;
+                DeploymentContext deploymentContext;
 
-                final LifecycleClient client = LifecycleClient.getClient();
-                final ApplicationInstanceId applicationInstanceId =
-                    ApplicationInstanceId.fromString(instance.getApplicationInstance().getUuid());
+                synchronized (CreateInstanceJob.class) {
 
-                final ApplicationId applicationId = ApplicationId
-                    .fromString(instance.getApplicationInstance().getApplication().getUuid());
 
-                //register application instance
-                final boolean couldRegister;
-                try {
-                    couldRegister =
-                        client.registerApplicationInstance(applicationInstanceId, applicationId);
-                } catch (RegistrationException e) {
-                    throw new JobException(e);
-                }
-                if (couldRegister) {
+
+                    client = LifecycleClient.getClient();
+                    final ApplicationInstanceId applicationInstanceId = ApplicationInstanceId
+                        .fromString(instance.getApplicationInstance().getUuid());
+
+                    final ApplicationId applicationId = ApplicationId
+                        .fromString(instance.getApplicationInstance().getApplication().getUuid());
+
+                    //register application instance
+                    final boolean couldRegister;
                     try {
-                        registerApplicationComponents(instance, applicationInstanceId, client);
+                        couldRegister = client
+                            .registerApplicationInstance(applicationInstanceId, applicationId);
                     } catch (RegistrationException e) {
                         throw new JobException(e);
                     }
+                    if (couldRegister) {
+                        try {
+                            registerApplicationComponents(instance, applicationInstanceId, client);
+                        } catch (RegistrationException e) {
+                            throw new JobException(e);
+                        }
+                    }
+                    deploymentContext = buildDeploymentContext(instance,
+                        client.initDeploymentContext(applicationId, applicationInstanceId));
+                    checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
+
                 }
-                final DeploymentContext deploymentContext = buildDeploymentContext(instance,
-                    client.initDeploymentContext(applicationId, applicationInstanceId));
-                checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
                 try {
                     client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
                         deploymentContext, buildDeployableComponent(instance),

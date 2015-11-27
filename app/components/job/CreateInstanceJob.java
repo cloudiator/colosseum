@@ -69,7 +69,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 Instance instance = getT();
                 LifecycleClient client;
                 DeploymentContext deploymentContext;
-
+                DeployableComponent deployableComponent;
                 synchronized (CreateInstanceJob.class) {
 
 
@@ -99,11 +99,12 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                     deploymentContext = buildDeploymentContext(instance,
                         client.initDeploymentContext(applicationId, applicationInstanceId));
                     checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
+                    deployableComponent = buildDeployableComponent(instance);
 
                 }
                 try {
                     client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
-                        deploymentContext, buildDeployableComponent(instance),
+                        deploymentContext, deployableComponent,
                         instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
                         instance.getApplicationComponent().containerTypeOrDefault());
                 } catch (LcaException | RegistrationException | ContainerException e) {

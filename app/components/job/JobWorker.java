@@ -19,11 +19,14 @@
 package components.job;
 
 import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 26.11.15.
  */
 class JobWorker implements Runnable {
+
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final Job job;
 
@@ -33,19 +36,19 @@ class JobWorker implements Runnable {
 
     @Override public void run() {
 
-        Logger.info(String.format("Starting execution of job %s", job));
+        LOGGER.info(String.format("Starting execution of job %s", job));
         try {
             job.execute();
             job.onSuccess();
-            Logger.info(String.format("Execution of job %s successfully finished", job));
+            LOGGER.info(String.format("Execution of job %s successfully finished", job));
         } catch (Exception e) {
-            Logger
+            LOGGER
                 .error(String.format("Error during execution of %s, calling onError handler", job),
                     e);
             try {
                 job.onError();
             } catch (JobException ignored) {
-                Logger.error("Error in onError handler. Ignoring", ignored);
+                LOGGER.error("Error in onError handler. Ignoring", ignored);
             }
         }
 

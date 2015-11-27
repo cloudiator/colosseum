@@ -33,7 +33,7 @@ import util.logging.Loggers;
 
 public class JobDispatcher implements Runnable {
 
-    Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
+    Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final SimpleBlockingQueue<Job> jobQueue;
     private final ExecutionService executionService;
@@ -72,9 +72,8 @@ public class JobDispatcher implements Runnable {
                     jobQueue.add(job);
                 }
             } catch (JobException e) {
-                Logger.error(
-                    String.format("Can never start execution of job %s, calling error handler", job),
-                    e);
+                Logger.error(String
+                    .format("Can never start execution of job %s, calling error handler", job), e);
                 try {
                     job.onError();
                 } catch (JobException ignored) {

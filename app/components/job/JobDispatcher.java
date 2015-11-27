@@ -66,18 +66,18 @@ public class JobDispatcher implements Runnable {
                         //todo find better way for waiting here
                         Thread.sleep(2000);
                     } catch (InterruptedException e) {
-                        Logger.error("Job Execution got interrupted", e);
+                        LOGGER.error("Job Execution got interrupted", e);
                         Thread.currentThread().interrupt();
                     }
                     jobQueue.add(job);
                 }
             } catch (JobException e) {
-                Logger.error(String
+                LOGGER.error(String
                     .format("Can never start execution of job %s, calling error handler", job), e);
                 try {
                     job.onError();
                 } catch (JobException ignored) {
-                    Logger.error(
+                    LOGGER.error(
                         String.format("Error handler of job %s returned error. Ignoring.", job),
                         ignored);
                 }

@@ -19,6 +19,7 @@
 package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
+import com.google.common.base.MoreObjects;
 import models.Tenant;
 import models.generic.RemoteResource;
 import models.generic.RemoteState;
@@ -114,5 +115,10 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
             t.setRemoteState(RemoteState.ERROR);
             modelService.save(t);
         });
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("resource", resourceUuid)
+            .add("tenant", tenantUuid).toString();
     }
 }

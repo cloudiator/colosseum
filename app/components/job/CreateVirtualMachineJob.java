@@ -109,7 +109,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 }
                 builder.templateOptions(templateOptionsBuilder.build());
 
-                // create the virtual machine
+                // create the virtual machine (we use synchronized to avoid problems
+                // with multiple created security groups)
                 synchronized (CreateVirtualMachineJob.class) {
                     return computeService
                         .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
@@ -188,7 +189,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
      */
     private static class RequiredPorts {
 
-        static String ports = "22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033";
+        static String ports = "22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001";
 
         private static Set<Integer> inBoundPorts() {
             Set<Integer> intPorts = new HashSet<>();

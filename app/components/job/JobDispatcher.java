@@ -24,6 +24,7 @@ import components.execution.ExecutionService;
 import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
+import util.logging.Loggers;
 
 
 /**
@@ -31,6 +32,8 @@ import play.Logger;
  */
 
 public class JobDispatcher implements Runnable {
+
+    Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     private final SimpleBlockingQueue<Job> jobQueue;
     private final ExecutionService executionService;
@@ -47,15 +50,18 @@ public class JobDispatcher implements Runnable {
         try {
             job = jobQueue.take();
         } catch (InterruptedException e) {
-            Logger.error("Job Execution got interrupted", e);
+            LOGGER.error("Job Execution got interrupted", e);
             Thread.currentThread().interrupt();
         }
 
         if (job != null) {
             try {
                 if (job.canStart()) {
+                    LOGGER.debug(String.format("Job %s can start, dispatching to worker", job));
                     this.executionService.execute(new JobWorker(job));
                 } else {
+                    LOGGER
+                        .debug(String.format("Job %s can not start yet, delaying execution", job));
                     try {
                         //todo find better way for waiting here
                         Thread.sleep(2000);
@@ -66,7 +72,16 @@ public class JobDispatcher implements Runnable {
                     jobQueue.add(job);
                 }
             } catch (JobException e) {
-                Logger.error("Can not start execution of job", e);
+                Logger.error(
+                    String.format("Can never start execution of job %s, calling error handler", job),
+                    e);
+                try {
+                    job.onError();
+                } catch (JobException ignored) {
+                    Logger.error(
+                        String.format("Error handler of job %s returned error. Ignoring.", job),
+                        ignored);
+                }
             }
         }
     }

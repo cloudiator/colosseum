@@ -58,6 +58,4 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
     }
-
-    public abstract Communication getAttachedCommunication();
 }

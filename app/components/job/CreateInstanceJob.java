@@ -137,7 +137,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         // add all ingoing ports / provided ports
         for (PortProvided portProvided : instance.getApplicationComponent().getProvidedPorts()) {
             PortProperties.PortType portType;
-            if (portProvided.getAttachedCommunication() == null) {
+            if (portProvided.getAttachedCommunications().isEmpty()) {
                 portType = PortProperties.PortType.PUBLIC_PORT;
             } else {
                 // todo should be internal, but for the time being we use public here
@@ -185,9 +185,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         }
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
             deploymentContext.setProperty(portRequired.name(), new PortReference(ComponentId
-                .fromString(portRequired.getAttachedCommunication().getProvidedPort()
-                    .getApplicationComponent().getUuid()),
-                portRequired.getAttachedCommunication().getProvidedPort().name(),
+                .fromString(portRequired.communication().getProvidedPort().getApplicationComponent()
+                    .getUuid()), portRequired.communication().getProvidedPort().name(),
                 PortProperties.PortLinkage.ALL), OutPort.class);
         }
 

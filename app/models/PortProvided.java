@@ -18,9 +18,13 @@
 
 package models;
 
+import com.google.common.collect.ImmutableList;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+import java.util.Collections;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -30,7 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public class PortProvided extends Port {
 
     @Column private Integer port;
-    @OneToOne(mappedBy = "providedPort", optional = true) Communication providedCommunication;
+    @OneToMany(mappedBy = "providedPort") List<Communication> providedCommunications;
 
     /**
      * Empty constructor for hibernate.
@@ -38,8 +42,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected PortProvided() {
     }
 
-    @Override public Communication getAttachedCommunication() {
-        return providedCommunication;
+    public List<Communication> getAttachedCommunications() {
+        if (providedCommunications == null) {
+            return Collections.emptyList();
+        }
+        return ImmutableList.copyOf(providedCommunications);
     }
 
     public PortProvided(String name, ApplicationComponent applicationComponent, int port) {

@@ -44,7 +44,7 @@ import java.util.Optional;
         this.updateAction = updateAction;
     }
 
-    @Override public Communication getAttachedCommunication() {
+    public Communication communication() {
         return requiredCommunication;
     }
 

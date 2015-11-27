@@ -22,6 +22,7 @@ import models.generic.Model;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 /**
@@ -31,8 +32,7 @@ import javax.persistence.OneToOne;
 
     @OneToOne(optional = false) @JoinColumn(name = "requiredCommunication") private PortRequired
         requiredPort;
-    @OneToOne(optional = false) @JoinColumn(name = "providedCommunication") private PortProvided
-        providedPort;
+    @ManyToOne(optional = false) private PortProvided providedPort;
 
     /**
      * Empty constructor for hibernate.

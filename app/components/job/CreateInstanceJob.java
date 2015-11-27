@@ -63,51 +63,48 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
 
-        synchronized (CreateInstanceJob.class) {
-            try {
-                JPA.withTransaction("default", true, () -> {
+        try {
+            JPA.withTransaction("default", true, () -> {
 
-                    Instance instance = getT();
+                Instance instance = getT();
 
-                    final LifecycleClient client = LifecycleClient.getClient();
-                    final ApplicationInstanceId applicationInstanceId = ApplicationInstanceId
-                        .fromString(instance.getApplicationInstance().getUuid());
+                final LifecycleClient client = LifecycleClient.getClient();
+                final ApplicationInstanceId applicationInstanceId =
+                    ApplicationInstanceId.fromString(instance.getApplicationInstance().getUuid());
 
-                    final ApplicationId applicationId = ApplicationId
-                        .fromString(instance.getApplicationInstance().getApplication().getUuid());
+                final ApplicationId applicationId = ApplicationId
+                    .fromString(instance.getApplicationInstance().getApplication().getUuid());
 
-                    //register application instance
-                    final boolean couldRegister;
+                //register application instance
+                final boolean couldRegister;
+                try {
+                    couldRegister =
+                        client.registerApplicationInstance(applicationInstanceId, applicationId);
+                } catch (RegistrationException e) {
+                    throw new JobException(e);
+                }
+                if (couldRegister) {
                     try {
-                        couldRegister = client
-                            .registerApplicationInstance(applicationInstanceId, applicationId);
+                        registerApplicationComponents(instance, applicationInstanceId, client);
                     } catch (RegistrationException e) {
                         throw new JobException(e);
                     }
-                    if (couldRegister) {
-                        try {
-                            registerApplicationComponents(instance, applicationInstanceId, client);
-                        } catch (RegistrationException e) {
-                            throw new JobException(e);
-                        }
-                    }
-                    final DeploymentContext deploymentContext = buildDeploymentContext(instance,
-                        client.initDeploymentContext(applicationId, applicationInstanceId));
-                    checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
-                    try {
-                        client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
-                            deploymentContext, buildDeployableComponent(instance),
-                            instance.getVirtualMachine().operatingSystemVendorTypeOrDefault()
-                                .lanceOs(),
-                            instance.getApplicationComponent().containerTypeOrDefault());
-                    } catch (LcaException | RegistrationException | ContainerException e) {
-                        throw new JobException(e);
-                    }
-                    return null;
-                });
-            } catch (Throwable throwable) {
-                throw new JobException(throwable);
-            }
+                }
+                final DeploymentContext deploymentContext = buildDeploymentContext(instance,
+                    client.initDeploymentContext(applicationId, applicationInstanceId));
+                checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
+                try {
+                    client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
+                        deploymentContext, buildDeployableComponent(instance),
+                        instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
+                        instance.getApplicationComponent().containerTypeOrDefault());
+                } catch (LcaException | RegistrationException | ContainerException e) {
+                    throw new JobException(e);
+                }
+                return null;
+            });
+        } catch (Throwable throwable) {
+            throw new JobException(throwable);
         }
     }
 

@@ -96,7 +96,7 @@ public class UnixInstaller extends AbstractInstaller {
 
         //start visor
         this.remoteConnection.executeCommand(
-            "nohup bash -c 'java -jar " + UnixInstaller.VISOR_JAR + " -conf "
+            "sudo nohup bash -c 'java -jar " + UnixInstaller.VISOR_JAR + " -conf "
                 + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
         Logger.debug("Visor started successfully!");
     }

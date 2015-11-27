@@ -33,7 +33,7 @@ import util.logging.Loggers;
 
 public class JobDispatcher implements Runnable {
 
-    Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final SimpleBlockingQueue<Job> jobQueue;
     private final ExecutionService executionService;

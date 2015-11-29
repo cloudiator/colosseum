@@ -53,4 +53,11 @@ import javax.persistence.OneToOne;
     public PortProvided getProvidedPort() {
         return providedPort;
     }
+
+    public boolean isReflexive() {
+        if (requiredPort.getApplicationComponent().equals(providedPort.getApplicationComponent())) {
+            return true;
+        }
+        return false;
+    }
 }

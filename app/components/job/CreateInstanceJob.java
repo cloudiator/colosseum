@@ -162,8 +162,15 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 portUpdateHandler = portUpdateBuilder.buildPortUpdateHandler();
             }
 
+            int minSinks;
+            if (portRequired.isMandatory()) {
+                minSinks = 1;
+            } else {
+                minSinks = OutPort.NO_SINKS;
+            }
+
             builder.addOutport(portRequired.name(), portUpdateHandler,
-                PortProperties.INFINITE_CARDINALITY, 1);
+                PortProperties.INFINITE_CARDINALITY, minSinks);
         }
 
         //build a lifecycle store from the application component

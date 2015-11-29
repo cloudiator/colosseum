@@ -28,6 +28,7 @@ A list of all required port entities stored in the database.
       ],
       "name":"RequiredDB",
       "updateAction":"update.sh",
+      "isMandatory":"true",
       "applicationComponent":1
    },
    {
@@ -39,6 +40,7 @@ A list of all required port entities stored in the database.
       ],
       "name":"RequiredTomcat",
       "updateAction":"update.sh",
+      "isMandatory":"false",
       "applicationComponent":2
    }
 ]
@@ -74,6 +76,7 @@ Shows the selected required port entity.
    ],
    "name":"RequiredDB",
    "updateAction":"update.sh",
+   "isMandatory":"true",
    "applicationComponent":1
 }
 ```
@@ -96,12 +99,14 @@ Parameter | Description
 name                  | A unique name for the port.
 applicationComponent  | The application component requiring the port.
 updateAction | An optional update action, that is executed when the port is updated.
+isMandatory | States if the required port is mandatory or if the the communication can start without it.
 
 ### Request Example
 ```
 {  
    "name":"RequiredDB",
    "updateAction":"update.sh",
+   "isMandatory":"true",
    "applicationComponent":1
 }
 ```
@@ -129,6 +134,7 @@ portReq_id | The id of the required port.
 name                  | A unique name for the port.
 applicationComponent  | The application component providing the port.
 updateAction | An optional update action, that is executed when the port is updated.
+isMandatory | States if the required port is mandatory or if the the communication can start without it.
 
 ### Request Example
 ```
@@ -138,6 +144,7 @@ PUT /api/portReq/1
 {  
     "name":"RequiredDB",
     "updateAction":"update.sh",
+    "isMandatory":"true",
     "applicationComponent":1
 }
 ```

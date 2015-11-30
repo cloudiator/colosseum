@@ -205,6 +205,13 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         try {
             return JPA.withTransaction(() -> {
                 Instance instance = getT();
+
+                if (RemoteState.ERROR.equals(instance.getVirtualMachine().getRemoteState())) {
+                    throw new JobException(String
+                        .format("Job %s can never start as virtual machine %s is in error state.",
+                            this, instance.getVirtualMachine()));
+                }
+
                 if (!RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState())) {
                     return false;
                 }

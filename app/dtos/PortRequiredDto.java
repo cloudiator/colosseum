@@ -24,6 +24,7 @@ package dtos;
 public class PortRequiredDto extends PortDto {
 
     private String updateAction;
+    private Boolean isMandatory;
 
     public PortRequiredDto() {
     }
@@ -34,5 +35,13 @@ public class PortRequiredDto extends PortDto {
 
     public void setUpdateAction(String updateAction) {
         this.updateAction = updateAction;
+    }
+
+    public Boolean getIsMandatory() {
+        return isMandatory;
+    }
+
+    public void setIsMandatory(Boolean isMandatory) {
+        this.isMandatory = isMandatory;
     }
 }

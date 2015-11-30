@@ -37,5 +37,6 @@ public class PortRequiredConverter extends PortConverter<PortRequired, PortRequi
     @Override public void configure() {
         super.configure();
         binding().fromField("updateAction").toField("updateAction");
+        binding().fromField("isMandatory").toField("isMandatory");
     }
 }

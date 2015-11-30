@@ -203,8 +203,13 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     @Override public boolean canStart() throws JobException {
         try {
-            return JPA.withTransaction(
-                () -> RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState()));
+            return JPA.withTransaction(() -> {
+                Instance instance = getT();
+                if (!RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState())) {
+                    return false;
+                }
+                return true;
+            });
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }

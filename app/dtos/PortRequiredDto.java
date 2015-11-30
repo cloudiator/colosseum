@@ -37,11 +37,11 @@ public class PortRequiredDto extends PortDto {
         this.updateAction = updateAction;
     }
 
-    public Boolean getMandatory() {
+    public Boolean getIsMandatory() {
         return isMandatory;
     }
 
-    public void setMandatory(Boolean mandatory) {
-        isMandatory = mandatory;
+    public void setIsMandatory(Boolean isMandatory) {
+        this.isMandatory = isMandatory;
     }
 }

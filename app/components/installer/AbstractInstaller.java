@@ -32,7 +32,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by Daniel Seybold on 19.05.2015.
+ * todo clean up class, do better logging
  */
 abstract class AbstractInstaller implements InstallApi {
 

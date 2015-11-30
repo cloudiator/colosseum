@@ -30,6 +30,7 @@ public class Loggers {
     public static final String EXECUTION = "colosseum.execution";
     public static final String DATABASE = "colosseum.database";
     public static final String API = "colosseum.api";
+    public static final String INSTALLATION = "colosseum.cloud.installation";
     public static final String CLOUD_JOB = "colosseum.cloud.job";
 
     private Loggers() {

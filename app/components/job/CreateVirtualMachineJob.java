@@ -189,7 +189,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
      */
     private static class RequiredPorts {
 
-        static String ports = "2510,8082,9092,9042,2181,22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001";
+        static String ports =
+            "8083,7072,7071,7070,2510,8082,9092,9042,2181,22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001";
 
         private static Set<Integer> inBoundPorts() {
             Set<Integer> intPorts = new HashSet<>();

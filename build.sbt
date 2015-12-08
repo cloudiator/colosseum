@@ -11,9 +11,9 @@ homepage := Some(url("https://github.com/cloudiator/colosseum"))
 
 scmInfo := Some(
   ScmInfo(
-    url("https://github.com/cloudiator/pom.git"),
-    "scm:git@github.com:cloudiator/pom.git",
-    Some("scm:git@github.com:cloudiator/pom.git")
+    url("https://github.com/cloudiator/colosseum.git"),
+    "scm:git:git@github.com:cloudiator/colosseum.git",
+    Some("scm:git:git@github.com:cloudiator/colosseum.git")
   )
 )
 

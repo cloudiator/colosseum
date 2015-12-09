@@ -5,6 +5,9 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
 name := "colosseum"
 
+//disable scala version suffix
+crossPaths := false
+
 description := "A cloud orchestration software."
 
 homepage := Some(url("https://github.com/cloudiator/colosseum"))

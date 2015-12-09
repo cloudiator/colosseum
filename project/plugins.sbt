@@ -9,3 +9,6 @@ addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.3.9")
 
 //test coverage
 addSbtPlugin("de.johoop" % "jacoco4sbt" % "2.1.5")
+
+//gpg
+addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.0.0")

@@ -24,13 +24,13 @@ organization := "io.github.cloudiator"
 
 publishMavenStyle := true
 
-version := "0.1.0"
+version := "0.2.0-SNAPSHOT"
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
-//resolvers := (
-//  "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
-//  ) +: resolvers.value
+resolvers := (
+  "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
+  ) +: resolvers.value
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -45,11 +45,11 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "com.github.drapostolos" % "type-parser" % "0.5.0",
-  "io.github.cloudiator.sword" % "service" % "0.1.0" exclude("javax.ws.rs", "jsr311-api"),
-  "io.github.cloudiator.lance" % "client" % "0.1.0",
-  "io.github.cloudiator" % "common" % "0.1.0",
-  "io.github.cloudiator" % "visor-rest-client" % "0.1.0",
-  "io.github.cloudiator.axe" % "axe-aggregator-common" % "0.1.0",
+  "io.github.cloudiator.sword" % "service" % "0.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
+  "io.github.cloudiator.lance" % "client" % "0.2.0-SNAPSHOT",
+  "io.github.cloudiator" % "common" % "0.2.0-SNAPSHOT",
+  "io.github.cloudiator" % "visor-rest-client" % "0.2.0-SNAPSHOT",
+  "io.github.cloudiator.axe" % "axe-aggregator-common" % "0.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

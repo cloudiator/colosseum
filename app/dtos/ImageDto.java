@@ -41,6 +41,7 @@ public class ImageDto extends RemoteDto {
     private Long operatingSystem;
     private List<Long> cloudCredentials;
     private String defaultLoginUsername;
+    private String defaultLoginPassword;
 
     public ImageDto() {
         super();
@@ -55,7 +56,7 @@ public class ImageDto extends RemoteDto {
         validator(new TypeLiteral<List<Long>>() {
         }).validate(cloudCredentials).withValidator(new IterableValidator<>(
             new ModelIdValidator<>(References.cloudCredentialService.get())));
-        validator(Long.class).validate(operatingSystem).withValidator(new NotNullValidator())
+        validator(Long.class).validate(operatingSystem)
             .withValidator(new ModelIdValidator<>(References.operatingSystemService.get()));
     }
 
@@ -105,6 +106,14 @@ public class ImageDto extends RemoteDto {
 
     public void setDefaultLoginUsername(String defaultLoginUsername) {
         this.defaultLoginUsername = defaultLoginUsername;
+    }
+
+    public String getDefaultLoginPassword() {
+        return defaultLoginPassword;
+    }
+
+    public void setDefaultLoginPassword(String defaultLoginPassword) {
+        this.defaultLoginPassword = defaultLoginPassword;
     }
 
     public static class References {

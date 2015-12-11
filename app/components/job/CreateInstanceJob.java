@@ -278,6 +278,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                     final BashBasedHandlerBuilder startHandlerBuilder =
                         new BashBasedHandlerBuilder();
                     startHandlerBuilder.addCommand(lc.getStartDetection());
+                    startHandlerBuilder.setOperatingSystem(os);
                     lifecycleStoreBuilder
                         .setStartDetector(startHandlerBuilder.buildStartDetector());
                 } else {

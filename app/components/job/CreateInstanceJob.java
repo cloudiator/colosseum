@@ -37,6 +37,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStore;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
+import de.uniulm.omi.cloudiator.lance.lifecycle.detector.DefaultDetectorFactories;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
@@ -212,10 +213,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                             this, instance.getVirtualMachine()));
                 }
 
-                if (!RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState())) {
-                    return false;
-                }
-                return true;
+                return RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState());
             });
         } catch (Throwable throwable) {
             throw new JobException(throwable);
@@ -276,6 +274,17 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 final LifecycleHandler lifecycleHandler =
                     bashBasedHandlerBuilder.build(entry.getKey());
                 lifecycleStoreBuilder.setHandler(lifecycleHandler, entry.getKey());
+                if (lc.getStartDetection() != null) {
+                    final BashBasedHandlerBuilder startHandlerBuilder =
+                        new BashBasedHandlerBuilder();
+                    startHandlerBuilder.addCommand(lc.getStartDetection());
+                    startHandlerBuilder.setOperatingSystem(os);
+                    lifecycleStoreBuilder
+                        .setStartDetector(startHandlerBuilder.buildStartDetector());
+                } else {
+                    lifecycleStoreBuilder.setStartDetector(
+                        DefaultDetectorFactories.START_DETECTOR_FACTORY.getDefault());
+                }
             }
 
             return lifecycleStoreBuilder.build();

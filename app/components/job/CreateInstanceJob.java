@@ -274,17 +274,18 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 final LifecycleHandler lifecycleHandler =
                     bashBasedHandlerBuilder.build(entry.getKey());
                 lifecycleStoreBuilder.setHandler(lifecycleHandler, entry.getKey());
-                if (lc.getStartDetection() != null) {
-                    final BashBasedHandlerBuilder startHandlerBuilder =
-                        new BashBasedHandlerBuilder();
-                    startHandlerBuilder.addCommand(lc.getStartDetection());
-                    startHandlerBuilder.setOperatingSystem(os);
-                    lifecycleStoreBuilder
-                        .setStartDetector(startHandlerBuilder.buildStartDetector());
-                } else {
-                    lifecycleStoreBuilder.setStartDetector(
-                        DefaultDetectorFactories.START_DETECTOR_FACTORY.getDefault());
-                }
+            }
+
+            if (lc.getStartDetection() != null) {
+                final BashBasedHandlerBuilder startHandlerBuilder =
+                    new BashBasedHandlerBuilder();
+                startHandlerBuilder.addCommand(lc.getStartDetection());
+                startHandlerBuilder.setOperatingSystem(os);
+                lifecycleStoreBuilder
+                    .setStartDetector(startHandlerBuilder.buildStartDetector());
+            } else {
+                lifecycleStoreBuilder.setStartDetector(
+                    DefaultDetectorFactories.START_DETECTOR_FACTORY.getDefault());
             }
 
             return lifecycleStoreBuilder.build();

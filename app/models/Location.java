@@ -20,6 +20,7 @@ package models;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
+import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
 import models.generic.RemoteResourceInCloud;
 import models.generic.RemoteResourceInLocation;
 

@@ -19,19 +19,18 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
+import models.api.CredentialStore;
 import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Image extends RemoteResourceInLocation {
+@Entity public class Image extends RemoteResourceInLocation implements CredentialStore {
 
     /**
      * Own attributes
@@ -79,34 +78,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.defaultLoginPassword = defaultLoginPassword;
     }
 
-    public Collection<String> getLoginNameCandidates() {
-        Collection<String> loginNameCandidates;
-        if (operatingSystem != null) {
-            loginNameCandidates = operatingSystem.operatingSystemVendor().getLoginNameCandidates();
-        } else {
-            loginNameCandidates = new Stack<>();
-        }
-        if (defaultLoginUsername != null) {
-            loginNameCandidates.add(defaultLoginUsername);
-        }
-        return loginNameCandidates;
-    }
-
-    public Collection<String> getLoginPasswordCandidates() {
-        Collection<String> loginPasswordCandidates;
-        if (operatingSystem != null) {
-            loginPasswordCandidates =
-                operatingSystem.operatingSystemVendor().getLoginPasswordCandidates();
-        } else {
-            loginPasswordCandidates = new Stack<>();
-        }
-        if (defaultLoginPassword != null) {
-            loginPasswordCandidates.add(defaultLoginPassword);
-        }
-        return loginPasswordCandidates;
-    }
-
-
     public String name() {
         return name;
     }
@@ -127,4 +98,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
 
+    @Override public Optional<CredentialStore> getParent() {
+
+        if (operatingSystem().isPresent()) {
+            return Optional.of(operatingSystem().get().operatingSystemVendor());
+        }
+        return Optional.empty();
+    }
+
+    @Override public Optional<String> getLoginNameCandidate() {
+        return Optional.ofNullable(defaultLoginUsername);
+    }
+
+    @Override public Optional<String> getLoginPasswordCandidate() {
+        return Optional.ofNullable(defaultLoginPassword);
+    }
 }

@@ -18,16 +18,19 @@
 
 package models;
 
+import models.api.CredentialStore;
 import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends RemoteResourceInLocation {
+@Entity public class VirtualMachine extends RemoteResourceInLocation implements CredentialStore {
 
     @Column(unique = true, nullable = false) private String name;
 
@@ -104,39 +107,6 @@ import java.util.*;
         return name;
     }
 
-    public Collection<String> loginNameCandidates() {
-        Collection<String> loginNameCandidates;
-        if (image != null) {
-            loginNameCandidates = image.getLoginNameCandidates();
-        } else {
-            loginNameCandidates = new Stack<>();
-        }
-        if (generatedLoginUsername != null) {
-            loginNameCandidates.add(generatedLoginUsername);
-        }
-        return loginNameCandidates;
-    }
-
-    public Collection<String> loginPasswordCandidates() {
-        Collection<String> loginPasswordCandidates;
-        if (image != null) {
-            loginPasswordCandidates = image.getLoginPasswordCandidates();
-        } else {
-            loginPasswordCandidates = new Stack<>();
-        }
-        if (generatedLoginPassword != null) {
-            loginPasswordCandidates.add(generatedLoginPassword);
-        }
-        return loginPasswordCandidates;
-    }
-
-    public Optional<String> loginName() {
-        return loginNameCandidates().stream().findFirst();
-    }
-
-    public Optional<String> loginPassword() {
-        return loginPasswordCandidates().stream().findFirst();
-    }
 
     public Optional<String> loginPrivateKey() {
         return Optional.ofNullable(generatedPrivateKey);
@@ -192,5 +162,28 @@ import java.util.*;
             throw new IllegalStateException("Changing generatedPrivateKey not permitted.");
         }
         this.generatedPrivateKey = generatedPrivateKey;
+    }
+
+    @Override public Optional<CredentialStore> getParent() {
+        if (image().isPresent()) {
+            return Optional.of(image().get());
+        }
+        return Optional.empty();
+    }
+
+    @Override public Optional<String> getLoginNameCandidate() {
+        return Optional.ofNullable(generatedLoginUsername);
+    }
+
+    @Override public Optional<String> getLoginPasswordCandidate() {
+        return Optional.ofNullable(generatedLoginPassword);
+    }
+
+    public Optional<String> loginName() {
+        return CredentialStoreStrategies.LIFO.loginName(this);
+    }
+
+    public Optional<String> loginPassword() {
+        return CredentialStoreStrategies.LIFO.loginPassword(this);
     }
 }

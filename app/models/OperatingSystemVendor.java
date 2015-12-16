@@ -19,13 +19,13 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
+import models.api.CredentialStore;
 import models.generic.Model;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.List;
-import java.util.Stack;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -33,7 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 04.11.14.
  */
-@Entity public class OperatingSystemVendor extends Model {
+@Entity public class OperatingSystemVendor extends Model implements CredentialStore {
 
     @OneToMany(mappedBy = "operatingSystemVendor") private List<OperatingSystem> operatingSystems;
 
@@ -78,19 +78,15 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return name;
     }
 
-    public Collection<String> getLoginNameCandidates() {
-        Collection<String> loginNameCandidates = new Stack<>();
-        if (defaultLoginName != null) {
-            loginNameCandidates.add(defaultLoginName);
-        }
-        return loginNameCandidates;
+    @Override public Optional<CredentialStore> getParent() {
+        return Optional.empty();
     }
 
-    public Collection<String> getLoginPasswordCandidates() {
-        Collection<String> loginPasswordCandidates = new Stack<>();
-        if (defaultPassword != null) {
-            loginPasswordCandidates.add(defaultPassword);
-        }
-        return loginPasswordCandidates;
+    @Override public Optional<String> getLoginNameCandidate() {
+        return Optional.ofNullable(defaultLoginName);
+    }
+
+    @Override public Optional<String> getLoginPasswordCandidate() {
+        return Optional.ofNullable(defaultPassword);
     }
 }

@@ -1,0 +1,152 @@
+swagger: "2.0"
+info:
+  version: 0.1.0
+  title: Colosseum API
+  description: API documentation of the Colosseum API.
+  #termsOfService: terms
+  contact:
+    name: Daniel Baur
+    url: github.com/cloudiator
+    email: daniel.baur@uni-ulm.de
+  license:
+    name: Apache License 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0
+basePath: /api
+schemes:
+  - http
+consumes:
+  - application/json
+produces:
+  - application/json
+  
+# Definition of common objects
+definitions:
+  VirtualMachine:
+    properties:
+      name:
+        type: string
+        description: Name of the virtual machine.
+      cloud:
+        type: integer
+        format: int64
+        description: The ID of the cloud for this virtual machine.
+      image:
+        type: integer
+        format: int64
+        description: The ID of the image of this virtual machine.
+      hardware:
+        type: integer
+        format: int64
+        description: The ID of the hardware of this virtual machine.
+      location:
+        type: integer
+        format: int64
+        description: The ID of the location of this virtual machine.
+      templateOptions:
+        type: integer
+        format: int64
+        description: The ID of the template options object.
+  Api:
+    properties:
+      name:
+        type: string
+        description: Name of the API.
+      internalProviderName:
+        type: string
+        description: The name of the driver to use for this API.
+
+#Definition of common parameters        
+parameters:
+  idParam:
+    name: id
+    in: path
+    description: ID of the object to fetch
+    required: true
+    type: integer
+    format: int64
+
+paths:
+  /virtualMachine:
+    get:
+      description: |
+        Gets `VirtualMachine`objects.
+      responses:
+        200:
+          description: OK
+          schema:
+            title: ArrayOfVirtualMachines
+            type: array
+            items: 
+              $ref: '#/definitions/VirtualMachine'
+        400: 
+          description: BAD REQUEST
+        401: 
+          description: UNAUTHORIZED
+        403:
+          description: FORBIDDEN
+  /virtualMachine/{id}:
+    get:
+      description: Returns a virtual machine based on the provided ID.
+      parameters:
+         - $ref: "#/parameters/idParam"
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/VirtualMachine'
+    delete:
+      description: Delete a virtual machine based on the provided ID.
+      parameters:
+        - $ref: "#/parameters/idParam"
+      responses:
+        200:
+          description: OK
+    
+  /api:
+    get:
+      description: |
+        Gets `Api` objects
+      responses:
+        200:
+          description: OK
+          schema:
+            title: ArrayOfApis
+            type: array
+            items:
+              $ref: '#/definitions/Api'
+    
+  
+
+
+#swagger: '2.0'
+#info:
+#  version: 0.0.0
+#  title: '<enter your title>'
+#paths:
+#  /persons:
+#    get:
+#      description: |
+#        Gets `Person` objects.
+#        Optional query param of **size** determines
+#        size of returned array
+#      parameters:
+#        - name: size
+#          in: query
+#          description: Size of array
+#          required: true
+#          type: number
+#          format: double
+#      responses:
+#        '200':
+#          description: Successful response
+#          schema:
+#            title: ArrayOfPersons
+#            type: array
+#            items:
+#              title: Person
+#              type: object
+#              properties:
+#                name:
+#                  type: string
+#                single:
+#                  type: boolean

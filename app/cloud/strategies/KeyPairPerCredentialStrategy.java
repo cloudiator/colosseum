@@ -30,14 +30,14 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Created by daniel on 28.08.15.
+ * Created by daniel on 17.12.15.
  */
-public class KeyPairPerVmStrategy extends AbstractKeyPairStrategy {
+public class KeyPairPerCredentialStrategy extends AbstractKeyPairStrategy {
 
     private final KeyPairModelService keyPairModelService;
 
-    @Inject public KeyPairPerVmStrategy(KeyPairModelService keyPairModelService,
-        CloudService cloudService) {
+    @Inject public KeyPairPerCredentialStrategy(CloudService cloudService,
+        KeyPairModelService keyPairModelService) {
         super(cloudService);
         this.keyPairModelService = keyPairModelService;
     }
@@ -48,19 +48,23 @@ public class KeyPairPerVmStrategy extends AbstractKeyPairStrategy {
 
     @Override protected KeyPair createKeyPairFor(VirtualMachine virtualMachine,
         KeyPairService keyPairService) {
-        de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-            keyPairService.create(virtualMachine.getUuid());
 
-        checkState(remoteKeyPair.privateKey().isPresent(),
-            "Expected remote keypair to have a private key, but it has none.");
+        synchronized (KeyPairPerCredentialStrategy.class) {
 
-        KeyPair keyPair =
-            new KeyPair(remoteKeyPair.id(), remoteKeyPair.id(), virtualMachine.cloud(),
-                virtualMachine.owner().get(), remoteKeyPair.privateKey().get(),
-                remoteKeyPair.publicKey(), virtualMachine);
-        this.keyPairModelService.save(keyPair);
-        return keyPair;
+            checkState(virtualMachine.owner().isPresent());
+
+            de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
+                keyPairService.create(virtualMachine.getUuid());
+
+            checkState(remoteKeyPair.privateKey().isPresent(),
+                "Expected remote keypair to have a private key, but it has none.");
+
+            KeyPair keyPair =
+                new KeyPair(remoteKeyPair.id(), remoteKeyPair.id(), virtualMachine.cloud(),
+                    virtualMachine.owner().get(), remoteKeyPair.privateKey().get(),
+                    remoteKeyPair.publicKey(), null);
+            this.keyPairModelService.save(keyPair);
+            return keyPair;
+        }
     }
-
-
 }

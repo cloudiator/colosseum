@@ -68,7 +68,7 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
                         remoteConnectionStrategy, virtualMachine));
                 return remoteConnectionStrategy.connect(virtualMachine);
             } catch (Exception e) {
-                LOGGER.warn(String
+                LOGGER.info(String
                     .format("%s failed connecting to virtual machine %s using strategy %s", this,
                         virtualMachine, remoteConnectionStrategy), e);
                 lastException = e;

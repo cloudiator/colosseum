@@ -46,8 +46,9 @@ public class DefaultKeyPairModelService extends BaseModelService<KeyPair>
                 return Optional.of(keyPair);
             }
             // it is a keypair per cloud credential
-            if (virtualMachine.owner().isPresent() && keyPair.owner().isPresent() && virtualMachine
-                .owner().get().equals(keyPair.owner().get())) {
+            if (!keyPair.virtualMachine().isPresent() && virtualMachine.owner().isPresent()
+                && keyPair.owner().isPresent() && virtualMachine.owner().get()
+                .equals(keyPair.owner().get())) {
                 return Optional.of(keyPair);
             }
         }

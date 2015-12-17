@@ -21,11 +21,15 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
+import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
 import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.*;
+import models.Cloud;
+import models.CloudCredential;
+import models.GeoLocation;
+import models.Location;
 import models.service.BaseModelService;
 import models.service.ModelService;
 

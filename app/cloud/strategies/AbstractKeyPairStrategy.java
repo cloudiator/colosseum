@@ -21,7 +21,6 @@ package cloud.strategies;
 import cloud.CloudService;
 import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
-import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import models.KeyPair;
 import models.VirtualMachine;
@@ -42,14 +41,13 @@ public abstract class AbstractKeyPairStrategy implements KeyPairStrategy {
         this.colosseumComputeService = cloudService.computeService();
     }
 
-    @Override public final Optional<KeyPair> create(VirtualMachine virtualMachine)
-        throws KeyPairException {
+    @Override public final Optional<KeyPair> create(VirtualMachine virtualMachine) {
 
         checkNotNull(virtualMachine, "Virtual machine is null.");
         checkArgument(virtualMachine.owner().isPresent(), "Virtual machine has no owner set.");
 
-        if (alreadyExists(virtualMachine).isPresent()) {
-            return alreadyExists(virtualMachine);
+        if (existsFor(virtualMachine).isPresent()) {
+            return existsFor(virtualMachine);
         }
 
         //check if we can create a keypair
@@ -57,14 +55,18 @@ public abstract class AbstractKeyPairStrategy implements KeyPairStrategy {
             colosseumComputeService.getKeyPairService(virtualMachine.owner().get());
 
         if (keyPairServiceOptional.isPresent()) {
-            return Optional.of(createKeyPair(virtualMachine, keyPairServiceOptional.get()));
+            return Optional.of(createKeyPairFor(virtualMachine, keyPairServiceOptional.get()));
         }
         return Optional.empty();
     }
 
-    protected abstract Optional<KeyPair> alreadyExists(VirtualMachine virtualMachine);
+    @Override public Optional<KeyPair> retrieve(VirtualMachine virtualMachine) {
+        return existsFor(virtualMachine);
+    }
 
-    protected abstract KeyPair createKeyPair(VirtualMachine virtualMachine,
+    protected abstract Optional<KeyPair> existsFor(VirtualMachine virtualMachine);
+
+    protected abstract KeyPair createKeyPairFor(VirtualMachine virtualMachine,
         KeyPairService keyPairService);
 
 }

@@ -67,14 +67,14 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
             "Virtual machine must have a login name.");
 
         String privateKey;
-        final Optional<KeyPair> keyPair = keyPairStrategy.create(virtualMachine);
+        final Optional<KeyPair> keyPair = keyPairStrategy.retrieve(virtualMachine);
         if (keyPair.isPresent()) {
             privateKey = keyPair.get().getPrivateKey();
         } else if (virtualMachine.loginPrivateKey().isPresent()) {
             privateKey = virtualMachine.loginPrivateKey().get();
         } else {
             throw new RemoteException(String
-                .format("%s could not retrieve or create a key pair for virtual machine %s", this,
+                .format("%s could not retrieve a key pair for virtual machine %s", this,
                     virtualMachine));
         }
 

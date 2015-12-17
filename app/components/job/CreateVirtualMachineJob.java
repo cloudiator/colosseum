@@ -23,11 +23,11 @@ import cloud.colosseum.ColosseumComputeService;
 import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import cloud.resources.VirtualMachineInLocation;
 import cloud.strategies.KeyPairStrategy;
+import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
 import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
-import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
@@ -42,7 +42,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 08.05.15.
@@ -50,16 +49,20 @@ import static com.google.common.base.Preconditions.checkState;
 public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
     private final KeyPairStrategy keyPairStrategy;
+    private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory;
 
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
-        KeyPairStrategy keyPairStrategy) {
+        KeyPairStrategy keyPairStrategy,
+        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(keyPairStrategy);
+        checkNotNull(remoteConnectionFactory);
 
         this.keyPairStrategy = keyPairStrategy;
+        this.remoteConnectionFactory = remoteConnectionFactory;
     }
 
     @Override public boolean canStart() {
@@ -73,24 +76,11 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         try {
             keyPairOptional = JPA.withTransaction(() -> {
                 VirtualMachine virtualMachine = getT();
-                checkState(virtualMachine.owner().isPresent(),
-                    "Expected virtual machine to have an owner, but none is present.");
-                final java.util.Optional<KeyPair> keyPair;
-                if (virtualMachine.supportsKeyPair()) {
-                    try {
-                        keyPair = keyPairStrategy.create(virtualMachine);
-                    } catch (KeyPairException e) {
-                        throw new JobException(e);
-                    }
-                } else {
-                    keyPair = java.util.Optional.empty();
-                }
-                return keyPair;
+                return keyPairStrategy.create(virtualMachine);
             });
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
-
 
         VirtualMachineInLocation cloudVirtualMachine;
         try {
@@ -169,7 +159,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 VirtualMachine virtualMachine = getT();
                 Tenant tenant = getTenant();
                 final RemoteConnection remoteConnection =
-                    computeService.remoteConnection(virtualMachine);
+                    remoteConnectionFactory.create().connect(virtualMachine);
 
                 try (InstallApi installApi = Installers
                     .of(remoteConnection, virtualMachine, tenant)) {

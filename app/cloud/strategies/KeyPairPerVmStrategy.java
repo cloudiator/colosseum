@@ -42,12 +42,12 @@ public class KeyPairPerVmStrategy extends AbstractKeyPairStrategy {
         this.keyPairModelService = keyPairModelService;
     }
 
-    @Override protected Optional<KeyPair> alreadyExists(VirtualMachine virtualMachine) {
+    @Override protected Optional<KeyPair> existsFor(VirtualMachine virtualMachine) {
         return keyPairModelService.getKeyPair(virtualMachine);
     }
 
     @Override
-    protected KeyPair createKeyPair(VirtualMachine virtualMachine, KeyPairService keyPairService) {
+    protected KeyPair createKeyPairFor(VirtualMachine virtualMachine, KeyPairService keyPairService) {
         de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
             keyPairService.get(virtualMachine.getUuid());
         if (remoteKeyPair != null) {

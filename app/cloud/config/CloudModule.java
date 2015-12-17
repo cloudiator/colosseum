@@ -34,7 +34,7 @@ public class CloudModule extends AbstractModule {
 
     @Override protected void configure() {
 
-        bind(KeyPairStrategy.class).to(RetrieveOrCreateKeyPair.class);
+        bind(KeyPairStrategy.class).to(KeyPairPerVmStrategy.class);
         bind(ComputeServiceFactory.class).to(SwordComputeServiceFactory.class);
         bind(CloudService.class).to(DefaultCloudService.class);
     }

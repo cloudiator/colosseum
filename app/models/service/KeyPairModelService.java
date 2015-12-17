@@ -29,12 +29,11 @@ import java.util.Optional;
 public interface KeyPairModelService extends ModelService<KeyPair> {
 
     /**
-     * Searches the database for an {@link Optional} keypair for the given cloud credential.
+     * Searches the database for an {@link Optional} keypair for the given virtual machine.
      *
      * @param virtualMachine the virtual machine for the keypair (mandatory)
      * @return the optional keypair.
-     * @throws NullPointerException if cloudCredential is null.
+     * @throws NullPointerException if virtual machine is null.
      */
     Optional<KeyPair> getKeyPair(VirtualMachine virtualMachine);
-
 }

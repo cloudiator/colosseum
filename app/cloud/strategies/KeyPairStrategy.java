@@ -29,5 +29,5 @@ import java.util.Optional;
  */
 public interface KeyPairStrategy {
 
-    Optional<KeyPair> retrieve(VirtualMachine virtualMachine) throws KeyPairException;
+    Optional<KeyPair> create(VirtualMachine virtualMachine) throws KeyPairException;
 }

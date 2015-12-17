@@ -29,6 +29,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by daniel on 18.05.15.
@@ -37,7 +38,7 @@ import java.util.List;
 
     @Lob private String privateKey;
     @Lob @Nullable @Column(nullable = true) private String publicKey;
-    @ManyToOne(optional = false) private VirtualMachine virtualMachine;
+    @Nullable @ManyToOne(optional = true) private VirtualMachine virtualMachine;
 
     /**
      * No-args constructor for hibernate
@@ -47,7 +48,7 @@ import java.util.List;
 
     public KeyPair(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
         @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey,
-        VirtualMachine virtualMachine) {
+        @Nullable VirtualMachine virtualMachine) {
         super(remoteId, cloudProviderId, cloud, owner);
         this.privateKey = privateKey;
         this.publicKey = publicKey;
@@ -85,7 +86,7 @@ import java.util.List;
         return DecoratedId.of(cloudProviderId().get()).swordId();
     }
 
-    public VirtualMachine virtualMachine() {
-        return virtualMachine;
+    public Optional<VirtualMachine> virtualMachine() {
+        return Optional.ofNullable(virtualMachine);
     }
 }

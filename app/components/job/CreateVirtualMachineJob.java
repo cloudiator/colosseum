@@ -78,7 +78,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 final java.util.Optional<KeyPair> keyPair;
                 if (virtualMachine.supportsKeyPair()) {
                     try {
-                        keyPair = keyPairStrategy.retrieve(virtualMachine);
+                        keyPair = keyPairStrategy.create(virtualMachine);
                     } catch (KeyPairException e) {
                         throw new JobException(e);
                     }

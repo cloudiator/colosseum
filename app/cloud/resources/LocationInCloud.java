@@ -21,6 +21,7 @@ package cloud.resources;
 import cloud.DecoratedId;
 import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
+import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
@@ -49,6 +50,10 @@ public class LocationInCloud extends BaseCredentialScoped implements Location {
         this.location = location;
         this.cloudModelService = cloudModelService;
         this.cloudCredentialModelService = cloudCredentialModelService;
+    }
+
+    @Override public LocationScope locationScope() {
+        return location.locationScope();
     }
 
     @Override public boolean isAssignable() {

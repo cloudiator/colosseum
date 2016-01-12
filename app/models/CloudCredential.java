@@ -36,7 +36,7 @@ public class CloudCredential extends Model {
 
     @Column(nullable = false) private String user;
 
-    @Column(nullable = false) private String secret;
+    @Lob @Column(nullable = false) private String secret;
 
     @ManyToOne(optional = false) private Cloud cloud;
 
@@ -97,8 +97,7 @@ public class CloudCredential extends Model {
         this.tenant = tenant;
     }
 
-    public List<RemoteResourceInCloud> remoteResources()
-    {
+    public List<RemoteResourceInCloud> remoteResources() {
         return ImmutableList.copyOf(remoteResources);
     }
 }

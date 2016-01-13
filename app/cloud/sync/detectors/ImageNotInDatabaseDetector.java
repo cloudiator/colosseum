@@ -18,6 +18,7 @@
 
 package cloud.sync.detectors;
 
+import cloud.SlashEncodedId;
 import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
@@ -40,8 +41,9 @@ public class ImageNotInDatabaseDetector implements ProblemDetector<ImageInLocati
     }
 
     @Override public Optional<Problem> apply(ImageInLocation imageInLocation) {
-        Image image = imageModelService.getByRemoteId(imageInLocation.id());
-        if (image == null) {
+
+        Image image = imageModelService.getByRemoteId(imageInLocation.cloudId());
+        if (image == null || !image.cloudCredentials().contains(imageInLocation.credential())) {
             return Optional.of(new ImageProblems.ImageNotInDatabase(imageInLocation));
         }
         return Optional.empty();

@@ -79,14 +79,4 @@ public class HardwareProblems {
     }
 
 
-    public static class HardwareMissesCredential extends BaseHardwareProblem {
-
-        public HardwareMissesCredential(HardwareInLocation hardwareInLocation) {
-            super(hardwareInLocation);
-        }
-
-        @Override public String toString() {
-            return "HardwareMissesCredential";
-        }
-    }
 }

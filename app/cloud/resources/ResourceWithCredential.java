@@ -19,7 +19,7 @@
 package cloud.resources;
 
 
-import cloud.DecoratedId;
+import cloud.SlashEncodedId;
 import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Resource;
 import models.Cloud;
@@ -46,7 +46,11 @@ public abstract class ResourceWithCredential extends BaseLocationScoped implemen
     }
 
     @Override public String id() {
-        return DecoratedId.of(cloud(), resource).colosseumId();
+        return SlashEncodedId.of(credential(), cloud(), resource).userId();
+    }
+
+    @Override public String cloudId() {
+        return SlashEncodedId.of(credential(), cloud(), resource).cloudId();
     }
 
     @Override public String name() {
@@ -54,10 +58,25 @@ public abstract class ResourceWithCredential extends BaseLocationScoped implemen
     }
 
     @Override public String cloudProviderId() {
-        return resource.id();
+        return SlashEncodedId.of(credential(), cloud(), resource).swordId();
     }
 
     @Override public String toString() {
         return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof ResourceWithCredential))
+            return false;
+
+        ResourceWithCredential that = (ResourceWithCredential) o;
+
+        return id().equals(that.id());
+    }
+
+    @Override public int hashCode() {
+        return id().hashCode();
     }
 }

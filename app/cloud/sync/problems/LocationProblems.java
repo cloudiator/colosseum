@@ -74,15 +74,4 @@ public class LocationProblems {
     }
 
 
-    public static class LocationMissesCredential extends BaseLocationProblem {
-        public LocationMissesCredential(LocationInCloud locationInCloud) {
-            super(locationInCloud);
-        }
-
-        @Override public String toString() {
-            return "LocationMissesCredential";
-        }
-    }
-
-
 }

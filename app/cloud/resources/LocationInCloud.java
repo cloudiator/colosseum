@@ -18,7 +18,7 @@
 
 package cloud.resources;
 
-import cloud.DecoratedId;
+import cloud.SlashEncodedId;
 import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
@@ -69,18 +69,37 @@ public class LocationInCloud extends BaseCredentialScoped implements Location {
     }
 
     @Override public String id() {
-        return DecoratedId.of(cloud(), location).colosseumId();
+        return SlashEncodedId.of(credential(), cloud(), location).userId();
     }
 
     @Override public String name() {
         return location.name();
     }
 
+    @Override public String cloudId() {
+        return SlashEncodedId.of(credential(), cloud(), location).cloudId();
+    }
+
     @Override public String cloudProviderId() {
-        return location.id();
+        return SlashEncodedId.of(credential(), cloud(), location).swordId();
     }
 
     @Override public String toString() {
         return MoreObjects.toStringHelper(this).add("id", id()).add("name", name()).toString();
+    }
+
+    @Override public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (!(o instanceof LocationInCloud))
+            return false;
+
+        LocationInCloud that = (LocationInCloud) o;
+
+        return id().equals(that.id());
+    }
+
+    @Override public int hashCode() {
+        return id().hashCode();
     }
 }

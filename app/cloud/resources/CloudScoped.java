@@ -27,5 +27,7 @@ public interface CloudScoped {
 
     Cloud cloud();
 
+    String cloudId();
+
     String cloudProviderId();
 }

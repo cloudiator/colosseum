@@ -79,13 +79,4 @@ public class ImageProblems {
     }
 
 
-    public static class ImageMissesCredential extends BaseImageProblem {
-        public ImageMissesCredential(ImageInLocation imageInLocation) {
-            super(imageInLocation);
-        }
-
-        @Override public String toString() {
-            return "ImageMissesCredential";
-        }
-    }
 }

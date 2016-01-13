@@ -36,7 +36,7 @@ public class AddAggregation extends MonitorAggregation {
         try {
             service.doAggregation(getObject().getId());
         } catch (RemoteException e) {
-            LOGGER.error("Error when calling remote object to do aggregation.");
+            LOGGER.error("Error when calling remote object to do aggregation.", e);
         }
     }
 }

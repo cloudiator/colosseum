@@ -22,6 +22,7 @@ import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import models.VirtualMachine;
 import play.Logger;
 import util.logging.Loggers;
@@ -56,42 +57,25 @@ public class CompositeRemoteConnectionStrategy implements RemoteConnectionStrate
         this.strategySet = ImmutableSet.copyOf(Sets.newTreeSet(strategySet));
     }
 
-    @Override public boolean isApplicable(VirtualMachine virtualMachine) {
-        return strategySet.stream().anyMatch(
-            remoteConnectionStrategy -> remoteConnectionStrategy.isApplicable(virtualMachine));
-    }
-
-    @Override public RemoteConnection apply(VirtualMachine virtualMachine) {
-
-        final Set<RemoteConnectionStrategy> applicableStrategies = strategySet.stream().filter(
-            remoteConnectionStrategy -> remoteConnectionStrategy.isApplicable(virtualMachine))
-            .collect(Collectors.toSet());
-        LOGGER.debug(String
-            .format("%s has found %s applicable strategies for virtual machine %s", this,
-                applicableStrategies.size(), virtualMachine));
-        if (LOGGER.isDebugEnabled()) {
-            applicableStrategies.forEach(remoteConnectionStrategy -> LOGGER.debug(String
-                .format("%s found applicable strategy %s for virtual machine %s", this,
-                    remoteConnectionStrategy, virtualMachine)));
-
-        }
+    @Override public RemoteConnection connect(VirtualMachine virtualMachine)
+        throws RemoteException {
 
         Exception lastException = null;
-        for (RemoteConnectionStrategy remoteConnectionStrategy : applicableStrategies) {
+        for (RemoteConnectionStrategy remoteConnectionStrategy : strategySet) {
             try {
                 LOGGER.info(String
                     .format("%s is using strategy %s to connect to virtual machine %s", this,
                         remoteConnectionStrategy, virtualMachine));
-                return remoteConnectionStrategy.apply(virtualMachine);
+                return remoteConnectionStrategy.connect(virtualMachine);
             } catch (Exception e) {
-                LOGGER.warn(String
+                LOGGER.info(String
                     .format("%s failed connecting to virtual machine %s using strategy %s", this,
                         virtualMachine, remoteConnectionStrategy), e);
                 lastException = e;
             }
         }
 
-        throw new IllegalStateException(
+        throw new RemoteException(
             "Tried all available remote connection strategies, but still could not connect to machine.",
             lastException);
     }

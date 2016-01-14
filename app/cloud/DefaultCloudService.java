@@ -24,7 +24,6 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import cloud.strategies.RemoteConnectionStrategy;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
@@ -39,21 +38,16 @@ public class DefaultCloudService implements CloudService {
 
     private final ModelService<CloudCredential> cloudCredentialModelService;
     private final ComputeServiceFactory computeServiceFactory;
-    private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory
-        remoteConnectionStrategyFactory;
 
     @Inject public DefaultCloudService(ModelService<CloudCredential> cloudCredentialModelService,
-        ComputeServiceFactory computeServiceFactory,
-        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory) {
+        ComputeServiceFactory computeServiceFactory) {
 
         checkNotNull(cloudCredentialModelService);
         checkNotNull(computeServiceFactory);
-        checkNotNull(remoteConnectionStrategyFactory);
 
 
         this.cloudCredentialModelService = cloudCredentialModelService;
         this.computeServiceFactory = computeServiceFactory;
-        this.remoteConnectionStrategyFactory = remoteConnectionStrategyFactory;
 
     }
 
@@ -66,7 +60,6 @@ public class DefaultCloudService implements CloudService {
 
     @Override public ColosseumComputeService computeService() {
         return new BaseColosseumComputeService(
-            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService),
-            remoteConnectionStrategyFactory);
+            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService));
     }
 }

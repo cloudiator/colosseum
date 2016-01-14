@@ -40,7 +40,15 @@ public class DefaultKeyPairModelService extends BaseModelService<KeyPair>
         checkNotNull(virtualMachine);
 
         for (KeyPair keyPair : getAll()) {
-            if (keyPair.virtualMachine().equals(virtualMachine)) {
+            // it is a keypair per virtual machine
+            if (keyPair.virtualMachine().isPresent() && keyPair.virtualMachine().get()
+                .equals(virtualMachine)) {
+                return Optional.of(keyPair);
+            }
+            // it is a keypair per cloud credential
+            if (!keyPair.virtualMachine().isPresent() && virtualMachine.owner().isPresent()
+                && keyPair.owner().isPresent() && virtualMachine.owner().get()
+                .equals(keyPair.owner().get())) {
                 return Optional.of(keyPair);
             }
         }

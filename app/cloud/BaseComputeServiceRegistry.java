@@ -22,20 +22,18 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.common.base.Function;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Sets;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
 import models.service.ModelService;
 
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -81,14 +79,9 @@ public class BaseComputeServiceRegistry implements ComputeServiceRegistry {
     @Override
     public Set<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getComputeServices(
         List<CloudCredential> cloudCredentials) {
-        return ImmutableSet.copyOf(Iterables.transform(cloudCredentials,
-            new Function<CloudCredential, ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>>() {
-                @Nullable @Override
-                public ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> apply(
-                    CloudCredential cloudCredential) {
-                    return computeServiceFactory.computeService(cloudCredential);
-                }
-            }));
+        return ImmutableSet.copyOf(
+            cloudCredentials.stream().map(computeServiceFactory::computeService)
+                .collect(Collectors.toList()));
     }
 
     @Override

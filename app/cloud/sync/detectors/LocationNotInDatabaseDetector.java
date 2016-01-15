@@ -40,8 +40,9 @@ public class LocationNotInDatabaseDetector implements ProblemDetector<LocationIn
     }
 
     @Override public Optional<Problem> apply(LocationInCloud locationInCloud) {
-        Location location = locationModelService.getByRemoteId(locationInCloud.id());
-        if (location == null) {
+        Location location = locationModelService.getByRemoteId(locationInCloud.cloudId());
+        if (location == null || !location.cloudCredentials()
+            .contains(locationInCloud.credential())) {
             return Optional.of(new LocationProblems.LocationNotInDatabase(locationInCloud));
         }
         return Optional.empty();

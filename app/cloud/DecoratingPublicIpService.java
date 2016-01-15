@@ -36,7 +36,7 @@ public class DecoratingPublicIpService implements PublicIpService {
 
     @Override public String addPublicIp(String virtualMachineId) throws PublicIpException {
         checkNotNull(virtualMachineId);
-        return this.publicIpService.addPublicIp(DecoratedId.of(virtualMachineId).swordId());
+        return this.publicIpService.addPublicIp(SlashEncodedId.of(virtualMachineId).swordId());
     }
 
     @Override public void removePublicIp(String virtualMachineId, String ip)

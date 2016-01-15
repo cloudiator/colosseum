@@ -18,7 +18,7 @@
 
 package models;
 
-import cloud.DecoratedId;
+import cloud.SlashEncodedId;
 import com.google.common.collect.Lists;
 import models.generic.RemoteResourceInCloud;
 
@@ -83,7 +83,7 @@ import java.util.Optional;
      * Maybe do it in the template itself?
      */
     public String name() {
-        return DecoratedId.of(cloudProviderId().get()).swordId();
+        return SlashEncodedId.of(cloudProviderId().get()).swordId();
     }
 
     public Optional<VirtualMachine> virtualMachine() {

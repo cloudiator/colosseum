@@ -18,7 +18,7 @@
 
 package cloud.resources;
 
-import cloud.DecoratedId;
+import cloud.SlashEncodedId;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.KeyPair;
 import models.Cloud;
@@ -48,14 +48,18 @@ public class KeyPairInCloud extends BaseCredentialScoped implements KeyPair {
     }
 
     @Override public String id() {
-        return DecoratedId.of(cloud(), keyPair).colosseumId();
+        return SlashEncodedId.of(credential(), cloud(), keyPair).userId();
     }
 
     @Override public String name() {
         return keyPair.name();
     }
 
+    @Override public String cloudId() {
+        return SlashEncodedId.of(credential(), cloud(), keyPair).cloudId();
+    }
+
     @Override public String cloudProviderId() {
-        return keyPair.id();
+        return SlashEncodedId.of(credential(), cloud(), keyPair).swordId();
     }
 }

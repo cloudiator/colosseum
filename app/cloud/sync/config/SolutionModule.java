@@ -22,8 +22,12 @@ import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.sync.*;
-import cloud.sync.detectors.*;
-import cloud.sync.solutions.*;
+import cloud.sync.detectors.HardwareNotInDatabaseDetector;
+import cloud.sync.detectors.ImageNotInDatabaseDetector;
+import cloud.sync.detectors.LocationNotInDatabaseDetector;
+import cloud.sync.solutions.ImportHardwareToDatabase;
+import cloud.sync.solutions.ImportImageToDatabase;
+import cloud.sync.solutions.ImportLocationInDatabase;
 import cloud.sync.watchdogs.HardwareCloudWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
 import cloud.sync.watchdogs.LocationWatchdog;
@@ -55,19 +59,16 @@ public class SolutionModule extends AbstractModule {
             .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
             });
         hardwareProblemDetectorBinder.addBinding().to(HardwareNotInDatabaseDetector.class);
-        hardwareProblemDetectorBinder.addBinding().to(HardwareMissesCredentialDetector.class);
 
         Multibinder<ProblemDetector<ImageInLocation>> imageProblemDetectorBinder =
             Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<ImageInLocation>>() {
             });
         imageProblemDetectorBinder.addBinding().to(ImageNotInDatabaseDetector.class);
-        imageProblemDetectorBinder.addBinding().to(ImageMissesCredentialDetector.class);
 
         Multibinder<ProblemDetector<LocationInCloud>> locationProblemDetectorBinder =
             Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<LocationInCloud>>() {
             });
         locationProblemDetectorBinder.addBinding().to(LocationNotInDatabaseDetector.class);
-        locationProblemDetectorBinder.addBinding().to(LocationMissesCredentialDetector.class);
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);
@@ -77,12 +78,10 @@ public class SolutionModule extends AbstractModule {
 
     private void bindSolutions() {
         Multibinder<Solution> solutionBinder = Multibinder.newSetBinder(binder(), Solution.class);
-        solutionBinder.addBinding().to(CreateLocationInDatabase.class);
-        solutionBinder.addBinding().to(ConnectLocationToCredential.class);
+        solutionBinder.addBinding().to(ImportLocationInDatabase.class);
         solutionBinder.addBinding().to(ImportHardwareToDatabase.class);
-        solutionBinder.addBinding().to(ConnectHardwareToCredential.class);
-        solutionBinder.addBinding().to(CreateImageInDatabase.class);
-        solutionBinder.addBinding().to(ConnectImageToCredential.class);
+        solutionBinder.addBinding().to(ImportImageToDatabase.class);
+
     }
 
 

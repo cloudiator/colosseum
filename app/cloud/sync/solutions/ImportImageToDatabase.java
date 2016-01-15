@@ -18,6 +18,7 @@
 
 package cloud.sync.solutions;
 
+import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -27,8 +28,8 @@ import models.Cloud;
 import models.Image;
 import models.Location;
 import models.OperatingSystem;
+import models.service.ImageModelService;
 import models.service.LocationModelService;
-import models.service.ModelService;
 import models.service.OperatingSystemService;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -36,18 +37,15 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * Created by daniel on 07.05.15.
  */
-public class CreateImageInDatabase implements Solution {
+public class ImportImageToDatabase implements Solution {
 
-    private final ModelService<Image> imageModelService;
-    private final ModelService<Cloud> cloudModelService;
+    private final ImageModelService imageModelService;
     private final OperatingSystemService operatingSystemService;
     private final LocationModelService locationModelService;
 
-    @Inject public CreateImageInDatabase(ModelService<Image> imageModelService,
-        ModelService<Cloud> cloudModelService, OperatingSystemService operatingSystemService,
-        LocationModelService locationModelService) {
+    @Inject public ImportImageToDatabase(ImageModelService imageModelService,
+        OperatingSystemService operatingSystemService, LocationModelService locationModelService) {
         this.imageModelService = imageModelService;
-        this.cloudModelService = cloudModelService;
         this.operatingSystemService = operatingSystemService;
         this.locationModelService = locationModelService;
     }
@@ -62,15 +60,22 @@ public class CreateImageInDatabase implements Solution {
         ImageProblems.ImageNotInDatabase imageNotInDatabase =
             (ImageProblems.ImageNotInDatabase) problem;
 
+        Image existingImage = imageModelService.getByRemoteId(
+            SlashEncodedId.of(imageNotInDatabase.getImageInLocation().id()).cloudId());
+        if (existingImage != null) {
+            existingImage.addCloudCredential(imageNotInDatabase.getImageInLocation().credential());
+            return;
+        }
+
         Cloud cloud = imageNotInDatabase.getImageInLocation().cloud();
         if (cloud == null) {
             throw new SolutionException();
         }
-        //todo check this
         Location location = null;
         if (imageNotInDatabase.getImageInLocation().location().isPresent()) {
-            location = locationModelService
-                .getByRemoteId(imageNotInDatabase.getImageInLocation().location().get().id());
+            location = locationModelService.getByRemoteId(
+                SlashEncodedId.of(imageNotInDatabase.getImageInLocation().location().get().id())
+                    .cloudId());
             if (location == null) {
                 throw new SolutionException(String
                     .format("Could not import image %s as location %s is not (yet) imported.",
@@ -83,7 +88,7 @@ public class CreateImageInDatabase implements Solution {
             operatingSystemService.findByImageName(imageNotInDatabase.getImageInLocation().name());
 
         //todo check this
-        Image image = new Image(imageNotInDatabase.getImageInLocation().id(),
+        Image image = new Image(imageNotInDatabase.getImageInLocation().cloudId(),
             imageNotInDatabase.getImageInLocation().cloudProviderId(), cloud, location,
             imageNotInDatabase.getImageInLocation().name(), operatingSystem, null, null);
         imageModelService.save(image);

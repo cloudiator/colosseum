@@ -18,6 +18,7 @@
 
 package cloud.sync.solutions;
 
+import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -33,11 +34,11 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * Created by daniel on 04.05.15.
  */
-public class CreateLocationInDatabase implements Solution {
+public class ImportLocationInDatabase implements Solution {
 
     private final LocationModelService locationModelService;
 
-    @Inject public CreateLocationInDatabase(LocationModelService locationModelService) {
+    @Inject public ImportLocationInDatabase(LocationModelService locationModelService) {
         this.locationModelService = locationModelService;
     }
 
@@ -50,12 +51,20 @@ public class CreateLocationInDatabase implements Solution {
         LocationProblems.LocationNotInDatabase locationNotInDatabase =
             (LocationProblems.LocationNotInDatabase) problem;
 
+        Location existingLocation = locationModelService.getByRemoteId(
+            SlashEncodedId.of(locationNotInDatabase.getLocationInCloud().id()).cloudId());
+        if (existingLocation != null) {
+            existingLocation
+                .addCloudCredential(locationNotInDatabase.getLocationInCloud().credential());
+            return;
+        }
+
         Cloud cloud = locationNotInDatabase.getLocationInCloud().cloud();
-        String remoteId = locationNotInDatabase.getLocationInCloud().id();
         Optional<Location> parent;
         if (locationNotInDatabase.getLocationInCloud().parent().isPresent()) {
-            parent = Optional.fromNullable(locationModelService
-                .getByRemoteId(locationNotInDatabase.getLocationInCloud().parent().get().id()));
+            parent = Optional.fromNullable(locationModelService.getByRemoteId(
+                SlashEncodedId.of(locationNotInDatabase.getLocationInCloud().parent().get().id())
+                    .cloudId()));
             if (!parent.isPresent()) {
                 throw new SolutionException(String
                     .format("Could not import %s as parent %s was not found.",
@@ -66,11 +75,11 @@ public class CreateLocationInDatabase implements Solution {
             parent = Optional.absent();
         }
 
-        Location location =
-            new Location(remoteId, locationNotInDatabase.getLocationInCloud().cloudProviderId(),
-                cloud, locationNotInDatabase.getLocationInCloud().name(), null, parent.orNull(),
-                locationNotInDatabase.getLocationInCloud().locationScope(),
-                locationNotInDatabase.getLocationInCloud().isAssignable());
+        Location location = new Location(locationNotInDatabase.getLocationInCloud().cloudId(),
+            locationNotInDatabase.getLocationInCloud().cloudProviderId(), cloud,
+            locationNotInDatabase.getLocationInCloud().name(), null, parent.orNull(),
+            locationNotInDatabase.getLocationInCloud().locationScope(),
+            locationNotInDatabase.getLocationInCloud().isAssignable());
 
         this.locationModelService.save(location);
     }

@@ -18,6 +18,7 @@
 
 package cloud.sync.solutions;
 
+import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
@@ -27,6 +28,7 @@ import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
 import models.Location;
+import models.service.HardwareModelService;
 import models.service.LocationModelService;
 import models.service.ModelService;
 
@@ -39,11 +41,11 @@ import static com.google.common.base.Preconditions.checkArgument;
  */
 public class ImportHardwareToDatabase implements Solution {
 
-    private final ModelService<Hardware> hardwareModelService;
+    private final HardwareModelService hardwareModelService;
     private final ModelService<HardwareOffer> hardwareOfferModelService;
     private final LocationModelService locationModelService;
 
-    @Inject public ImportHardwareToDatabase(ModelService<Hardware> hardwareModelService,
+    @Inject public ImportHardwareToDatabase(HardwareModelService hardwareModelService,
         ModelService<HardwareOffer> hardwareOfferModelService,
         LocationModelService locationModelService) {
         this.hardwareModelService = hardwareModelService;
@@ -61,11 +63,19 @@ public class ImportHardwareToDatabase implements Solution {
         HardwareProblems.HardwareNotInDatabase hardwareNotInDatabase =
             (HardwareProblems.HardwareNotInDatabase) problem;
 
+        Hardware existingHardware = hardwareModelService.getByRemoteId(
+            SlashEncodedId.of(hardwareNotInDatabase.getHardwareInLocation().id()).cloudId());
+        if (existingHardware != null) {
+            existingHardware
+                .addCloudCredential(hardwareNotInDatabase.getHardwareInLocation().credential());
+            return;
+        }
+
         Cloud cloud = hardwareNotInDatabase.getHardwareInLocation().cloud();
         Location location = null;
         if (hardwareNotInDatabase.getHardwareInLocation().location().isPresent()) {
-            location = locationModelService
-                .getByRemoteId(hardwareNotInDatabase.getHardwareInLocation().location().get().id());
+            location = locationModelService.getByRemoteId(SlashEncodedId
+                .of(hardwareNotInDatabase.getHardwareInLocation().location().get().id()).cloudId());
             if (location == null) {
                 throw new SolutionException(String
                     .format("Could not import hardware %s as location %s is not (yet) imported.",
@@ -75,7 +85,7 @@ public class ImportHardwareToDatabase implements Solution {
         }
 
         //todo check this
-        Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().id(),
+        Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().cloudId(),
             hardwareNotInDatabase.getHardwareInLocation().cloudProviderId(), cloud, location,
             hardwareNotInDatabase.getHardwareInLocation().name(),
             getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),

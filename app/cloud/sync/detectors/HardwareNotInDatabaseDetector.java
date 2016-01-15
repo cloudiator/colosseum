@@ -23,6 +23,7 @@ import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.HardwareProblems;
 import com.google.inject.Inject;
+import models.Hardware;
 import models.service.HardwareModelService;
 
 import java.util.Optional;
@@ -42,7 +43,11 @@ public class HardwareNotInDatabaseDetector implements ProblemDetector<HardwareIn
     }
 
     @Override public Optional<Problem> apply(HardwareInLocation hardwareInLocation) {
-        if (hardwareModelService.getByRemoteId(hardwareInLocation.id()) == null) {
+
+        final Hardware hardware = hardwareModelService.getByRemoteId(hardwareInLocation.cloudId());
+
+        if (hardware == null || !hardware.cloudCredentials()
+            .contains(hardwareInLocation.credential())) {
             return Optional.of(new HardwareProblems.HardwareNotInDatabase(hardwareInLocation));
         }
         return Optional.empty();

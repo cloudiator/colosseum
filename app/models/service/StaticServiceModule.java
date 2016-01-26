@@ -18,10 +18,10 @@
 
 package models.service;
 
+import api.dto.*;
 import com.google.inject.AbstractModule;
-import controllers.security.SecuredSessionOrToken;
-import controllers.security.SecuredToken;
-import dtos.*;
+import controllers.internal.SecuredSessionOrToken;
+import controllers.internal.SecuredToken;
 
 /**
  * Created by daniel on 28.04.15.

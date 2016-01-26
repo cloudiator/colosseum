@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.FormulaQuantifierDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.FormulaQuantifierDto;
+import api.binding.BindingService;
 import models.FormulaQuantifier;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -43,11 +43,7 @@ public class FormulaQuantifierController extends
      */
     @Inject public FormulaQuantifierController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<FormulaQuantifier> modelService,
-        TypeLiteral<FormulaQuantifier> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<FormulaQuantifier> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.FormulaQuantifierController.get(id).absoluteURL(request());
     }
 }

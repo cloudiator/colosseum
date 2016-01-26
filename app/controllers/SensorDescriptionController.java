@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.SensorDescriptionDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.SensorDescriptionDto;
+import api.binding.BindingService;
 import models.SensorDescription;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -46,11 +46,7 @@ public class SensorDescriptionController extends
      */
     @Inject public SensorDescriptionController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<SensorDescription> modelService,
-        TypeLiteral<SensorDescription> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<SensorDescription> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.SensorDescriptionController.get(id).absoluteURL(request());
     }
 }

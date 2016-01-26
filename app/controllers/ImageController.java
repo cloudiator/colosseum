@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.ImageDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.ImageDto;
+import api.binding.BindingService;
 import models.CloudCredential;
 import models.Image;
 import models.Tenant;
@@ -39,13 +39,9 @@ public class ImageController extends GenericApiController<Image, ImageDto, Image
 
     @Inject public ImageController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Image> modelService,
-        TypeLiteral<Image> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Image> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ImageController.get(id).absoluteURL(request());
     }
 
     @Override protected Optional<Predicate<Image>> filter() {

@@ -53,8 +53,6 @@ libraryDependencies ++= Seq(
   "org.reflections" % "reflections" % "0.9.10"
 )
 
-TwirlKeys.templateImports += "dtos._"
-
 jacoco.settings
 
 javaOptions in Test += "-Dconfig.file=conf/test.conf"

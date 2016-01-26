@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.job.JobService;
-import controllers.generic.GenericApiController;
-import dtos.InstanceDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.InstanceDto;
+import api.binding.BindingService;
 import models.Instance;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -39,15 +39,11 @@ public class InstanceController
 
     @Inject public InstanceController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Instance> modelService,
-        TypeLiteral<Instance> typeLiteral, ModelDtoConversionService conversionService,
+        TypeLiteral<Instance> typeLiteral, BindingService conversionService,
         JobService jobService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
         this.jobService = jobService;
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.InstanceController.get(id).absoluteURL(request());
     }
 
     @Override protected void postPost(Instance instance) {

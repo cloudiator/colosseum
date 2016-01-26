@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.scalability.ScalingEngine;
-import controllers.generic.GenericApiController;
-import dtos.ComposedMonitorDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.ComposedMonitorDto;
+import api.binding.BindingService;
 import models.ComposedMonitor;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -51,15 +51,11 @@ public class ComposedMonitorController extends
      */
     @Inject public ComposedMonitorController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<ComposedMonitor> modelService,
-        TypeLiteral<ComposedMonitor> typeLiteral, ModelDtoConversionService conversionService,
+        TypeLiteral<ComposedMonitor> typeLiteral, BindingService conversionService,
         ScalingEngine se) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
 
         this.se = se;
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ComposedMonitorController.get(id).absoluteURL(request());
     }
 
     @Override @Transactional protected void postPost(ComposedMonitor entity) {

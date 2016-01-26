@@ -252,6 +252,13 @@ POST          /api/timeWindow                                     @controllers.T
 PUT           /api/timeWindow/:id                                 @controllers.TimeWindowController.put(id: Long)
 DELETE        /api/timeWindow/:id                                 @controllers.TimeWindowController.delete(id: Long)
 
+#Port
+GET           /api/port                                           @controllers.PortController.list()
+GET           /api/port/:id                                       @controllers.PortController.get(id: Long)
+POST          /api/port                                           @controllers.PortController.post()
+PUT           /api/port/:id                                       @controllers.PortController.put(id: Long)
+DELETE        /api/port/:id                                       @controllers.PortController.delete(id: Long)
+
 #Port Required
 GET           /api/portReq                                        @controllers.PortRequiredController.list()
 GET           /api/portReq/:id                                    @controllers.PortRequiredController.get(id: Long)

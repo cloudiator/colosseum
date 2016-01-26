@@ -25,7 +25,7 @@ import components.execution.Init;
 import components.job.config.JobModule;
 import components.scalability.AggregationModule;
 import components.scalability.ScalingEngineModule;
-import dtos.conversion.ConverterModule;
+import api.binding.config.BindingModule;
 import models.service.DatabaseServiceModule;
 import models.service.JPAModule;
 import play.Application;
@@ -64,7 +64,7 @@ public class Global extends GlobalSettings {
 
 
         this.injector = Guice
-            .createInjector(new JPAModule(), new ConverterModule(app.classloader()),
+            .createInjector(new JPAModule(), new BindingModule(app.classloader()),
                 new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
                 new JobModule(), new ExecutionModule(), new ScalingEngineModule(),
                 new AggregationModule());

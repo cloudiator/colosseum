@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.VirtualMachineTemplateDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.VirtualMachineTemplateDto;
+import api.binding.BindingService;
 import models.Tenant;
 import models.VirtualMachineTemplate;
 import models.service.FrontendUserService;
@@ -37,12 +37,8 @@ public class VirtualMachineTemplateController extends
     @Inject public VirtualMachineTemplateController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachineTemplate> modelService,
         TypeLiteral<VirtualMachineTemplate> typeLiteral,
-        ModelDtoConversionService conversionService) {
+        BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.VirtualMachineTemplateController.get(id).absoluteURL(request());
     }
 }

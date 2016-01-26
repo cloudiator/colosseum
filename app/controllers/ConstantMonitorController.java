@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.ConstantMonitorDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.ConstantMonitorDto;
+import api.binding.BindingService;
 import models.ConstantMonitor;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -46,11 +46,7 @@ public class ConstantMonitorController extends
      */
     @Inject public ConstantMonitorController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<ConstantMonitor> modelService,
-        TypeLiteral<ConstantMonitor> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<ConstantMonitor> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ConstantMonitorController.get(id).absoluteURL(request());
     }
 }

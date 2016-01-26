@@ -20,7 +20,7 @@ package controllers;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
-import dtos.LoginDto;
+import api.dto.LoginDto;
 import models.ApiAccessToken;
 import models.service.ApiAccessTokenService;
 import models.service.FrontendUserService;

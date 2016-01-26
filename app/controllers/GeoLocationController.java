@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.GeoLocationDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.GeoLocationDto;
+import api.binding.BindingService;
 import models.GeoLocation;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class GeoLocationController
 
     @Inject public GeoLocationController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<GeoLocation> modelService,
-        TypeLiteral<GeoLocation> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<GeoLocation> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.GeoLocationController.get(id).absoluteURL(request());
     }
 }

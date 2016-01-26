@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.CommunicationDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.CommunicationDto;
+import api.binding.BindingService;
 import models.Communication;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class CommunicationController extends
 
     @Inject public CommunicationController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Communication> modelService,
-        TypeLiteral<Communication> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Communication> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.CommunicationController.get(id).absoluteURL(request());
     }
 }

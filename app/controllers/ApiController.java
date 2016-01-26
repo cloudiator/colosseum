@@ -18,11 +18,11 @@
 
 package controllers;
 
+import api.binding.BindingService;
+import api.dto.ApiDto;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.ApiDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
 import models.Api;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -33,15 +33,13 @@ import models.service.ModelService;
  */
 public class ApiController extends GenericApiController<Api, ApiDto, ApiDto, ApiDto> {
 
-    
+
     @Inject public ApiController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Api> modelService,
-        TypeLiteral<Api> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Api> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
     }
 
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ApiController.get(id).absoluteURL(request());
-    }
+
 }

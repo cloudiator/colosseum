@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.HardwareOfferDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.HardwareOfferDto;
+import api.binding.BindingService;
 import models.HardwareOffer;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class HardwareOfferController extends
 
     @Inject public HardwareOfferController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<HardwareOffer> modelService,
-        TypeLiteral<HardwareOffer> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<HardwareOffer> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.HardwareOfferController.get(id).absoluteURL(request());
     }
 }

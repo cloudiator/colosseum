@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.KeyPairDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.KeyPairDto;
+import api.binding.BindingService;
 import models.KeyPair;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,11 +36,7 @@ public class KeyPairController
 
     @Inject public KeyPairController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<KeyPair> modelService,
-        TypeLiteral<KeyPair> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<KeyPair> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.KeyPairController.get(id).absoluteURL(request());
     }
 }

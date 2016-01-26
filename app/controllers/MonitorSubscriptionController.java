@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.scalability.ScalingEngine;
-import controllers.generic.GenericApiController;
-import dtos.MonitorSubscriptionDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.MonitorSubscriptionDto;
+import api.binding.BindingService;
 import models.MonitorSubscription;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -49,16 +49,12 @@ public class MonitorSubscriptionController extends
      */
     @Inject public MonitorSubscriptionController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<MonitorSubscription> modelService,
-        TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService,
+        TypeLiteral<MonitorSubscription> typeLiteral, BindingService conversionService,
         ScalingEngine se) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
 
         this.se = se;
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.MonitorSubscriptionController.get(id).absoluteURL(request());
     }
 
     @Override @Transactional protected void postPost(MonitorSubscription entity) {

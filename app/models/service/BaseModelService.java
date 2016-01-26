@@ -45,18 +45,6 @@ public class BaseModelService<T extends Model> implements ModelService<T> {
         return modelRepository.findById(id);
     }
 
-    @Override public List<T> getByAttributeValue(String attribute, String value)
-        throws IllegalSearchException {
-        try {
-            return modelRepository.findByColumn(attribute, value);
-        } catch (IllegalColumnException e) {
-            throw new IllegalSearchException(e);
-        } catch (Exception e) {
-            LOGGER.warn("Unexpected error during execution of search.", e);
-            throw new IllegalSearchException(e);
-        }
-    }
-
     @Override @Nullable public T getByUuid(String uuid) {
         return modelRepository.findByUuid(uuid);
     }

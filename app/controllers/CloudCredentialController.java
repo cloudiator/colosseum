@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.CloudCredentialDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.CloudCredentialDto;
+import api.binding.BindingService;
 import models.CloudCredential;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class CloudCredentialController extends
 
     @Inject public CloudCredentialController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<CloudCredential> modelService,
-        TypeLiteral<CloudCredential> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<CloudCredential> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.CloudCredentialController.get(id).absoluteURL(request());
     }
 }

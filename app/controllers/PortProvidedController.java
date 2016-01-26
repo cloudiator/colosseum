@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.PortProvidedDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.PortProvidedDto;
+import api.binding.BindingService;
 import models.PortProvided;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class PortProvidedController
 
     @Inject public PortProvidedController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<PortProvided> modelService,
-        TypeLiteral<PortProvided> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<PortProvided> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.PortProvidedController.get(id).absoluteURL(request());
     }
 }

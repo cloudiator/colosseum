@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.scalability.ScalingEngine;
-import controllers.generic.GenericApiController;
-import dtos.RawMonitorDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.RawMonitorDto;
+import api.binding.BindingService;
 import models.MonitorInstance;
 import models.RawMonitor;
 import models.Tenant;
@@ -52,17 +52,13 @@ public class RawMonitorController
      */
     @Inject public RawMonitorController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<RawMonitor> modelService,
-        TypeLiteral<RawMonitor> typeLiteral, ModelDtoConversionService conversionService,
+        TypeLiteral<RawMonitor> typeLiteral, BindingService conversionService,
         ScalingEngine se, ModelService<MonitorInstance> monitorInstanceModelService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
 
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.se = se;
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.RawMonitorController.get(id).absoluteURL(request());
     }
 
     @Override @Transactional protected void postPost(RawMonitor entity) {

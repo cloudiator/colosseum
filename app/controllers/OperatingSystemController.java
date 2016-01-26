@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.OperatingSystemDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.OperatingSystemDto;
+import api.binding.BindingService;
 import models.OperatingSystem;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class OperatingSystemController extends
     
     @Inject public OperatingSystemController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<OperatingSystem> modelService,
-        TypeLiteral<OperatingSystem> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<OperatingSystem> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.OperatingSystemController.get(id).absoluteURL(request());
     }
 }

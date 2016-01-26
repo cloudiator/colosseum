@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.CloudDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.CloudDto;
+import api.binding.BindingService;
 import models.Cloud;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -37,11 +37,7 @@ public class CloudController extends GenericApiController<Cloud, CloudDto, Cloud
 
     @Inject public CloudController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Cloud> modelService, TypeLiteral<Cloud> typeLiteral,
-        ModelDtoConversionService conversionService) {
+        BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.CloudController.get(id).absoluteURL(request());
     }
 }

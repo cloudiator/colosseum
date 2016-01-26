@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.TemplateOptionsDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.TemplateOptionsDto;
+import api.binding.BindingService;
 import models.TemplateOptions;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class TemplateOptionsController extends
 
     @Inject public TemplateOptionsController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<TemplateOptions> modelService,
-        TypeLiteral<TemplateOptions> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<TemplateOptions> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.TemplateOptionsController.get(id).absoluteURL(request());
     }
 }

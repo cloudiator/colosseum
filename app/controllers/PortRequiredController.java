@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.PortRequiredDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.PortRequiredDto;
+import api.binding.BindingService;
 import models.PortRequired;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class PortRequiredController
 
     @Inject public PortRequiredController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<PortRequired> modelService,
-        TypeLiteral<PortRequired> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<PortRequired> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.PortRequiredController.get(id).absoluteURL(request());
     }
 }

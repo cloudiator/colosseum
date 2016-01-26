@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.LifecycleComponentDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.LifecycleComponentDto;
+import api.binding.BindingService;
 import models.LifecycleComponent;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,11 +36,7 @@ public class LifecycleComponentController extends
 
     @Inject public LifecycleComponentController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<LifecycleComponent> modelService,
-        TypeLiteral<LifecycleComponent> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<LifecycleComponent> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.LifecycleComponentController.get(id).absoluteURL(request());
     }
 }

@@ -21,9 +21,9 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.job.JobService;
-import controllers.generic.GenericApiController;
-import dtos.VirtualMachineDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.VirtualMachineDto;
+import api.binding.BindingService;
 import models.Tenant;
 import models.VirtualMachine;
 import models.service.FrontendUserService;
@@ -40,16 +40,12 @@ public class VirtualMachineController extends
 
     @Inject public VirtualMachineController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
-        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
+        TypeLiteral<VirtualMachine> typeLiteral, BindingService conversionService,
         JobService jobService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
         this.virtualMachineModelService = modelService;
         this.jobService = jobService;
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.VirtualMachineController.get(id).absoluteURL(request());
     }
 
     @Override protected void postPost(VirtualMachine virtualMachine) {

@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.ComponentHorizontalInScalingActionDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.ComponentHorizontalInScalingActionDto;
+import api.binding.BindingService;
 import models.ComponentHorizontalInScalingAction;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -47,12 +47,7 @@ public class ComponentHorizontalInScalingActionController extends
         ModelService<Tenant> tenantModelService,
         ModelService<ComponentHorizontalInScalingAction> modelService,
         TypeLiteral<ComponentHorizontalInScalingAction> typeLiteral,
-        ModelDtoConversionService conversionService) {
+        BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ComponentHorizontalInScalingActionController.get(id)
-            .absoluteURL(request());
     }
 }

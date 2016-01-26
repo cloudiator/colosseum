@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.FrontendUserGetDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.FrontendUserGetDto;
+import api.binding.BindingService;
 import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,12 +36,8 @@ public class FrontendUserController extends
 
     @Inject public FrontendUserController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, TypeLiteral<FrontendUser> typeLiteral,
-        ModelDtoConversionService conversionService) {
+        BindingService conversionService) {
         super(frontendUserService, tenantModelService, frontendUserService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.FrontendUserController.get(id).absoluteURL(request());
     }
 }

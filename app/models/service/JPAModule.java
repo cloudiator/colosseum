@@ -194,11 +194,15 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<TimeWindow>>() {
         });
-        //PortInbound
+        //Port
+        bind(new TypeLiteral<ModelRepository<Port>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Port>>() {
+        });
+        //PortRequired
         bind(new TypeLiteral<ModelRepository<PortRequired>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<PortRequired>>() {
         });
-        //PortOutbound
+        //PortProvided
         bind(new TypeLiteral<ModelRepository<PortProvided>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<PortProvided>>() {
         });

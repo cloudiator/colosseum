@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.TimeWindowDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.TimeWindowDto;
+import api.binding.BindingService;
 import models.Tenant;
 import models.TimeWindow;
 import models.service.FrontendUserService;
@@ -46,11 +46,7 @@ public class TimeWindowController
      */
     @Inject public TimeWindowController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<TimeWindow> modelService,
-        TypeLiteral<TimeWindow> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<TimeWindow> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.TimeWindowController.get(id).absoluteURL(request());
     }
 }

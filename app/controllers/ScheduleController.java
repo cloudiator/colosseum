@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.ScheduleDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.ScheduleDto;
+import api.binding.BindingService;
 import models.Schedule;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -46,12 +46,8 @@ public class ScheduleController
      */
     @Inject public ScheduleController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Schedule> modelService,
-        TypeLiteral<Schedule> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Schedule> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.ScheduleController.get(id).absoluteURL(request());
     }
 }

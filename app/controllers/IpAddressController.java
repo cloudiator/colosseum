@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.IpAddressDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.IpAddressDto;
+import api.binding.BindingService;
 import models.IpAddress;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -36,11 +36,7 @@ public class IpAddressController
 
     @Inject public IpAddressController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<IpAddress> modelService,
-        TypeLiteral<IpAddress> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<IpAddress> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.IpAddressController.get(id).absoluteURL(request());
     }
 }

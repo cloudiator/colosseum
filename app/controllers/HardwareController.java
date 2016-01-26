@@ -20,9 +20,9 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import controllers.generic.GenericApiController;
-import dtos.HardwareDto;
-import dtos.conversion.ModelDtoConversionService;
+import controllers.internal.GenericApiController;
+import api.dto.HardwareDto;
+import api.binding.BindingService;
 import models.CloudCredential;
 import models.Hardware;
 import models.Tenant;
@@ -40,13 +40,9 @@ public class HardwareController
 
     @Inject public HardwareController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Hardware> modelService,
-        TypeLiteral<Hardware> typeLiteral, ModelDtoConversionService conversionService) {
+        TypeLiteral<Hardware> typeLiteral, BindingService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-    }
-
-    @Override protected String getSelfRoute(Long id) {
-        return controllers.routes.HardwareController.get(id).absoluteURL(request());
     }
 
     @Override protected Optional<Predicate<Hardware>> filter() {

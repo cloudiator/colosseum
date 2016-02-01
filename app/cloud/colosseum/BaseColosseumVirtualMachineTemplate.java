@@ -44,37 +44,37 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
 
         // everything needs to be not null.
-        checkNotNull(image);
-        checkNotNull(hardware);
-        checkNotNull(location);
-        checkNotNull(cloud);
-        checkNotNull(cloudCredential);
+        checkNotNull(image, "image is required");
+        checkNotNull(hardware, "hardware is required");
+        checkNotNull(location, "location is required");
+        checkNotNull(cloud, "cloud is required");
+        checkNotNull(cloudCredential, "credential is required");
 
         //check that the image, the hardware and the location are in the cloud
-        checkArgument(image.cloud().equals(cloud));
-        checkArgument(location.cloud().equals(cloud));
-        checkArgument(hardware.cloud().equals(cloud));
+        checkArgument(image.cloud().equals(cloud), "image not in cloud");
+        checkArgument(location.cloud().equals(cloud), "location not in cloud");
+        checkArgument(hardware.cloud().equals(cloud), "hardware not in cloud");
 
         //check that the credential is correct
-        checkArgument(cloudCredential.getCloud().equals(cloud));
-        checkArgument(image.cloudCredentials().contains(cloudCredential));
-        checkArgument(location.cloudCredentials().contains(cloudCredential));
-        checkArgument(hardware.cloudCredentials().contains(cloudCredential));
+        checkArgument(cloudCredential.getCloud().equals(cloud), "cloud credential not in cloud");
+        checkArgument(image.cloudCredentials().contains(cloudCredential), "image not allowed for user");
+        checkArgument(location.cloudCredentials().contains(cloudCredential), "location not allowed for user");
+        checkArgument(hardware.cloudCredentials().contains(cloudCredential), "hardware not allowed for user");
 
         //check that the location is correct
         if (image.location().isPresent()) {
-            checkArgument(location.hierachy().contains(image.location().get()));
+            checkArgument(location.hierachy().contains(image.location().get()), "image not available in location");
         }
         if (hardware.location().isPresent()) {
-            checkArgument(location.hierachy().contains(hardware.location().get()));
+            checkArgument(location.hierachy().contains(hardware.location().get()), "hardware not available in location");
         }
 
-        checkArgument(location.isAssignable());
+        checkArgument(location.isAssignable(), "location not assignable");
 
         //check that all cloudprovider ids are set
-        checkArgument(location.cloudProviderId().isPresent());
-        checkArgument(hardware.cloudProviderId().isPresent());
-        checkArgument(image.cloudProviderId().isPresent());
+        checkArgument(location.cloudProviderId().isPresent(), "location not bound");
+        checkArgument(hardware.cloudProviderId().isPresent(), "hardware not bound");
+        checkArgument(image.cloudProviderId().isPresent(), "image not bound");
 
         this.image = image;
         this.hardware = hardware;

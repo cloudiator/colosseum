@@ -24,6 +24,7 @@ import models.Tenant;
 import models.VirtualMachine;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.db.jpa.JPA;
 
 /**
  * Created by daniel on 14.10.15.
@@ -39,12 +40,22 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService) throws JobException {
 
-        VirtualMachine virtualMachine = getT();
-        computeService.deleteVirtualMachine(virtualMachine);
-        modelService.delete(virtualMachine);
+        JPA.withTransaction(() -> {
+            VirtualMachine virtualMachine = getT();
+            computeService.deleteVirtualMachine(virtualMachine);
+            modelService.delete(virtualMachine);
+        });
     }
 
     @Override public boolean canStart() {
         return true;
+    }
+
+    @Override public void onSuccess() throws JobException {
+        // do nothing
+    }
+
+    @Override public void onError() throws JobException {
+        // do nothing
     }
 }

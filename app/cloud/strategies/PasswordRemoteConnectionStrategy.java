@@ -49,9 +49,6 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
         checkArgument(virtualMachine.publicIpAddress().isPresent(),
             "Virtual machine must have a public ip address.");
 
-        checkArgument(virtualMachine.loginName().isPresent(),
-            "Virtual machine must have a login name.");
-
         if (!virtualMachine.loginPassword().isPresent()) {
             throw new RemoteException(String
                 .format("Virtual machine %s does not provide a login password", virtualMachine));

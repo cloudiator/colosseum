@@ -49,7 +49,7 @@ public interface CredentialStore {
                         bestLoginPassword = currentStore.getLoginPasswordCandidate().get();
                     }
                     if (bestLoginName != null && bestLoginPassword != null) {
-                        continue;
+                        break;
                     }
                     currentStore = currentStore.getParent().orElse(null);
                 }

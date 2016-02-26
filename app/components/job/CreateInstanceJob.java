@@ -29,8 +29,8 @@ import de.uniulm.omi.cloudiator.lance.application.component.*;
 import de.uniulm.omi.cloudiator.lance.client.DeploymentHelper;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
-import de.uniulm.omi.cloudiator.lance.lca.LcaException;
-import de.uniulm.omi.cloudiator.lance.lca.container.ContainerException;
+import de.uniulm.omi.cloudiator.lance.lca.DeploymentException;
+import de.uniulm.omi.cloudiator.lance.lca.container.ComponentInstanceId;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
@@ -44,6 +44,7 @@ import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
+import play.libs.F;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -64,8 +65,9 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
 
+        ComponentInstanceId componentInstanceId;
         try {
-            JPA.withTransaction("default", true, () -> {
+            componentInstanceId = JPA.withTransaction("default", true, () -> {
 
                 Instance instance = getT();
                 LifecycleClient client;
@@ -104,18 +106,26 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
                 }
                 try {
-                    client.deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
-                        deploymentContext, deployableComponent,
-                        instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs(),
-                        instance.getApplicationComponent().containerTypeOrDefault());
-                } catch (LcaException | RegistrationException | ContainerException e) {
+                    return client
+                        .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
+                            deploymentContext, deployableComponent,
+                            instance.getVirtualMachine().operatingSystemVendorTypeOrDefault()
+                                .lanceOs(),
+                            instance.getApplicationComponent().containerTypeOrDefault());
+                } catch (DeploymentException e) {
                     throw new JobException(e);
                 }
-                return null;
             });
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
+
+        JPA.withTransaction(() -> {
+            Instance instance = getT();
+            instance.bindRemoteId(componentInstanceId.toString());
+            modelService.save(instance);
+        });
+
     }
 
     private void registerApplicationComponents(Instance instance,
@@ -277,15 +287,13 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             }
 
             if (lc.getStartDetection() != null) {
-                final BashBasedHandlerBuilder startHandlerBuilder =
-                    new BashBasedHandlerBuilder();
+                final BashBasedHandlerBuilder startHandlerBuilder = new BashBasedHandlerBuilder();
                 startHandlerBuilder.addCommand(lc.getStartDetection());
                 startHandlerBuilder.setOperatingSystem(os);
-                lifecycleStoreBuilder
-                    .setStartDetector(startHandlerBuilder.buildStartDetector());
+                lifecycleStoreBuilder.setStartDetector(startHandlerBuilder.buildStartDetector());
             } else {
-                lifecycleStoreBuilder.setStartDetector(
-                    DefaultDetectorFactories.START_DETECTOR_FACTORY.getDefault());
+                lifecycleStoreBuilder
+                    .setStartDetector(DefaultDetectorFactories.START_DETECTOR_FACTORY.getDefault());
             }
 
             return lifecycleStoreBuilder.build();

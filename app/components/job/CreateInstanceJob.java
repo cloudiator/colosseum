@@ -44,7 +44,6 @@ import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
-import play.libs.F;
 
 import javax.annotation.Nullable;
 import java.util.Map;

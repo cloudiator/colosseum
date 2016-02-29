@@ -130,6 +130,7 @@ public class UnixInstaller extends AbstractInstaller {
         // Install docker via the retry script:
         this.remoteConnection.executeCommand("sudo nohup ./" + UnixInstaller.DOCKER_RETRY_INSTALL
             + " > docker_retry_install.out 2>&1");
+        this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
         this.remoteConnection.executeCommand(
             "sudo nohup ./" + UnixInstaller.DOCKER_FIX_MTU_INSTALL + " > docker_mtu_fix.out 2>&1");
         this.remoteConnection

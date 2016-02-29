@@ -76,4 +76,9 @@ import models.service.RemoteModelService;
             tenantModelService, colosseumComputeService, tenant));
     }
 
+    @Override public void newDeleteInstanceJob(Instance instance, Tenant tenant) {
+        this.jobQueue.add(new DeleteInstanceJob(instance, instanceModelService, tenantModelService,
+            colosseumComputeService, tenant));
+    }
+
 }

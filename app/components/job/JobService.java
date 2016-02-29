@@ -32,4 +32,6 @@ public interface JobService {
     void newInstanceJob(Instance instance, Tenant tenant);
 
     void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
+
+    void newDeleteInstanceJob(Instance instance, Tenant tenant);
 }

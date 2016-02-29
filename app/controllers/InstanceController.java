@@ -54,4 +54,9 @@ public class InstanceController
         super.postPost(instance);
         this.jobService.newInstanceJob(instance, getActiveTenant());
     }
+
+    @Override protected boolean preDelete(Instance instance) {
+        this.jobService.newDeleteInstanceJob(instance, getActiveTenant());
+        return false;
+    }
 }

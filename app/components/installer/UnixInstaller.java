@@ -33,12 +33,15 @@ import util.logging.Loggers;
 public class UnixInstaller extends AbstractInstaller {
 
     private static final Logger.ALogger LOGGER = Loggers.of(Loggers.INSTALLATION);
+    private static final String DOCKER_FIX_MTU_INSTALL = "docker_fix_mtu.sh";
     protected final String homeDir;
     private static final String JAVA_ARCHIVE = "jre8.tar.gz";
     private static final String JAVA_DOWNLOAD =
         Play.application().configuration().getString("colosseum.installer.linux.java.download");
     private static final String DOCKER_RETRY_DOWNLOAD = Play.application().configuration()
-            .getString("colosseum.installer.linux.lance.docker_retry.download");
+        .getString("colosseum.installer.linux.lance.docker_retry.download");
+    private static final String DOCKER_FIX_MTU_DOWNLOAD = Play.application().configuration()
+        .getString("colosseum.installer.linux.lance.docker.mtu.download");
     private static final String DOCKER_RETRY_INSTALL = "docker_retry.sh";
     private final Tenant tenant;
 
@@ -58,8 +61,10 @@ public class UnixInstaller extends AbstractInstaller {
         this.sourcesList
             .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
         //docker
-        this.sourcesList
-            .add("wget " + UnixInstaller.DOCKER_RETRY_DOWNLOAD + "  -O " + UnixInstaller.DOCKER_RETRY_INSTALL);
+        this.sourcesList.add("wget " + UnixInstaller.DOCKER_RETRY_DOWNLOAD + "  -O "
+            + UnixInstaller.DOCKER_RETRY_INSTALL);
+        this.sourcesList.add("wget " + UnixInstaller.DOCKER_FIX_MTU_DOWNLOAD + "  -O "
+            + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
         //kairosDB
         this.sourcesList.
             add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O "
@@ -123,11 +128,13 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_RETRY_INSTALL);
         // Install docker via the retry script:
+        this.remoteConnection.executeCommand("sudo nohup ./" + UnixInstaller.DOCKER_RETRY_INSTALL
+            + " > docker_retry_install.out 2>&1");
         this.remoteConnection.executeCommand(
-                "sudo nohup ./" + UnixInstaller.DOCKER_RETRY_INSTALL + " > docker_retry_install.out 2>&1");
+            "sudo nohup ./" + UnixInstaller.DOCKER_FIX_MTU_INSTALL + " > docker_mtu_fix.out 2>&1");
         this.remoteConnection
             .executeCommand("sudo nohup bash -c 'service docker restart' > docker_start.out 2>&1 ");
-
+        
         LOGGER.debug(String.format("Installing and starting Lance on vm %s", virtualMachine));
 
         //start Lance

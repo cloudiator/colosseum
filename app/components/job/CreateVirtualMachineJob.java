@@ -73,13 +73,15 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         ColosseumComputeService computeService) throws JobException {
 
         java.util.Optional<KeyPair> keyPairOptional;
-        try {
-            keyPairOptional = JPA.withTransaction(() -> {
-                VirtualMachine virtualMachine = getT();
-                return keyPairStrategy.create(virtualMachine);
-            });
-        } catch (Throwable throwable) {
-            throw new JobException(throwable);
+        synchronized (CreateVirtualMachineJob.class) {
+            try {
+                keyPairOptional = JPA.withTransaction(() -> {
+                    VirtualMachine virtualMachine = getT();
+                    return keyPairStrategy.create(virtualMachine);
+                });
+            } catch (Throwable throwable) {
+                throw new JobException(throwable);
+            }
         }
 
         VirtualMachineInLocation cloudVirtualMachine;

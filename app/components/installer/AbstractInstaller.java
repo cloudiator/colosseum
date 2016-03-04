@@ -68,6 +68,11 @@ abstract class AbstractInstaller implements InstallApi {
 
     protected static final String VISOR_PROPERTIES = "default.properties";
 
+    //Axe
+    protected static final String AXE_JAR = "axe-aggregator.jar";
+    protected static final String AXE_DOWNLOAD =
+            Play.application().configuration().getString("colosseum.installer.abstract.axe.download");
+
     public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine) {
 
         checkNotNull(remoteConnection);

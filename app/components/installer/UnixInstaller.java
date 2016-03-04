@@ -19,6 +19,7 @@
 package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnectionResponse;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import models.Tenant;
 import models.VirtualMachine;
@@ -67,6 +68,9 @@ public class UnixInstaller extends AbstractInstaller {
         //visor
         this.sourcesList
             .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
+        //axe
+        this.sourcesList
+            .add("wget " + UnixInstaller.AXE_DOWNLOAD + "  -O " + UnixInstaller.AXE_JAR);
 
     }
 
@@ -86,6 +90,21 @@ public class UnixInstaller extends AbstractInstaller {
             "sudo ln -s " + this.homeDir + "/" + UnixInstaller.JAVA_DIR
                 + "/bin/java /usr/bin/java");
         LOGGER.debug(String.format("Java was successfully installed on vm %s", virtualMachine));
+    }
+
+    @Override
+    public void startRmiRegistry() throws RemoteException {
+
+        LOGGER.debug(String.format("Starting RMIRegistry started on vm %s", virtualMachine));
+
+        //change class path
+        String classPath = this.homeDir + "/" + UnixInstaller.AXE_JAR + ":" + this.homeDir + "/" + UnixInstaller.LANCE_JAR;
+
+        //call rmiregistry
+        String startCommand = "sudo nohup bash -c './" + UnixInstaller.JAVA_DIR + "/bin/rmiregistry -classpath=" + classPath + " > rmiregistry.log 2>&1&'";
+        this.remoteConnection.executeCommand(startCommand);
+
+        LOGGER.debug(String.format("RMIRegistry was successfully started on vm %s", virtualMachine));
     }
 
     @Override public void installVisor() throws RemoteException {
@@ -114,6 +133,23 @@ public class UnixInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand(
             " sudo nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
         LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
+    }
+
+    @Override
+    public void installAxe() throws RemoteException {
+
+        LOGGER.debug(String.format("Setting up Axe on vm %s", virtualMachine));
+
+        //start axe
+        // TODO add config parameters later
+        this.remoteConnection.executeCommand(
+                "sudo nohup bash -c 'java -jar " + UnixInstaller.AXE_JAR +
+                        " -rmiPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.rmiPort") + "\"" +
+                        " -localDomainKairosIP=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.localDomainKairosIP") + "\"" +
+                        " -localDomainKairosPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.localDomainKairosPort") + "\"" +
+                        " -defaultKairosPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.defaultKairosPort") + "\"" +
+                        " &> /dev/null &'");
+        LOGGER.debug(String.format("Axe started successfully on vm %s", virtualMachine));
     }
 
     @Override public void installLance() throws RemoteException {
@@ -155,11 +191,14 @@ public class UnixInstaller extends AbstractInstaller {
 
         this.installJava();
 
+        this.startRmiRegistry();
+
         this.installLance();
 
         this.installKairosDb();
 
         this.installVisor();
+        this.installAxe();
     }
 }
 

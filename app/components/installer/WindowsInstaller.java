@@ -40,6 +40,8 @@ public class WindowsInstaller extends AbstractInstaller {
     private static final String SEVEN_ZIP_DIR = "7zip";
     private static final String SEVEN_ZIP_EXE = "7za.exe";
     private static final String VISOR_BAT = "startVisor.bat";
+    private static final String AXE_BAT = "startAxeAggregator.bat";
+    private static final String RMI_BAT = "startRmiRegistry.bat";
     private static final String KAIROSDB_BAT = "startKairos.bat";
     private static final String LANCE_BAT = "startLance.bat";
     private static final String JAVA_DOWNLOAD =
@@ -117,6 +119,49 @@ public class WindowsInstaller extends AbstractInstaller {
                 + this.homeDir + "\\" + WindowsInstaller.SEVEN_ZIP_ARCHIVE + "', '" + this.homeDir
                 + "\\" + WindowsInstaller.SEVEN_ZIP_DIR + "'); }");
         LOGGER.debug("7zip successfully unzipped!");
+    }
+
+    @Override
+    public void startRmiRegistry() throws RemoteException {
+
+        LOGGER.debug(String.format("Starting RMIRegistry started on vm %s", virtualMachine));
+
+        //id of the visor schtasks
+        String rmiJobId = "rmi-registry-job";
+
+        //change environment variable
+        this.remoteConnection.executeCommand(
+                "SETX CLASSPATH %CLASSPATH%;" + this.homeDir + "\\" + WindowsInstaller.AXE_JAR +
+                ";" + this.homeDir + "\\" + WindowsInstaller.LANCE_JAR + "; /m");
+
+        //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
+        String startCommand =
+                this.homeDir + "\\" + WindowsInstaller.JAVA_DIR + "\\bin\\rmiregistry.exe";
+        this.remoteConnection
+                .writeFile(this.homeDir + "\\" + WindowsInstaller.RMI_BAT, startCommand, false);
+
+        //set firewall rules
+        this.remoteConnection.executeCommand(
+                "powershell -command netsh advfirewall firewall add rule name = 'RMI Registry Port' dir = in action = allow protocol=TCP localport="
+                        + Play.application().configuration()
+                        .getString("colosseum.installer.abstract.lance.rmiPort"));
+
+
+        //create schtaks
+        this.remoteConnection.executeCommand("schtasks.exe " +
+                "/create " +
+                "/st 00:00  " +
+                "/sc ONCE " +
+                "/ru " + this.user + " " +
+                "/rp " + this.password + " " +
+                "/tn " + rmiJobId +
+                " /tr \"" + this.homeDir + "\\" + WindowsInstaller.RMI_BAT + "\"");
+        this.waitForSchtaskCreation();
+        //run schtask
+        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + rmiJobId);
+
+
+        LOGGER.debug(String.format("RMIRegistry was successfully started on vm %s", virtualMachine));
     }
 
     @Override public void installVisor() throws RemoteException {
@@ -248,6 +293,45 @@ public class WindowsInstaller extends AbstractInstaller {
 
     }
 
+    @Override
+    public void installAxe() throws RemoteException {
+        LOGGER.debug("Setting up and starting Visor");
+
+        //id of the visor schtasks
+        String axeJobId = "axe-aggregator";
+
+        //create a .bat file to start visor, because it is not possible to pass schtasks paramters using overthere
+        String startCommand =
+                "java -jar " + this.homeDir + "\\" + WindowsInstaller.AXE_JAR +
+                        " -rmiPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.rmiPort") + "\"" +
+                        " -localDomainKairosIP=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.localDomainKairosIP") + "\"" +
+                        " -localDomainKairosPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.localDomainKairosPort") + "\"" +
+                        " -defaultKairosPort=\"" + Play.application().configuration().getString("colosseum.installer.abstract.axe.config.defaultKairosPort") + "\"";
+        this.remoteConnection
+                .writeFile(this.homeDir + "\\" + WindowsInstaller.AXE_BAT, startCommand, false);
+
+        //set firewall rules
+        this.remoteConnection.executeCommand(
+                "powershell -command netsh advfirewall firewall add rule name = 'Axe Rmi Reg Port' dir = in action = allow protocol=TCP localport="
+                        + Play.application().configuration()
+                        .getString("colosseum.installer.abstract.axe.config.rmiPort"));
+
+        //create schtaks
+        this.remoteConnection.executeCommand("schtasks.exe " +
+                "/create " +
+                "/st 00:00  " +
+                "/sc ONCE " +
+                "/ru " + this.user + " " +
+                "/rp " + this.password + " " +
+                "/tn " + axeJobId +
+                " /tr \"" + this.homeDir + "\\" + WindowsInstaller.AXE_BAT + "\"");
+        this.waitForSchtaskCreation();
+        //run schtask
+        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + axeJobId);
+
+        LOGGER.debug("Axe started successfully!");
+    }
+
     @Override public void installAll() throws RemoteException {
 
         LOGGER.debug("Starting installation of all tools on WINDOWS...");
@@ -257,12 +341,15 @@ public class WindowsInstaller extends AbstractInstaller {
 
         this.installJava();
 
+        this.startRmiRegistry();
+
         this.installLance();
 
         this.install7Zip();
         this.installKairosDb();
 
         this.installVisor();
+        this.installAxe();
     }
 
     private void waitForSchtaskCreation() {

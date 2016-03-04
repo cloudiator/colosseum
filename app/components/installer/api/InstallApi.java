@@ -41,6 +41,11 @@ public interface InstallApi extends AutoCloseable {
     void installJava() throws RemoteException;
 
     /**
+     * start the rmi registry of the Java environement
+     */
+    void startRmiRegistry() throws RemoteException;
+
+    /**
      * create the visor configuration file and start visor
      */
     void installVisor() throws RemoteException;
@@ -54,6 +59,11 @@ public interface InstallApi extends AutoCloseable {
      * download, setup and start Lance (LifecycleAgent - Unix:Docker, Windows: not yet decided)
      */
     void installLance() throws RemoteException;
+
+    /**
+     * download, setup and start Axe
+     */
+    void installAxe() throws RemoteException;
 
     /**
      * Download and install all necessary software for cloudiator (java, visor, lifecycle agent)

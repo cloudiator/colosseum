@@ -23,9 +23,7 @@ import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import models.generic.Model;
 
 import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,7 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class ApplicationComponent extends Model {
 
-    @Nullable private ContainerType containerType;
+    @Enumerated(EnumType.STRING) @Nullable private ContainerType containerType;
 
     /**
      * Owned relations

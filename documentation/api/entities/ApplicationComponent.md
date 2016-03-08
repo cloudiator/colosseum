@@ -30,7 +30,8 @@ A list of all application component entities stored in the database.
       ],
       "application":1,
       "component":1,
-      "virtualMachineTemplate":1
+      "virtualMachineTemplate":1,
+      "containerType":"dockering"
    },
    {
       "links":[
@@ -41,7 +42,8 @@ A list of all application component entities stored in the database.
       ],
       "application":2,
       "component":2,
-      "virtualMachineTemplate":2
+      "virtualMachineTemplate":2,
+      "containerType":"plain"
    }
 ]
 ```
@@ -77,7 +79,8 @@ Shows the selected ApplicationComponent entity.
    ],
    "application":1,
    "component":1,
-   "virtualMachineTemplate":1
+   "virtualMachineTemplate":1,
+   "containerType":"dockering"
 }
 ```
 
@@ -99,13 +102,15 @@ Parameter                | Description
 application              | The associated application.
 component                | The associated component.
 virtualMachineTemplate   | The associated virtual machine template.
+containerType            | An optional container type used for deploying the application component.
 
 ### Request Example
 ```
 {  
    "application":1,
    "component":1,
-   "virtualMachineTemplate":1
+   "virtualMachineTemplate":1,
+   "containerType":"dockering"
 }
 ```
 ### Response
@@ -132,6 +137,7 @@ applicationComponent_id  | The id of the applicationComponent to update.
 application              | The associated application.
 component                | The associated component.
 virtualMachineTemplate   | The associated virtual machine template.
+containerType            | An optional container type used for deploying the application component.
 
 
 ### Request Example
@@ -142,7 +148,8 @@ PUT /api/ac/1
 {  
    "application":1,
    "component":1,
-   "virtualMachineTemplate":1
+   "virtualMachineTemplate":1,
+   "containerType":"dockering"
 }
 ```
 ### Response

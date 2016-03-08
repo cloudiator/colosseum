@@ -20,6 +20,7 @@ package cloud.colosseum;
 
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
+import de.uniulm.omi.cloudiator.sword.core.util.Name;
 import models.*;
 
 import javax.annotation.Nullable;
@@ -32,6 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMachineTemplate {
 
+    private final String name;
     private final Image image;
     private final Hardware hardware;
     private final Location location;
@@ -39,8 +41,9 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     private final CloudCredential cloudCredential;
     private final Optional<TemplateOptions> templateOptions;
 
-    BaseColosseumVirtualMachineTemplate(Cloud cloud, CloudCredential cloudCredential, Image image,
-        Hardware hardware, Location location, @Nullable TemplateOptions templateOptions) {
+    BaseColosseumVirtualMachineTemplate(String name, Cloud cloud, CloudCredential cloudCredential,
+        Image image, Hardware hardware, Location location,
+        @Nullable TemplateOptions templateOptions) {
 
 
         // everything needs to be not null.
@@ -57,16 +60,21 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
         //check that the credential is correct
         checkArgument(cloudCredential.getCloud().equals(cloud), "cloud credential not in cloud");
-        checkArgument(image.cloudCredentials().contains(cloudCredential), "image not allowed for user");
-        checkArgument(location.cloudCredentials().contains(cloudCredential), "location not allowed for user");
-        checkArgument(hardware.cloudCredentials().contains(cloudCredential), "hardware not allowed for user");
+        checkArgument(image.cloudCredentials().contains(cloudCredential),
+            "image not allowed for user");
+        checkArgument(location.cloudCredentials().contains(cloudCredential),
+            "location not allowed for user");
+        checkArgument(hardware.cloudCredentials().contains(cloudCredential),
+            "hardware not allowed for user");
 
         //check that the location is correct
         if (image.location().isPresent()) {
-            checkArgument(location.hierachy().contains(image.location().get()), "image not available in location");
+            checkArgument(location.hierachy().contains(image.location().get()),
+                "image not available in location");
         }
         if (hardware.location().isPresent()) {
-            checkArgument(location.hierachy().contains(hardware.location().get()), "hardware not available in location");
+            checkArgument(location.hierachy().contains(hardware.location().get()),
+                "hardware not available in location");
         }
 
         checkArgument(location.isAssignable(), "location not assignable");
@@ -76,6 +84,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         checkArgument(hardware.cloudProviderId().isPresent(), "hardware not bound");
         checkArgument(image.cloudProviderId().isPresent(), "image not bound");
 
+        this.name = name;
         this.image = image;
         this.hardware = hardware;
         this.location = location;
@@ -86,6 +95,10 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
     public static ColosseumVirtualMachineTemplateBuilder builder() {
         return new ColosseumVirtualMachineTemplateBuilder();
+    }
+
+    @Override public String name() {
+        return Name.of(name).uniqueName();
     }
 
     @Override public String imageId() {

@@ -11,6 +11,7 @@ if [ -f /etc/default/docker ]; then
 
     # we need to set environment file, as later ubuntu systemd are skipping the default file...
     if [ -f /lib/systemd/system/docker.service ]; then
+        sed -i '/ExecStart/s/$/ $DOCKER_OPTS/' /lib/systemd/system/docker.service
         perl -i -pe "BEGIN{undef $/;} s/^\[Service\]$/[Service]\nEnvironmentFile=-\/etc\/default\/docker/sgm" /lib/systemd/system/docker.service
         systemctl daemon-reload
     fi

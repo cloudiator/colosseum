@@ -171,6 +171,7 @@ DELETE        /api/ip/:id                                         @controllers.I
 #KeyPairs
 GET           /api/keyPair                                        @controllers.KeyPairController.list()
 GET           /api/keyPair/:id                                    @controllers.KeyPairController.get(id: Long)
+GET           /keyPair/:id/download                               @controllers.KeyPairController.download(id: Long)
 POST          /api/keyPair                                        @controllers.KeyPairController.post()
 PUT           /api/keyPair/:id                                    @controllers.KeyPairController.put(id: Long)
 DELETE        /api/keyPair/:id                                    @controllers.KeyPairController.delete(id: Long)

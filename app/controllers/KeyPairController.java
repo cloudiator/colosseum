@@ -18,6 +18,7 @@
 
 package controllers;
 
+import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
@@ -27,6 +28,12 @@ import models.KeyPair;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
+import play.db.jpa.Transactional;
+import play.mvc.Result;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 
 /**
  * Created by daniel on 19.05.15.
@@ -37,10 +44,29 @@ public class KeyPairController
     @Inject public KeyPairController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<KeyPair> modelService,
         TypeLiteral<KeyPair> typeLiteral, ModelDtoConversionService conversionService) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.KeyPairController.get(id).absoluteURL(request());
+    }
+
+    @Transactional(readOnly = true)
+    public Result download(Long id) {
+        KeyPair keyPair = loadEntity(id);
+
+        if (keyPair == null) {
+            return notFound(id);
+        }
+
+        //write temporary download file
+        try {
+            File file = File.createTempFile("id_rsa", keyPair.getUuid());
+            Files.write(keyPair.getPrivateKey(), file, Charset.forName("UTF-8"));
+            return ok(file);
+        } catch (IOException e) {
+            return internalServerError();
+        }
     }
 }

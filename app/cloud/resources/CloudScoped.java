@@ -29,5 +29,5 @@ public interface CloudScoped {
 
     String cloudId();
 
-    String cloudProviderId();
+    String swordId();
 }

@@ -56,10 +56,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Image() {
     }
 
-    public Image(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        @Nullable Location location, String name, @Nullable OperatingSystem operatingSystem,
-        @Nullable String defaultLoginUsername, @Nullable String defaultLoginPassword) {
-        super(remoteId, cloudProviderId, cloud, null, location);
+    public Image(@Nullable String remoteId, @Nullable String providerId, @Nullable String swordId,
+        Cloud cloud, @Nullable Location location, String name,
+        @Nullable OperatingSystem operatingSystem, @Nullable String defaultLoginUsername,
+        @Nullable String defaultLoginPassword) {
+        super(remoteId, providerId, swordId, cloud, null, location);
 
         checkNotNull(name);
         checkArgument(!name.isEmpty());

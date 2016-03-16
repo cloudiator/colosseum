@@ -60,10 +60,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Location() {
     }
 
-    public Location(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        String name, @Nullable GeoLocation geoLocation, @Nullable Location parent,
-        @Nullable LocationScope locationScope, Boolean isAssignable) {
-        super(remoteId, cloudProviderId, cloud, null);
+    public Location(@Nullable String remoteId, @Nullable String providerId,
+        @Nullable String swordId, Cloud cloud, String name, @Nullable GeoLocation geoLocation,
+        @Nullable Location parent, @Nullable LocationScope locationScope, Boolean isAssignable) {
+        super(remoteId, providerId, swordId, cloud, null);
         checkNotNull(name);
         checkArgument(!name.isEmpty());
         this.name = name;

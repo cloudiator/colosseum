@@ -56,12 +56,13 @@ import java.util.Set;
     protected VirtualMachine() {
     }
 
-    public VirtualMachine(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        @Nullable CloudCredential owner, Location location, String name,
-        @Nullable String generatedLoginUsername, @Nullable String generatedLoginPassword,
-        @Nullable String generatedPrivateKey, @Nullable Image image, @Nullable Hardware hardware,
+    public VirtualMachine(@Nullable String remoteId, @Nullable String providerId,
+        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
+        String name, @Nullable String generatedLoginUsername,
+        @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
+        @Nullable Image image, @Nullable Hardware hardware,
         @Nullable TemplateOptions templateOptions) {
-        super(remoteId, cloudProviderId, cloud, owner, location);
+        super(remoteId, providerId, swordId, cloud, owner, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
         this.generatedLoginPassword = generatedLoginPassword;

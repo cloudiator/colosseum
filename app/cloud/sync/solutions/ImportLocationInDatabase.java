@@ -76,7 +76,8 @@ public class ImportLocationInDatabase implements Solution {
         }
 
         Location location = new Location(locationNotInDatabase.getLocationInCloud().cloudId(),
-            locationNotInDatabase.getLocationInCloud().cloudProviderId(), cloud,
+            locationNotInDatabase.getLocationInCloud().providerId(),
+            locationNotInDatabase.getLocationInCloud().swordId(), cloud,
             locationNotInDatabase.getLocationInCloud().name(), null, parent.orNull(),
             locationNotInDatabase.getLocationInCloud().locationScope(),
             locationNotInDatabase.getLocationInCloud().isAssignable());

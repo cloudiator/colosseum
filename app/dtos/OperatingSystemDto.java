@@ -20,12 +20,12 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import de.uniulm.omi.cloudiator.common.os.OperatingSystemArchitecture;
+import de.uniulm.omi.cloudiator.common.os.OperatingSystemFamily;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.OperatingSystemArchitecture;
-import models.OperatingSystemVendor;
 import models.service.ModelService;
 
 /**
@@ -33,16 +33,20 @@ import models.service.ModelService;
  */
 public class OperatingSystemDto extends ValidatableDto {
 
+    private OperatingSystemFamily operatingSystemFamily;
     private OperatingSystemArchitecture operatingSystemArchitecture;
-    private Long operatingSystemVendor;
     private String version;
 
     @Override public void validation() {
-        validator(OperatingSystemArchitecture.class).validate(operatingSystemArchitecture)
-            .withValidator(new NotNullValidator());
-        validator(Long.class).validate(operatingSystemVendor)
-            .withValidator(new ModelIdValidator<>(References.operatingSystemVendorValidator.get()));
-        validator(String.class).validate(version).withValidator(new NotNullOrEmptyValidator());
+        //todo implement validation
+    }
+
+    public OperatingSystemFamily getOperatingSystemFamily() {
+        return operatingSystemFamily;
+    }
+
+    public void setOperatingSystemFamily(OperatingSystemFamily operatingSystemFamily) {
+        this.operatingSystemFamily = operatingSystemFamily;
     }
 
     public OperatingSystemArchitecture getOperatingSystemArchitecture() {
@@ -54,28 +58,11 @@ public class OperatingSystemDto extends ValidatableDto {
         this.operatingSystemArchitecture = operatingSystemArchitecture;
     }
 
-    public Long getOperatingSystemVendor() {
-        return operatingSystemVendor;
-    }
-
-    public void setOperatingSystemVendor(Long operatingSystemVendor) {
-        this.operatingSystemVendor = operatingSystemVendor;
-    }
-
     public String getVersion() {
         return version;
     }
 
     public void setVersion(String version) {
         this.version = version;
-    }
-
-    public static class References {
-
-        @Inject private static Provider<ModelService<OperatingSystemVendor>>
-            operatingSystemVendorValidator;
-
-        private References() {
-        }
     }
 }

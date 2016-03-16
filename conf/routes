@@ -218,13 +218,6 @@ POST          /api/os                                             @controllers.O
 PUT           /api/os/:id                                         @controllers.OperatingSystemController.put(id: Long)
 DELETE        /api/os/:id                                         @controllers.OperatingSystemController.delete(id: Long)
 
-#Operating System Vendor
-GET           /api/osVendor                                       @controllers.OperatingSystemVendorController.list()
-GET           /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.get(id: Long)
-POST          /api/osVendor                                       @controllers.OperatingSystemVendorController.post()
-PUT           /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.put(id: Long)
-DELETE        /api/osVendor/:id                                   @controllers.OperatingSystemVendorController.delete(id: Long)
-
 #Raw Monitor
 GET           /api/rawMonitor                                     @controllers.RawMonitorController.list()
 GET           /api/rawMonitor/:id                                 @controllers.RawMonitorController.get(id: Long)

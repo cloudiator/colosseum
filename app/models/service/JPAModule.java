@@ -166,10 +166,6 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystem>>() {
         });
-        //Operating System Vendor
-        bind(new TypeLiteral<ModelRepository<OperatingSystemVendor>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystemVendor>>() {
-        });
         //RawMonitor
         bind(new TypeLiteral<ModelRepository<RawMonitor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<RawMonitor>>() {

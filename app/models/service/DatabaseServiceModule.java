@@ -168,10 +168,6 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
         });
         bind(OperatingSystemService.class).to(DefaultOperatingSystemService.class);
-        //Operating System Vendor
-        bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
-        }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
-        });
         //RawMonitor
         bind(new TypeLiteral<ModelService<RawMonitor>>() {
         }).to(new TypeLiteral<BaseModelService<RawMonitor>>() {

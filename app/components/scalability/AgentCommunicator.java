@@ -24,6 +24,7 @@ import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
 import models.MonitorInstance;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 public interface AgentCommunicator {
 
     void addSensorMonitor(String idMonitorInstance, String className, String metricName, long interval,
-        TimeUnit unit);
+        TimeUnit unit, Map<String, String> configs);
 
     void removeSensorMonitor(String className, String metricName, long interval, TimeUnit unit);
 
@@ -42,7 +43,7 @@ public interface AgentCommunicator {
     void removeSensorMonitor(SensorMonitor monitor);
 
     void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName,
-                                      long interval, TimeUnit unit, String componentId);
+                                      long interval, TimeUnit unit, String componentId, Map<String, String> configs);
 
     List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName,
                                                        String componentName);

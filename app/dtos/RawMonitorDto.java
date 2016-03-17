@@ -26,6 +26,7 @@ import models.*;
 import models.service.ModelService;
 
 import java.util.List;
+import java.util.Map;
 
 public class RawMonitorDto extends MonitorDto {
 
@@ -35,6 +36,8 @@ public class RawMonitorDto extends MonitorDto {
     private Long cloud;
     private Long sensorDescription;
     private Long schedule;
+    private Long sensorConfigurations;
+
 
     public RawMonitorDto() {
         super();
@@ -42,7 +45,7 @@ public class RawMonitorDto extends MonitorDto {
 
     public RawMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
         Long application, Long component, Long componentInstance, Long cloud,
-        Long sensorDescription, Long schedule) {
+        Long sensorDescription, Long schedule, Long sensorConfigurations) {
         super(externalReferences, monitorInstances);
         this.application = application;
         this.component = component;
@@ -50,6 +53,7 @@ public class RawMonitorDto extends MonitorDto {
         this.cloud = cloud;
         this.sensorDescription = sensorDescription;
         this.schedule = schedule;
+        this.sensorConfigurations = sensorConfigurations;
     }
 
     @Override public void validation() {
@@ -59,6 +63,8 @@ public class RawMonitorDto extends MonitorDto {
             .withValidator(new ModelIdValidator<>(References.sensorDescriptionService.get()));
         validator(Long.class).validate(schedule)
             .withValidator(new ModelIdValidator<>(References.scheduleService.get()));
+        validator(Long.class).validate(sensorConfigurations, "sensorConfigurations")
+                .withValidator(new ModelIdValidator<>(References.sensorConfigurationsService.get()));
     }
 
     public static class References extends ModelWithExternalReferenceDto.References {
@@ -68,6 +74,7 @@ public class RawMonitorDto extends MonitorDto {
         @Inject public static Provider<ModelService<Cloud>> cloudService;
         @Inject public static Provider<ModelService<SensorDescription>> sensorDescriptionService;
         @Inject public static Provider<ModelService<Schedule>> scheduleService;
+        @Inject public static Provider<ModelService<SensorConfigurations>> sensorConfigurationsService;
     }
 
     public Long getApplication() {
@@ -116,5 +123,13 @@ public class RawMonitorDto extends MonitorDto {
 
     public void setSchedule(Long schedule) {
         this.schedule = schedule;
+    }
+
+    public Long getSensorConfigurations() {
+        return sensorConfigurations;
+    }
+
+    public void setSensorConfigurations(Long sensorConfigurations) {
+        this.sensorConfigurations = sensorConfigurations;
     }
 }

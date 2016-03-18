@@ -120,7 +120,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
             VirtualMachine virtualMachine = getT();
             // set values to the model
             virtualMachine.bindRemoteId(cloudVirtualMachine.id());
-            virtualMachine.bindCloudProviderId(cloudVirtualMachine.cloudProviderId());
+            virtualMachine
+                .bindProviderIds(cloudVirtualMachine.swordId(), cloudVirtualMachine.providerId());
             for (String ip : cloudVirtualMachine.privateAddresses()) {
                 virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
             }

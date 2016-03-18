@@ -39,7 +39,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 @Entity public abstract class RemoteResourceInCloud extends RemoteResource {
 
     @ManyToOne(optional = false) private Cloud cloud;
-    @Nullable @Column(nullable = true) private String cloudProviderId;
+    @Nullable @Column(nullable = true) private String providerId;
+    @Nullable @Column(nullable = true) private String swordId;
     @ManyToMany private List<CloudCredential> cloudCredentials;
     @ManyToOne private CloudCredential owner;
 
@@ -54,10 +55,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.cloud = cloud;
     }
 
-    public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String cloudProviderId,
-        Cloud cloud, @Nullable CloudCredential owner) {
+    public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String providerId,
+        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner) {
         super(remoteId);
-        this.cloudProviderId = cloudProviderId;
+        this.providerId = providerId;
+        this.swordId = swordId;
         this.cloud = cloud;
         this.owner = owner;
     }
@@ -89,15 +91,24 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.owner = owner;
     }
 
-    public Optional<String> cloudProviderId() {
-        return Optional.ofNullable(cloudProviderId);
+    public Optional<String> providerId() {
+        return Optional.ofNullable(providerId);
     }
 
-    public void bindCloudProviderId(String cloudProviderId) {
-        checkNotNull(cloudProviderId, "Binding null cloudProviderId is not allowed");
-        if (this.cloudProviderId != null) {
-            throw new IllegalStateException("Changing the cloudProviderId is not allowed.");
+    public Optional<String> swordId() {
+        return Optional.ofNullable(swordId);
+    }
+
+    public void bindProviderIds(String swordId, String providerId) {
+        checkNotNull(swordId, "Binding null swordId is not allowed");
+        checkNotNull(providerId, "Binding null providerId is not allowed");
+        if (this.providerId != null) {
+            throw new IllegalStateException("Changing the providerId is not allowed.");
         }
-        this.cloudProviderId = cloudProviderId;
+        if (this.swordId != null) {
+            throw new IllegalStateException("Changing the swordId is not allowed.");
+        }
+        this.providerId = providerId;
+        this.swordId = swordId;
     }
 }

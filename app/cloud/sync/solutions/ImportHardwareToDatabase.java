@@ -86,7 +86,8 @@ public class ImportHardwareToDatabase implements Solution {
 
         //todo check this
         Hardware hardware = new Hardware(hardwareNotInDatabase.getHardwareInLocation().cloudId(),
-            hardwareNotInDatabase.getHardwareInLocation().cloudProviderId(), cloud, location,
+            hardwareNotInDatabase.getHardwareInLocation().providerId(),
+            hardwareNotInDatabase.getHardwareInLocation().swordId(), cloud, location,
             hardwareNotInDatabase.getHardwareInLocation().name(),
             getHardwareOffer(hardwareNotInDatabase.getHardwareInLocation().numberOfCores(),
                 hardwareNotInDatabase.getHardwareInLocation().mbRam(),

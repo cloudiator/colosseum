@@ -20,12 +20,9 @@ package cloud.colosseum;
 
 import cloud.ComputeServiceRegistry;
 import cloud.resources.VirtualMachineInLocation;
-import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import models.CloudCredential;
 import models.VirtualMachine;
 
@@ -55,9 +52,9 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
 
     @Override public void deleteVirtualMachine(VirtualMachine virtualMachine) {
         checkArgument(virtualMachine.owner().isPresent());
-        checkArgument(virtualMachine.cloudProviderId().isPresent());
+        checkArgument(virtualMachine.swordId().isPresent());
         this.computeServices.getComputeService(virtualMachine.owner().get().getUuid())
-            .deleteVirtualMachine(virtualMachine.cloudProviderId().get());
+            .deleteVirtualMachine(virtualMachine.swordId().get());
     }
 
     @Override public Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential) {

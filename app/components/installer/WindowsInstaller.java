@@ -42,8 +42,8 @@ public class WindowsInstaller extends AbstractInstaller {
     private static final String VISOR_BAT = "startVisor.bat";
     private static final String KAIROSDB_BAT = "startKairos.bat";
     private static final String LANCE_BAT = "startLance.bat";
-    private static final boolean KAIROS_REQUIRED =
-        Play.application().configuration().getBoolean("colosseum.installer.windows.kairosdb");
+    private static final boolean KAIROS_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.windows.kairosdb.install.flag");
     private static final String JAVA_DOWNLOAD =
         Play.application().configuration().getString("colosseum.installer.windows.java.download");
     private static final String SEVEN_ZIP_DOWNLOAD =

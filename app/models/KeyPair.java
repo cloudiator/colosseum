@@ -18,7 +18,6 @@
 
 package models;
 
-import cloud.SlashEncodedId;
 import com.google.common.collect.Lists;
 import models.generic.RemoteResourceInCloud;
 
@@ -46,10 +45,10 @@ import java.util.Optional;
     protected KeyPair() {
     }
 
-    public KeyPair(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey,
+    public KeyPair(@Nullable String remoteId, @Nullable String providerId, @Nullable String swordId,
+        Cloud cloud, @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey,
         @Nullable VirtualMachine virtualMachine) {
-        super(remoteId, cloudProviderId, cloud, owner);
+        super(remoteId, providerId, swordId, cloud, owner);
         this.privateKey = privateKey;
         this.publicKey = publicKey;
         this.virtualMachine = virtualMachine;
@@ -83,7 +82,7 @@ import java.util.Optional;
      * Maybe do it in the template itself?
      */
     public String name() {
-        return SlashEncodedId.of(cloudProviderId().get()).swordId();
+        return providerId().get();
     }
 
     public Optional<VirtualMachine> virtualMachine() {

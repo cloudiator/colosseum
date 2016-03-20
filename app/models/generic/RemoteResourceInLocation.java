@@ -45,9 +45,10 @@ import java.util.Optional;
         this.location = location;
     }
 
-    public RemoteResourceInLocation(@Nullable String remoteId, @Nullable String cloudProviderId,
-        Cloud cloud, @Nullable CloudCredential owner, @Nullable Location location) {
-        super(remoteId, cloudProviderId, cloud, owner);
+    public RemoteResourceInLocation(@Nullable String remoteId, @Nullable String providerId,
+        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner,
+        @Nullable Location location) {
+        super(remoteId, providerId, swordId, cloud, owner);
         this.location = location;
     }
 

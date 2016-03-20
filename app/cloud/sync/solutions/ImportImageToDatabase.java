@@ -89,7 +89,8 @@ public class ImportImageToDatabase implements Solution {
 
         //todo check this
         Image image = new Image(imageNotInDatabase.getImageInLocation().cloudId(),
-            imageNotInDatabase.getImageInLocation().cloudProviderId(), cloud, location,
+            imageNotInDatabase.getImageInLocation().providerId(),
+            imageNotInDatabase.getImageInLocation().swordId(), cloud, location,
             imageNotInDatabase.getImageInLocation().name(), operatingSystem, null, null);
         imageModelService.save(image);
     }

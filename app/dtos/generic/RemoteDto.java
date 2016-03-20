@@ -26,14 +26,12 @@ import models.generic.RemoteState;
 public abstract class RemoteDto extends ValidatableDto {
 
     private String remoteId;
-    private String cloudProviderId;
+    private String providerId;
+    private String swordId;
     private RemoteState remoteState;
 
 
     @Override public void validation() {
-        //validator(String.class).validate(remoteId).withValidator(new NotNullOrEmptyValidator());
-        //validator(String.class).validate(cloudProviderId)
-        //    .withValidator(new NotNullOrEmptyValidator());
     }
 
     public String getRemoteId() {
@@ -44,12 +42,20 @@ public abstract class RemoteDto extends ValidatableDto {
         this.remoteId = remoteId;
     }
 
-    public String getCloudProviderId() {
-        return cloudProviderId;
+    public String getProviderId() {
+        return providerId;
     }
 
-    public void setCloudProviderId(String cloudProviderId) {
-        this.cloudProviderId = cloudProviderId;
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    public String getSwordId() {
+        return swordId;
+    }
+
+    public void setSwordId(String swordId) {
+        this.swordId = swordId;
     }
 
     public RemoteState getRemoteState() {

@@ -56,9 +56,9 @@ import static com.google.common.base.Preconditions.checkState;
             "Expected remote keypair to have a private key, but it has none.");
 
         KeyPair keyPair =
-            new KeyPair(remoteKeyPair.id(), remoteKeyPair.id(), virtualMachine.cloud(),
-                virtualMachine.owner().get(), remoteKeyPair.privateKey().get(),
-                remoteKeyPair.publicKey(), virtualMachine);
+            new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
+                virtualMachine.cloud(), virtualMachine.owner().get(),
+                remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey(), virtualMachine);
         this.keyPairModelService.save(keyPair);
         return keyPair;
     }

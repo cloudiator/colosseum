@@ -18,9 +18,16 @@
 
 package dtos.conversion.converters;
 
+import com.google.inject.TypeLiteral;
 import dtos.SensorConfigurationsDto;
 import dtos.conversion.AbstractConverter;
+import dtos.conversion.transformers.Transformer;
+import dtos.generic.KeyValue;
+import dtos.generic.KeyValues;
 import models.SensorConfigurations;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank on 17.03.2016.
@@ -33,6 +40,18 @@ public class SensorConfigurationsConverter
     }
 
     @Override public void configure() {
-        binding().fromField("configs").toField("configs");
+        binding(new TypeLiteral<List<KeyValue>>() {
+        }, new TypeLiteral<Map<String, String>>() {
+        }).fromField("configs").toField("configs").withTransformation(
+                new Transformer<List<KeyValue>, Map<String, String>>() {
+                    @Override public Map<String, String> transform(List<KeyValue> tags) {
+                        return KeyValues.to(tags);
+                    }
+
+                    @Override public List<KeyValue> transformReverse(
+                            Map<String, String> stringStringMap) {
+                        return KeyValues.of(stringStringMap);
+                    }
+                });
     }
 }

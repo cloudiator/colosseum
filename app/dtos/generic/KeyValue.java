@@ -16,26 +16,41 @@
  * under the License.
  */
 
-package dtos;
+package dtos.generic;
 
-import dtos.api.Dto;
-import dtos.generic.KeyValue;
-
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
 /**
- * Created by Frank on 17.03.2016.
+ * Created by Frank on 18.03.2016.
  */
-public class SensorConfigurationsDto implements Dto {
+public class KeyValue {
 
-    private List<KeyValue> configs;
+    public KeyValue() {
 
-    public List<KeyValue> getConfigs() {
-        return configs;
     }
 
-    public void setConfigs(List<KeyValue> configs) {
-        this.configs = configs;
+    public KeyValue(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    private String key;
+    private String value;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

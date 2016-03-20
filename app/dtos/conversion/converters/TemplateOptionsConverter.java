@@ -22,6 +22,8 @@ import com.google.inject.TypeLiteral;
 import dtos.TemplateOptionsDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
+import dtos.generic.KeyValue;
+import dtos.generic.KeyValues;
 import models.TemplateOptions;
 
 import java.util.List;
@@ -38,17 +40,17 @@ public class TemplateOptionsConverter
     }
 
     @Override public void configure() {
-        binding(new TypeLiteral<List<TemplateOptionsDto.Tag>>() {
+        binding(new TypeLiteral<List<KeyValue>>() {
         }, new TypeLiteral<Map<String, String>>() {
         }).fromField("tags").toField("tags").withTransformation(
-            new Transformer<List<TemplateOptionsDto.Tag>, Map<String, String>>() {
-                @Override public Map<String, String> transform(List<TemplateOptionsDto.Tag> tags) {
-                    return TemplateOptionsDto.Tags.to(tags);
+            new Transformer<List<KeyValue>, Map<String, String>>() {
+                @Override public Map<String, String> transform(List<KeyValue> tags) {
+                    return KeyValues.to(tags);
                 }
 
-                @Override public List<TemplateOptionsDto.Tag> transformReverse(
+                @Override public List<KeyValue> transformReverse(
                     Map<String, String> stringStringMap) {
-                    return TemplateOptionsDto.Tags.of(stringStringMap);
+                    return KeyValues.of(stringStringMap);
                 }
             });
     }

@@ -106,11 +106,12 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
                 .metricName(metricName)
                 .interval(interval, unit)
                 .sensorConfiguration(configs)
+                .componentId(componentId)
                 .addMonitorContext("component", componentId)
                 .addMonitorContext("monitorinstance", idMonitorInstance).build();
 
         //create a new Monitor
-        controller.create(monitor);
+        monitor = (SensorMonitor) controller.create(monitor);
     }
 
     @Override public List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName, String componentName) {

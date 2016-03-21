@@ -213,22 +213,24 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
 
 
         for (Component component : components) {
-            boolean suitable = false;
+            boolean suitable = true;
+
+
+            if(componentId != null){
+                if(componentId.equals(component.getId())){
+                    suitable = true;
+                } else {
+                    suitable = false;
+                }
+            }
+
 
             if(applicationId != null) {
                 for (ApplicationComponent ac : appComps){
                     if(ac.getComponent().getId().equals(componentId) && ac.getApplication().getId().equals(
                         applicationId)){
-                        suitable = true;
+                        suitable = suitable && true;
                     }
-                }
-            }
-
-
-
-            if(componentId != null){
-                if(componentId.equals(component.getId())){
-                    suitable = suitable && true;
                 }
             }
 

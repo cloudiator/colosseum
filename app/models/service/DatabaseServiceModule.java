@@ -185,6 +185,10 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Schedule>>() {
         });
         //SensorDescription
+        bind(new TypeLiteral<ModelService<SensorConfigurations>>() {
+        }).to(new TypeLiteral<BaseModelService<SensorConfigurations>>() {
+        });
+        //SensorDescription
         bind(new TypeLiteral<ModelService<SensorDescription>>() {
         }).to(new TypeLiteral<BaseModelService<SensorDescription>>() {
         });

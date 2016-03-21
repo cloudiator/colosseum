@@ -67,11 +67,12 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
         controller.delete(monitor);
     }
 
-    @Override public void addSensorMonitor(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit){
+    @Override public void addSensorMonitor(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, Map<String, String> configs){
         SensorMonitor monitor = (new SensorMonitorBuilder())
                 .sensorClassName(className)
                 .metricName(metricName)
                 .interval(interval, unit)
+                .sensorConfiguration(configs)
                 .addMonitorContext("monitorinstance", idMonitorInstance).build();
 
         //create a new Monitor
@@ -99,12 +100,18 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
     }
 
 
-    @Override public void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId){
-        SensorMonitor monitor = (new SensorMonitorBuilder()).sensorClassName(className).metricName(
-            metricName).interval(interval, unit).addMonitorContext("component", componentId).addMonitorContext("monitorinstance", idMonitorInstance).build();
+    @Override public void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId, Map<String, String> configs){
+        SensorMonitor monitor = (new SensorMonitorBuilder())
+                .sensorClassName(className)
+                .metricName(metricName)
+                .interval(interval, unit)
+                .sensorConfiguration(configs)
+                .componentId(componentId)
+                .addMonitorContext("component", componentId)
+                .addMonitorContext("monitorinstance", idMonitorInstance).build();
 
         //create a new Monitor
-        controller.create(monitor);
+        monitor = (SensorMonitor) controller.create(monitor);
     }
 
     @Override public List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName, String componentName) {

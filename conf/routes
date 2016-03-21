@@ -239,6 +239,13 @@ POST          /api/schedule                                       @controllers.S
 PUT           /api/schedule/:id                                   @controllers.ScheduleController.put(id: Long)
 DELETE        /api/schedule/:id                                   @controllers.ScheduleController.delete(id: Long)
 
+#Sensor Configurations
+GET           /api/sensorConfigurations                           @controllers.SensorConfigurationsController.list()
+GET           /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.get(id: Long)
+POST          /api/sensorConfigurations                           @controllers.SensorConfigurationsController.post()
+PUT           /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.put(id: Long)
+DELETE        /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.delete(id: Long)
+
 #Sensor Description
 GET           /api/sensorDescription                              @controllers.SensorDescriptionController.list()
 GET           /api/sensorDescription/:id                          @controllers.SensorDescriptionController.get(id: Long)

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -19,39 +19,39 @@
 package dtos.conversion.converters;
 
 import com.google.inject.TypeLiteral;
-import dtos.TemplateOptionsDto;
+import dtos.SensorConfigurationsDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.TemplateOptions;
+import models.SensorConfigurations;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by daniel on 06.10.15.
+ * Created by Frank on 17.03.2016.
  */
-public class TemplateOptionsConverter
-    extends AbstractConverter<TemplateOptions, TemplateOptionsDto> {
+public class SensorConfigurationsConverter
+        extends AbstractConverter<SensorConfigurations, SensorConfigurationsDto> {
 
-    protected TemplateOptionsConverter() {
-        super(TemplateOptions.class, TemplateOptionsDto.class);
+    protected SensorConfigurationsConverter() {
+        super(SensorConfigurations.class, SensorConfigurationsDto.class);
     }
 
     @Override public void configure() {
         binding(new TypeLiteral<List<KeyValue>>() {
         }, new TypeLiteral<Map<String, String>>() {
-        }).fromField("tags").toField("tags").withTransformation(
-            new Transformer<List<KeyValue>, Map<String, String>>() {
-                @Override public Map<String, String> transform(List<KeyValue> tags) {
-                    return KeyValues.to(tags);
-                }
+        }).fromField("configs").toField("configs").withTransformation(
+                new Transformer<List<KeyValue>, Map<String, String>>() {
+                    @Override public Map<String, String> transform(List<KeyValue> tags) {
+                        return KeyValues.to(tags);
+                    }
 
-                @Override public List<KeyValue> transformReverse(
-                    Map<String, String> stringStringMap) {
-                    return KeyValues.of(stringStringMap);
-                }
-            });
+                    @Override public List<KeyValue> transformReverse(
+                            Map<String, String> stringStringMap) {
+                        return KeyValues.of(stringStringMap);
+                    }
+                });
     }
 }

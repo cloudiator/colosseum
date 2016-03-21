@@ -30,6 +30,7 @@ import play.Logger;
 import play.Play;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -305,17 +306,23 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     private void addMonitorToAgent(AgentCommunicator ac, Long monitorInstanceId, RawMonitor monitor){
         String sMonitorInstanceId = String.valueOf(monitorInstanceId);
+        Map<String, String> configs = null;
+        if(monitor.getSensorConfigurations().isPresent()) {
+            final SensorConfigurations sensorConfigurations = monitor.getSensorConfigurations().get();
+            configs = sensorConfigurations.configs();
+        }
+
 
         if(monitor.getSensorDescription().isVmSensor()) {
             ac.addSensorMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
                 monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit());
+                monitor.getSchedule().getTimeUnit(), configs);
         } else {
             String sComponentId = String.valueOf(monitor.getComponent().getId());
 
             ac.addSensorMonitorForComponent(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
                 monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit(), sComponentId);
+                monitor.getSchedule().getTimeUnit(), sComponentId, configs);
         }
     }
 

@@ -21,13 +21,14 @@ package models;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
+import play.Play;
 
 /**
  * Created by daniel on 04.11.14.
  */
 public enum OperatingSystemVendorType {
 
-    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, ContainerType.DOCKER),
+    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, getDefaultNIXContainer()),
     WINDOWS("windows", false, OSFamily.WINDOWS, 5985, OperatingSystem.WINDOWS_7,
         ContainerType.PLAIN);
 
@@ -70,7 +71,15 @@ public enum OperatingSystemVendorType {
     }
 
     public ContainerType containerType() {
+
         return containerType;
+    }
+
+    private static ContainerType getDefaultNIXContainer() {
+        if(Play.application().configuration().getBoolean("colosseum.installer.linux.lance.docker")) {
+            return ContainerType.DOCKER;
+        }
+        return ContainerType.PLAIN;
     }
 
 }

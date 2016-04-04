@@ -76,7 +76,7 @@ public enum OperatingSystemVendorType {
     }
 
     private static ContainerType getDefaultNIXContainer() {
-        if(Play.application().configuration().getBoolean("colosseum.installer.linux.lance.docker")) {
+        if(Play.application().configuration().getBoolean("colosseum.installer.linux.lance.docker.install.flag")) {
             return ContainerType.DOCKER;
         }
         return ContainerType.PLAIN;

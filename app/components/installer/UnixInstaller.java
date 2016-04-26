@@ -54,6 +54,7 @@ public class UnixInstaller extends AbstractInstaller {
         super(remoteConnection, virtualMachine);
         this.tenant = tenant;
 
+        //TODO: maybe use a common installation directory, e.g. /opt/cloudiator
         if (virtualMachine.loginName().get().equals("root")) {
             this.homeDir = "/root";
         } else {

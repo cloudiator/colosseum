@@ -43,17 +43,22 @@ public class UnixInstaller extends AbstractInstaller {
     private static final String DOCKER_FIX_MTU_DOWNLOAD = Play.application().configuration()
         .getString("colosseum.installer.linux.lance.docker.mtu.download");
     private static final String DOCKER_RETRY_INSTALL = "docker_retry.sh";
-    private static final boolean KAIROS_REQUIRED =
-        Play.application().configuration().getBoolean("colosseum.installer.linux.kairosdb.install.flag");
-    private static final boolean DOCKER_REQUIRED =
-        Play.application().configuration().getBoolean("colosseum.installer.linux.lance.docker.install.flag");
+    private static final boolean KAIROS_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.linux.kairosdb.install.flag");
+    private static final boolean DOCKER_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.linux.lance.docker.install.flag");
     private final Tenant tenant;
 
     public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
         this.tenant = tenant;
-        this.homeDir = "/home/" + virtualMachine.loginName().get();
+
+        if (virtualMachine.loginName().get().equals("root")) {
+            this.homeDir = "/root";
+        } else {
+            this.homeDir = "/home/" + virtualMachine.loginName().get();
+        }
     }
 
     @Override public void initSources() {

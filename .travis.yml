@@ -6,3 +6,5 @@ scala:
 script:
   - sbt test
   - sbt publish-local
+after_success:
+  - util/travis_build_number.sh

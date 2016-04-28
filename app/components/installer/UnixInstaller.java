@@ -137,7 +137,7 @@ public class UnixInstaller extends AbstractInstaller {
                     + " --strip-components=1");
 
             this.remoteConnection.executeCommand(
-                " sudo su -c \"(export PATH="+ this.homeDir +"/jre8/bin/:\"$PATH;nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start)");
+                " sudo su -c \"(export PATH=\""+ this.homeDir +"/jre8/bin/:\"$PATH;nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start)\"");
 
             LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
         }

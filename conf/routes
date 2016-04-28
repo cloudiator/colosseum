@@ -5,6 +5,9 @@
 # Home page
 GET           /                                                   @controllers.CloudController.list()
 
+# UtilityController
+GET           /version                                            @controllers.UtilityController.version()
+
 #Auth for browser
 GET           /login                                              @controllers.SecurityController.login()
 POST          /login                                              @controllers.SecurityController.authenticate()

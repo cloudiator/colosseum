@@ -15,7 +15,7 @@ if [ "$TRAVIS_REPO_SLUG" == "cloudiator/colosseum" ] && [ "$TRAVIS_PULL_REQUEST"
   fi
 
   # copy .travis file to temp location
-  cp .travis $HOME/.travis
+  cp conf/.travis $HOME/.travis
 
   # setup a new clone
   cd $HOME
@@ -27,11 +27,11 @@ if [ "$TRAVIS_REPO_SLUG" == "cloudiator/colosseum" ] && [ "$TRAVIS_PULL_REQUEST"
 
   # in the new clone, copy the temp .travis file from above
   cd clone
-  rm -f .travis
-  cp $HOME/.travis .
+  rm -f conf/.travis
+  cp $HOME/.travis conf/
 
   # commit the .travis file change
-  git add .
+  git add conf/.travis
   git commit -m "[ci skip] Latest travis build number on successful build $TRAVIS_BUILD_NUMBER auto-pushed to repository."
   git push -q origin master > /dev/null
 

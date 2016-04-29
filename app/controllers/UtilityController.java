@@ -20,7 +20,7 @@ public class UtilityController extends Controller {
 
     public Result version() {
 
-        File file = new File(".travis");
+        File file = new File("conf/.travis");
         try {
             //read version from file
             String version = Files.readFirstLine(file, Charset.forName("UTF-8"));

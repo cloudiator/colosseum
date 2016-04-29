@@ -8,7 +8,7 @@ if [ "$TRAVIS_REPO_SLUG" == "cloudiator/colosseum" ] && \
   echo "Writing travis build number..."
   echo "Travis build number is $TRAVIS_BUILD_NUMBER"
 
-  echo $TRAVIS_BUILD_NUMBER > .travis
+  echo $TRAVIS_BUILD_NUMBER > conf/.travis
 
   echo "Writing travis build number finished..."
 

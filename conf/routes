@@ -7,6 +7,7 @@ GET           /                                                   @controllers.C
 
 # UtilityController
 GET           /version                                            @controllers.UtilityController.version()
+GET           /configuration                                      @controllers.UtilityController.configuration()
 
 #Auth for browser
 GET           /login                                              @controllers.SecurityController.login()

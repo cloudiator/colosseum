@@ -67,11 +67,11 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
             .newServiceBuilder(cloudCredential.getCloud().api().getInternalProviderName())
             .endpoint(cloudCredential.getCloud().getEndpoint().orElse(null))
             .credentials(cloudCredential.getUser(), cloudCredential.getSecret()).properties(
-                PropertiesBuilder.newBuilder()
-                    .putProperties(cloudCredential.getCloud().properties()).build())
-            .loggingModule(new SwordLoggingModule()).nodeGroup(getNodeGroup()).build(),
-            cloudCredential.getCloud().getUuid(), cloudCredential.getUuid(), cloudModelService,
-            cloudCredentialModelService);
+                PropertiesBuilder.newBuilder().putProperties(
+                    new CompositeCloudPropertyProvider(cloudCredential.getCloud()).properties())
+                    .build()).loggingModule(new SwordLoggingModule()).nodeGroup(getNodeGroup())
+            .build(), cloudCredential.getCloud().getUuid(), cloudCredential.getUuid(),
+            cloudModelService, cloudCredentialModelService);
     }
 
 }

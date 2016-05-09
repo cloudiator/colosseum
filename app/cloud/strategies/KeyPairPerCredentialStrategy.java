@@ -20,6 +20,7 @@ package cloud.strategies;
 
 import cloud.CloudService;
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import models.KeyPair;
 import models.VirtualMachine;
@@ -32,7 +33,7 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 17.12.15.
  */
-public class KeyPairPerCredentialStrategy extends AbstractKeyPairStrategy {
+@Singleton public class KeyPairPerCredentialStrategy extends AbstractKeyPairStrategy {
 
     private final KeyPairModelService keyPairModelService;
 
@@ -54,15 +55,15 @@ public class KeyPairPerCredentialStrategy extends AbstractKeyPairStrategy {
             checkState(virtualMachine.owner().isPresent());
 
             de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                keyPairService.create(virtualMachine.getUuid());
+                keyPairService.create(virtualMachine.owner().get().getUuid());
 
             checkState(remoteKeyPair.privateKey().isPresent(),
                 "Expected remote keypair to have a private key, but it has none.");
 
             KeyPair keyPair =
-                new KeyPair(remoteKeyPair.id(), remoteKeyPair.id(), virtualMachine.cloud(),
-                    virtualMachine.owner().get(), remoteKeyPair.privateKey().get(),
-                    remoteKeyPair.publicKey(), null);
+                new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
+                    virtualMachine.cloud(), virtualMachine.owner().get(),
+                    remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey(), null);
             this.keyPairModelService.save(keyPair);
             return keyPair;
         }

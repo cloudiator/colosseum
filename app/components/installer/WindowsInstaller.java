@@ -42,6 +42,8 @@ public class WindowsInstaller extends AbstractInstaller {
     private static final String VISOR_BAT = "startVisor.bat";
     private static final String KAIROSDB_BAT = "startKairos.bat";
     private static final String LANCE_BAT = "startLance.bat";
+    private static final boolean KAIROS_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.windows.kairosdb.install.flag");
     private static final String JAVA_DOWNLOAD =
         Play.application().configuration().getString("colosseum.installer.windows.java.download");
     private static final String SEVEN_ZIP_DOWNLOAD =
@@ -80,10 +82,13 @@ public class WindowsInstaller extends AbstractInstaller {
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('"
             + WindowsInstaller.VISOR_DOWNLOAD + "','" + this.homeDir + "\\"
             + WindowsInstaller.VISOR_JAR + "')");
-        //download kairosDB
-        this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('"
-            + WindowsInstaller.KAIROSDB_DOWNLOAD + "','" + this.homeDir + "\\"
-            + WindowsInstaller.KAIROSDB_ARCHIVE + "')");
+        if (KAIROS_REQUIRED) {
+            //download kairosDB
+            this.sourcesList.add(
+                "powershell -command (new-object System.Net.WebClient).DownloadFile('"
+                    + WindowsInstaller.KAIROSDB_DOWNLOAD + "','" + this.homeDir + "\\"
+                    + WindowsInstaller.KAIROSDB_ARCHIVE + "')");
+        }
         //lance
         this.sourcesList.add("powershell -command (new-object System.Net.WebClient).DownloadFile('"
             + WindowsInstaller.LANCE_DOWNLOAD + "','" + this.homeDir + "\\"
@@ -167,43 +172,45 @@ public class WindowsInstaller extends AbstractInstaller {
 
     @Override public void installKairosDb() throws RemoteException {
 
-        LOGGER.debug("Extract, setup and start KairosDB...");
-        //extract kairosdb
-        this.remoteConnection.executeCommand(
-            "powershell -command " + this.homeDir + "\\" + WindowsInstaller.SEVEN_ZIP_DIR + "\\"
-                + WindowsInstaller.SEVEN_ZIP_EXE + " e " + this.homeDir + "\\"
-                + WindowsInstaller.KAIROSDB_ARCHIVE + " -o" + this.homeDir);
-        String kairosDbTar = WindowsInstaller.KAIROSDB_ARCHIVE.replace(".gz", "");
-        this.remoteConnection.executeCommand(
-            "powershell -command " + this.homeDir + "\\" + WindowsInstaller.SEVEN_ZIP_DIR + "\\"
-                + WindowsInstaller.SEVEN_ZIP_EXE + " x " + this.homeDir + "\\" + kairosDbTar + " -o"
-                + this.homeDir);
+        if (KAIROS_REQUIRED) {
+            LOGGER.debug("Extract, setup and start KairosDB...");
+            //extract kairosdb
+            this.remoteConnection.executeCommand(
+                "powershell -command " + this.homeDir + "\\" + WindowsInstaller.SEVEN_ZIP_DIR + "\\"
+                    + WindowsInstaller.SEVEN_ZIP_EXE + " e " + this.homeDir + "\\"
+                    + WindowsInstaller.KAIROSDB_ARCHIVE + " -o" + this.homeDir);
+            String kairosDbTar = WindowsInstaller.KAIROSDB_ARCHIVE.replace(".gz", "");
+            this.remoteConnection.executeCommand(
+                "powershell -command " + this.homeDir + "\\" + WindowsInstaller.SEVEN_ZIP_DIR + "\\"
+                    + WindowsInstaller.SEVEN_ZIP_EXE + " x " + this.homeDir + "\\" + kairosDbTar
+                    + " -o" + this.homeDir);
 
-        //set firewall rule
-        this.remoteConnection.executeCommand(
-            "powershell -command netsh advfirewall firewall add rule name = 'Kairos Port' dir = in action = allow protocol=TCP localport="
-                + Play.application().configuration()
-                .getString("colosseum.installer.abstract.visor.config.kairosPort"));
+            //set firewall rule
+            this.remoteConnection.executeCommand(
+                "powershell -command netsh advfirewall firewall add rule name = 'Kairos Port' dir = in action = allow protocol=TCP localport="
+                    + Play.application().configuration()
+                    .getString("colosseum.installer.abstract.visor.config.kairosPort"));
 
-        //create a .bat file to start kairosDB, because it is not possible to pass schtasks paramters using overthere
-        String startCommand =
-            this.homeDir + "\\" + WindowsInstaller.KAIRROSDB_DIR + "\\bin\\kairosdb.bat run ";
-        this.remoteConnection
-            .writeFile(this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT, startCommand, false);
+            //create a .bat file to start kairosDB, because it is not possible to pass schtasks paramters using overthere
+            String startCommand =
+                this.homeDir + "\\" + WindowsInstaller.KAIRROSDB_DIR + "\\bin\\kairosdb.bat run ";
+            this.remoteConnection
+                .writeFile(this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT, startCommand,
+                    false);
 
-        //start kairosdb in backround
-        String kairosJobId = "kairosDB";
-        this.remoteConnection.executeCommand("schtasks.exe /create " +
-            "/st 00:00  " +
-            "/sc ONCE " +
-            "/ru " + this.user + " " +
-            "/rp " + this.password + " " +
-            "/tn " + kairosJobId + " " +
-            "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
-        this.waitForSchtaskCreation();
-        this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
-        LOGGER.debug("KairosDB successfully started!");
-
+            //start kairosdb in backround
+            String kairosJobId = "kairosDB";
+            this.remoteConnection.executeCommand("schtasks.exe /create " +
+                "/st 00:00  " +
+                "/sc ONCE " +
+                "/ru " + this.user + " " +
+                "/rp " + this.password + " " +
+                "/tn " + kairosJobId + " " +
+                "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
+            this.waitForSchtaskCreation();
+            this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
+            LOGGER.debug("KairosDB successfully started!");
+        }
 
     }
 

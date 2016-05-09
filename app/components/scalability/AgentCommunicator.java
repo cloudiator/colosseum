@@ -20,9 +20,11 @@ package components.scalability;
 
 
 import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
 import models.MonitorInstance;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,27 +32,27 @@ import java.util.concurrent.TimeUnit;
  */
 public interface AgentCommunicator {
 
-    void addMonitor(String idMonitorInstance, String className, String metricName, long interval,
-        TimeUnit unit);
+    void addSensorMonitor(String idMonitorInstance, String className, String metricName, long interval,
+        TimeUnit unit, Map<String, String> configs);
 
-    void removeMonitor(String className, String metricName, long interval, TimeUnit unit);
+    void removeSensorMonitor(String className, String metricName, long interval, TimeUnit unit);
 
-    void removeMonitorForComponent(String className, String metricName, long interval,
+    void removeSensorMonitorForComponent(String className, String metricName, long interval,
         TimeUnit unit, String componentId);
 
-    void removeMonitor(Monitor monitor);
+    void removeSensorMonitor(SensorMonitor monitor);
 
-    void addMonitorForComponent(String idMonitorInstance, String className, String metricName,
-        long interval, TimeUnit unit, String componentId);
+    void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName,
+                                      long interval, TimeUnit unit, String componentId, Map<String, String> configs);
 
-    List<Monitor> getMonitorWithSameValues(String className, String metricName,
-        String componentName);
+    List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName,
+                                                       String componentName);
 
-    void updateMonitor(MonitorInstance mi);
+    void updateSensorMonitor(MonitorInstance mi);
 
     boolean hasSameContext(Monitor mon, String contextKey, String contextValue);
 
-    Monitor copyValueFromMonitorInstance(Monitor m, MonitorInstance mi);
+    SensorMonitor copyValueFromMonitorInstance(SensorMonitor m, MonitorInstance mi);
 
     int getPort();
 

@@ -57,5 +57,6 @@ public class ApplicationComponentConverter
         binding(Long.class, VirtualMachineTemplate.class).fromField("virtualMachineTemplate")
             .toField("virtualMachineTemplate")
             .withTransformation(new IdToModelTransformer<>(virtualMachineTemplateModelService));
+        binding().fromField("containerType").toField("containerType");
     }
 }

@@ -145,7 +145,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
      * if not.
      * @throws java.lang.NullPointerException if the given id is null.
      */
-    @Nullable private T loadEntity(final Long id) {
+    @Nullable final protected T loadEntity(final Long id) {
         checkNotNull(id);
         T t = modelService.getById(id);
         if (filter().isPresent()) {

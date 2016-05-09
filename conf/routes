@@ -5,6 +5,10 @@
 # Home page
 GET           /                                                   @controllers.CloudController.list()
 
+# UtilityController
+GET           /version                                            @controllers.UtilityController.version()
+GET           /configuration                                      @controllers.UtilityController.configuration()
+
 #Auth for browser
 GET           /login                                              @controllers.SecurityController.login()
 POST          /login                                              @controllers.SecurityController.authenticate()
@@ -171,6 +175,7 @@ DELETE        /api/ip/:id                                         @controllers.I
 #KeyPairs
 GET           /api/keyPair                                        @controllers.KeyPairController.list()
 GET           /api/keyPair/:id                                    @controllers.KeyPairController.get(id: Long)
+GET           /keyPair/:id/download                               @controllers.KeyPairController.download(id: Long)
 POST          /api/keyPair                                        @controllers.KeyPairController.post()
 PUT           /api/keyPair/:id                                    @controllers.KeyPairController.put(id: Long)
 DELETE        /api/keyPair/:id                                    @controllers.KeyPairController.delete(id: Long)
@@ -237,6 +242,13 @@ GET           /api/schedule/:id                                   @controllers.S
 POST          /api/schedule                                       @controllers.ScheduleController.post()
 PUT           /api/schedule/:id                                   @controllers.ScheduleController.put(id: Long)
 DELETE        /api/schedule/:id                                   @controllers.ScheduleController.delete(id: Long)
+
+#Sensor Configurations
+GET           /api/sensorConfigurations                           @controllers.SensorConfigurationsController.list()
+GET           /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.get(id: Long)
+POST          /api/sensorConfigurations                           @controllers.SensorConfigurationsController.post()
+PUT           /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.put(id: Long)
+DELETE        /api/sensorConfigurations/:id                       @controllers.SensorConfigurationsController.delete(id: Long)
 
 #Sensor Description
 GET           /api/sensorDescription                              @controllers.SensorDescriptionController.list()

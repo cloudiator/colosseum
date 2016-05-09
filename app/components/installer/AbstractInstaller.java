@@ -28,8 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * todo clean up class, do better logging
@@ -129,11 +128,14 @@ abstract class AbstractInstaller implements InstallApi {
         String homeDomainIp = inetAddress.getHostAddress();
         */
 
-        String config = "executionThreads = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.executionThreads") + "\n" +
-            "reportingInterval = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingInterval") + "\n" +
-            "telnetPort = " + Play.application().configuration()
+        checkState(virtualMachine.providerId().isPresent());
+
+
+        return "executionThreads = " + Play.application().configuration()
+            .getString("colosseum.installer.abstract.visor.config.executionThreads") +
+            "\n" + "reportingInterval = " + Play.application().configuration()
+            .getString("colosseum.installer.abstract.visor.config.reportingInterval") +
+            "\n" + "telnetPort = " + Play.application().configuration()
             .getString("colosseum.installer.abstract.visor.config.telnetPort") + "\n" +
             "restHost = " + Play.application().configuration()
             .getString("colosseum.installer.abstract.visor.config.restHost") + "\n" +
@@ -144,10 +146,10 @@ abstract class AbstractInstaller implements InstallApi {
             "kairosPort = " + Play.application().configuration()
             .getString("colosseum.installer.abstract.visor.config.kairosPort") + "\n" +
             "reportingModule = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingModule");
-
-
-        return config;
+            .getString("colosseum.installer.abstract.visor.config.reportingModule") +
+            "\n" + "chukwaUrl = " + Play.application().configuration()
+            .getString("colosseum.installer.abstract.visor.config.chukwaUrl") + "\n" +
+            "chukwaVmId = " + virtualMachine.providerId().get();
 
     }
 

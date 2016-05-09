@@ -42,6 +42,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
+import models.service.PortProvidedService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
 
@@ -54,6 +55,8 @@ import static com.google.common.base.Preconditions.checkState;
  * Created by daniel on 03.08.15.
  */
 public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
+
+
 
     @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,

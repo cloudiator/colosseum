@@ -79,10 +79,10 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
         checkArgument(location.isAssignable(), "location not assignable");
 
-        //check that all cloudprovider ids are set
-        checkArgument(location.cloudProviderId().isPresent(), "location not bound");
-        checkArgument(hardware.cloudProviderId().isPresent(), "hardware not bound");
-        checkArgument(image.cloudProviderId().isPresent(), "image not bound");
+        //check that all sword ids are set
+        checkArgument(location.swordId().isPresent(), "location not bound");
+        checkArgument(hardware.swordId().isPresent(), "hardware not bound");
+        checkArgument(image.swordId().isPresent(), "image not bound");
 
         this.name = name;
         this.image = image;
@@ -102,15 +102,15 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public String imageId() {
-        return image.cloudProviderId().get();
+        return image.swordId().get();
     }
 
     @Override public String hardwareFlavorId() {
-        return hardware.cloudProviderId().get();
+        return hardware.swordId().get();
     }
 
     @Override public String locationId() {
-        return location.cloudProviderId().get();
+        return location.swordId().get();
     }
 
     @Override public Optional<TemplateOptions> templateOptions() {

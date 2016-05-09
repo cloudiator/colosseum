@@ -19,21 +19,23 @@
 package dtos;
 
 import dtos.api.Dto;
+import dtos.generic.KeyValue;
 
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.util.*;
 
 /**
  * Created by daniel on 06.10.15.
  */
 public class TemplateOptionsDto implements Dto {
 
-    private Map<String, String> tags;
+    private List<KeyValue> tags;
 
-    public Map<String, String> getTags() {
+    public List<KeyValue> getTags() {
         return tags;
     }
 
-    public void setTags(Map<String, String> tags) {
+    public void setTags(List<KeyValue> tags) {
         this.tags = tags;
     }
 }

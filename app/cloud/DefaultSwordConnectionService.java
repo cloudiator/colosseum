@@ -24,6 +24,8 @@ import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
+import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 02.09.15.
@@ -31,6 +33,7 @@ import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
 public class DefaultSwordConnectionService implements SwordConnectionService {
 
     private final ConnectionService delegate;
+    private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_REMOTE);
 
     public DefaultSwordConnectionService(ConnectionService delegate) {
         this.delegate = delegate;
@@ -39,6 +42,11 @@ public class DefaultSwordConnectionService implements SwordConnectionService {
     @Override
     public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily,
         LoginCredential loginCredential) throws RemoteException {
+
+        LOGGER.info(String.format(
+            "Creating RemoteConnection to %s, targeting operating system %s and using credentials %s",
+            hostAndPort, osFamily, loginCredential));
+
         return delegate.getRemoteConnection(hostAndPort, osFamily, loginCredential);
     }
 }

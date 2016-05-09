@@ -30,6 +30,7 @@ import play.Logger;
 import play.Play;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -164,14 +165,14 @@ public class ScalingEngineImpl implements ScalingEngine {
                 AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
                     ipAddress, AGENT_PORT);
 
-                List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(desc.getClassName(), desc.getMetricName(), null /*TODO*/);
+                List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors = ac.getSensorMonitorWithSameValues(desc.getClassName(), desc.getMetricName(), null /*TODO*/);
 
                 if (!monitors.isEmpty()) {
                 /*TODO: check for interval: if(hertz(monitor.getInterval())... */
-                    for (de.uniulm.omi.cloudiator.visor.client.entities.Monitor agentMonitor : monitors) {
+                    for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor agentMonitor : monitors) {
                         LOGGER.info("Delete Raw Monitor: " + monitorId);
 
-                        ac.removeMonitor(agentMonitor);
+                        ac.removeSensorMonitor(agentMonitor);
                     }
                 }
 
@@ -282,12 +283,12 @@ public class ScalingEngineImpl implements ScalingEngine {
             AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
                 fc.getPublicAddressOfVM(vm), AGENT_PORT);
 
-            List<de.uniulm.omi.cloudiator.visor.client.entities.Monitor> monitors = ac.getMonitorWithSameValues(monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), null);
+            List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors = ac.getSensorMonitorWithSameValues(monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), null);
 
             if (!monitors.isEmpty()) {
                 /*TODO: check for interval: if(hertz(monitor.getInterval())... */
-                for(de.uniulm.omi.cloudiator.visor.client.entities.Monitor _monitor : monitors) {
-                    ac.removeMonitor(_monitor);
+                for(de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor _monitor : monitors) {
+                    ac.removeSensorMonitor(_monitor);
                 }
             }
 
@@ -305,17 +306,23 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     private void addMonitorToAgent(AgentCommunicator ac, Long monitorInstanceId, RawMonitor monitor){
         String sMonitorInstanceId = String.valueOf(monitorInstanceId);
+        Map<String, String> configs = null;
+        if(monitor.getSensorConfigurations().isPresent()) {
+            final SensorConfigurations sensorConfigurations = monitor.getSensorConfigurations().get();
+            configs = sensorConfigurations.configs();
+        }
+
 
         if(monitor.getSensorDescription().isVmSensor()) {
-            ac.addMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
+            ac.addSensorMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
                 monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit());
+                monitor.getSchedule().getTimeUnit(), configs);
         } else {
             String sComponentId = String.valueOf(monitor.getComponent().getId());
 
-            ac.addMonitorForComponent(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
+            ac.addSensorMonitorForComponent(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
                 monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit(), sComponentId);
+                monitor.getSchedule().getTimeUnit(), sComponentId, configs);
         }
     }
 
@@ -324,7 +331,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
                 mi.getIpAddress().getIp(), AGENT_PORT);
 
-            ac.updateMonitor(mi);
+            ac.updateSensorMonitor(mi);
         }
     }
 

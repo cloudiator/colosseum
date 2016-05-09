@@ -49,6 +49,10 @@ public abstract class ResourceWithCredential extends BaseLocationScoped implemen
         return SlashEncodedId.of(credential(), cloud(), resource).userId();
     }
 
+    @Override public String providerId() {
+        return resource.providerId();
+    }
+
     @Override public String cloudId() {
         return SlashEncodedId.of(credential(), cloud(), resource).cloudId();
     }
@@ -57,7 +61,7 @@ public abstract class ResourceWithCredential extends BaseLocationScoped implemen
         return resource.name();
     }
 
-    @Override public String cloudProviderId() {
+    @Override public String swordId() {
         return SlashEncodedId.of(credential(), cloud(), resource).swordId();
     }
 

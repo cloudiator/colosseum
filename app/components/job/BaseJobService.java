@@ -30,6 +30,7 @@ import models.Instance;
 import models.Tenant;
 import models.VirtualMachine;
 import models.service.ModelService;
+import models.service.PortProvidedService;
 import models.service.RemoteModelService;
 
 /**
@@ -45,17 +46,20 @@ import models.service.RemoteModelService;
     private final KeyPairStrategy keyPairStrategy;
     private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory
         remoteConnectionStrategyFactory;
+    private final PortProvidedService portProvidedService;
 
     @Inject public BaseJobService(RemoteModelService<VirtualMachine> virtualMachineModelService,
         CloudService cloudService, ModelService<Tenant> tenantModelService,
         RemoteModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy,
-        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory) {
+        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory,
+        PortProvidedService portProvidedService) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
         this.instanceModelService = instanceModelService;
         this.keyPairStrategy = keyPairStrategy;
         this.remoteConnectionStrategyFactory = remoteConnectionStrategyFactory;
+        this.portProvidedService = portProvidedService;
         this.colosseumComputeService = cloudService.computeService();
         this.jobQueue = jobQueue;
     }
@@ -63,7 +67,7 @@ import models.service.RemoteModelService;
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
         this.jobQueue.add(new CreateVirtualMachineJob(virtualMachine, virtualMachineModelService,
             tenantModelService, colosseumComputeService, tenant, keyPairStrategy,
-            remoteConnectionStrategyFactory));
+            remoteConnectionStrategyFactory, portProvidedService));
     }
 
     @Override public void newInstanceJob(Instance instance, Tenant tenant) {

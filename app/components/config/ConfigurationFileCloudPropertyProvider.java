@@ -20,8 +20,10 @@ package components.config;
 
 import cloud.CloudPropertyProvider;
 import com.typesafe.config.ConfigValue;
+import play.Configuration;
 import play.Play;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,8 +34,16 @@ import java.util.Set;
 public class ConfigurationFileCloudPropertyProvider implements CloudPropertyProvider {
 
     @Override public Map<String, Object> properties() {
-        final Set<Map.Entry<String, ConfigValue>> entries =
-            Play.application().configuration().getConfig("colosseum.cloud.properties").entrySet();
+
+        final Configuration config =
+            Play.application().configuration().getConfig("colosseum.cloud.properties");
+
+        if (config == null) {
+            return Collections.emptyMap();
+        }
+
+        final Set<Map.Entry<String, ConfigValue>> entries = config.entrySet();
+        
         final Map<String, Object> properties = new HashMap<>(entries.size());
 
         for (Map.Entry<String, ConfigValue> entry : entries) {

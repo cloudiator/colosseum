@@ -18,6 +18,7 @@
 
 package models;
 
+import cloud.CloudPropertyProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import models.generic.Model;
@@ -32,7 +33,7 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
-@Entity public class Cloud extends Model {
+@Entity public class Cloud extends Model implements CloudPropertyProvider {
 
     @Column(unique = true, nullable = false, updatable = false) private String name;
     @Nullable @Column(nullable = true) private String endpoint;
@@ -96,8 +97,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.cloudProperties.add(cloudProperty);
     }
 
-    public Map<String, String> properties() {
-        Map<String, String> resultMap = Maps.newHashMapWithExpectedSize(cloudProperties.size());
+    @Override public Map<String, Object> properties() {
+        Map<String, Object> resultMap = Maps.newHashMapWithExpectedSize(cloudProperties.size());
         for (CloudProperty cloudProperty : cloudProperties) {
             resultMap.put(cloudProperty.key(), cloudProperty.value());
         }

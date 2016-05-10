@@ -57,24 +57,29 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
         //check that the credential is correct
         checkArgument(cloudCredential.getCloud().equals(cloud), "cloud credential not in cloud");
-        checkArgument(image.cloudCredentials().contains(cloudCredential), "image not allowed for user");
-        checkArgument(location.cloudCredentials().contains(cloudCredential), "location not allowed for user");
-        checkArgument(hardware.cloudCredentials().contains(cloudCredential), "hardware not allowed for user");
+        checkArgument(image.cloudCredentials().contains(cloudCredential),
+            "image not allowed for user");
+        checkArgument(location.cloudCredentials().contains(cloudCredential),
+            "location not allowed for user");
+        checkArgument(hardware.cloudCredentials().contains(cloudCredential),
+            "hardware not allowed for user");
 
         //check that the location is correct
         if (image.location().isPresent()) {
-            checkArgument(location.hierachy().contains(image.location().get()), "image not available in location");
+            checkArgument(location.hierachy().contains(image.location().get()),
+                "image not available in location");
         }
         if (hardware.location().isPresent()) {
-            checkArgument(location.hierachy().contains(hardware.location().get()), "hardware not available in location");
+            checkArgument(location.hierachy().contains(hardware.location().get()),
+                "hardware not available in location");
         }
 
         checkArgument(location.isAssignable(), "location not assignable");
 
-        //check that all cloudprovider ids are set
-        checkArgument(location.cloudProviderId().isPresent(), "location not bound");
-        checkArgument(hardware.cloudProviderId().isPresent(), "hardware not bound");
-        checkArgument(image.cloudProviderId().isPresent(), "image not bound");
+        //check that all sword ids are set
+        checkArgument(location.swordId().isPresent(), "location not bound");
+        checkArgument(hardware.swordId().isPresent(), "hardware not bound");
+        checkArgument(image.swordId().isPresent(), "image not bound");
 
         this.image = image;
         this.hardware = hardware;
@@ -89,15 +94,15 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public String imageId() {
-        return image.cloudProviderId().get();
+        return image.swordId().get();
     }
 
     @Override public String hardwareFlavorId() {
-        return hardware.cloudProviderId().get();
+        return hardware.swordId().get();
     }
 
     @Override public String locationId() {
-        return location.cloudProviderId().get();
+        return location.swordId().get();
     }
 
     @Override public Optional<TemplateOptions> templateOptions() {

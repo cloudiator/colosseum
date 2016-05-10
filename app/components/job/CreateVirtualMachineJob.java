@@ -26,6 +26,7 @@ import cloud.strategies.KeyPairStrategy;
 import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
+import components.installer.ToolPorts;
 import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
@@ -35,11 +36,9 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
 import models.*;
 import models.service.ModelService;
+import models.service.PortProvidedService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -50,12 +49,14 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
     private final KeyPairStrategy keyPairStrategy;
     private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory;
+    private final PortProvidedService portProvidedService;
 
     public CreateVirtualMachineJob(VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
         KeyPairStrategy keyPairStrategy,
-        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory) {
+        RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory,
+        PortProvidedService portProvidedService) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(keyPairStrategy);
@@ -63,6 +64,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
         this.keyPairStrategy = keyPairStrategy;
         this.remoteConnectionFactory = remoteConnectionFactory;
+        this.portProvidedService = portProvidedService;
     }
 
     @Override public boolean canStart() {
@@ -95,7 +97,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 if (keyPairOptional.isPresent()) {
                     templateOptionsBuilder.keyPairName(keyPairOptional.get().name());
                 }
-                templateOptionsBuilder.inboundPorts(RequiredPorts.inBoundPorts());
+                templateOptionsBuilder.inboundPorts(ToolPorts.inBoundPorts());
+                templateOptionsBuilder.inboundPorts(portProvidedService.allProvidedPorts());
                 if (virtualMachine.templateOptions().isPresent()) {
                     templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());
                 }
@@ -117,7 +120,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
             VirtualMachine virtualMachine = getT();
             // set values to the model
             virtualMachine.bindRemoteId(cloudVirtualMachine.id());
-            virtualMachine.bindCloudProviderId(cloudVirtualMachine.cloudProviderId());
+            virtualMachine
+                .bindProviderIds(cloudVirtualMachine.swordId(), cloudVirtualMachine.providerId());
             for (String ip : cloudVirtualMachine.privateAddresses()) {
                 virtualMachine.addIpAddress(new IpAddress(virtualMachine, ip, IpType.PRIVATE));
             }
@@ -174,23 +178,5 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
-    }
-
-    /**
-     * @todo installers need to be able to register those ports
-     */
-    private static class RequiredPorts {
-
-        static String ports =
-            "8083,7072,7071,7070,2510,8082,9092,9042,2181,22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001";
-
-        private static Set<Integer> inBoundPorts() {
-            Set<Integer> intPorts = new HashSet<>();
-            for (String port : ports.split(",")) {
-                intPorts.add(Integer.valueOf(port));
-            }
-            return intPorts;
-        }
-
     }
 }

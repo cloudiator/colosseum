@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,26 +16,30 @@
  * under the License.
  */
 
-package dtos;
+package components.installer;
 
-import dtos.api.Dto;
-import dtos.generic.KeyValue;
-
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Created by daniel on 06.10.15.
+ * @todo installers need to be able to register those ports
  */
-public class TemplateOptionsDto implements Dto {
+public class ToolPorts {
 
-    private List<KeyValue> tags;
-
-    public List<KeyValue> getTags() {
-        return tags;
+    private ToolPorts() {
+        throw new AssertionError("static only");
     }
 
-    public void setTags(List<KeyValue> tags) {
-        this.tags = tags;
+    static String ports =
+        "8083,7072,7071,7070,2510,8082,9092,9042,2181,22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001,9090,2182,1234,2181,5432,6379";
+
+    public static Set<Integer> inBoundPorts() {
+        Set<Integer> intPorts = new HashSet<>();
+        for (String port : ports.split(",")) {
+            intPorts.add(Integer.valueOf(port));
+        }
+        return intPorts;
     }
+
 }
+

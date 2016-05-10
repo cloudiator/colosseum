@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,26 +16,17 @@
  * under the License.
  */
 
-package dtos;
+package models.service;
 
-import dtos.api.Dto;
-import dtos.generic.KeyValue;
+import models.PortProvided;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Set;
 
 /**
- * Created by daniel on 06.10.15.
+ * Created by daniel on 15.03.16.
  */
-public class TemplateOptionsDto implements Dto {
+public interface PortProvidedService extends ModelService<PortProvided> {
 
-    private List<KeyValue> tags;
+    Set<Integer> allProvidedPorts();
 
-    public List<KeyValue> getTags() {
-        return tags;
-    }
-
-    public void setTags(List<KeyValue> tags) {
-        this.tags = tags;
-    }
 }

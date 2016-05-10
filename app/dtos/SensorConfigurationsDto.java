@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -21,21 +21,21 @@ package dtos;
 import dtos.api.Dto;
 import dtos.generic.KeyValue;
 
-import javax.annotation.Nullable;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Created by daniel on 06.10.15.
+ * Created by Frank on 17.03.2016.
  */
-public class TemplateOptionsDto implements Dto {
+public class SensorConfigurationsDto implements Dto {
 
-    private List<KeyValue> tags;
+    private List<KeyValue> configs;
 
-    public List<KeyValue> getTags() {
-        return tags;
+    public List<KeyValue> getConfigs() {
+        return configs;
     }
 
-    public void setTags(List<KeyValue> tags) {
-        this.tags = tags;
+    public void setConfigs(List<KeyValue> configs) {
+        this.configs = configs;
     }
 }

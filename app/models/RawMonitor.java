@@ -18,11 +18,15 @@
 
 package models;
 
+import com.google.common.collect.ImmutableMap;
 import components.scalability.internal.RawMonitorTsdbLocator;
 import components.scalability.internal.TsdbLocator;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import javax.annotation.Nullable;
+import javax.persistence.*;
+
+import java.util.Map;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,6 +42,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = true) private Cloud cloud;
     @ManyToOne(optional = true) private SensorDescription sensorDescription;
 
+    @Nullable
+    @ManyToOne(optional = true) private SensorConfigurations sensorConfigurations;
+
     /**
      * Empty constructor for hibernate.
      */
@@ -45,7 +52,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public RawMonitor(Schedule schedule, Application application, Component component,
-        Instance componentInstance, Cloud cloud, SensorDescription sensorDescription) {
+        Instance componentInstance, Cloud cloud, SensorDescription sensorDescription,
+        SensorConfigurations sensorConfigurations) {
         super(schedule);
         this.application = application;
         this.component = component;
@@ -53,6 +61,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.cloud = cloud;
         checkNotNull(sensorDescription);
         this.sensorDescription = sensorDescription;
+        this.sensorConfigurations = sensorConfigurations;
     }
 
     public Application getApplication() {
@@ -77,5 +86,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     @Override protected TsdbLocator getTsdbLocator() {
         return new RawMonitorTsdbLocator(this);
+    }
+
+    @Nullable
+    public Optional<SensorConfigurations> getSensorConfigurations() {
+        return Optional.ofNullable(sensorConfigurations);
     }
 }

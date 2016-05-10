@@ -43,6 +43,7 @@ import java.util.List;
     private final ModelService<Schedule> scheduleModelService;
     private final ModelService<ExternalReference> externalReferenceModelService;
     private final ModelService<MonitorInstance> monitorInstanceModelService;
+    private final ModelService<SensorConfigurations> sensorConfigurationsModelService;
 
     @Inject protected RawMonitorConverter(ModelService<Application> applicationModelService,
         ModelService<Component> componentModelService, ModelService<Instance> instanceModelService,
@@ -50,7 +51,8 @@ import java.util.List;
         ModelService<SensorDescription> sensorDescriptionModelService,
         ModelService<Schedule> scheduleModelService,
         ModelService<ExternalReference> externalReferenceModelService,
-        ModelService<MonitorInstance> monitorInstanceModelService) {
+        ModelService<MonitorInstance> monitorInstanceModelService,
+        ModelService<SensorConfigurations> sensorConfigurationsModelService) {
         super(RawMonitor.class, RawMonitorDto.class);
         this.applicationModelService = applicationModelService;
         this.componentModelService = componentModelService;
@@ -60,6 +62,7 @@ import java.util.List;
         this.scheduleModelService = scheduleModelService;
         this.externalReferenceModelService = externalReferenceModelService;
         this.monitorInstanceModelService = monitorInstanceModelService;
+        this.sensorConfigurationsModelService = sensorConfigurationsModelService;
     }
 
     @Override public void configure() {
@@ -76,6 +79,9 @@ import java.util.List;
             .withTransformation(new IdToModelTransformer<>(sensorDescriptionModelService));
         binding(Long.class, Schedule.class).fromField("schedule").toField("schedule")
             .withTransformation(new IdToModelTransformer<>(scheduleModelService));
+        binding(Long.class, SensorConfigurations.class).fromField("sensorConfigurations")
+                .toField("sensorConfigurations")
+                .withTransformation(new IdToModelTransformer<>(sensorConfigurationsModelService));
 
 // TODO: a one-way convertion is needed here:
         binding(new TypeLiteral<List<Long>>() {

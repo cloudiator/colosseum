@@ -43,13 +43,23 @@ public class UnixInstaller extends AbstractInstaller {
     private static final String DOCKER_FIX_MTU_DOWNLOAD = Play.application().configuration()
         .getString("colosseum.installer.linux.lance.docker.mtu.download");
     private static final String DOCKER_RETRY_INSTALL = "docker_retry.sh";
+    private static final boolean KAIROS_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.linux.kairosdb.install.flag");
+    private static final boolean DOCKER_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.linux.lance.docker.install.flag");
     private final Tenant tenant;
 
     public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
         this.tenant = tenant;
-        this.homeDir = "/home/" + virtualMachine.loginName().get();
+
+        //TODO: maybe use a common installation directory, e.g. /opt/cloudiator
+        if (virtualMachine.loginName().get().equals("root")) {
+            this.homeDir = "/root";
+        } else {
+            this.homeDir = "/home/" + virtualMachine.loginName().get();
+        }
     }
 
     @Override public void initSources() {
@@ -60,15 +70,21 @@ public class UnixInstaller extends AbstractInstaller {
         //lance
         this.sourcesList
             .add("wget " + UnixInstaller.LANCE_DOWNLOAD + "  -O " + UnixInstaller.LANCE_JAR);
-        //docker
-        this.sourcesList.add("wget " + UnixInstaller.DOCKER_RETRY_DOWNLOAD + "  -O "
-            + UnixInstaller.DOCKER_RETRY_INSTALL);
-        this.sourcesList.add("wget " + UnixInstaller.DOCKER_FIX_MTU_DOWNLOAD + "  -O "
-            + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
-        //kairosDB
-        this.sourcesList.
-            add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O "
-                + UnixInstaller.KAIROSDB_ARCHIVE);
+
+        if (DOCKER_REQUIRED) {
+            //docker
+            this.sourcesList.add("wget " + UnixInstaller.DOCKER_RETRY_DOWNLOAD + "  -O "
+                + UnixInstaller.DOCKER_RETRY_INSTALL);
+            this.sourcesList.add("wget " + UnixInstaller.DOCKER_FIX_MTU_DOWNLOAD + "  -O "
+                + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
+        }
+
+        if (KAIROS_REQUIRED) {
+            //kairosDB
+            this.sourcesList.
+                add("wget " + UnixInstaller.KAIROSDB_DOWNLOAD + "  -O "
+                    + UnixInstaller.KAIROSDB_ARCHIVE);
+        }
         //visor
         this.sourcesList
             .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
@@ -109,33 +125,43 @@ public class UnixInstaller extends AbstractInstaller {
 
     @Override public void installKairosDb() throws RemoteException {
 
-        LOGGER.debug(String.format("Installing and starting KairosDB on vm %s", virtualMachine));
-        this.remoteConnection.executeCommand("mkdir " + UnixInstaller.KAIRROSDB_DIR);
+        if (KAIROS_REQUIRED) {
 
-        this.remoteConnection.executeCommand(
-            "tar  zxvf " + UnixInstaller.KAIROSDB_ARCHIVE + " -C " + UnixInstaller.KAIRROSDB_DIR
-                + " --strip-components=1");
+            LOGGER
+                .debug(String.format("Installing and starting KairosDB on vm %s", virtualMachine));
+            this.remoteConnection.executeCommand("mkdir " + UnixInstaller.KAIRROSDB_DIR);
 
-        this.remoteConnection.executeCommand(
-            " sudo nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
-        LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
+            this.remoteConnection.executeCommand(
+                "tar  zxvf " + UnixInstaller.KAIROSDB_ARCHIVE + " -C " + UnixInstaller.KAIRROSDB_DIR
+                    + " --strip-components=1");
+
+            this.remoteConnection.executeCommand(
+                " sudo nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
+            LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
+        }
     }
 
     @Override public void installLance() throws RemoteException {
 
-        LOGGER
-            .debug(String.format("Installing and starting Lance: Docker on vm %s", virtualMachine));
+        if (DOCKER_REQUIRED) {
+            LOGGER.debug(
+                String.format("Installing and starting Lance: Docker on vm %s", virtualMachine));
 
-        this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_RETRY_INSTALL);
-        // Install docker via the retry script:
-        this.remoteConnection.executeCommand("sudo nohup ./" + UnixInstaller.DOCKER_RETRY_INSTALL
-            + " > docker_retry_install.out 2>&1");
-        this.remoteConnection.executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
-        this.remoteConnection.executeCommand(
-            "sudo nohup ./" + UnixInstaller.DOCKER_FIX_MTU_INSTALL + " > docker_mtu_fix.out 2>&1");
-        this.remoteConnection
-            .executeCommand("sudo nohup bash -c 'service docker restart' > docker_start.out 2>&1 ");
-        
+            this.remoteConnection
+                .executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_RETRY_INSTALL);
+            // Install docker via the retry script:
+            this.remoteConnection.executeCommand(
+                "sudo nohup ./" + UnixInstaller.DOCKER_RETRY_INSTALL
+                    + " > docker_retry_install.out 2>&1");
+            this.remoteConnection
+                .executeCommand("sudo chmod +x " + UnixInstaller.DOCKER_FIX_MTU_INSTALL);
+            this.remoteConnection.executeCommand(
+                "sudo nohup ./" + UnixInstaller.DOCKER_FIX_MTU_INSTALL
+                    + " > docker_mtu_fix.out 2>&1");
+            this.remoteConnection.executeCommand(
+                "sudo nohup bash -c 'service docker restart' > docker_start.out 2>&1 ");
+
+        }
         LOGGER.debug(String.format("Installing and starting Lance on vm %s", virtualMachine));
 
         //start Lance

@@ -181,6 +181,10 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<Schedule>>() {
         });
         //SensorDescription
+        bind(new TypeLiteral<ModelService<SensorConfigurations>>() {
+        }).to(new TypeLiteral<BaseModelService<SensorConfigurations>>() {
+        });
+        //SensorDescription
         bind(new TypeLiteral<ModelService<SensorDescription>>() {
         }).to(new TypeLiteral<BaseModelService<SensorDescription>>() {
         });
@@ -192,14 +196,15 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<TimeWindow>>() {
         }).to(new TypeLiteral<BaseModelService<TimeWindow>>() {
         });
-        //PortInbound
+        //PortRequired
         bind(new TypeLiteral<ModelService<PortRequired>>() {
         }).to(new TypeLiteral<BaseModelService<PortRequired>>() {
         });
-        //PortOutbound
+        //PortProvided
         bind(new TypeLiteral<ModelService<PortProvided>>() {
         }).to(new TypeLiteral<BaseModelService<PortProvided>>() {
         });
+        bind(PortProvidedService.class).to(DefaultPortProvidedService.class);
         //VirtualMachine
         bind(new TypeLiteral<ModelService<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachine>>() {

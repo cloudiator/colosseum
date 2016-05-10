@@ -43,9 +43,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected Hardware() {
     }
 
-    public Hardware(@Nullable String remoteId, @Nullable String cloudProviderId, Cloud cloud,
-        Location location, String name, HardwareOffer hardwareOffer) {
-        super(remoteId, cloudProviderId, cloud, null, location);
+    public Hardware(@Nullable String remoteId, @Nullable String providerId,
+        @Nullable String swordId, Cloud cloud, Location location, String name,
+        HardwareOffer hardwareOffer) {
+        super(remoteId, providerId, swordId, cloud, null, location);
 
         checkNotNull(name);
         checkArgument(!name.isEmpty());

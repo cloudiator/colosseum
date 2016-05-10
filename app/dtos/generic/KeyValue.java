@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,26 +16,41 @@
  * under the License.
  */
 
-package dtos;
-
-import dtos.api.Dto;
-import dtos.generic.KeyValue;
+package dtos.generic;
 
 import javax.annotation.Nullable;
 import java.util.*;
 
 /**
- * Created by daniel on 06.10.15.
+ * Created by Frank on 18.03.2016.
  */
-public class TemplateOptionsDto implements Dto {
+public class KeyValue {
 
-    private List<KeyValue> tags;
+    public KeyValue() {
 
-    public List<KeyValue> getTags() {
-        return tags;
     }
 
-    public void setTags(List<KeyValue> tags) {
-        this.tags = tags;
+    public KeyValue(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    private String key;
+    private String value;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
     }
 }

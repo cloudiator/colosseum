@@ -78,7 +78,7 @@ public interface CredentialStore {
         }
     }
 
-    Optional<CredentialStore> getParent();
+    Optional<? extends CredentialStore> getParent();
 
     Optional<String> getLoginNameCandidate();
 

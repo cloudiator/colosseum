@@ -165,11 +165,8 @@ import java.util.Set;
         this.generatedPrivateKey = generatedPrivateKey;
     }
 
-    @Override public Optional<CredentialStore> getParent() {
-        if (image().isPresent()) {
-            return Optional.of(image().get());
-        }
-        return Optional.empty();
+    @Override public Optional<? extends CredentialStore> getParent() {
+        return image();
     }
 
     @Override public Optional<String> getLoginNameCandidate() {

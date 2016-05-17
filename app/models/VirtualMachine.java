@@ -18,6 +18,7 @@
 
 package models;
 
+import de.uniulm.omi.cloudiator.colosseum.client.entities.enums.OperatingSystemVendorType;
 import models.api.CredentialStore;
 import models.generic.RemoteResourceInLocation;
 
@@ -136,6 +137,7 @@ import java.util.Set;
     public Integer remotePortOrDefault() {
         if (remotePort().isPresent()) {
             return remotePort().get();
+
         }
         return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE.port();
     }

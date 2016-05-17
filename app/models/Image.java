@@ -19,6 +19,7 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
+import de.uniulm.omi.cloudiator.colosseum.client.entities.enums.OperatingSystemVendorType;
 import models.api.CredentialStore;
 import models.generic.RemoteResourceInLocation;
 

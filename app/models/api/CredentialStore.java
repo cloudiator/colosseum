@@ -27,7 +27,8 @@ import java.util.Optional;
 public interface CredentialStore {
 
     enum CredentialStoreStrategies implements CredentialStoreStrategy {
-        LIFO {
+
+        NEAREST_FIRST {
             @Override public Optional<String> loginName(CredentialStore startingPoint) {
                 return Optional.ofNullable(traverse(startingPoint).getLoginName());
             }

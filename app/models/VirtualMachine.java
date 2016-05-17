@@ -181,10 +181,10 @@ import java.util.Set;
     }
 
     public Optional<String> loginName() {
-        return CredentialStoreStrategies.LIFO.loginName(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginName(this);
     }
 
     public Optional<String> loginPassword() {
-        return CredentialStoreStrategies.LIFO.loginPassword(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginPassword(this);
     }
 }

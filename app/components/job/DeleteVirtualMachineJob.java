@@ -31,10 +31,13 @@ import play.db.jpa.JPA;
  */
 public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
+    private final RemoteModelService<VirtualMachine> virtualMachineRemoteModelService;
+
     @Inject public DeleteVirtualMachineJob(VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        this.virtualMachineRemoteModelService = modelService;
     }
 
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
@@ -43,7 +46,6 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         JPA.withTransaction(() -> {
             VirtualMachine virtualMachine = getT();
             computeService.deleteVirtualMachine(virtualMachine);
-            modelService.delete(virtualMachine);
         });
     }
 
@@ -52,10 +54,9 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     }
 
     @Override public void onSuccess() throws JobException {
-        // do nothing
-    }
-
-    @Override public void onError() throws JobException {
-        // do nothing
+        JPA.withTransaction(() -> {
+            VirtualMachine t = getT();
+            virtualMachineRemoteModelService.delete(t);
+        });
     }
 }

@@ -22,6 +22,7 @@ import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
 import models.Tenant;
 import models.VirtualMachine;
+import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
@@ -49,8 +50,27 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         });
     }
 
-    @Override public boolean canStart() {
-        return true;
+    @Override public boolean canStart() throws JobException {
+        try {
+            return JPA.withTransaction(() -> {
+                VirtualMachine virtualMachine = getT();
+
+                if (RemoteState.ERROR.equals(virtualMachine.getRemoteState())) {
+                    throw new JobException(String
+                        .format("Job %s can never start as virtualMachine %s is in error state.",
+                            this, virtualMachine));
+                }
+
+                if (virtualMachine.instances().size() > 0) {
+                    return false;
+                }
+
+                return RemoteState.OK.equals(virtualMachine.getRemoteState());
+
+            });
+        } catch (Throwable t) {
+            throw new JobException(t);
+        }
     }
 
     @Override public void onSuccess() throws JobException {

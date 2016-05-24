@@ -23,10 +23,7 @@ import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by daniel on 31.10.14.
@@ -192,6 +189,9 @@ import java.util.Set;
     }
 
     public List<Instance> instances() {
+        if (instances == null) {
+            return Collections.emptyList();
+        }
         return instances;
     }
 }

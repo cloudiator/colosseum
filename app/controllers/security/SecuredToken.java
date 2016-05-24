@@ -20,9 +20,9 @@ package controllers.security;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import components.auth.TokenRepository;
 import models.FrontendUser;
 import models.Tenant;
-import models.service.ApiAccessTokenService;
 import models.service.FrontendUserService;
 import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
@@ -69,20 +69,9 @@ public class SecuredToken extends TenantAwareAuthenticator {
         // workaround continue. Bind the old one.
         JPA.bindForCurrentThread(em);
 
-        //remember the entity manager
-        //workaround for https://github.com/playframework/playframework/pull/3388
-        final EntityManager em1 = JPA.em();
-        try {
-            final FrontendUser finalFrontendUser = frontendUser;
-            if (!JPA.withTransaction(() -> References.apiAccessTokenServiceProvider.get()
-                .isValid(token, finalFrontendUser))) {
-                frontendUser = null;
-            }
-        } catch (Throwable t) {
-            throw new RuntimeException(t);
+        if (!References.tokenRepository.isTokenValidForUser(token, frontendUser)) {
+            frontendUser = null;
         }
-        //workaround continue. Bind the old one.
-        JPA.bindForCurrentThread(em1);
 
         return frontendUser;
     }
@@ -145,7 +134,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
 
 
     public static class References {
-        @Inject private static Provider<ApiAccessTokenService> apiAccessTokenServiceProvider;
+        @Inject private static TokenRepository tokenRepository;
         @Inject private static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
     }
 }

@@ -24,7 +24,7 @@ import models.FrontendUser;
 /**
  * Created by daniel on 19.12.14.
  */
-public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
+@Deprecated public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
 
     boolean isValid(String token, FrontendUser frontendUser);
 }

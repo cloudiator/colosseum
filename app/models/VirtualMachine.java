@@ -23,9 +23,7 @@ import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by daniel on 31.10.14.
@@ -42,6 +40,8 @@ import java.util.Set;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
 
     @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
+
+    @OneToMany(mappedBy = "virtualMachine") private List<Instance> instances;
 
     /**
      * Use set to avoid duplicate entries due to hibernate bug
@@ -186,5 +186,12 @@ import java.util.Set;
 
     public Optional<String> loginPassword() {
         return CredentialStoreStrategies.LIFO.loginPassword(this);
+    }
+
+    public List<Instance> instances() {
+        if (instances == null) {
+            return Collections.emptyList();
+        }
+        return instances;
     }
 }

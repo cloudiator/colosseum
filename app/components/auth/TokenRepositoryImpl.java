@@ -1,14 +1,12 @@
 package components.auth;
 
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.common.Password;
 import models.FrontendUser;
 import play.Play;
 
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -18,13 +16,13 @@ import static com.google.common.base.Preconditions.checkState;
  */
 @Singleton public class TokenRepositoryImpl implements TokenRepository {
 
-    private static final long VALIDITY =
+    public static final long VALIDITY =
         Play.application().configuration().getLong("colosseum.auth.token.validity");
+    private final TokenStore tokenStore;
 
-    private static Cache<String, Token> cache =
-        CacheBuilder.newBuilder().expireAfterWrite(VALIDITY, TimeUnit.MILLISECONDS).build();
-
-    TokenRepositoryImpl() {
+    @Inject TokenRepositoryImpl(TokenStore tokenStore) {
+        checkNotNull(tokenStore);
+        this.tokenStore = tokenStore;
     }
 
     private Token createToken(FrontendUser frontendUser) {
@@ -35,12 +33,12 @@ import static com.google.common.base.Preconditions.checkState;
 
     @Override public Token newToken(FrontendUser frontendUser) {
         Token token = createToken(frontendUser);
-        cache.put(token.token(), token);
+        tokenStore.store(token);
         return token;
     }
 
     private Optional<Token> getToken(String token) {
-        return Optional.ofNullable(cache.getIfPresent(token));
+        return tokenStore.retrieve(token);
     }
 
     @Override public boolean isTokenValidForUser(String token, FrontendUser frontendUser) {

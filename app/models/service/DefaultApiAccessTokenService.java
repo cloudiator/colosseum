@@ -20,13 +20,6 @@ package models.service;
 
 import com.google.inject.Inject;
 import models.ApiAccessToken;
-import models.FrontendUser;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 19.12.14.
@@ -34,28 +27,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class DefaultApiAccessTokenService extends BaseModelService<ApiAccessToken>
     implements ApiAccessTokenService {
 
+
     @Inject public DefaultApiAccessTokenService(ApiAccessTokenRepository apiAccessTokenRepository) {
         super(apiAccessTokenRepository);
     }
 
-    protected List<ApiAccessToken> getNonExpiredTokensForFrontendUser(FrontendUser frontendUser) {
-
-        checkNotNull(frontendUser);
-
-        return ((ApiAccessTokenRepository) this.modelRepository).findByFrontendUser(frontendUser)
-            .stream()
-            .filter(apiAccessToken -> apiAccessToken.getExpiresAt() > System.currentTimeMillis())
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    @Override public boolean isValid(String token, FrontendUser frontendUser) {
-        checkNotNull(token);
-        checkNotNull(frontendUser);
-        for (ApiAccessToken apiAccessToken : getNonExpiredTokensForFrontendUser(frontendUser)) {
-            if (apiAccessToken.getToken().equals(token)) {
-                return true;
-            }
-        }
-        return false;
+    @Override public ApiAccessToken findByToken(String token) {
+        return ((ApiAccessTokenRepository) modelRepository).findByToken(token);
     }
 }

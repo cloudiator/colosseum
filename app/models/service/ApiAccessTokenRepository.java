@@ -19,15 +19,12 @@
 package models.service;
 
 import models.ApiAccessToken;
-import models.FrontendUser;
-
-import java.util.List;
 
 /**
  * Created by daniel on 19.12.14.
  */
 interface ApiAccessTokenRepository extends ModelRepository<ApiAccessToken> {
 
-    List<ApiAccessToken> findByFrontendUser(FrontendUser frontendUser);
+    ApiAccessToken findByToken(String token);
 
 }

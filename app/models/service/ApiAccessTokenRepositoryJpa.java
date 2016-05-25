@@ -22,6 +22,10 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.ApiAccessToken;
 
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 /**
  * Created by daniel on 19.12.14.
  */
@@ -33,7 +37,15 @@ class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
     }
 
     @Override public ApiAccessToken findByToken(String token) {
-        //todo implement sql
-        return null;
+        checkNotNull(token);
+        deleteExpiredTokens();
+        //noinspection unchecked
+        return (ApiAccessToken) em().createQuery("from ApiAccessToken where token = :token")
+            .setParameter("token", token).getResultList().stream().findFirst().orElse(null);
+    }
+
+    @Override public void deleteExpiredTokens() {
+        em().createQuery("delete from ApiAccessToken where expiresAt < :timestamp")
+            .setParameter("timestamp", System.currentTimeMillis()).executeUpdate();
     }
 }

@@ -21,7 +21,7 @@ package controllers;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
 import components.auth.Token;
-import components.auth.TokenRepository;
+import components.auth.TokenService;
 import dtos.LoginDto;
 import models.service.FrontendUserService;
 import play.data.Form;
@@ -40,16 +40,16 @@ public class SecurityController extends Controller {
 
     private static final Form<LoginDto> loginForm = Form.form(LoginDto.class);
     private final FrontendUserService frontendUserService;
-    private final TokenRepository tokenRepository;
+    private final TokenService tokenService;
 
     @Inject public SecurityController(FrontendUserService frontendUserService,
-        TokenRepository tokenRepository) {
+        TokenService tokenService) {
 
         checkNotNull(frontendUserService);
-        checkNotNull(tokenRepository);
+        checkNotNull(tokenService);
 
         this.frontendUserService = frontendUserService;
-        this.tokenRepository = tokenRepository;
+        this.tokenService = tokenService;
     }
 
     public Result login() {
@@ -74,7 +74,7 @@ public class SecurityController extends Controller {
             return badRequest(filledForm.errorsAsJson());
         }
         //generate a new token
-        Token token = tokenRepository
+        Token token = tokenService
             .newToken(this.frontendUserService.getByMail(filledForm.get().getEmail()));
 
         ObjectNode result = Json.newObject();

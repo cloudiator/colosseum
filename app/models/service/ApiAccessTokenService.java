@@ -20,11 +20,13 @@ package models.service;
 
 import models.ApiAccessToken;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 19.12.14.
  */
 public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
 
-    ApiAccessToken findByToken(String token);
+    @Nullable ApiAccessToken findByToken(String token);
 
 }

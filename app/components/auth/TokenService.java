@@ -6,7 +6,7 @@ import models.FrontendUser;
 /**
  * Created by daniel on 24.05.16.
  */
-@ImplementedBy(TokenRepositoryImpl.class) public interface TokenRepository {
+@ImplementedBy(TokenServiceImpl.class) public interface TokenService {
 
     Token newToken(FrontendUser frontendUser);
 

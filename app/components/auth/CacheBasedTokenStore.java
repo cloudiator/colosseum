@@ -2,6 +2,7 @@ package components.auth;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.inject.Singleton;
 
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
@@ -9,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by daniel on 24.05.16.
  */
-public class CacheBasedTokenStore implements TokenStore {
+@Singleton public class CacheBasedTokenStore implements TokenStore {
 
     private static Cache<String, Token> cache = CacheBuilder.newBuilder()
-        .expireAfterWrite(TokenRepositoryImpl.VALIDITY, TimeUnit.MILLISECONDS).build();
+        .expireAfterWrite(Token.VALIDITY, TimeUnit.MILLISECONDS).build();
 
     @Override public void store(Token token) {
         cache.put(token.token(), token);

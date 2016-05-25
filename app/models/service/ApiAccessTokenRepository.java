@@ -20,11 +20,14 @@ package models.service;
 
 import models.ApiAccessToken;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 19.12.14.
  */
 interface ApiAccessTokenRepository extends ModelRepository<ApiAccessToken> {
 
-    ApiAccessToken findByToken(String token);
+    @Nullable ApiAccessToken findByToken(String token);
 
+    void deleteExpiredTokens();
 }

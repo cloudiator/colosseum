@@ -24,7 +24,7 @@ organization := "io.github.cloudiator"
 
 publishMavenStyle := true
 
-version := "0.2.0-SNAPSHOT"
+version := "CS-0.2.0-SNAPSHOT"
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 

@@ -18,15 +18,21 @@
 
 package cloud.strategies;
 
-import cloud.SwordConnectionService;
+import cloud.CompositeCloudPropertyProvider;
+import cloud.DefaultSwordConnectionService;
+import cloud.SwordLoggingModule;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
+import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
+import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
+import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
 import models.KeyPair;
 import models.VirtualMachine;
 
+import java.util.Map;
 import java.util.Optional;
 
 import static com.google.common.base.Preconditions.*;
@@ -36,17 +42,13 @@ import static com.google.common.base.Preconditions.*;
  */
 public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy {
 
-    private final SwordConnectionService connectionService;
     private final KeyPairStrategy keyPairStrategy;
 
-    private KeyPairRemoteConnectionStrategy(SwordConnectionService connectionService,
-        KeyPairStrategy keyPairStrategy) {
+    private KeyPairRemoteConnectionStrategy(KeyPairStrategy keyPairStrategy) {
 
         checkNotNull(keyPairStrategy);
-        checkNotNull(connectionService);
 
         this.keyPairStrategy = keyPairStrategy;
-        this.connectionService = connectionService;
     }
 
     @Override public RemoteConnection connect(VirtualMachine virtualMachine)
@@ -78,14 +80,19 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
                     virtualMachine));
         }
 
+        Map<String, Object> properties =
+            new CompositeCloudPropertyProvider(virtualMachine.cloud()).properties();
 
-        return connectionService.getRemoteConnection(HostAndPort
+        return new DefaultSwordConnectionService(
+            RemoteBuilder.newBuilder().loggingModule(new SwordLoggingModule())
+                .remoteModule(new OverthereModule())
+                .properties(PropertiesBuilder.newBuilder().putProperties(properties).build())
+                .build()).getRemoteConnection(HostAndPort
                 .fromParts(virtualMachine.publicIpAddress().get().getIp(),
                     virtualMachine.remotePortOrDefault()),
             virtualMachine.operatingSystemVendorTypeOrDefault().osFamily(),
             LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
                 .privateKey(privateKey).build());
-
     }
 
     @Override public int getPriority() {
@@ -95,23 +102,18 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
     public static class KeyPairRemoteConnectionStrategyFactory
         implements RemoteConnectionStrategyFactory {
 
-        private final SwordConnectionService connectionService;
         private final KeyPairStrategy keyPairStrategy;
 
-        @Inject
-        public KeyPairRemoteConnectionStrategyFactory(SwordConnectionService connectionService,
-            KeyPairStrategy keyPairStrategy) {
+        @Inject public KeyPairRemoteConnectionStrategyFactory(KeyPairStrategy keyPairStrategy) {
 
-            checkNotNull(connectionService);
             checkNotNull(keyPairStrategy);
 
-            this.connectionService = connectionService;
             this.keyPairStrategy = keyPairStrategy;
 
         }
 
         @Override public RemoteConnectionStrategy create() {
-            return new KeyPairRemoteConnectionStrategy(connectionService, keyPairStrategy);
+            return new KeyPairRemoteConnectionStrategy(keyPairStrategy);
         }
     }
 }

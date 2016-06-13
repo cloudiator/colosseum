@@ -7,11 +7,11 @@ import java.util.Set;
 /**
  * Created by daniel on 06.06.16.
  */
-public class CompositeLogCollector implements LogCollector {
+public class CompositeZipLogCollector implements LogCollector {
 
     private final Set<LogCollector> collectors;
 
-    public CompositeLogCollector(Set<LogCollector> collectors) {
+    public CompositeZipLogCollector(Set<LogCollector> collectors) {
         this.collectors = collectors;
     }
 

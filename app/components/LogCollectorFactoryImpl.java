@@ -13,6 +13,7 @@ public class LogCollectorFactoryImpl implements LogCollectorFactory {
     }
 
     @Override public LogCollector forLogFile(LogFile logFile) {
+        //todo find a better way to create those files.
         switch (logFile.logType()) {
             case LOCAL:
                 throw new UnsupportedOperationException();

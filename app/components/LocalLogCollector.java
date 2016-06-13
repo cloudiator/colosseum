@@ -1,5 +1,7 @@
 package components;
 
+import com.google.common.base.MoreObjects;
+
 import java.io.File;
 import java.util.Optional;
 
@@ -20,5 +22,9 @@ public class LocalLogCollector implements LogCollector {
 
     @Override public Optional<File> get() {
         return Optional.of(file);
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("file",file).toString();
     }
 }

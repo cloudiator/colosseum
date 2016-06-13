@@ -5,7 +5,7 @@ package components;
  */
 public interface LogFile {
 
-    public enum LogType {
+    enum LogType {
         // a local log
         LOCAL,
         // a log on each vm

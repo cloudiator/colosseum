@@ -24,7 +24,7 @@ organization := "io.github.cloudiator"
 
 publishMavenStyle := true
 
-version := "CS-0.2.0-SNAPSHOT"
+version := "0.2.0-SNAPSHOT"
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
@@ -49,7 +49,7 @@ libraryDependencies ++= Seq(
   "io.github.cloudiator.lance" % "client" % "0.2.0-SNAPSHOT",
   "io.github.cloudiator" % "common" % "0.2.0-SNAPSHOT",
   "io.github.cloudiator" % "visor-rest-client" % "0.2.0-SNAPSHOT",
-  "io.github.cloudiator.axe" % "axe-aggregator-common" % "CS-0.2.0-SNAPSHOT",
+  "io.github.cloudiator.axe" % "axe-aggregator-common" % "0.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10"
 )
 

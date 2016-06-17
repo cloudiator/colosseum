@@ -18,6 +18,8 @@
 
 package components.log;
 
+import play.Play;
+
 import java.io.File;
 
 /**
@@ -25,7 +27,10 @@ import java.io.File;
  */
 public class ColosseumLogFile extends LocalLogFile {
 
+    private static final String COLOSSEUM_LOG_PATH =
+        Play.application().configuration().getString("colosseum.log.colosseumLogPath");
+
     @Override protected File file() {
-        return new File("logs/application.log");
+        return new File(COLOSSEUM_LOG_PATH);
     }
 }

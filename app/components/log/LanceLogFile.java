@@ -22,6 +22,8 @@ import cloud.strategies.RemoteConnectionStrategy;
 import com.google.inject.Inject;
 import models.VirtualMachine;
 
+import static com.google.common.base.Preconditions.checkState;
+
 /**
  * Created by daniel on 16.06.16.
  */
@@ -34,12 +36,9 @@ public class LanceLogFile extends VMLogFile {
 
     @Override protected String location(VirtualMachine virtualMachine) {
         //todo windows?
-        String homeDir;
-        if (virtualMachine.loginName().get().equals("root")) {
-            homeDir = "/root";
-        } else {
-            homeDir = "/home/" + virtualMachine.loginName().get();
-        }
+        checkState(virtualMachine.loginName().isPresent());
+        String homeDir = virtualMachine.operatingSystemVendorTypeOrDefault().homeDirFunction()
+            .apply(virtualMachine.loginName().get());
         return homeDir + "/" + "lance.out";
     }
 }

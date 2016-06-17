@@ -20,6 +20,7 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
+import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -54,14 +55,9 @@ public class UnixInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
         this.tenant = tenant;
-
         //TODO: maybe use a common installation directory, e.g. /opt/cloudiator
-        if (virtualMachine.loginName().get().equals("root")) {
-            this.homeDir = "/root";
-        } else {
-            this.homeDir = "/home/" + virtualMachine.loginName().get();
-        }
-
+        this.homeDir =
+            OperatingSystemVendorType.NIX.homeDirFunction().apply(virtualMachine.loginName().get());
         this.JAVA_BINARY = this.homeDir + "/" + UnixInstaller.JAVA_DIR + "/bin/java";
     }
 
@@ -119,8 +115,8 @@ public class UnixInstaller extends AbstractInstaller {
 
         //start visor
         this.remoteConnection.executeCommand(
-            "sudo nohup bash -c '"+ this.JAVA_BINARY +" -jar " + UnixInstaller.VISOR_JAR + " -conf "
-                + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
+            "sudo nohup bash -c '" + this.JAVA_BINARY + " -jar " + UnixInstaller.VISOR_JAR
+                + " -conf " + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
         LOGGER.debug(String.format("Visor started successfully on vm %s", virtualMachine));
     }
 
@@ -137,7 +133,8 @@ public class UnixInstaller extends AbstractInstaller {
                     + " --strip-components=1");
 
             this.remoteConnection.executeCommand(
-                " sudo su -c \"(export PATH=\""+ this.homeDir +"/jre8/bin/:\"$PATH;nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start)\"");
+                " sudo su -c \"(export PATH=\"" + this.homeDir + "/jre8/bin/:\"$PATH;nohup "
+                    + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start)\"");
 
             LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
         }
@@ -167,7 +164,7 @@ public class UnixInstaller extends AbstractInstaller {
         LOGGER.debug(String.format("Installing and starting Lance on vm %s", virtualMachine));
 
         //start Lance
-        this.remoteConnection.executeCommand("nohup bash -c '"+ this.JAVA_BINARY + " " +
+        this.remoteConnection.executeCommand("nohup bash -c '" + this.JAVA_BINARY + " " +
             " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
             " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
             " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +

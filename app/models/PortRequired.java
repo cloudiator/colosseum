@@ -45,7 +45,7 @@ import java.util.Optional;
         this.updateAction = updateAction;
     }
 
-    public Communication communication() {
+    @Nullable public Communication communication() {
         return requiredCommunication;
     }
 

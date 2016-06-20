@@ -42,7 +42,6 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
-import models.service.PortProvidedService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
 
@@ -205,6 +204,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 .setProperty(portProvided.name(), portProvided.getPort(), InPort.class);
         }
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
+            checkState(portRequired.communication() != null,
+                String.format("portRequired %s is missing communication entity", portRequired));
             deploymentContext.setProperty(portRequired.name(), new PortReference(ComponentId
                 .fromString(portRequired.communication().getProvidedPort().getApplicationComponent()
                     .getUuid()), portRequired.communication().getProvidedPort().name(),

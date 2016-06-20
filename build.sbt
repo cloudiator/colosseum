@@ -51,7 +51,8 @@ libraryDependencies ++= Seq(
   "io.github.cloudiator" % "visor-rest-client" % "0.2.0-SNAPSHOT",
   "io.github.cloudiator.axe" % "axe-aggregator-common" % "0.2.0-SNAPSHOT",
   "org.reflections" % "reflections" % "0.9.10",
-  "org.jgrapht" % "jgrapht-core" % "0.9.2"
+  "org.jgrapht" % "jgrapht-core" % "0.9.2",
+  "org.jgrapht" % "jgrapht-ext" % "0.9.2"
 )
 
 TwirlKeys.templateImports += "dtos._"

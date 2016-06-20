@@ -18,6 +18,8 @@
 
 package models.generic;
 
+import com.google.common.base.MoreObjects;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -59,6 +61,6 @@ import java.io.Serializable;
     }
 
     @Override public String toString() {
-        return String.format("Model{id=%d}", id);
+        return MoreObjects.toStringHelper(this).add("id", id).toString();
     }
 }

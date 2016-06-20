@@ -20,6 +20,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+import components.model.ComponentGraph;
 import controllers.generic.GenericApiController;
 import dtos.ApplicationDto;
 import dtos.conversion.ModelDtoConversionService;
@@ -27,6 +28,8 @@ import models.Application;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
+import play.db.jpa.Transactional;
+import play.mvc.Result;
 
 /**
  * Created by daniel on 29.03.15.
@@ -43,5 +46,15 @@ public class ApplicationController
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.ApplicationController.get(id).absoluteURL(request());
+    }
+
+    @Transactional(readOnly = true) public Result image(Long id) {
+        Application application = loadEntity(id);
+
+        if (application == null) {
+            return notFound(id);
+        }
+
+        return ok(ComponentGraph.of(application).image());
     }
 }

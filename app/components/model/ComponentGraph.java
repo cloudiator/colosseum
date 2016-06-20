@@ -1,15 +1,23 @@
 package components.model;
 
+import com.mxgraph.util.mxCellRenderer;
 import models.Application;
 import models.ApplicationComponent;
 import models.PortRequired;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.CycleDetector;
+import org.jgrapht.ext.JGraphXAdapter;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.function.Consumer;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -26,6 +34,7 @@ public class ComponentGraph {
     }
 
     public static ComponentGraph of(Application application) {
+        checkNotNull(application);
         return new ComponentGraph(application);
     }
 
@@ -33,6 +42,20 @@ public class ComponentGraph {
         CycleDetector<ApplicationComponent, DefaultEdge> cycleDetector =
             new CycleDetector<>(mandatoryComponentGraph);
         return cycleDetector.detectCycles();
+    }
+
+    public File image() {
+        final JGraphXAdapter<ApplicationComponent, DefaultEdge> jGraphX =
+            new JGraphXAdapter<>(componentGraph);
+        final BufferedImage bufferedImage =
+            mxCellRenderer.createBufferedImage(jGraphX, null, 1, Color.WHITE, true, null);
+        try {
+            final File tempFile = File.createTempFile("cloudiator", ".png");
+            ImageIO.write(bufferedImage, "PNG", tempFile);
+            return tempFile;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     private static class GraphFactory {

@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -38,10 +39,16 @@ public class ComponentGraph {
         return new ComponentGraph(application);
     }
 
+    private CycleDetector<ApplicationComponent, DefaultEdge> cycleDetector() {
+        return new CycleDetector<>(mandatoryComponentGraph);
+    }
+
     public boolean hasCycle() {
-        CycleDetector<ApplicationComponent, DefaultEdge> cycleDetector =
-            new CycleDetector<>(mandatoryComponentGraph);
-        return cycleDetector.detectCycles();
+        return cycleDetector().detectCycles();
+    }
+
+    public Set<ApplicationComponent> cycles() {
+        return cycleDetector().findCycles();
     }
 
     public File image() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,12 +16,20 @@
  * under the License.
  */
 
-package cloud;
+package components.log;
 
-import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
+import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 
 /**
- * Created by daniel on 02.09.15.
+ * Created by daniel on 16.06.16.
  */
-public interface SwordConnectionService extends ConnectionService {
+public class LogCollectorModule extends AbstractModule {
+
+
+    @Override protected void configure() {
+        Multibinder<LogFile> logFileMultibinder = Multibinder.newSetBinder(binder(), LogFile.class);
+        logFileMultibinder.addBinding().to(ColosseumLogFile.class);
+        logFileMultibinder.addBinding().to(LanceLogFile.class);
+    }
 }

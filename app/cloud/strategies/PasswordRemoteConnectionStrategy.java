@@ -18,26 +18,30 @@
 
 package cloud.strategies;
 
-import cloud.SwordConnectionService;
+import cloud.CompositeCloudPropertyProvider;
+import cloud.DefaultSwordConnectionService;
+import cloud.SwordLoggingModule;
 import com.google.common.net.HostAndPort;
-import com.google.inject.Inject;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
+import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
+import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
+import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
 import models.VirtualMachine;
 
-import static com.google.common.base.Preconditions.*;
+import java.util.Map;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 01.09.15.
  */
 public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrategy {
 
-    private final SwordConnectionService connectionService;
-
-    private PasswordRemoteConnectionStrategy(SwordConnectionService connectionService) {
-        this.connectionService = connectionService;
+    private PasswordRemoteConnectionStrategy() {
     }
 
     @Override public RemoteConnection connect(VirtualMachine virtualMachine)
@@ -57,7 +61,14 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
         int remotePort = virtualMachine.remotePortOrDefault();
         OSFamily osFamily = virtualMachine.operatingSystemVendorTypeOrDefault().osFamily();
 
-        return connectionService.getRemoteConnection(
+        Map<String, Object> properties =
+            new CompositeCloudPropertyProvider(virtualMachine.cloud()).properties();
+
+        return new DefaultSwordConnectionService(
+            RemoteBuilder.newBuilder().loggingModule(new SwordLoggingModule())
+                .remoteModule(new OverthereModule())
+                .properties(PropertiesBuilder.newBuilder().putProperties(properties).build())
+                .build()).getRemoteConnection(
             HostAndPort.fromParts(virtualMachine.publicIpAddress().get().getIp(), remotePort),
             osFamily,
             LoginCredentialBuilder.newBuilder().password(virtualMachine.loginPassword().get())
@@ -72,18 +83,8 @@ public class PasswordRemoteConnectionStrategy implements RemoteConnectionStrateg
     public static class PasswordRemoteConnectionStrategyFactory
         implements RemoteConnectionStrategyFactory {
 
-        private final SwordConnectionService connectionService;
-
-        @Inject
-        public PasswordRemoteConnectionStrategyFactory(SwordConnectionService connectionService) {
-
-            checkNotNull(connectionService);
-
-            this.connectionService = connectionService;
-        }
-
         @Override public RemoteConnectionStrategy create() {
-            return new PasswordRemoteConnectionStrategy(connectionService);
+            return new PasswordRemoteConnectionStrategy();
         }
     }
 

@@ -78,7 +78,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return name;
     }
 
-    @Override public Optional<CredentialStore> getParent() {
+    @Override public Optional<? extends CredentialStore> getParent() {
         return Optional.empty();
     }
 

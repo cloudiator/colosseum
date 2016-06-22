@@ -165,11 +165,8 @@ import java.util.*;
         this.generatedPrivateKey = generatedPrivateKey;
     }
 
-    @Override public Optional<CredentialStore> getParent() {
-        if (image().isPresent()) {
-            return Optional.of(image().get());
-        }
-        return Optional.empty();
+    @Override public Optional<? extends CredentialStore> getParent() {
+        return image();
     }
 
     @Override public Optional<String> getLoginNameCandidate() {
@@ -181,11 +178,11 @@ import java.util.*;
     }
 
     public Optional<String> loginName() {
-        return CredentialStoreStrategies.LIFO.loginName(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginName(this);
     }
 
     public Optional<String> loginPassword() {
-        return CredentialStoreStrategies.LIFO.loginPassword(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginPassword(this);
     }
 
     public List<Instance> instances() {

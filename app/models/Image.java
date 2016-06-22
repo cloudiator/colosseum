@@ -100,8 +100,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
 
-    @Override public Optional<CredentialStore> getParent() {
-
+    @Override public Optional<? extends CredentialStore> getParent() {
         if (operatingSystem().isPresent()) {
             return Optional.of(operatingSystem().get().operatingSystemVendor());
         }

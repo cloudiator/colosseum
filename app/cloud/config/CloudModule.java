@@ -24,6 +24,7 @@ import com.google.common.collect.Sets;
 import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
+import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
 import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
 
@@ -37,12 +38,6 @@ public class CloudModule extends AbstractModule {
         bind(KeyPairStrategy.class).to(KeyPairPerCredentialStrategy.class);
         bind(ComputeServiceFactory.class).to(SwordComputeServiceFactory.class);
         bind(CloudService.class).to(DefaultCloudService.class);
-    }
-
-    @Provides public SwordConnectionService provideConnectionService() {
-        return new DefaultSwordConnectionService(
-            RemoteBuilder.newBuilder().loggingModule(new SwordLoggingModule())
-                .remoteModule(new OverthereModule()).build());
     }
 
     @Provides

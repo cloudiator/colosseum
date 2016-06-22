@@ -24,9 +24,7 @@ import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by daniel on 31.10.14.
@@ -43,6 +41,8 @@ import java.util.Set;
     @Nullable @ManyToOne(optional = true) private Hardware hardware;
 
     @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
+
+    @OneToMany(mappedBy = "virtualMachine") private List<Instance> instances;
 
     /**
      * Use set to avoid duplicate entries due to hibernate bug
@@ -167,11 +167,8 @@ import java.util.Set;
         this.generatedPrivateKey = generatedPrivateKey;
     }
 
-    @Override public Optional<CredentialStore> getParent() {
-        if (image().isPresent()) {
-            return Optional.of(image().get());
-        }
-        return Optional.empty();
+    @Override public Optional<? extends CredentialStore> getParent() {
+        return image();
     }
 
     @Override public Optional<String> getLoginNameCandidate() {
@@ -183,10 +180,17 @@ import java.util.Set;
     }
 
     public Optional<String> loginName() {
-        return CredentialStoreStrategies.LIFO.loginName(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginName(this);
     }
 
     public Optional<String> loginPassword() {
-        return CredentialStoreStrategies.LIFO.loginPassword(this);
+        return CredentialStoreStrategies.NEAREST_FIRST.loginPassword(this);
+    }
+
+    public List<Instance> instances() {
+        if (instances == null) {
+            return Collections.emptyList();
+        }
+        return instances;
     }
 }

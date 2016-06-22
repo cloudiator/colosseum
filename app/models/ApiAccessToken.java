@@ -25,7 +25,9 @@ import javax.persistence.*;
 /**
  * Created by daniel on 19.12.14.
  */
-@Entity public class ApiAccessToken extends Model {
+@Table(
+    indexes = {@Index(columnList = "token", unique = true)}) @Entity public class ApiAccessToken
+    extends Model {
 
     private static final long VALIDITY = (long) 5 * 60 * 1000;
 
@@ -33,7 +35,7 @@ import javax.persistence.*;
 
     @Column(nullable = false) private long expiresAt;
 
-    @Lob @Column(nullable = false) private String token;
+    @Lob @Column(nullable = false, unique = true) private String token;
 
     @ManyToOne(optional = false) private FrontendUser frontendUser;
 

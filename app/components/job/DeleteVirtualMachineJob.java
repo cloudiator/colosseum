@@ -22,6 +22,7 @@ import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
 import models.Tenant;
 import models.VirtualMachine;
+import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
@@ -31,10 +32,13 @@ import play.db.jpa.JPA;
  */
 public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
+    private final RemoteModelService<VirtualMachine> virtualMachineRemoteModelService;
+
     @Inject public DeleteVirtualMachineJob(VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant) {
         super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        this.virtualMachineRemoteModelService = modelService;
     }
 
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
@@ -43,19 +47,36 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         JPA.withTransaction(() -> {
             VirtualMachine virtualMachine = getT();
             computeService.deleteVirtualMachine(virtualMachine);
-            modelService.delete(virtualMachine);
         });
     }
 
-    @Override public boolean canStart() {
-        return true;
+    @Override public boolean canStart() throws JobException {
+        try {
+            return JPA.withTransaction(() -> {
+                VirtualMachine virtualMachine = getT();
+
+                if (RemoteState.ERROR.equals(virtualMachine.getRemoteState())) {
+                    throw new JobException(String
+                        .format("Job %s can never start as virtualMachine %s is in error state.",
+                            this, virtualMachine));
+                }
+
+                if (virtualMachine.instances().size() > 0) {
+                    return false;
+                }
+
+                return RemoteState.OK.equals(virtualMachine.getRemoteState());
+
+            });
+        } catch (Throwable t) {
+            throw new JobException(t);
+        }
     }
 
     @Override public void onSuccess() throws JobException {
-        // do nothing
-    }
-
-    @Override public void onError() throws JobException {
-        // do nothing
+        JPA.withTransaction(() -> {
+            VirtualMachine t = getT();
+            virtualMachineRemoteModelService.delete(t);
+        });
     }
 }

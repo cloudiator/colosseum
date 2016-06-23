@@ -20,6 +20,7 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
+import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -35,6 +36,7 @@ public class UnixInstaller extends AbstractInstaller {
     private static final Logger.ALogger LOGGER = Loggers.of(Loggers.INSTALLATION);
     private static final String DOCKER_FIX_MTU_INSTALL = "docker_fix_mtu.sh";
     protected final String homeDir;
+    private final String JAVA_BINARY;
     private static final String JAVA_ARCHIVE = "jre8.tar.gz";
     private static final String JAVA_DOWNLOAD =
         Play.application().configuration().getString("colosseum.installer.linux.java.download");
@@ -53,13 +55,10 @@ public class UnixInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
         this.tenant = tenant;
-
         //TODO: maybe use a common installation directory, e.g. /opt/cloudiator
-        if (virtualMachine.loginName().get().equals("root")) {
-            this.homeDir = "/root";
-        } else {
-            this.homeDir = "/home/" + virtualMachine.loginName().get();
-        }
+        this.homeDir =
+            OperatingSystemVendorType.NIX.homeDirFunction().apply(virtualMachine.loginName().get());
+        this.JAVA_BINARY = this.homeDir + "/" + UnixInstaller.JAVA_DIR + "/bin/java";
     }
 
     @Override public void initSources() {
@@ -102,10 +101,8 @@ public class UnixInstaller extends AbstractInstaller {
         this.remoteConnection.executeCommand(
             "tar zxvf " + UnixInstaller.JAVA_ARCHIVE + " -C " + UnixInstaller.JAVA_DIR
                 + " --strip-components=1");
-        //set symbolic link
-        this.remoteConnection.executeCommand(
-            "sudo ln -s " + this.homeDir + "/" + UnixInstaller.JAVA_DIR
-                + "/bin/java /usr/bin/java");
+        // do not set symbolic link or PATH as there might be other Java versions on the VM
+
         LOGGER.debug(String.format("Java was successfully installed on vm %s", virtualMachine));
     }
 
@@ -118,8 +115,8 @@ public class UnixInstaller extends AbstractInstaller {
 
         //start visor
         this.remoteConnection.executeCommand(
-            "sudo nohup bash -c 'java -jar " + UnixInstaller.VISOR_JAR + " -conf "
-                + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
+            "sudo nohup bash -c '" + this.JAVA_BINARY + " -jar " + UnixInstaller.VISOR_JAR
+                + " -conf " + UnixInstaller.VISOR_PROPERTIES + " &> /dev/null &'");
         LOGGER.debug(String.format("Visor started successfully on vm %s", virtualMachine));
     }
 
@@ -136,7 +133,9 @@ public class UnixInstaller extends AbstractInstaller {
                     + " --strip-components=1");
 
             this.remoteConnection.executeCommand(
-                " sudo nohup " + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start");
+                " sudo su -c \"(export PATH=\"" + this.homeDir + "/jre8/bin/:\"$PATH;nohup "
+                    + UnixInstaller.KAIRROSDB_DIR + "/bin/kairosdb.sh start)\"");
+
             LOGGER.debug(String.format("KairosDB started successfully on vm %s", virtualMachine));
         }
     }
@@ -165,7 +164,7 @@ public class UnixInstaller extends AbstractInstaller {
         LOGGER.debug(String.format("Installing and starting Lance on vm %s", virtualMachine));
 
         //start Lance
-        this.remoteConnection.executeCommand("nohup bash -c 'java " +
+        this.remoteConnection.executeCommand("nohup bash -c '" + this.JAVA_BINARY + " " +
             " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
             " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
             " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +

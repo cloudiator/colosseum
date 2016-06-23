@@ -32,6 +32,7 @@ public class Loggers {
     public static final String API = "colosseum.api";
     public static final String INSTALLATION = "colosseum.cloud.installation";
     public static final String CLOUD_JOB = "colosseum.cloud.job";
+    public static final String LOG_COLLECTION = "colosseum.logcollection";
 
     private Loggers() {
         throw new AssertionError("Intentionally left empty.");

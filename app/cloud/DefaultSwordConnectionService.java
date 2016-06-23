@@ -30,7 +30,7 @@ import util.logging.Loggers;
 /**
  * Created by daniel on 02.09.15.
  */
-public class DefaultSwordConnectionService implements SwordConnectionService {
+public class DefaultSwordConnectionService implements ConnectionService {
 
     private final ConnectionService delegate;
     private final static Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_REMOTE);

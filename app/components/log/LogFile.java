@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,17 +16,16 @@
  * under the License.
  */
 
-package models.service;
+package components.log;
 
-import models.ApiAccessToken;
+import models.ApplicationInstance;
 
-import javax.annotation.Nullable;
+import java.util.Set;
 
 /**
- * Created by daniel on 19.12.14.
+ * Created by daniel on 06.06.16.
  */
-public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
+public interface LogFile {
 
-    @Nullable ApiAccessToken findByToken(String token);
-
+    Set<LogCollector> collectors(ApplicationInstance applicationInstance);
 }

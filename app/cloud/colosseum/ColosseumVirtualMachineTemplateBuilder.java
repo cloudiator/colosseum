@@ -33,6 +33,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class ColosseumVirtualMachineTemplateBuilder {
 
+    private String name;
     private Cloud cloud;
     private CloudCredential cloudCredential;
     private HardwareOffer hardwareOffer;
@@ -44,6 +45,11 @@ public class ColosseumVirtualMachineTemplateBuilder {
     private TemplateOptions templateOptions;
 
     ColosseumVirtualMachineTemplateBuilder() {
+    }
+
+    public ColosseumVirtualMachineTemplateBuilder name(String name) {
+        this.name = name;
+        return this;
     }
 
     public ColosseumVirtualMachineTemplateBuilder cloud(Cloud cloud) {
@@ -102,6 +108,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
         checkNotNull(virtualMachine);
         checkArgument(virtualMachine.image().isPresent());
         checkArgument(virtualMachine.location().isPresent());
+        this.name = virtualMachine.name();
         this.image = virtualMachine.image().get();
         checkArgument(virtualMachine.cloudCredentials().size() == 1);
         this.cloudCredential = virtualMachine.cloudCredentials().get(0);
@@ -163,7 +170,7 @@ public class ColosseumVirtualMachineTemplateBuilder {
     }
 
     public ColosseumVirtualMachineTemplate build() {
-        return new BaseColosseumVirtualMachineTemplate(cloud, cloudCredential, getImage(),
+        return new BaseColosseumVirtualMachineTemplate(name, cloud, cloudCredential, getImage(),
             getHardware(), getLocation(), templateOptions);
     }
 

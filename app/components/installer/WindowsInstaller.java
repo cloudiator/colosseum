@@ -20,6 +20,7 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
+import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -63,7 +64,7 @@ public class WindowsInstaller extends AbstractInstaller {
             "Expected login password for WindowsInstaller");
         this.password = virtualMachine.loginPassword().get();
 
-        this.homeDir = "C:\\Users\\" + this.user;
+        this.homeDir = OperatingSystemVendorType.WINDOWS.homeDirFunction().apply(this.user);
         this.tenant = tenant;
 
     }

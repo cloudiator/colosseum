@@ -52,11 +52,11 @@ import java.util.concurrent.TimeUnit;
     }
 
     @Override public long period() {
-        return 60;
+        return 20;
     }
 
     @Override public long delay() {
-        return 20;
+        return 10;
     }
 
     @Override public TimeUnit timeUnit() {

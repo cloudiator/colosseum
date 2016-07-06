@@ -23,14 +23,23 @@ import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import play.Play;
 
+import java.util.function.Function;
+
 /**
  * Created by daniel on 04.11.14.
  */
 public enum OperatingSystemVendorType {
 
-    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, getDefaultNIXContainer()),
+    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, getDefaultNIXContainer(),
+        (Function<String, String>) username -> {
+            if (username.equals("root")) {
+                return "/root";
+            } else {
+                return "/home/" + username;
+            }
+        }),
     WINDOWS("windows", false, OSFamily.WINDOWS, 5985, OperatingSystem.WINDOWS_7,
-        ContainerType.PLAIN);
+        ContainerType.PLAIN, (Function<String, String>) username -> "C:\\Users\\" + username);
 
     public static final OperatingSystemVendorType DEFAULT_VENDOR_TYPE = NIX;
     private final String text;
@@ -39,15 +48,18 @@ public enum OperatingSystemVendorType {
     private final int port;
     private final OperatingSystem lanceOs;
     private final ContainerType containerType;
+    private final Function<String, String> homeDirFunction;
 
     OperatingSystemVendorType(String text, boolean supportsKeyPair, OSFamily osFamily, int port,
-        OperatingSystem lanceOs, ContainerType containerType) {
+        OperatingSystem lanceOs, ContainerType containerType,
+        Function<String, String> homeDirFunction) {
         this.text = text;
         this.supportsKeyPair = supportsKeyPair;
         this.osFamily = osFamily;
         this.port = port;
         this.lanceOs = lanceOs;
         this.containerType = containerType;
+        this.homeDirFunction = homeDirFunction;
     }
 
     @Override public String toString() {
@@ -75,8 +87,13 @@ public enum OperatingSystemVendorType {
         return containerType;
     }
 
+    public Function<String, String> homeDirFunction() {
+        return homeDirFunction;
+    }
+
     private static ContainerType getDefaultNIXContainer() {
-        if(Play.application().configuration().getBoolean("colosseum.installer.linux.lance.docker.install.flag")) {
+        if (Play.application().configuration()
+            .getBoolean("colosseum.installer.linux.lance.docker.install.flag")) {
             return ContainerType.DOCKER;
         }
         return ContainerType.PLAIN;

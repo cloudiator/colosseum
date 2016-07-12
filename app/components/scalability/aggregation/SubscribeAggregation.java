@@ -21,6 +21,7 @@ package components.scalability.aggregation;
 import components.scalability.AggregatorEntitiesConverter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.JsonHttpThresholdObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
@@ -78,6 +79,17 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
                         subscription.getEndpoint(),
                         VISOR_TELNET_PORT,
                         subscription.getId().toString())
+                );
+            } else if(this.subscription.getType() == SubscriptionType.JSON_CS) {
+                service.addObserver(
+                        monitor.getId(),
+                        new JsonHttpThresholdObserverParameter(
+                                subscription.getFilterValue(),
+                                AggregatorEntitiesConverter.convert(subscription.getFilterType()),
+                                null,
+                                null,
+                                subscription.getId().toString(),
+                                subscription.getEndpoint())
                 );
             } else if(this.subscription.getType() == SubscriptionType.SCALING) {
                 ColosseumDetails cd =new ColosseumDetails(

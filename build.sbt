@@ -28,6 +28,8 @@ version := "0.2.0-SNAPSHOT"
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
+resolvers += {"jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"}
+
 resolvers := (
   "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
   ) +: resolvers.value

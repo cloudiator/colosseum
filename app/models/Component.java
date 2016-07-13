@@ -18,6 +18,7 @@
 
 package models;
 
+import com.google.common.base.MoreObjects;
 import models.generic.Model;
 
 import javax.persistence.Column;
@@ -62,5 +63,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", getId()).add("name", name).toString();
     }
 }

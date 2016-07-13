@@ -48,13 +48,26 @@ public class ApplicationController
         return controllers.routes.ApplicationController.get(id).absoluteURL(request());
     }
 
-    @Transactional(readOnly = true) public Result image(Long id) {
+    @Transactional(readOnly = true) public Result graph(Long id) {
         Application application = loadEntity(id);
 
         if (application == null) {
             return notFound(id);
         }
 
-        return ok(ComponentGraph.of(application).image());
+        final ComponentGraph componentGraph = ComponentGraph.of(application);
+
+        return ok(componentGraph.toJson());
     }
+
+    @Transactional(readOnly = true) public Result display(Long id) {
+        Application application = loadEntity(id);
+
+        if (application == null) {
+            return notFound(id);
+        }
+
+        return ok(views.html.graph.render(application));
+    }
+
 }

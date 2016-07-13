@@ -32,7 +32,8 @@ POST          /api/application                                    @controllers.A
 PUT           /api/application/:id                                @controllers.ApplicationController.put(id: Long)
 DELETE        /api/application/:id                                @controllers.ApplicationController.delete(id: Long)
 
-GET           /application/:id/image                              @controllers.ApplicationController.image(id: Long)
+GET           /application/:id/graph                              @controllers.ApplicationController.graph(id: Long)
+GET           /application/:id/display                              @controllers.ApplicationController.display(id: Long)
 
 #ApplicationComponent
 GET           /api/ac                                             @controllers.ApplicationComponentController.list()

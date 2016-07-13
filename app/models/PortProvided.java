@@ -18,13 +18,13 @@
 
 package models;
 
-import com.google.common.collect.ImmutableList;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -42,13 +42,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected PortProvided() {
     }
 
-    public List<Communication> getAttachedCommunications() {
+    @Override public Set<Communication> getAttachedCommunications() {
         if (providedCommunications == null) {
-            return Collections.emptyList();
+            return Collections.emptySet();
         }
-        return ImmutableList.copyOf(providedCommunications);
+        return new HashSet<>(providedCommunications);
     }
-
+    
     public PortProvided(String name, ApplicationComponent applicationComponent, int port) {
         super(name, applicationComponent);
         checkNotNull(port);

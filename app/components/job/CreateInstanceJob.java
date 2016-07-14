@@ -43,7 +43,9 @@ import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.Logger;
 import play.db.jpa.JPA;
+import util.logging.Loggers;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -55,6 +57,8 @@ import static com.google.common.base.Preconditions.checkState;
  * Created by daniel on 03.08.15.
  */
 public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
+
+    private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final ModelValidationService modelValidationService;
 
@@ -73,12 +77,14 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
 
         //todo: should normally be validated in an application instance method.
+        LOGGER.info("Starting validation of model.");
         try {
             JPA.withTransaction(() -> modelValidationService
                 .validate(getT().getApplicationComponent().getApplication()));
         } catch (Throwable t) {
             throw new JobException(t);
         }
+        LOGGER.info("Finished validation of model.");
 
 
         ComponentInstanceId componentInstanceId;

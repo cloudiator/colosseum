@@ -55,23 +55,19 @@ public class ComponentGraph {
     public JsonNode toJson() {
         final ObjectNode objectNode = Json.newObject().with("elements");
         final ArrayNode nodes = objectNode.putArray("nodes");
-        this.componentGraph.vertexSet().forEach(new Consumer<ApplicationComponent>() {
-            @Override public void accept(ApplicationComponent applicationComponent) {
-                final ObjectNode vertex = nodes.addObject();
-                vertex.with("data").put("id", applicationComponent.getUuid())
-                    .put("name", applicationComponent.getComponent().getName());
-            }
+        this.componentGraph.vertexSet().forEach(applicationComponent -> {
+            final ObjectNode vertex = nodes.addObject();
+            vertex.with("data").put("id", applicationComponent.getUuid())
+                .put("name", applicationComponent.getComponent().getName());
         });
         final ArrayNode edges = objectNode.putArray("edges");
-        this.componentGraph.edgeSet().forEach(new Consumer<CommunicationEdge>() {
-            @Override public void accept(CommunicationEdge communicationEdge) {
-                final ObjectNode edge = edges.addObject();
-                edge.with("data").put("id", new Random().nextInt())
-                    .put("source", componentGraph.getEdgeSource(communicationEdge).getUuid())
-                    .put("target", componentGraph.getEdgeTarget(communicationEdge).getUuid());
-                if (communicationEdge.communication().isMandatory()) {
-                    edge.put("classes", "mandatory");
-                }
+        this.componentGraph.edgeSet().forEach(communicationEdge -> {
+            final ObjectNode edge = edges.addObject();
+            edge.with("data").put("id", new Random().nextInt())
+                .put("source", componentGraph.getEdgeSource(communicationEdge).getUuid())
+                .put("target", componentGraph.getEdgeTarget(communicationEdge).getUuid());
+            if (communicationEdge.communication().isMandatory()) {
+                edge.put("classes", "mandatory");
             }
         });
 

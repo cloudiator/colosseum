@@ -24,6 +24,7 @@ import components.execution.ExecutionModule;
 import components.execution.Init;
 import components.job.config.JobModule;
 import components.log.LogCollectorModule;
+import components.model.config.ModelValidationModule;
 import components.scalability.AggregationModule;
 import components.scalability.ScalingEngineModule;
 import dtos.conversion.ConverterModule;
@@ -68,7 +69,7 @@ public class Global extends GlobalSettings {
             .createInjector(new JPAModule(), new ConverterModule(app.classloader()),
                 new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
                 new JobModule(), new ExecutionModule(), new ScalingEngineModule(),
-                new AggregationModule(), new LogCollectorModule());
+                new AggregationModule(), new LogCollectorModule(), new ModelValidationModule());
 
 
         final InitialData initialData = this.injector.getInstance(InitialData.class);

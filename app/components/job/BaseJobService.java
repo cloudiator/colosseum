@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
+import components.model.ModelValidationService;
 import models.Instance;
 import models.Tenant;
 import models.VirtualMachine;
@@ -47,19 +48,21 @@ import models.service.RemoteModelService;
     private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory
         remoteConnectionStrategyFactory;
     private final PortProvidedService portProvidedService;
+    private final ModelValidationService modelValidationService;
 
     @Inject public BaseJobService(RemoteModelService<VirtualMachine> virtualMachineModelService,
         CloudService cloudService, ModelService<Tenant> tenantModelService,
         RemoteModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory,
-        PortProvidedService portProvidedService) {
+        PortProvidedService portProvidedService, ModelValidationService modelValidationService) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
         this.instanceModelService = instanceModelService;
         this.keyPairStrategy = keyPairStrategy;
         this.remoteConnectionStrategyFactory = remoteConnectionStrategyFactory;
         this.portProvidedService = portProvidedService;
+        this.modelValidationService = modelValidationService;
         this.colosseumComputeService = cloudService.computeService();
         this.jobQueue = jobQueue;
     }
@@ -72,7 +75,7 @@ import models.service.RemoteModelService;
 
     @Override public void newInstanceJob(Instance instance, Tenant tenant) {
         this.jobQueue.add(new CreateInstanceJob(instance, instanceModelService, tenantModelService,
-            colosseumComputeService, tenant));
+            colosseumComputeService, tenant, modelValidationService));
     }
 
     @Override public void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {

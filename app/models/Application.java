@@ -18,12 +18,15 @@
 
 package models;
 
+import com.google.common.base.MoreObjects;
 import models.generic.Model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -56,11 +59,22 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.applicationComponents = applicationComponents;
     }
 
+    public Set<Communication> communications() {
+        return applicationComponents.stream()
+            .flatMap(applicationComponent -> applicationComponent.communications().stream())
+            .collect(Collectors.toSet());
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", getId()).add("name", getName())
+            .toString();
     }
 }

@@ -22,21 +22,27 @@ import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
+import java.util.Collections;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by daniel on 03.08.15.
  */
 @Entity public class PortRequired extends Port {
 
-    @OneToOne(mappedBy = "requiredPort") Communication requiredCommunication;
-    @Nullable @Lob String updateAction;
-    @Nullable Boolean isMandatory;
+    private @OneToOne(mappedBy = "requiredPort") Communication requiredCommunication;
+    private @Nullable @Lob String updateAction;
+    private @Nullable Boolean isMandatory;
 
     /**
      * Default constructor for hibernate.
      */
     protected PortRequired() {
+    }
+
+    @Override public Set<Communication> getAttachedCommunications() {
+        return Collections.singleton(requiredCommunication);
     }
 
     public PortRequired(String name, ApplicationComponent applicationComponent,
@@ -45,7 +51,7 @@ import java.util.Optional;
         this.updateAction = updateAction;
     }
 
-    public Communication communication() {
+    @Nullable public Communication communication() {
         return requiredCommunication;
     }
 

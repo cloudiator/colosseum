@@ -20,7 +20,7 @@ package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
 import com.google.common.collect.Maps;
-import com.google.inject.Inject;
+import components.model.ModelValidationService;
 import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
@@ -42,13 +42,15 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
 import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
-import models.service.PortProvidedService;
 import models.service.RemoteModelService;
+import play.Logger;
 import play.db.jpa.JPA;
+import util.logging.Loggers;
 
 import javax.annotation.Nullable;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -56,16 +58,34 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
+    private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
+    private final ModelValidationService modelValidationService;
 
-    @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
+    public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
-        Tenant tenant) {
+        Tenant tenant, ModelValidationService modelValidationService) {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+
+        checkNotNull(modelValidationService);
+
+        this.modelValidationService = modelValidationService;
     }
 
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
+
+
+        //todo: should normally be validated in an application instance method.
+        LOGGER.info("Starting validation of model.");
+        try {
+            JPA.withTransaction(() -> modelValidationService
+                .validate(getT().getApplicationComponent().getApplication()));
+        } catch (Throwable t) {
+            throw new JobException(t);
+        }
+        LOGGER.info("Finished validation of model.");
+
 
         ComponentInstanceId componentInstanceId;
         try {
@@ -205,6 +225,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 .setProperty(portProvided.name(), portProvided.getPort(), InPort.class);
         }
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
+            checkState(portRequired.communication() != null,
+                String.format("portRequired %s is missing communication entity", portRequired));
             deploymentContext.setProperty(portRequired.name(), new PortReference(ComponentId
                 .fromString(portRequired.communication().getProvidedPort().getApplicationComponent()
                     .getUuid()), portRequired.communication().getProvidedPort().name(),

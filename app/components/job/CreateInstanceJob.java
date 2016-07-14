@@ -20,7 +20,7 @@ package components.job;
 
 import cloud.colosseum.ColosseumComputeService;
 import com.google.common.collect.Maps;
-import com.google.inject.Inject;
+import components.model.ModelValidationService;
 import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
@@ -48,6 +48,7 @@ import play.db.jpa.JPA;
 import javax.annotation.Nullable;
 import java.util.Map;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -55,16 +56,30 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
+    private final ModelValidationService modelValidationService;
 
-
-    @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
+    public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
-        Tenant tenant) {
+        Tenant tenant, ModelValidationService modelValidationService) {
         super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+
+        checkNotNull(modelValidationService);
+
+        this.modelValidationService = modelValidationService;
     }
 
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
+
+
+        //todo: should normally be validated in an application instance method.
+        try {
+            JPA.withTransaction(() -> modelValidationService
+                .validate(getT().getApplicationComponent().getApplication()));
+        } catch (Throwable t) {
+            throw new JobException(t);
+        }
+
 
         ComponentInstanceId componentInstanceId;
         try {

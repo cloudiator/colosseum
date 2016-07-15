@@ -21,9 +21,12 @@ package controllers;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import components.log.LogCollectionService;
+import components.model.ApplicationInstanceGraph;
+import components.model.ApplicationTypeGraph;
 import controllers.generic.GenericApiController;
 import dtos.ApplicationInstanceDto;
 import dtos.conversion.ModelDtoConversionService;
+import models.Application;
 import models.ApplicationInstance;
 import models.Tenant;
 import models.service.FrontendUserService;
@@ -64,5 +67,28 @@ public class ApplicationInstanceController extends
         }
 
         return ok(logCollectionService.collectFor(applicationInstance));
+    }
+
+    @Transactional(readOnly = true) public Result graph(Long id) {
+        ApplicationInstance applicationInstance = loadEntity(id);
+
+        if (applicationInstance == null) {
+            return notFound(id);
+        }
+
+        final ApplicationInstanceGraph applicationInstanceGraph =
+            ApplicationInstanceGraph.of(applicationInstance);
+
+        return ok(applicationInstanceGraph.toJson());
+    }
+
+    @Transactional(readOnly = true) public Result display(Long id) {
+        ApplicationInstance applicationInstance = loadEntity(id);
+
+        if (applicationInstance == null) {
+            return notFound(id);
+        }
+
+        return ok(views.html.graph.render(ApplicationInstance));
     }
 }

@@ -67,7 +67,7 @@ public class ApplicationController
             return notFound(id);
         }
 
-        return ok(views.html.graph.render(application));
+        return ok(views.html.applicationGraph.render(application));
     }
 
 }

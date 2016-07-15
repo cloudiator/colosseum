@@ -50,6 +50,8 @@ PUT           /api/applicationInstance/:id                        @controllers.A
 DELETE        /api/applicationInstance/:id                        @controllers.ApplicationInstanceController.delete(id: Long)
 
 GET           /applicationInstance/:id/log                        @controllers.ApplicationInstanceController.log(id: Long)
+GET           /applicationInstance/:id/graph                              @controllers.ApplicationInstanceController.graph(id: Long)
+GET           /applicationInstance/:id/display                              @controllers.ApplicationInstanceController.display(id: Long)
 
 #Cloud
 GET           /api/cloud                                          @controllers.CloudController.list()

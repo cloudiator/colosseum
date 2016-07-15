@@ -18,22 +18,32 @@
 
 package components.model;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import models.ApplicationInstance;
 import models.Instance;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedPseudograph;
+import play.libs.Json;
+
+import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * Created by daniel on 15.07.16.
  */
 public class ApplicationInstanceGraph {
 
-    private final DirectedPseudograph<Instance, CommunicationInstanceEdge> componentGraph;
+    private final DirectedPseudograph<Instance, CommunicationInstanceEdge> instanceGraph;
 
+    public static ApplicationInstanceGraph of(ApplicationInstance applicationInstance) {
+        return new ApplicationInstanceGraph(applicationInstance);
+    }
 
-    public ApplicationInstanceGraph(ApplicationInstance applicationInstance) {
-        componentGraph = GraphFactory.of(applicationInstance);
+    private ApplicationInstanceGraph(ApplicationInstance applicationInstance) {
+        instanceGraph = GraphFactory.of(applicationInstance);
     }
 
     private static class CommunicationInstanceEdge extends DefaultEdge {
@@ -49,6 +59,25 @@ public class ApplicationInstanceGraph {
         }
     }
 
+    public JsonNode toJson() {
+        final ObjectNode objectNode = Json.newObject().with("elements");
+        final ArrayNode nodes = objectNode.putArray("nodes");
+        this.instanceGraph.vertexSet().forEach(instance -> {
+            final ObjectNode vertex = nodes.addObject();
+            vertex.with("data").put("id", instance.getUuid())
+                .put("name", instance.getApplicationComponent().getComponent().getName());
+        });
+        final ArrayNode edges = objectNode.putArray("edges");
+        this.instanceGraph.edgeSet().forEach(communicationEdge -> {
+            final ObjectNode edge = edges.addObject();
+            edge.with("data").put("id", new Random().nextInt())
+                .put("source", instanceGraph.getEdgeSource(communicationEdge).getUuid())
+                .put("target", instanceGraph.getEdgeTarget(communicationEdge).getUuid());
+        });
+
+        return objectNode;
+    }
+
 
     private static class GraphFactory {
 
@@ -59,6 +88,12 @@ public class ApplicationInstanceGraph {
                 new DirectedPseudograph<>(new CommunicationInstanceEdgeFactory());
 
             applicationInstance.getInstances().forEach(instanceGraph::addVertex);
+            applicationInstance.getApplication().getApplicationComponents().stream().flatMap(
+                applicationComponent -> applicationComponent.getProvidedCommunications().stream())
+                .flatMap(communication -> communication.getRequiredPort().getApplicationComponent()
+                    .getInstances().stream().filter(
+                        (Predicate<Instance>) instance -> instance.getApplicationInstance()
+                            .equals(applicationInstance)));
 
             return instanceGraph;
         }

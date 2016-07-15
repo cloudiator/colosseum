@@ -15,8 +15,6 @@ import play.libs.Json;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -24,20 +22,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 17.06.16.
  */
-public class ComponentGraph {
+public class ApplicationTypeGraph {
 
     private final DirectedPseudograph<ApplicationComponent, CommunicationEdge> componentGraph;
     private final DirectedPseudograph<ApplicationComponent, CommunicationEdge>
         mandatoryComponentGraph;
 
-    private ComponentGraph(Application application) {
+    private ApplicationTypeGraph(Application application) {
         componentGraph = GraphFactory.of(application);
         mandatoryComponentGraph = GraphFactory.of(application, true);
     }
 
-    public static ComponentGraph of(Application application) {
+    public static ApplicationTypeGraph of(Application application) {
         checkNotNull(application);
-        return new ComponentGraph(application);
+        return new ApplicationTypeGraph(application);
     }
 
     private CycleDetector<ApplicationComponent, CommunicationEdge> cycleDetector() {
@@ -130,11 +128,8 @@ public class ComponentGraph {
             DirectedPseudograph<ApplicationComponent, CommunicationEdge> componentGraph =
                 new DirectedPseudograph<>(new CommunicationEdgeFactory(onlyMandatory));
             application.getApplicationComponents().forEach(componentGraph::addVertex);
-            application.communications().stream().filter(new Predicate<Communication>() {
-                @Override public boolean test(Communication communication) {
-                    return !onlyMandatory || communication.isMandatory();
-                }
-            }).forEach(communication -> componentGraph
+            application.communications().stream().filter(
+                communication -> !onlyMandatory || communication.isMandatory()).forEach(communication -> componentGraph
                 .addEdge(communication.getSource(), communication.getTarget()));
             return componentGraph;
         }

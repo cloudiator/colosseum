@@ -20,7 +20,7 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import components.model.ComponentGraph;
+import components.model.ApplicationTypeGraph;
 import controllers.generic.GenericApiController;
 import dtos.ApplicationDto;
 import dtos.conversion.ModelDtoConversionService;
@@ -55,9 +55,9 @@ public class ApplicationController
             return notFound(id);
         }
 
-        final ComponentGraph componentGraph = ComponentGraph.of(application);
+        final ApplicationTypeGraph applicationTypeGraph = ApplicationTypeGraph.of(application);
 
-        return ok(componentGraph.toJson());
+        return ok(applicationTypeGraph.toJson());
     }
 
     @Transactional(readOnly = true) public Result display(Long id) {

@@ -12,7 +12,7 @@ import java.util.Set;
 public class NoCycleInMandatoryCommunicationValidator implements ModelValidator<Application> {
     
     @Override public Set<ValidationMessage> validate(Application application) {
-        final ComponentGraph graph = ComponentGraph.of(application);
+        final ApplicationTypeGraph graph = ApplicationTypeGraph.of(application);
         if (graph.hasCycle()) {
             return Collections.singleton(ValidationMessage.of(String.format(
                 "Found at least one loop in the communication graph. %s are participants of the loop.",

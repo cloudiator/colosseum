@@ -22,6 +22,7 @@ import models.generic.RemoteResource;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -72,5 +73,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setApplicationInstance(ApplicationInstance applicationInstance) {
         this.applicationInstance = applicationInstance;
+    }
+
+    public Set<Instance> getTargetCommunicationInstances() {
+        return null;
     }
 }

@@ -29,7 +29,7 @@ import org.jgrapht.graph.DirectedPseudograph;
 import play.libs.Json;
 
 import java.util.Random;
-import java.util.function.Predicate;
+import java.util.function.Consumer;
 
 /**
  * Created by daniel on 15.07.16.
@@ -65,8 +65,16 @@ public class ApplicationInstanceGraph {
         this.instanceGraph.vertexSet().forEach(instance -> {
             final ObjectNode vertex = nodes.addObject();
             vertex.with("data").put("id", instance.getUuid())
-                .put("name", instance.getApplicationComponent().getComponent().getName());
+                .put("name", instance.getApplicationComponent().getComponent().getName())
+                .put("parent", instance.getVirtualMachine().getUuid());
         });
+        //add virtual machines as compound nodes
+        this.instanceGraph.vertexSet().stream().map(Instance::getVirtualMachine).distinct()
+            .forEach(virtualMachine -> {
+                final ObjectNode compound = nodes.addObject();
+                compound.with("data").put("id", virtualMachine.getUuid())
+                    .put("name", virtualMachine.name());
+            });
         final ArrayNode edges = objectNode.putArray("edges");
         this.instanceGraph.edgeSet().forEach(communicationEdge -> {
             final ObjectNode edge = edges.addObject();
@@ -88,12 +96,13 @@ public class ApplicationInstanceGraph {
                 new DirectedPseudograph<>(new CommunicationInstanceEdgeFactory());
 
             applicationInstance.getInstances().forEach(instanceGraph::addVertex);
-            applicationInstance.getApplication().getApplicationComponents().stream().flatMap(
-                applicationComponent -> applicationComponent.getProvidedCommunications().stream())
-                .flatMap(communication -> communication.getRequiredPort().getApplicationComponent()
-                    .getInstances().stream().filter(
-                        (Predicate<Instance>) instance -> instance.getApplicationInstance()
-                            .equals(applicationInstance)));
+            applicationInstance.getInstances().forEach(new Consumer<Instance>() {
+                @Override public void accept(Instance instance) {
+                    for (Instance targetInstance : instance.getTargetCommunicationInstances()) {
+                        instanceGraph.addEdge(instance, targetInstance);
+                    }
+                }
+            });
 
             return instanceGraph;
         }

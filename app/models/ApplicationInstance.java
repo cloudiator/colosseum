@@ -24,6 +24,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by daniel on 11.05.15.
@@ -58,5 +60,9 @@ import java.util.List;
 
     public void setInstances(List<Instance> instances) {
         this.instances = instances;
+    }
+
+    public Set<VirtualMachine> virtualMachines() {
+        return instances.stream().map(Instance::getVirtualMachine).collect(Collectors.toSet());
     }
 }

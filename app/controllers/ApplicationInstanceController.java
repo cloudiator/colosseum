@@ -89,6 +89,6 @@ public class ApplicationInstanceController extends
             return notFound(id);
         }
 
-        return ok(views.html.graph.render(ApplicationInstance));
+        return ok(views.html.applicationInstanceGraph.render(applicationInstance));
     }
 }

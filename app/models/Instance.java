@@ -23,6 +23,7 @@ import models.generic.RemoteResource;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -76,6 +77,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public Set<Instance> getTargetCommunicationInstances() {
-        return null;
+
+        return applicationComponent.getRequiredCommunications().stream()
+            .map(communication -> communication.getProvidedPort().getApplicationComponent())
+            .flatMap(applicationComponent -> applicationComponent.getInstances().stream())
+            .filter(instance -> instance.applicationInstance.equals(applicationInstance))
+            .collect(Collectors.toSet());
     }
 }

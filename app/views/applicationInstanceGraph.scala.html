@@ -56,6 +56,14 @@
                                 .selector('node[state = "OK"]')
                                 .css({
                                     'color': 'green'
+                                })
+                                .selector('node[state = "INPROGRESS"]')
+                                .css({
+                                    'color': 'yellow'
+                                })
+                                .selector('node[state = "ERROR"]')
+                                .css({
+                                    'color': 'red'
                                 }),
 
 

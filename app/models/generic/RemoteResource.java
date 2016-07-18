@@ -37,6 +37,9 @@ public abstract class RemoteResource extends Model {
 
 
     public RemoteState getRemoteState() {
+        if (remoteState == null) {
+            return RemoteState.INPROGRESS;
+        }
         return remoteState;
     }
 
@@ -63,6 +66,11 @@ public abstract class RemoteResource extends Model {
     public RemoteResource(@Nullable String remoteId) {
         this.remoteId = remoteId;
 
+    }
+
+    public RemoteResource(@Nullable String remoteId, @Nullable RemoteState remoteState) {
+        this.remoteId = remoteId;
+        this.remoteState = remoteState;
     }
 
 

@@ -19,10 +19,13 @@
 package models.service;
 
 import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.common.Password;
+
+import org.apache.commons.codec.binary.Base64;
+
 import models.FrontendUser;
 import models.Tenant;
-import org.apache.commons.codec.binary.Base64;
 import play.Logger;
 
 /**

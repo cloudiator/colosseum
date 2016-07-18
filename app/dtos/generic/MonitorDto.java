@@ -20,11 +20,12 @@ package dtos.generic;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import java.util.List;
+
 import dtos.ModelWithExternalReferenceDto;
 import models.MonitorInstance;
 import models.service.ModelService;
-
-import java.util.List;
 
 /**
  * Created by Frank on 25.08.2015.
@@ -35,11 +36,6 @@ public abstract class MonitorDto extends ModelWithExternalReferenceDto {
 
     public MonitorDto() {
         super();
-    }
-
-    public MonitorDto(List<String> externalReferences, List<Long> monitorInstances) {
-        super(externalReferences);
-        this.monitorInstances = monitorInstances;
     }
 
     @Override public void validation() {

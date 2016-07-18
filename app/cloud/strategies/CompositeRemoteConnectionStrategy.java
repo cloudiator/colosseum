@@ -21,14 +21,16 @@ package cloud.strategies;
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
+
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
-import models.VirtualMachine;
-import play.Logger;
-import util.logging.Loggers;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import models.VirtualMachine;
+import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 02.09.15.

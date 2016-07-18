@@ -18,12 +18,12 @@
 
 package models;
 
-import models.generic.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import models.generic.Model;
 
 /**
  * Created by daniel on 07.01.15.

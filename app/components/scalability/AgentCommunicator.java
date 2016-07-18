@@ -21,11 +21,12 @@ package components.scalability;
 
 import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
 import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
-import models.MonitorInstance;
 
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import models.MonitorInstance;
 
 /**
  * Created by Frank on 20.07.2015.

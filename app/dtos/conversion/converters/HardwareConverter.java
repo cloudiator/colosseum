@@ -20,13 +20,18 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+
 import dtos.HardwareDto;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.*;
+import models.Cloud;
+import models.CloudCredential;
+import models.Hardware;
+import models.HardwareOffer;
+import models.Location;
 import models.service.ModelService;
-
-import java.util.List;
 
 /**
  * Created by daniel on 14.04.15.

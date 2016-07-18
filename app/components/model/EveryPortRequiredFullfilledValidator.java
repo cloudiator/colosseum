@@ -1,10 +1,11 @@
 package components.model;
 
 import com.google.common.collect.Sets;
-import models.Application;
-import models.PortRequired;
 
 import java.util.Set;
+
+import models.Application;
+import models.PortRequired;
 
 /**
  * Created by daniel on 19.06.16.

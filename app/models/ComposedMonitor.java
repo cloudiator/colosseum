@@ -18,14 +18,19 @@
 
 package models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+
 import components.scalability.internal.ComposedMonitorTsdbLocator;
 import components.scalability.internal.TsdbLocator;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
-
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Frank on 20.05.2015.

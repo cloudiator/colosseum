@@ -21,15 +21,17 @@ package components.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.ApplicationInstance;
-import models.Instance;
+
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedPseudograph;
-import play.libs.Json;
 
 import java.util.Random;
 import java.util.function.Consumer;
+
+import models.ApplicationInstance;
+import models.Instance;
+import play.libs.Json;
 
 /**
  * Created by daniel on 15.07.16.

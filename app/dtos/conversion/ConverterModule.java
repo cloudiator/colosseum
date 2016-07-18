@@ -22,15 +22,17 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
+
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
-import play.Configuration;
-import play.Play;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
+
+import play.Configuration;
+import play.Play;
 
 import static com.google.common.base.Preconditions.checkState;
 

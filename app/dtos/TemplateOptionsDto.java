@@ -18,11 +18,10 @@
 
 package dtos;
 
+import java.util.List;
+
 import dtos.api.Dto;
 import dtos.generic.KeyValue;
-
-import javax.annotation.Nullable;
-import java.util.*;
 
 /**
  * Created by daniel on 06.10.15.

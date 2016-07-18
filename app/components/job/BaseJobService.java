@@ -18,13 +18,14 @@
 
 package components.job;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+
 import cloud.CloudService;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.strategies.KeyPairStrategy;
 import cloud.strategies.RemoteConnectionStrategy;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.model.ModelValidationService;
 import models.Instance;

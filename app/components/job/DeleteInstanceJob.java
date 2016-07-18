@@ -18,11 +18,13 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.lca.DeploymentException;
 import de.uniulm.omi.cloudiator.lance.lca.container.ComponentInstanceId;
+
+import cloud.colosseum.ColosseumComputeService;
 import models.Instance;
 import models.Tenant;
 import models.generic.RemoteState;

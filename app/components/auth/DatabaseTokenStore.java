@@ -1,12 +1,13 @@
 package components.auth;
 
 import com.google.inject.Inject;
+
+import java.util.Optional;
+
 import models.ApiAccessToken;
 import models.FrontendUser;
 import models.service.ApiAccessTokenService;
 import models.service.FrontendUserService;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkState;
 

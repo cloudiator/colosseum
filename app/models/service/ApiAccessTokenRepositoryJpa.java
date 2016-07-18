@@ -20,9 +20,8 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import models.ApiAccessToken;
 
-import java.util.List;
+import models.ApiAccessToken;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

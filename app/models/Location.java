@@ -20,15 +20,24 @@ package models;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
-import models.generic.RemoteResourceInCloud;
-import models.generic.RemoteResourceInLocation;
 
-import javax.annotation.Nullable;
-import javax.persistence.*;
+import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import models.generic.RemoteResourceInCloud;
+import models.generic.RemoteResourceInLocation;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

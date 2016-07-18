@@ -18,24 +18,28 @@
 
 package cloud.strategies;
 
-import cloud.CompositeCloudPropertyProvider;
-import cloud.DefaultSwordConnectionService;
-import cloud.SwordLoggingModule;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
-import models.KeyPair;
-import models.VirtualMachine;
 
 import java.util.Map;
 import java.util.Optional;
 
-import static com.google.common.base.Preconditions.*;
+import cloud.CompositeCloudPropertyProvider;
+import cloud.DefaultSwordConnectionService;
+import cloud.SwordLoggingModule;
+import models.KeyPair;
+import models.VirtualMachine;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 31.08.15.

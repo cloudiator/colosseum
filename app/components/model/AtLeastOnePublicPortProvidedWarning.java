@@ -18,10 +18,10 @@
 
 package components.model;
 
-import models.Application;
-
 import java.util.Collections;
 import java.util.Set;
+
+import models.Application;
 
 /**
  * Created by daniel on 14.07.16.

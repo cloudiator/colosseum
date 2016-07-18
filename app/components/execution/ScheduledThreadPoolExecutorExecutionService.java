@@ -19,10 +19,11 @@
 package components.execution;
 
 import com.google.inject.Singleton;
-import play.Logger;
-import util.logging.Loggers;
 
 import java.util.concurrent.ScheduledExecutorService;
+
+import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 17.04.15.

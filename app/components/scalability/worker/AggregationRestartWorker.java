@@ -19,6 +19,7 @@
 package components.scalability.worker;
 
 import com.google.inject.Inject;
+
 import components.scalability.ScalingEngine;
 import models.ComposedMonitor;
 import models.service.ModelService;

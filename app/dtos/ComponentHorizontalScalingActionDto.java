@@ -20,11 +20,10 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import dtos.validation.validators.ModelIdValidator;
 import models.ApplicationComponent;
 import models.service.ModelService;
-
-import java.util.List;
 
 /**
  * Created by Frank on 10.08.2015.
@@ -41,22 +40,12 @@ public class ComponentHorizontalScalingActionDto extends ModelWithExternalRefere
         super();
     }
 
-    public ComponentHorizontalScalingActionDto(List<String> externalReferences, Long amount,
-        Long min, Long max, Long count, Long applicationComponent) {
-        super(externalReferences);
-        this.amount = amount;
-        this.min = min;
-        this.max = max;
-        this.count = count;
-        this.applicationComponent = applicationComponent;
-    }
-
     @Override public void validation() {
         validator(Long.class).validate(applicationComponent)
             .withValidator(new ModelIdValidator<>(References.applicationComponentService.get()));
     }
 
-    public static class References extends ModelWithExternalReferenceDto.References {
+    public static class References {
         @Inject public static Provider<ModelService<ApplicationComponent>>
             applicationComponentService;
     }

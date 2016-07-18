@@ -20,13 +20,12 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
 import components.log.LogCollectionService;
 import components.model.ApplicationInstanceGraph;
-import components.model.ApplicationTypeGraph;
 import controllers.generic.GenericApiController;
 import dtos.ApplicationInstanceDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Application;
 import models.ApplicationInstance;
 import models.Tenant;
 import models.service.FrontendUserService;

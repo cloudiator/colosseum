@@ -19,9 +19,10 @@
 package dtos.generic;
 
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import dtos.api.Dto;
 
 import java.util.Set;
+
+import dtos.api.Dto;
 
 /**
  * Created by daniel on 19.03.15.

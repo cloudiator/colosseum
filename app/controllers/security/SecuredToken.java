@@ -20,18 +20,20 @@ package controllers.security;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import org.hibernate.Hibernate;
+
+import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
+
 import components.auth.TokenService;
 import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
-import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
-
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
 
 /**
  * Created by daniel on 19.12.14.

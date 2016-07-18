@@ -18,13 +18,13 @@
 
 package dtos.validation.validators;
 
+import javax.annotation.Nullable;
+
 import dtos.validation.AbstractValidator;
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import models.generic.Model;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

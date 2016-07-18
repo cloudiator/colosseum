@@ -18,9 +18,9 @@
 
 package models.service;
 
-import models.generic.Unique;
-
 import javax.annotation.Nullable;
+
+import models.generic.Unique;
 
 /**
  * Created by daniel on 08.05.15.

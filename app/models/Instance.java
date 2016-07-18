@@ -18,12 +18,13 @@
 
 package models;
 
-import models.generic.RemoteResource;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import models.generic.RemoteResource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

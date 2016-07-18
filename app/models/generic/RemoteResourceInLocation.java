@@ -18,14 +18,15 @@
 
 package models.generic;
 
-import models.Cloud;
-import models.CloudCredential;
-import models.Location;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Optional;
+
+import models.Cloud;
+import models.CloudCredential;
+import models.Location;
 
 /**
  * Created by daniel on 22.09.15.

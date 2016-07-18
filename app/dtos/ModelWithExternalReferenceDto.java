@@ -18,41 +18,26 @@
 
 package dtos;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import dtos.generic.ValidatableDto;
-import models.generic.ExternalReference;
-import models.service.ModelService;
-
 import java.util.List;
+
+import dtos.generic.KeyValue;
+import dtos.generic.ValidatableDto;
 
 /**
  * Created by Frank on 05.06.2015.
  */
-public class ModelWithExternalReferenceDto extends ValidatableDto {
+public abstract class ModelWithExternalReferenceDto extends ValidatableDto {
 
-    private List<String> externalReferences;
+    private List<KeyValue> externalReferences;
 
-    public ModelWithExternalReferenceDto() {
-        super();
+    public List<KeyValue> getExternalReferences() {
+        return externalReferences;
     }
 
-    public ModelWithExternalReferenceDto(List<String> externalReferences) {
+    public void setExternalReferences(List<KeyValue> externalReferences) {
         this.externalReferences = externalReferences;
     }
 
     @Override public void validation() {
-    }
-
-    public static class References {
-        @Inject public static Provider<ModelService<ExternalReference>> externalReferenceService;
-    }
-
-    public List<String> getExternalReferences() {
-        return externalReferences;
-    }
-
-    public void setExternalReferences(List<String> externalReferences) {
-        this.externalReferences = externalReferences;
     }
 }

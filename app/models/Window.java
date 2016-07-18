@@ -18,9 +18,9 @@
 
 package models;
 
-import models.generic.Model;
-
 import javax.persistence.Entity;
+
+import models.generic.Model;
 
 /**
  * Created by Frank on 20.05.2015.

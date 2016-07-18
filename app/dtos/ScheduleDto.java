@@ -18,11 +18,11 @@
 
 package dtos;
 
+import java.util.concurrent.TimeUnit;
+
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ExpressionValidator;
 import dtos.validation.validators.NotNullValidator;
-
-import java.util.concurrent.TimeUnit;
 
 public class ScheduleDto extends ValidatableDto {
 

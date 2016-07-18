@@ -19,9 +19,10 @@
 package components.log;
 
 import com.google.inject.ImplementedBy;
-import models.ApplicationInstance;
 
 import java.io.File;
+
+import models.ApplicationInstance;
 
 /**
  * Created by daniel on 06.06.16.

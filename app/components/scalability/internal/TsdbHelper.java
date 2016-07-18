@@ -18,14 +18,14 @@
 
 package components.scalability.internal;
 
-import models.Monitor;
-import models.MonitorInstance;
-import play.Play;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import models.Monitor;
+import models.MonitorInstance;
+import play.Play;
 
 /**
  * Created by Frank on 24.08.2015.

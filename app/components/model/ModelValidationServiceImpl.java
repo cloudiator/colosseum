@@ -19,14 +19,15 @@
 package components.model;
 
 import com.google.inject.Inject;
-import models.Application;
-import play.Logger;
-import util.logging.Loggers;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import models.Application;
+import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 14.07.16.

@@ -3,16 +3,18 @@ package components.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import models.Application;
-import models.ApplicationComponent;
-import models.Communication;
+
 import org.jgrapht.alg.CycleDetector;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedPseudograph;
-import play.libs.Json;
 
 import java.util.Random;
 import java.util.Set;
+
+import models.Application;
+import models.ApplicationComponent;
+import models.Communication;
+import play.libs.Json;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

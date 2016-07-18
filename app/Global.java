@@ -16,10 +16,14 @@
  * under the License.
  */
 
-import cloud.config.CloudModule;
-import cloud.sync.config.SolutionModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+
+import java.text.ParseException;
+import java.util.Locale;
+
+import cloud.config.CloudModule;
+import cloud.sync.config.SolutionModule;
 import components.execution.ExecutionModule;
 import components.execution.Init;
 import components.job.config.JobModule;
@@ -34,9 +38,6 @@ import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
 import play.db.jpa.JPA;
-
-import java.text.ParseException;
-import java.util.Locale;
 
 
 /**

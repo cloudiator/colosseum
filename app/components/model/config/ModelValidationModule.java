@@ -21,7 +21,14 @@ package components.model.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-import components.model.*;
+
+import components.model.AtLeastOnePublicPortProvidedWarning;
+import components.model.EveryPortRequiredFullfilledValidator;
+import components.model.ModelValidationService;
+import components.model.ModelValidationServiceImpl;
+import components.model.ModelValidator;
+import components.model.NoCycleInMandatoryCommunicationValidator;
+import components.model.PortClashValidator;
 import models.Application;
 
 /**

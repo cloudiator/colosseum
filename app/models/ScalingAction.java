@@ -18,9 +18,9 @@
 
 package models;
 
-import models.generic.ModelWithExternalReference;
-
 import javax.persistence.Entity;
+
+import models.generic.ModelWithExternalReference;
 
 /**
  * Created by Frank on 20.05.2015.

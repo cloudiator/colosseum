@@ -18,11 +18,16 @@
 
 package models;
 
-import models.generic.Model;
-
-import javax.persistence.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.OneToMany;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

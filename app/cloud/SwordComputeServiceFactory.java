@@ -18,14 +18,16 @@
 
 package cloud;
 
+import com.google.inject.Inject;
+
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
+import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
+
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.inject.Inject;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
-import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;

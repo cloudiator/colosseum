@@ -18,14 +18,16 @@
 
 package dtos.conversion.transformers;
 
-import models.generic.ExternalReference;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import models.generic.ExternalReference;
+
 /**
  * Created by daniel on 03.06.15.
+ *
+ * TODO: Delete when new KeyValue approach proven to be correct in ModelWithReference entities.
  */
 public class StringToExternalReferenceTransformer
     implements Transformer<List<String>, List<ExternalReference>> {
@@ -44,7 +46,7 @@ public class StringToExternalReferenceTransformer
 
         List<ExternalReference> externalReferences = new ArrayList<>(strings.size());
         for (String s : strings) {
-            ExternalReference externalReference = new ExternalReference(s);
+            ExternalReference externalReference = new ExternalReference(s, s);
             //externalReferenceModelService.save(externalReference);
             externalReferences.add(externalReference);
         }

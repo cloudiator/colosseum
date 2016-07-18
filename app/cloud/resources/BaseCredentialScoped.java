@@ -19,11 +19,14 @@
 package cloud.resources;
 
 import com.google.common.base.MoreObjects;
+
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 02.11.15.

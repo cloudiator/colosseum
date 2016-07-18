@@ -18,9 +18,10 @@
 
 package cloud.strategies;
 
-import components.execution.Prioritized;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
+
+import components.execution.Prioritized;
 import models.VirtualMachine;
 
 /**

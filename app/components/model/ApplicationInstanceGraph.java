@@ -66,6 +66,7 @@ public class ApplicationInstanceGraph {
             final ObjectNode vertex = nodes.addObject();
             vertex.with("data").put("id", instance.getUuid())
                 .put("name", instance.getApplicationComponent().getComponent().getName())
+                .put("state", instance.getRemoteState().toString())
                 .put("parent", instance.getVirtualMachine().getUuid());
         });
         //add virtual machines as compound nodes
@@ -73,7 +74,8 @@ public class ApplicationInstanceGraph {
             .forEach(virtualMachine -> {
                 final ObjectNode compound = nodes.addObject();
                 compound.with("data").put("id", virtualMachine.getUuid())
-                    .put("name", virtualMachine.name());
+                    .put("name", virtualMachine.name())
+                    .put("state", virtualMachine.getRemoteState().toString());
             });
         final ArrayNode edges = objectNode.putArray("edges");
         this.instanceGraph.edgeSet().forEach(communicationEdge -> {

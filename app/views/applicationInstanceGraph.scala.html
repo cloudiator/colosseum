@@ -51,8 +51,13 @@
                                 .css({
                                     //edge style
                                     'curve-style': 'bezier',
-                                    'target-arrow-shape': 'triangle',
+                                    'target-arrow-shape': 'triangle'
+                                })
+                                .selector('node[state = "OK"]')
+                                .css({
+                                    'color': 'green'
                                 }),
+
 
                         elements: $.getJSON('/applicationInstance/' + @instance.getId +
                                         '/graph'),

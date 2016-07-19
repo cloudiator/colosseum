@@ -20,6 +20,7 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
 import models.FrontendUser;
 
 import static models.service.util.JpaResultHelper.getSingleResultOrNull;

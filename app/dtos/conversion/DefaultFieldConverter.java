@@ -19,12 +19,13 @@
 package dtos.conversion;
 
 import de.uniulm.omi.cloudiator.common.FieldFinder;
-import dtos.api.Dto;
-import models.generic.Model;
 
 import java.lang.reflect.Field;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import dtos.api.Dto;
+import models.generic.Model;
 
 /**
  * Created by daniel on 14.04.15.

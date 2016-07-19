@@ -18,9 +18,10 @@
 
 package models.generic;
 
+import java.util.UUID;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
-import java.util.UUID;
 
 /**
  * Created by daniel on 08.01.15.

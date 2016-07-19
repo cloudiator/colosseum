@@ -18,12 +18,13 @@
 
 package models;
 
-import models.generic.Model;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

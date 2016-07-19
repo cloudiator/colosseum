@@ -21,16 +21,30 @@ package components.scalability;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
-import components.execution.SimpleBlockingQueue;
-import components.scalability.aggregation.*;
-import models.*;
-import models.generic.ExternalReference;
-import models.scalability.FlowOperator;
-import play.Logger;
-import play.Play;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+
+import components.execution.SimpleBlockingQueue;
+import components.scalability.aggregation.AddAggregation;
+import components.scalability.aggregation.Aggregation;
+import components.scalability.aggregation.RemoveAggregation;
+import components.scalability.aggregation.SubscribeAggregation;
+import components.scalability.aggregation.UnsubscribeAggregation;
+import components.scalability.aggregation.UpdateAggregation;
+import models.Component;
+import models.ComposedMonitor;
+import models.Monitor;
+import models.MonitorInstance;
+import models.MonitorSubscription;
+import models.RawMonitor;
+import models.SensorConfigurations;
+import models.SensorDescription;
+import models.VirtualMachine;
+import models.scalability.FlowOperator;
+import play.Logger;
+import play.Play;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -197,30 +211,47 @@ public class ScalingEngineImpl implements ScalingEngine {
     }
 
     @Override public void addExternalIdToMonitor(Long monitorId, String externalId) {
-        fc.getMonitor(monitorId).getExternalReferences().add(new ExternalReference(externalId));
+        this.addExternalIdToMonitor(monitorId, "rnd" + UUID.randomUUID().toString(), externalId);
+    }
+
+    @Override public void addExternalIdToMonitor(Long monitorId, String externalKey, String externalId) {
+        fc.getMonitor(monitorId).externalReferences().put(externalKey, externalId);
     }
 
     @Override public void addExternalId(Long monitorInstanceId, String externalId) {
-        fc.getMonitorInstance(monitorInstanceId).getExternalReferences().add(new ExternalReference(externalId));
+        this.addExternalId(monitorInstanceId, "rnd" + UUID.randomUUID().toString(), externalId);
     }
 
-    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine) {
+    @Override public void addExternalId(Long monitorInstanceId, String externalKey, String externalId) {
+        fc.getMonitorInstance(monitorInstanceId).externalReferences().put(externalKey, externalId);
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine){
+        this.addExternalId(monitorId, "rnd" + UUID.randomUUID().toString(), externalId, virtualMachine);
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalKey, String externalId, Long virtualMachine) {
         List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
 
         for(MonitorInstance mi : monitorInstances){
             if(mi.getVirtualMachine().getId().equals(virtualMachine))
-                mi.getExternalReferences().add(new ExternalReference(externalId));
+                mi.externalReferences().put(externalKey, externalId);
         }
     }
 
-    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine,
+
+    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId){
+        this.addExternalId(monitorId, "rnd" + UUID.randomUUID().toString(), externalId, virtualMachine, componentId);
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalKey, String externalId, Long virtualMachine,
         Long componentId) {
         List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
 
         for(MonitorInstance mi : monitorInstances){
             if(mi.getVirtualMachine().getId().equals(virtualMachine) &&
                 mi.getComponent().getId().equals(componentId))
-            mi.getExternalReferences().add(new ExternalReference(externalId));
+            mi.externalReferences().put(externalKey, externalId);
         }
     }
 

@@ -18,11 +18,10 @@
 
 package dtos;
 
+import java.util.List;
+
 import dtos.api.Dto;
 import dtos.generic.KeyValue;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Frank on 17.03.2016.

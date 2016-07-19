@@ -18,14 +18,16 @@
 
 package cloud.strategies;
 
-import cloud.CloudService;
-import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-import models.KeyPair;
-import models.VirtualMachine;
 
 import java.util.Optional;
+
+import cloud.CloudService;
+import cloud.colosseum.ColosseumComputeService;
+import models.KeyPair;
+import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

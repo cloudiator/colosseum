@@ -20,6 +20,9 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+
 import dtos.LocationDto;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
@@ -28,8 +31,6 @@ import models.CloudCredential;
 import models.GeoLocation;
 import models.Location;
 import models.service.ModelService;
-
-import java.util.List;
 
 /**
  * Created by daniel on 14.04.15.

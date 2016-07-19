@@ -18,12 +18,12 @@
 
 package dtos.validation.validators;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 public class IpV6AddressValidator implements Validator<String> {
 

@@ -18,8 +18,9 @@
 
 package models.api;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 16.12.15.

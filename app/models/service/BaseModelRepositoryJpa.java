@@ -18,12 +18,16 @@
 
 package models.service;
 
-import com.github.drapostolos.typeparser.TypeParser;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import com.github.drapostolos.typeparser.TypeParser;
+
 import de.uniulm.omi.cloudiator.common.FieldFinder;
-import models.generic.Model;
-import play.db.jpa.JPA;
+
+import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -32,9 +36,9 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Optional;
+
+import models.generic.Model;
+import play.db.jpa.JPA;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

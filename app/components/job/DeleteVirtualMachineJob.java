@@ -18,8 +18,9 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
+
+import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
 import models.VirtualMachine;
 import models.generic.RemoteState;

@@ -20,13 +20,17 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import dtos.generic.MonitorDto;
 import dtos.validation.validators.ModelIdValidator;
-import models.*;
+import models.Application;
+import models.Cloud;
+import models.Component;
+import models.Instance;
+import models.Schedule;
+import models.SensorConfigurations;
+import models.SensorDescription;
 import models.service.ModelService;
-
-import java.util.List;
-import java.util.Map;
 
 public class RawMonitorDto extends MonitorDto {
 
@@ -43,19 +47,6 @@ public class RawMonitorDto extends MonitorDto {
         super();
     }
 
-    public RawMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
-        Long application, Long component, Long componentInstance, Long cloud,
-        Long sensorDescription, Long schedule, Long sensorConfigurations) {
-        super(externalReferences, monitorInstances);
-        this.application = application;
-        this.component = component;
-        this.componentInstance = componentInstance;
-        this.cloud = cloud;
-        this.sensorDescription = sensorDescription;
-        this.schedule = schedule;
-        this.sensorConfigurations = sensorConfigurations;
-    }
-
     @Override public void validation() {
         super.validation();
 
@@ -67,7 +58,7 @@ public class RawMonitorDto extends MonitorDto {
                 .withValidator(new ModelIdValidator<>(References.sensorConfigurationsService.get()));
     }
 
-    public static class References extends ModelWithExternalReferenceDto.References {
+    public static class References {
         @Inject public static Provider<ModelService<Application>> applicationAddressService;
         @Inject public static Provider<ModelService<Component>> componentService;
         @Inject public static Provider<ModelService<Instance>> instanceService;

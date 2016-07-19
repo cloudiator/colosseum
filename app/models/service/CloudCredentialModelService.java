@@ -18,11 +18,11 @@
 
 package models.service;
 
+import java.util.Optional;
+
 import models.Cloud;
 import models.CloudCredential;
 import models.Tenant;
-
-import java.util.Optional;
 
 /**
  * Created by daniel on 31.08.15.

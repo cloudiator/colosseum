@@ -18,9 +18,9 @@
 
 package dtos;
 
-import dtos.generic.ValidatableDto;
-
 import java.util.concurrent.TimeUnit;
+
+import dtos.generic.ValidatableDto;
 
 public class TimeWindowDto extends ValidatableDto {
 

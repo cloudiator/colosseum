@@ -18,11 +18,12 @@
 
 package models.generic;
 
+import java.util.Optional;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

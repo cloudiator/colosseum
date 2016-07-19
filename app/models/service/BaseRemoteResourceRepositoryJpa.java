@@ -19,12 +19,13 @@
 package models.service;
 
 import com.google.inject.TypeLiteral;
-import models.generic.RemoteResource;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+
+import models.generic.RemoteResource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

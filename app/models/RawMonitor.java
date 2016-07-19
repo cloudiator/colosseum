@@ -18,15 +18,14 @@
 
 package models;
 
-import com.google.common.collect.ImmutableMap;
-import components.scalability.internal.RawMonitorTsdbLocator;
-import components.scalability.internal.TsdbLocator;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
-import java.util.Map;
-import java.util.Optional;
+import components.scalability.internal.RawMonitorTsdbLocator;
+import components.scalability.internal.TsdbLocator;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

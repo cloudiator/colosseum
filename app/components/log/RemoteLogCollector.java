@@ -18,16 +18,18 @@
 
 package components.log;
 
-import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.MoreObjects;
+
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
-import models.VirtualMachine;
-import play.Logger;
-import util.logging.Loggers;
 
 import java.io.File;
 import java.util.Optional;
+
+import cloud.strategies.RemoteConnectionStrategy;
+import models.VirtualMachine;
+import play.Logger;
+import util.logging.Loggers;
 
 import static com.google.common.base.Preconditions.checkState;
 

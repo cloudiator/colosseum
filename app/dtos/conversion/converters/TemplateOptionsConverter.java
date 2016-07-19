@@ -19,15 +19,16 @@
 package dtos.conversion.converters;
 
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+import java.util.Map;
+
 import dtos.TemplateOptionsDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
 import models.TemplateOptions;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by daniel on 06.10.15.

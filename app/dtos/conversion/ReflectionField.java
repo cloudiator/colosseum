@@ -18,8 +18,9 @@
 
 package dtos.conversion;
 
-import javax.annotation.Nullable;
 import java.lang.reflect.Field;
+
+import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

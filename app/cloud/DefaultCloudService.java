@@ -18,14 +18,16 @@
 
 package cloud;
 
+import com.google.inject.Inject;
+
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+
 import cloud.colosseum.BaseColosseumComputeService;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.inject.Inject;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
 import models.service.ModelService;
 

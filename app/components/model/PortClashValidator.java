@@ -18,12 +18,12 @@
 
 package components.model;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import components.installer.ToolPorts;
 import models.Application;
 import models.PortProvided;
-
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by daniel on 14.07.16.

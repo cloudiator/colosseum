@@ -18,9 +18,6 @@
 
 package dtos.generic;
 
-import javax.annotation.Nullable;
-import java.util.*;
-
 /**
  * Created by Frank on 18.03.2016.
  */

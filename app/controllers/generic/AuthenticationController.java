@@ -18,6 +18,11 @@
 
 package controllers.generic;
 
+import java.util.List;
+
+import javax.annotation.Nullable;
+import javax.inject.Inject;
+
 import controllers.security.TenantAwareAuthenticator;
 import models.Cloud;
 import models.CloudCredential;
@@ -26,10 +31,6 @@ import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 import play.mvc.Controller;
-
-import javax.annotation.Nullable;
-import javax.inject.Inject;
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;

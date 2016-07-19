@@ -19,11 +19,17 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
-import models.generic.Model;
 
-import javax.persistence.*;
 import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

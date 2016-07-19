@@ -19,9 +19,15 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+
 import dtos.VirtualMachineDto;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.*;
+import models.Cloud;
+import models.Hardware;
+import models.Image;
+import models.Location;
+import models.TemplateOptions;
+import models.VirtualMachine;
 import models.service.ModelService;
 
 /**

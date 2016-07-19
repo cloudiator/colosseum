@@ -18,14 +18,15 @@
 
 package models;
 
-import models.generic.Model;
+import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import models.generic.Model;
 
 
 @Entity public class HardwareOffer extends Model {

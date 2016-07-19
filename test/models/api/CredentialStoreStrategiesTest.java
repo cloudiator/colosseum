@@ -21,8 +21,9 @@ package models.api;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.annotation.Nullable;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;

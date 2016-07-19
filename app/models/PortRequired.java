@@ -18,13 +18,14 @@
 
 package models;
 
+import java.util.Collections;
+import java.util.Optional;
+import java.util.Set;
+
 import javax.annotation.Nullable;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
-import java.util.Collections;
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Created by daniel on 03.08.15.

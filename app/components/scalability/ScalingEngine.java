@@ -50,11 +50,20 @@ public interface ScalingEngine {
      */
     void addExternalIdToMonitor(Long monitorId, String externalId);
 
+    void addExternalIdToMonitor(Long monitorId, String externalKey, String externalId);
+
     void addExternalId(Long monitorInstanceId, String externalId);
+
+    void addExternalId(Long monitorInstanceId, String externalKey, String externalId);
 
     void addExternalId(Long monitorId, String externalId, Long virtualMachine);
 
+    void addExternalId(Long monitorId, String externalKey, String externalId, Long virtualMachine);
+
     void addExternalId(Long monitorId, String externalId, Long virtualMachine, Long componentId);
+
+    void addExternalId(Long monitorId, String externalKey, String externalId, Long virtualMachine,
+                       Long componentId);
 
     Monitor doMonitor(RawMonitor monitor);
 

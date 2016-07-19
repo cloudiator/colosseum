@@ -18,12 +18,12 @@
 
 package dtos;
 
+import javax.annotation.Nullable;
+
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.OperatingSystemVendorType;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 15.04.15.

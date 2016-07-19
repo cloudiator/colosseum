@@ -19,8 +19,9 @@
 package components.job;
 
 import com.google.inject.Singleton;
-import components.execution.SimpleFifoPriorityBlockingQueue;
+
 import components.execution.SimpleBlockingQueue;
+import components.execution.SimpleFifoPriorityBlockingQueue;
 
 /**
  * Created by daniel on 07.05.15.

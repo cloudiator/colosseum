@@ -18,16 +18,16 @@
 
 package cloud.sync.detectors;
 
-import cloud.SlashEncodedId;
+import com.google.inject.Inject;
+
+import java.util.Optional;
+
 import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.ImageProblems;
-import com.google.inject.Inject;
 import models.Image;
 import models.service.ImageModelService;
-
-import java.util.Optional;
 
 /**
  * Created by daniel on 04.11.15.

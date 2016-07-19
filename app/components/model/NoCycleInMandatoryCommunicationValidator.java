@@ -1,10 +1,11 @@
 package components.model;
 
-import models.Application;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Collections;
 import java.util.Set;
+
+import models.Application;
 
 /**
  * Created by daniel on 19.06.16.

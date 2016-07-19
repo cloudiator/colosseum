@@ -19,10 +19,11 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.PortProvided;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import models.PortProvided;
 
 /**
  * Created by daniel on 15.03.16.

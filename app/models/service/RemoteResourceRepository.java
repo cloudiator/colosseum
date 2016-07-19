@@ -18,9 +18,9 @@
 
 package models.service;
 
-import models.generic.RemoteResource;
-
 import javax.annotation.Nullable;
+
+import models.generic.RemoteResource;
 
 /**
  * Created by daniel on 21.06.15.

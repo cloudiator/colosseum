@@ -18,14 +18,19 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.common.collect.Maps;
-import components.model.ModelValidationService;
+
 import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
 import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
-import de.uniulm.omi.cloudiator.lance.application.component.*;
+import de.uniulm.omi.cloudiator.lance.application.component.ComponentId;
+import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponent;
+import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponentBuilder;
+import de.uniulm.omi.cloudiator.lance.application.component.InPort;
+import de.uniulm.omi.cloudiator.lance.application.component.OutPort;
+import de.uniulm.omi.cloudiator.lance.application.component.PortProperties;
+import de.uniulm.omi.cloudiator.lance.application.component.PortReference;
 import de.uniulm.omi.cloudiator.lance.client.DeploymentHelper;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
@@ -39,16 +44,25 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.DefaultDetectorFactories;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
-import models.*;
+
+import java.util.Map;
+
+import javax.annotation.Nullable;
+
+import cloud.colosseum.ColosseumComputeService;
+import components.model.ModelValidationService;
+import models.ApplicationComponent;
+import models.Instance;
+import models.LifecycleComponent;
+import models.PortProvided;
+import models.PortRequired;
+import models.Tenant;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.Logger;
 import play.db.jpa.JPA;
 import util.logging.Loggers;
-
-import javax.annotation.Nullable;
-import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;

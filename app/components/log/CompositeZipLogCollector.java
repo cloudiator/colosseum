@@ -20,8 +20,6 @@ package components.log;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.io.ByteStreams;
-import play.Logger;
-import util.logging.Loggers;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,6 +29,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import play.Logger;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 06.06.16.

@@ -18,15 +18,16 @@
 
 package cloud.sync.detectors;
 
+import com.google.inject.Inject;
+
+import java.util.Optional;
+
 import cloud.resources.HardwareInLocation;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.HardwareProblems;
-import com.google.inject.Inject;
 import models.Hardware;
 import models.service.HardwareModelService;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

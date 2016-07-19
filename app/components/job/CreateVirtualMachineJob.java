@@ -18,23 +18,29 @@
 
 package components.job;
 
-import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
-import cloud.colosseum.ColosseumComputeService;
-import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
-import cloud.resources.VirtualMachineInLocation;
-import cloud.strategies.KeyPairStrategy;
-import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
-import components.installer.Installers;
-import components.installer.ToolPorts;
-import components.installer.api.InstallApi;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
-import models.*;
+
+import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
+import cloud.colosseum.ColosseumComputeService;
+import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
+import cloud.resources.VirtualMachineInLocation;
+import cloud.strategies.KeyPairStrategy;
+import cloud.strategies.RemoteConnectionStrategy;
+import components.installer.Installers;
+import components.installer.ToolPorts;
+import components.installer.api.InstallApi;
+import models.IpAddress;
+import models.IpType;
+import models.KeyPair;
+import models.Tenant;
+import models.VirtualMachine;
 import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;

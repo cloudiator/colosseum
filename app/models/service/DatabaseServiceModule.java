@@ -64,7 +64,6 @@ import models.TimeWindow;
 import models.VirtualMachine;
 import models.VirtualMachineTemplate;
 import models.Window;
-import models.generic.ExternalReference;
 
 /**
  * Created by daniel on 18.03.15.
@@ -133,10 +132,6 @@ public class DatabaseServiceModule extends AbstractModule {
         // Component
         bind(new TypeLiteral<ModelService<Component>>() {
         }).to(new TypeLiteral<BaseModelService<Component>>() {
-        });
-        // ExternalReference
-        bind(new TypeLiteral<ModelService<ExternalReference>>() {
-        }).to(new TypeLiteral<BaseModelService<ExternalReference>>() {
         });
         // Frontend User
         bind(FrontendUserService.class).to(DefaultFrontendUserService.class);

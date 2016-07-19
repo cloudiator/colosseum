@@ -64,7 +64,6 @@ import models.TimeWindow;
 import models.VirtualMachine;
 import models.VirtualMachineTemplate;
 import models.Window;
-import models.generic.ExternalReference;
 
 /**
  * Created by daniel on 18.03.15.
@@ -125,10 +124,6 @@ public class JPAModule extends AbstractModule {
         //ConstantMonitor
         bind(new TypeLiteral<ModelRepository<ConstantMonitor>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ConstantMonitor>>() {
-        });
-        //ConstantMonitor
-        bind(new TypeLiteral<ModelRepository<ExternalReference>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<ExternalReference>>() {
         });
         //FormulaQuantifier
         bind(new TypeLiteral<ModelRepository<FormulaQuantifier>>() {

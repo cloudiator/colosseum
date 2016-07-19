@@ -45,6 +45,7 @@ import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.Logger;
 import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 import util.logging.Loggers;
 
 import javax.annotation.Nullable;
@@ -62,10 +63,11 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     private final ModelValidationService modelValidationService;
 
-    public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
-        ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
-        Tenant tenant, ModelValidationService modelValidationService) {
-        super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+    public CreateInstanceJob(JPAApi jpaApi, Instance instance,
+        RemoteModelService<Instance> modelService, ModelService<Tenant> tenantModelService,
+        ColosseumComputeService colosseumComputeService, Tenant tenant,
+        ModelValidationService modelValidationService) {
+        super(jpaApi, instance, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(modelValidationService);
 
@@ -79,7 +81,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         //todo: should normally be validated in an application instance method.
         LOGGER.info("Starting validation of model.");
         try {
-            JPA.withTransaction(() -> modelValidationService
+            jpaApi().withTransaction(() -> modelValidationService
                 .validate(getT().getApplicationComponent().getApplication()));
         } catch (Throwable t) {
             throw new JobException(t);
@@ -89,7 +91,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
         ComponentInstanceId componentInstanceId;
         try {
-            componentInstanceId = JPA.withTransaction("default", true, () -> {
+            componentInstanceId = jpaApi().withTransaction("default", true, () -> {
 
                 Instance instance = getT();
                 LifecycleClient client;
@@ -142,7 +144,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             throw new JobException(throwable);
         }
 
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             Instance instance = getT();
             instance.bindRemoteId(componentInstanceId.toString());
             modelService.save(instance);
@@ -238,7 +240,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     @Override public boolean canStart() throws JobException {
         try {
-            return JPA.withTransaction(() -> {
+            return jpaApi().withTransaction(() -> {
                 Instance instance = getT();
 
                 if (RemoteState.ERROR.equals(instance.getVirtualMachine().getRemoteState())) {

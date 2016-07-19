@@ -39,6 +39,7 @@ import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -51,13 +52,13 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory;
     private final PortProvidedService portProvidedService;
 
-    public CreateVirtualMachineJob(VirtualMachine virtualMachine,
+    public CreateVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
         KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory,
         PortProvidedService portProvidedService) {
-        super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(keyPairStrategy);
         checkNotNull(remoteConnectionFactory);
@@ -77,7 +78,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         java.util.Optional<KeyPair> keyPairOptional;
         synchronized (CreateVirtualMachineJob.class) {
             try {
-                keyPairOptional = JPA.withTransaction(() -> {
+                keyPairOptional = jpaApi().withTransaction(() -> {
                     VirtualMachine virtualMachine = getT();
                     return keyPairStrategy.create(virtualMachine);
                 });
@@ -88,7 +89,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
         VirtualMachineInLocation cloudVirtualMachine;
         try {
-            cloudVirtualMachine = JPA.withTransaction("default", true, () -> {
+            cloudVirtualMachine = jpaApi().withTransaction("default", true, () -> {
                 VirtualMachine virtualMachine = getT();
                 // build the template
                 ColosseumVirtualMachineTemplateBuilder builder =
@@ -116,7 +117,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         }
 
 
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             VirtualMachine virtualMachine = getT();
             // set values to the model
             virtualMachine.bindRemoteId(cloudVirtualMachine.id());
@@ -161,7 +162,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         });
 
         try {
-            JPA.withTransaction("default", true, () -> {
+            jpaApi().withTransaction("default", true, () -> {
                 VirtualMachine virtualMachine = getT();
                 Tenant tenant = getTenant();
                 final RemoteConnection remoteConnection =

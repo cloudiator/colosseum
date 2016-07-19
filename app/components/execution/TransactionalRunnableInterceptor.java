@@ -19,10 +19,12 @@
 package components.execution;
 
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import play.Logger;
-import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import util.logging.Loggers;
 
@@ -32,8 +34,10 @@ import util.logging.Loggers;
 public class TransactionalRunnableInterceptor implements MethodInterceptor {
 
     private static final Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
+    private final Provider<JPAApi> jpaApi;
 
-    public TransactionalRunnableInterceptor() {
+    @Inject public TransactionalRunnableInterceptor(Provider<JPAApi> jpaApi) {
+        this.jpaApi = jpaApi;
     }
 
     @Override public Object invoke(MethodInvocation methodInvocation) throws Throwable {
@@ -49,7 +53,7 @@ public class TransactionalRunnableInterceptor implements MethodInterceptor {
             .debug("Running " + methodInvocation.getThis().getClass() + " in transaction context.");
 
         try {
-            ret = JPA.withTransaction("default", readOnly, methodInvocation::proceed);
+            ret = jpaApi.get().withTransaction("default", readOnly, methodInvocation::proceed);
         } catch (Throwable throwable) {
             throw new RuntimeException(throwable);
         }

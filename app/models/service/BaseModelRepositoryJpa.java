@@ -23,7 +23,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import de.uniulm.omi.cloudiator.common.FieldFinder;
 import models.generic.Model;
-import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -44,14 +44,16 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
 
     protected final Class<T> type;
+    private final JPAApi jpaApi;
 
-    @Inject BaseModelRepositoryJpa(TypeLiteral<T> type) {
+    @Inject BaseModelRepositoryJpa(JPAApi jpaApi, TypeLiteral<T> type) {
         //noinspection unchecked
         this.type = (Class<T>) type.getRawType();
+        this.jpaApi = jpaApi;
     }
 
     protected EntityManager em() {
-        return JPA.em();
+        return jpaApi.em("default");
     }
 
     @Override @Nullable public T findById(Long id) {

@@ -20,11 +20,12 @@ import com.google.inject.Inject;
 import models.*;
 import models.service.FrontendUserService;
 import models.service.ModelService;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 25.11.14.
  */
-public class InitialData {
+class InitialData {
 
     private final FrontendUserService frontendUserService;
     private final ModelService<Tenant> tenantModelService;
@@ -35,17 +36,20 @@ public class InitialData {
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
         ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService, JPAApi jpaApi) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
         this.operatingSystemModelService = operatingSystemModelService;
         this.operatingSystemVendorModelService = operatingSystemVendorModelService;
-    }
 
-    public void loadInitialData() {
-        /**
-         * Creates a default system user and a default tenant.
-         */
+        jpaApi.withTransaction(this::loadInitialData);
+    }
+    
+    /**
+     * Creates a default system user and a default tenant.
+     */
+    private void loadInitialData() {
+
         if (frontendUserService.getAll().isEmpty()) {
             Tenant tenant = null;
             for (Tenant storedTenant : tenantModelService.getAll()) {

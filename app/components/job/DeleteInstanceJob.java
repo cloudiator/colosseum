@@ -29,6 +29,7 @@ import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -39,16 +40,16 @@ public class DeleteInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     private final RemoteModelService<Instance> instanceRemoteModelService;
 
-    @Inject public DeleteInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
+    @Inject public DeleteInstanceJob(JPAApi jpaApi, Instance instance, RemoteModelService<Instance> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
-        super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+        super(jpaApi, instance, modelService, tenantModelService, colosseumComputeService, tenant);
         this.instanceRemoteModelService = modelService;
     }
 
     @Override public boolean canStart() throws JobException {
         try {
-            return JPA.withTransaction(() -> {
+            return jpaApi().withTransaction(() -> {
                 Instance instance = getT();
 
                 if (RemoteState.ERROR.equals(instance.getRemoteState())) {
@@ -67,7 +68,7 @@ public class DeleteInstanceJob extends AbstractRemoteResourceJob<Instance> {
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
 
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             Instance instance = getT();
             checkState(instance.remoteId().isPresent(), "no remote id present on instance");
             checkState(instance.getVirtualMachine().publicIpAddress().isPresent(),
@@ -91,7 +92,7 @@ public class DeleteInstanceJob extends AbstractRemoteResourceJob<Instance> {
     }
 
     @Override public void onSuccess() throws JobException {
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             Instance t = getT();
             instanceRemoteModelService.delete(t);
         });

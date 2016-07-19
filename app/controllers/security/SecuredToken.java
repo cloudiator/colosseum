@@ -58,7 +58,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
 
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
-        final EntityManager em = JPA.em();
+        //final EntityManager em = JPA.em();
         FrontendUser frontendUser;
         try {
             frontendUser = JPA.withTransaction(
@@ -67,11 +67,11 @@ public class SecuredToken extends TenantAwareAuthenticator {
             throw new RuntimeException(t);
         }
         // workaround continue. Bind the old one.
-        JPA.bindForCurrentThread(em);
+        //JPA.bindForCurrentThread(em);
 
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
-        final EntityManager em1 = JPA.em();
+        //final EntityManager em1 = JPA.em();
         final FrontendUser finalUser = frontendUser;
         boolean valid;
         try {
@@ -81,7 +81,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
             throw new RuntimeException(t);
         }
         // workaround continue. Bind the old one.
-        JPA.bindForCurrentThread(em1);
+        //JPA.bindForCurrentThread(em1);
 
         if (!valid) {
             frontendUser = null;
@@ -138,7 +138,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
             // loosing the em....
             Hibernate.initialize(frontendUser);
             // workaround continue. Bind the old one.
-            JPA.bindForCurrentThread(em);
+            //JPA.bindForCurrentThread(em);
         }
     }
 

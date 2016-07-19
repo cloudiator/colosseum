@@ -21,6 +21,8 @@ package components.execution;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import play.Logger;
+import play.inject.ApplicationLifecycle;
+import play.libs.F;
 import util.logging.Loggers;
 
 import java.util.Set;
@@ -36,7 +38,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     private static Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
 
     @Inject public Init(ExecutionService executionService, Set<Runnable> runnables,
-        Set<Schedulable> schedulables) {
+        Set<Schedulable> schedulables, ApplicationLifecycle applicationLifecycle) {
 
         LOGGER.info("Initializing execution system.");
 
@@ -47,6 +49,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         checkNotNull(executionService);
         checkNotNull(runnables);
         checkNotNull(schedulables);
+        checkNotNull(applicationLifecycle);
 
         LOGGER.debug(String.format("Running %s tasks.", runnables.size() + schedulables.size()));
 
@@ -58,9 +61,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
             LOGGER.trace(String.format("Starting initialization of schedulable %s", schedulable));
             executionService.schedule(schedulable);
         }
+
+        LOGGER.debug("Registering shutdown hook");
+        applicationLifecycle.addStopHook(() -> F.Promise.promise(() -> {
+            shutdown();
+            return null;
+        }));
+
+
     }
 
-    public void shutdown() {
+    private void shutdown() {
         LOGGER.info("Shutting down execution service.");
         executionService.shutdown();
     }

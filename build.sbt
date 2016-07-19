@@ -115,14 +115,14 @@ pomExtra :=
       </developer>
     </developers>
 
-publishTo := {
-  val snapshots = "https://oss.sonatype.org/content/repositories/snapshots"
-  val releases = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-  if (version.value.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at snapshots)
-  else
-    Some("releases" at releases)
-}
+//publishTo := {
+//  val snapshots = "https://oss.sonatype.org/content/repositories/snapshots"
+//  val releases = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+//  if (version.value.trim.endsWith("SNAPSHOT"))
+//    Some("snapshots" at snapshots)
+//  else
+//    Some("releases" at releases)
+//}
 
 useGpg := true
 

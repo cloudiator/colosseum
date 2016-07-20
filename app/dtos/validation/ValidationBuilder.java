@@ -18,10 +18,11 @@
 
 package dtos.validation;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 20.03.15.

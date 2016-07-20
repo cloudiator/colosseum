@@ -19,16 +19,18 @@
 package models;
 
 import com.google.common.collect.Lists;
-import models.generic.RemoteResourceInCloud;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+
+import models.generic.RemoteResourceInCloud;
 
 /**
  * Created by daniel on 18.05.15.

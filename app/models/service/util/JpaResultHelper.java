@@ -18,9 +18,10 @@
 
 package models.service.util;
 
+import java.util.List;
+
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
-import java.util.List;
 
 /**
  * Utility class for JPA Results.

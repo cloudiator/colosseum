@@ -19,6 +19,7 @@
 package components.scalability;
 
 import com.google.inject.Singleton;
+
 import components.execution.SimpleBlockingQueue;
 import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.scalability.aggregation.Aggregation;

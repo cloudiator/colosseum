@@ -18,10 +18,10 @@
 
 package dtos.conversion.transformers;
 
-import models.generic.Model;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import models.generic.Model;
 
 /**
  * Created by daniel on 19.03.15.

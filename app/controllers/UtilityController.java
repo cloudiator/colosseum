@@ -1,15 +1,10 @@
 package controllers;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.config.ConfigValue;
-import controllers.security.SecuredSessionOrToken;
-import play.Play;
-import play.libs.Json;
-import play.mvc.Controller;
-import play.mvc.Result;
-import play.mvc.Security;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +12,13 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+
+import controllers.security.SecuredSessionOrToken;
+import play.Play;
+import play.libs.Json;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Security;
 
 /**
  * Created by daniel on 28.04.16.

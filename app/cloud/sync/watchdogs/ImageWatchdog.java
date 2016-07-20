@@ -18,18 +18,19 @@
 
 package cloud.sync.watchdogs;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import cloud.CloudService;
 import cloud.resources.ImageInLocation;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.execution.Stable;
-
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daniel on 07.05.15.

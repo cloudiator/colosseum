@@ -19,14 +19,16 @@
 package models;
 
 import com.google.common.base.MoreObjects;
-import models.generic.Model;
+
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -21,11 +21,12 @@ package dtos.conversion;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 import com.google.inject.Singleton;
-import dtos.api.Dto;
-import models.generic.Model;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+
+import dtos.api.Dto;
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

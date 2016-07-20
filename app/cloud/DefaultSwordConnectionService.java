@@ -19,11 +19,13 @@
 package cloud;
 
 import com.google.common.net.HostAndPort;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
+
 import play.Logger;
 import util.logging.Loggers;
 

@@ -18,11 +18,12 @@
 
 package models;
 
-import models.generic.Model;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import models.generic.Model;
 
 /**
  * @todo we should probably normalize this table?

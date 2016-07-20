@@ -21,9 +21,10 @@ package models;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
-import play.Play;
 
 import java.util.function.Function;
+
+import play.Play;
 
 /**
  * Created by daniel on 04.11.14.

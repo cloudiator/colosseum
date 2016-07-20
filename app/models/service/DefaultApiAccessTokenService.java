@@ -19,9 +19,10 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.ApiAccessToken;
 
 import javax.annotation.Nullable;
+
+import models.ApiAccessToken;
 
 /**
  * Created by daniel on 19.12.14.

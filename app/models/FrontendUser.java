@@ -19,14 +19,17 @@
 package models;
 
 import de.uniulm.omi.cloudiator.common.Password;
-import models.generic.Model;
+
 import org.apache.commons.codec.binary.Base64;
+
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

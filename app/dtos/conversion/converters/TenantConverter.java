@@ -20,6 +20,9 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+
 import dtos.TenantDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -27,8 +30,6 @@ import dtos.conversion.transformers.ModelToListIdTransformer;
 import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
-
-import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

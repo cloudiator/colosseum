@@ -20,9 +20,10 @@ package dtos.conversion;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import play.Logger;
 
 import java.util.Set;
+
+import play.Logger;
 
 /**
  * A generic implementation of the ModelDtoConversionService, which automatically

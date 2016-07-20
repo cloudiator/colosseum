@@ -18,10 +18,10 @@
 
 package components.execution;
 
+import java.util.concurrent.TimeUnit;
+
 import play.Logger;
 import util.logging.Loggers;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by daniel on 27.08.15.

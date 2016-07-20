@@ -17,7 +17,13 @@
  */
 
 import com.google.inject.Inject;
-import models.*;
+
+import models.FrontendUser;
+import models.OperatingSystem;
+import models.OperatingSystemArchitecture;
+import models.OperatingSystemVendor;
+import models.OperatingSystemVendorType;
+import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
 import play.db.jpa.JPAApi;

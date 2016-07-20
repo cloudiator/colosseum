@@ -18,15 +18,17 @@
 
 package cloud.strategies;
 
-import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
+
+import java.util.Optional;
+
+import cloud.CloudService;
 import models.KeyPair;
 import models.VirtualMachine;
 import models.service.KeyPairModelService;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkState;
 

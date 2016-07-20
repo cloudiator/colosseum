@@ -18,8 +18,6 @@
 
 package dtos;
 
-import java.util.List;
-
 public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
 
     private Double value;
@@ -28,16 +26,11 @@ public class ConstantMonitorDto extends ModelWithExternalReferenceDto {
         super();
     }
 
-    public ConstantMonitorDto(List<String> externalReferences, Double value) {
-        super(externalReferences);
-        this.value = value;
-    }
-
     @Override public void validation() {
         //TODO
     }
 
-    public static class References extends ModelWithExternalReferenceDto.References {
+    public static class References {
     }
 
     public Double getValue() {

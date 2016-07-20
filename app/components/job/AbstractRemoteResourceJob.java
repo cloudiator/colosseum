@@ -18,8 +18,9 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.common.base.MoreObjects;
+
+import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
 import models.generic.RemoteResource;
 import models.generic.RemoteState;

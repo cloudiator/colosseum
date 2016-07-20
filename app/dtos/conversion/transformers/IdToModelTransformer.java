@@ -18,10 +18,10 @@
 
 package dtos.conversion.transformers;
 
+import javax.annotation.Nullable;
+
 import models.generic.Model;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
 
 /**
  * Created by daniel on 16.03.15.

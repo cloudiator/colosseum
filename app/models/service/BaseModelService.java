@@ -19,11 +19,13 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.generic.Model;
-import util.logging.Loggers;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import models.generic.Model;
+import util.logging.Loggers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

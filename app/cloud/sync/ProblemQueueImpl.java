@@ -19,6 +19,7 @@
 package cloud.sync;
 
 import com.google.inject.Singleton;
+
 import components.execution.SimpleBlockingQueue;
 import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.UniqueBlockingQueue;

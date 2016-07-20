@@ -20,6 +20,7 @@ package components.job;
 
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
 import components.execution.ExecutionService;
 import components.execution.Loop;
 import components.execution.SimpleBlockingQueue;

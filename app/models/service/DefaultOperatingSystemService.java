@@ -19,10 +19,11 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.OperatingSystem;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import models.OperatingSystem;
 
 /**
  * Created by daniel on 23.07.15.

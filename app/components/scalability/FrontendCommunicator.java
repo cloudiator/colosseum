@@ -18,9 +18,16 @@
 
 package components.scalability;
 
-import models.*;
-
 import java.util.List;
+
+import models.ApplicationComponent;
+import models.Component;
+import models.ComposedMonitor;
+import models.Instance;
+import models.Monitor;
+import models.MonitorInstance;
+import models.RawMonitor;
+import models.VirtualMachine;
 
 /**
  * Created by Frank on 23.07.2015.

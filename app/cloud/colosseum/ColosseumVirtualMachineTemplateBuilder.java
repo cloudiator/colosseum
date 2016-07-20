@@ -20,10 +20,19 @@ package cloud.colosseum;
 
 
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
-import models.*;
-import models.generic.RemoteResourceInCloud;
 
 import javax.annotation.Nullable;
+
+import models.Cloud;
+import models.CloudCredential;
+import models.GeoLocation;
+import models.Hardware;
+import models.HardwareOffer;
+import models.Image;
+import models.Location;
+import models.OperatingSystem;
+import models.VirtualMachine;
+import models.generic.RemoteResourceInCloud;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

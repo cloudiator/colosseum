@@ -52,6 +52,7 @@ libraryDependencies ++= Seq(
   "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
   "com.github.drapostolos" % "type-parser" % "0.5.0",
+  "io.github.cloudiator" % "colosseum-client" % "0.2.0-SNAPSHOT", // sub-dependency of axe-aggr.
   "io.github.cloudiator.sword" % "service" % "0.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
   "io.github.cloudiator.lance" % "client" % "0.2.0-SNAPSHOT",
   "io.github.cloudiator" % "common" % "0.2.0-SNAPSHOT",

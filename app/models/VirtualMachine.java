@@ -18,12 +18,22 @@
 
 package models;
 
-import models.api.CredentialStore;
-import models.generic.RemoteResourceInLocation;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
-import java.util.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import models.api.CredentialStore;
+import models.generic.RemoteResourceInLocation;
 
 /**
  * Created by daniel on 31.10.14.

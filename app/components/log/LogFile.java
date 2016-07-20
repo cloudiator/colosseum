@@ -18,9 +18,9 @@
 
 package components.log;
 
-import models.ApplicationInstance;
-
 import java.util.Set;
+
+import models.ApplicationInstance;
 
 /**
  * Created by daniel on 06.06.16.

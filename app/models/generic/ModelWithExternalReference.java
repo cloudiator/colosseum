@@ -18,8 +18,16 @@
 
 package models.generic;
 
-import javax.persistence.*;
-import java.util.List;
+import com.google.common.collect.ImmutableMap;
+
+import java.util.Map;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.MapKeyColumn;
 
 /**
  * Created by Frank on 20.05.2015.
@@ -27,14 +35,14 @@ import java.util.List;
 @Entity @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class ModelWithExternalReference extends Model {
 
-    @OneToMany(cascade = CascadeType.ALL) private List<ExternalReference>
-        externalReferences;
+    @ElementCollection @MapKeyColumn(name = "refName") @Column(name = "refValue")
+    private Map<String, String> externalReferences;
 
-    public List<ExternalReference> getExternalReferences() {
-        return externalReferences;
+    public Map<String, String> externalReferences() {
+        return ImmutableMap.copyOf(externalReferences);
     }
 
-    public void setExternalReferences(List<ExternalReference> externalReferences) {
-        this.externalReferences = externalReferences;
+    public void addExternalReference(String tagName, String tagValue) {
+        this.externalReferences.put(tagName, tagValue);
     }
 }

@@ -18,9 +18,9 @@
 
 package models.service;
 
-import models.ApiAccessToken;
-
 import javax.annotation.Nullable;
+
+import models.ApiAccessToken;
 
 /**
  * Created by daniel on 19.12.14.

@@ -18,10 +18,11 @@
 
 package dtos.api;
 
-import play.data.validation.ValidationError;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import play.data.validation.ValidationError;
 
 /**
  * Created by bwpc on 08.12.2014.

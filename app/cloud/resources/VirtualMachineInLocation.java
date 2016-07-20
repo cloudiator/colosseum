@@ -20,11 +20,12 @@ package cloud.resources;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
+
+import java.util.Set;
+
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
-
-import java.util.Set;
 
 /**
  * Created by daniel on 28.05.15.

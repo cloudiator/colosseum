@@ -18,14 +18,15 @@
 
 package cloud;
 
-import cloud.resources.KeyPairInCloud;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
+
+import javax.annotation.Nullable;
+
+import cloud.resources.KeyPairInCloud;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

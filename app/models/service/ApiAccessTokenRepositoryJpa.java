@@ -23,8 +23,6 @@ import com.google.inject.TypeLiteral;
 import models.ApiAccessToken;
 import play.db.jpa.JPAApi;
 
-import java.util.List;
-
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**

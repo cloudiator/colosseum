@@ -25,6 +25,7 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 
 import cloud.ComputeServiceRegistry;
 import cloud.resources.VirtualMachineInLocation;
+import de.uniulm.omi.cloudiator.sword.api.extensions.SecurityGroupService;
 import models.CloudCredential;
 import models.VirtualMachine;
 
@@ -65,5 +66,9 @@ public class BaseColosseumComputeService implements ColosseumComputeService {
 
     @Override public Optional<PublicIpService> getPublicIpService(CloudCredential cloudCredential) {
         return computeServices.getComputeService(cloudCredential.getUuid()).publicIpService();
+    }
+
+    @Override public Optional<SecurityGroupService> getSecurityGroupService(CloudCredential cloudCredential) {
+        return computeServices.getComputeService(cloudCredential.getUuid()).securityGroupService();
     }
 }

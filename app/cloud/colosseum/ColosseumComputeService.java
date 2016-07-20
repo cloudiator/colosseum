@@ -24,6 +24,7 @@ import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
 
 import cloud.resources.VirtualMachineInLocation;
+import de.uniulm.omi.cloudiator.sword.api.extensions.SecurityGroupService;
 import models.CloudCredential;
 import models.VirtualMachine;
 
@@ -40,4 +41,6 @@ public interface ColosseumComputeService {
     Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential);
 
     Optional<PublicIpService> getPublicIpService(CloudCredential cloudCredential);
+
+    Optional<SecurityGroupService> getSecurityGroupService(CloudCredential cloudCredential);
 }

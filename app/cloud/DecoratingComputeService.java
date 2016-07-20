@@ -27,6 +27,7 @@ import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.extensions.SecurityGroupService;
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
@@ -111,6 +112,10 @@ public class DecoratingComputeService implements
         }
         return Optional.of(new DecoratingKeyPairService(delegate.keyPairService().get(), cloudId,
             cloudCredential, cloudModelService, cloudCredentialModelService));
+    }
+
+    @Override public Optional<SecurityGroupService> securityGroupService() {
+        return null;
     }
 
     static class VirtualMachineDecorator

@@ -31,6 +31,7 @@ import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.DeploymentException;
 import de.uniulm.omi.cloudiator.lance.lca.container.ComponentInstanceId;
+import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
@@ -43,8 +44,8 @@ import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.Configuration;
 import play.Logger;
-import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;
 import util.logging.Loggers;
 
@@ -62,16 +63,19 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
     private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final ModelValidationService modelValidationService;
+    private final Configuration configuration;
 
-    public CreateInstanceJob(JPAApi jpaApi, Instance instance,
+    public CreateInstanceJob(Configuration configuration, JPAApi jpaApi, Instance instance,
         RemoteModelService<Instance> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
         ModelValidationService modelValidationService) {
         super(jpaApi, instance, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(modelValidationService);
+        checkNotNull(configuration);
 
         this.modelValidationService = modelValidationService;
+        this.configuration = configuration;
     }
 
     @Override protected void doWork(ModelService<Instance> modelService,
@@ -130,12 +134,19 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
                 }
                 try {
+
+                    ContainerType containerType;
+                    if (!dockerInstalled()) {
+                        containerType = ContainerType.PLAIN;
+                    } else {
+                        containerType = instance.getApplicationComponent().containerTypeOrDefault();
+                    }
+
                     return client
                         .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
                             deploymentContext, deployableComponent,
                             instance.getVirtualMachine().operatingSystemVendorTypeOrDefault()
-                                .lanceOs(),
-                            instance.getApplicationComponent().containerTypeOrDefault());
+                                .lanceOs(), containerType);
                 } catch (DeploymentException e) {
                     throw new JobException(e);
                 }
@@ -324,6 +335,11 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
             return lifecycleStoreBuilder.build();
         }
+    }
+
+    private boolean dockerInstalled() {
+        return this.configuration.getBoolean("colosseum.installer.linux.lance.docker.install.flag");
+
     }
 
 

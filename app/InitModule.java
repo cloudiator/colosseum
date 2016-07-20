@@ -17,14 +17,15 @@
  */
 
 import com.google.inject.AbstractModule;
-import components.execution.Init;
+import components.execution.ExecutionSystemInitialization;
 
 /**
  * Created by daniel on 19.07.16.
  */
 public class InitModule extends AbstractModule {
     @Override protected void configure() {
-        bind(Init.class).asEagerSingleton();
-        bind(InitialData.class).asEagerSingleton();
+        bind(ExecutionSystemInitialization.class);
+        bind(InitialData.class);
+        bind(OnStartClass.class).asEagerSingleton();
     }
 }

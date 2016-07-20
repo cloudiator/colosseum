@@ -92,8 +92,6 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         } else {
             this.update(t);
         }
-        this.flush();
-        this.refresh(t);
     }
 
     protected T update(final T t) {

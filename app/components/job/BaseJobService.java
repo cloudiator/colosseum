@@ -33,6 +33,8 @@ import models.VirtualMachine;
 import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;
+import play.Configuration;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 03.07.15.
@@ -49,10 +51,12 @@ import models.service.RemoteModelService;
         remoteConnectionStrategyFactory;
     private final PortProvidedService portProvidedService;
     private final ModelValidationService modelValidationService;
+    private final Configuration configuration;
+    private final JPAApi jpaApi;
 
-    @Inject public BaseJobService(RemoteModelService<VirtualMachine> virtualMachineModelService,
-        CloudService cloudService, ModelService<Tenant> tenantModelService,
-        RemoteModelService<Instance> instanceModelService,
+    @Inject public BaseJobService(JPAApi jpaApi, Configuration configuration,
+        RemoteModelService<VirtualMachine> virtualMachineModelService, CloudService cloudService,
+        ModelService<Tenant> tenantModelService, RemoteModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory,
         PortProvidedService portProvidedService, ModelValidationService modelValidationService) {
@@ -65,27 +69,33 @@ import models.service.RemoteModelService;
         this.modelValidationService = modelValidationService;
         this.colosseumComputeService = cloudService.computeService();
         this.jobQueue = jobQueue;
+        this.configuration = configuration;
+        this.jpaApi = jpaApi;
     }
 
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
-        this.jobQueue.add(new CreateVirtualMachineJob(virtualMachine, virtualMachineModelService,
-            tenantModelService, colosseumComputeService, tenant, keyPairStrategy,
-            remoteConnectionStrategyFactory, portProvidedService));
+        this.jobQueue.add(
+            new CreateVirtualMachineJob(jpaApi, virtualMachine, virtualMachineModelService,
+                tenantModelService, colosseumComputeService, tenant, keyPairStrategy,
+                remoteConnectionStrategyFactory, portProvidedService));
     }
 
     @Override public void newInstanceJob(Instance instance, Tenant tenant) {
-        this.jobQueue.add(new CreateInstanceJob(instance, instanceModelService, tenantModelService,
-            colosseumComputeService, tenant, modelValidationService));
+        this.jobQueue.add(
+            new CreateInstanceJob(configuration, jpaApi, instance, instanceModelService,
+                tenantModelService, colosseumComputeService, tenant, modelValidationService));
     }
 
     @Override public void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
-        this.jobQueue.add(new DeleteVirtualMachineJob(virtualMachine, virtualMachineModelService,
-            tenantModelService, colosseumComputeService, tenant));
+        this.jobQueue.add(
+            new DeleteVirtualMachineJob(jpaApi, virtualMachine, virtualMachineModelService,
+                tenantModelService, colosseumComputeService, tenant));
     }
 
     @Override public void newDeleteInstanceJob(Instance instance, Tenant tenant) {
-        this.jobQueue.add(new DeleteInstanceJob(instance, instanceModelService, tenantModelService,
-            colosseumComputeService, tenant));
+        this.jobQueue.add(
+            new DeleteInstanceJob(configuration, jpaApi, instance, instanceModelService,
+                tenantModelService, colosseumComputeService, tenant));
     }
 
 }

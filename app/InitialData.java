@@ -32,6 +32,7 @@ class InitialData {
     private final ModelService<OperatingSystem> operatingSystemModelService;
     private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
     private static final String DEFAULT_GROUP = "admin";
+    private final JPAApi jpaApi;
 
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
@@ -41,10 +42,13 @@ class InitialData {
         this.tenantModelService = tenantModelService;
         this.operatingSystemModelService = operatingSystemModelService;
         this.operatingSystemVendorModelService = operatingSystemVendorModelService;
+        this.jpaApi = jpaApi;
+    }
 
+    void load() {
         jpaApi.withTransaction(this::loadInitialData);
     }
-    
+
     /**
      * Creates a default system user and a default tenant.
      */
@@ -60,13 +64,13 @@ class InitialData {
             }
             if (tenant == null) {
                 tenant = new Tenant(DEFAULT_GROUP);
-                tenantModelService.save(tenant);
+                //tenantModelService.save(tenant);
             }
 
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
             frontendUserService.save(frontendUser);
-            tenant.getFrontendUsers().add(frontendUser);
+            tenant.addFrontendUser(frontendUser);
             tenantModelService.save(tenant);
 
         }

@@ -21,7 +21,6 @@ package components.execution;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import play.Logger;
-import play.inject.ApplicationLifecycle;
 import play.libs.F;
 import util.logging.Loggers;
 
@@ -32,24 +31,30 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 24.07.15.
  */
-@Singleton public class Init {
+@Singleton public class ExecutionSystemInitialization {
 
     private final ExecutionService executionService;
     private static Logger.ALogger LOGGER = Loggers.of(Loggers.EXECUTION);
+    private final Set<Runnable> runnables;
+    private final Set<Schedulable> schedulables;
 
-    @Inject public Init(ExecutionService executionService, Set<Runnable> runnables,
-        Set<Schedulable> schedulables, ApplicationLifecycle applicationLifecycle) {
-
-        LOGGER.info("Initializing execution system.");
-
-        this.executionService = executionService;
-
-        LOGGER.debug(String.format("Using %s as execution service", executionService));
+    @Inject
+    public ExecutionSystemInitialization(ExecutionService executionService, Set<Runnable> runnables,
+        Set<Schedulable> schedulables) {
 
         checkNotNull(executionService);
         checkNotNull(runnables);
         checkNotNull(schedulables);
-        checkNotNull(applicationLifecycle);
+
+        this.executionService = executionService;
+        this.runnables = runnables;
+        this.schedulables = schedulables;
+    }
+
+    public void init() {
+        LOGGER.info("Initializing execution system.");
+
+        LOGGER.debug(String.format("Using %s as execution service", executionService));
 
         LOGGER.debug(String.format("Running %s tasks.", runnables.size() + schedulables.size()));
 
@@ -61,17 +66,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
             LOGGER.trace(String.format("Starting initialization of schedulable %s", schedulable));
             executionService.schedule(schedulable);
         }
-
-        LOGGER.debug("Registering shutdown hook");
-        applicationLifecycle.addStopHook(() -> F.Promise.promise(() -> {
-            shutdown();
-            return null;
-        }));
-
-
     }
 
-    private void shutdown() {
+    public void shutdown() {
         LOGGER.info("Shutting down execution service.");
         executionService.shutdown();
     }

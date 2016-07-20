@@ -28,7 +28,9 @@ version := "0.2.0-SNAPSHOT"
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
-resolvers += {"jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"}
+resolvers += {
+  "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
+}
 
 resolvers := (
   "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
@@ -71,9 +73,18 @@ javaOptions in Test += "-Dconfig.file=conf/test.conf"
 // the api-doc task will still generate scala and java doc
 // but ignores the problematic files.
 
-scalacOptions in (Compile, doc) := List("-skip-packages",  "components.execution")
+scalacOptions in(Compile, doc) := List("-skip-packages", "components.execution")
 
-pomExtra :=
+publishTo := {
+  val snapshots = "https://oss.sonatype.org/content/repositories/snapshots"
+  val releases = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+  if (version.value.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at snapshots)
+  else
+    Some("releases" at releases)
+}
+
+pomExtra := (
   <licenses>
     <license>
       <name>The Apache License, Version 2.0</name>
@@ -114,15 +125,7 @@ pomExtra :=
         </organizationUrl>
       </developer>
     </developers>
-
-//publishTo := {
-//  val snapshots = "https://oss.sonatype.org/content/repositories/snapshots"
-//  val releases = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-//  if (version.value.trim.endsWith("SNAPSHOT"))
-//    Some("snapshots" at snapshots)
-//  else
-//    Some("releases" at releases)
-//}
+  )
 
 useGpg := true
 

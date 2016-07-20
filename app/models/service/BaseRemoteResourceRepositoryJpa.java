@@ -19,13 +19,13 @@
 package models.service;
 
 import com.google.inject.TypeLiteral;
+import models.generic.RemoteResource;
+import play.db.jpa.JPAApi;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
-
-import models.generic.RemoteResource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -35,8 +35,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class BaseRemoteResourceRepositoryJpa<T extends RemoteResource> extends BaseModelRepositoryJpa<T>
     implements RemoteResourceRepository<T> {
 
-    @Inject BaseRemoteResourceRepositoryJpa(TypeLiteral<T> type) {
-        super(type);
+    @Inject public BaseRemoteResourceRepositoryJpa(JPAApi jpaApi, TypeLiteral<T> type) {
+        super(jpaApi, type);
     }
 
     @Nullable @Override public T findByRemoteId(String remoteId) {

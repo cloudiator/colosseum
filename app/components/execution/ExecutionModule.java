@@ -23,7 +23,8 @@ import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
 
 import play.Configuration;
-import play.Play;
+import play.Environment;
+import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 
 /**
@@ -33,25 +34,24 @@ public class ExecutionModule extends AbstractModule {
 
     private final Configuration configuration;
 
-    public ExecutionModule() {
-        configuration = Play.application().configuration();
+    public ExecutionModule(@SuppressWarnings("UnusedParameters") Environment environment,
+        Configuration configuration) {
+        this.configuration = configuration;
     }
-
-
 
     @Override protected void configure() {
 
         bindInterceptor(Matchers.subclassesOf(Runnable.class), Matchers.annotatedWith(Loop.class),
             new LoopRunnableInterceptor());
         bindInterceptor(Matchers.subclassesOf(Runnable.class),
-            Matchers.annotatedWith(Transactional.class), new TransactionalRunnableInterceptor());
-
+            Matchers.annotatedWith(Transactional.class),
+            new TransactionalRunnableInterceptor(getProvider(JPAApi.class)));
 
         bind(ExecutionService.class).toInstance(new StableScheduledThreadExecutor(
             new ScheduledThreadPoolExecutorExecutionService(new LoggingScheduledThreadPoolExecutor(
                 configuration.getInt("colosseum.execution.thread", 10)))));
-        bind(Init.class).asEagerSingleton();
-        
+        bind(ExecutionSystemInitialization.class).asEagerSingleton();
+
         Multibinder.newSetBinder(binder(), Runnable.class);
         Multibinder.newSetBinder(binder(), Schedulable.class);
     }

@@ -1,12 +1,12 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ *  http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -16,22 +16,16 @@
  * under the License.
  */
 
-package models.service;
-
-import com.google.inject.Inject;
-import com.google.inject.TypeLiteral;
-
-import models.Location;
-import play.db.jpa.JPAApi;
+import com.google.inject.AbstractModule;
+import components.execution.ExecutionSystemInitialization;
 
 /**
- * Created by bwpc on 09.12.2014.
+ * Created by daniel on 19.07.16.
  */
-class LocationRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Location>
-    implements LocationRepository {
-
-
-    @Inject public LocationRepositoryJpa(JPAApi jpaApi, TypeLiteral<Location> type) {
-        super(jpaApi, type);
+public class InitModule extends AbstractModule {
+    @Override protected void configure() {
+        bind(ExecutionSystemInitialization.class);
+        bind(InitialData.class);
+        bind(OnStartClass.class).asEagerSingleton();
     }
 }

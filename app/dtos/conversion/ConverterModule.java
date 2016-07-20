@@ -22,17 +22,15 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
-
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
+import play.Configuration;
+import play.Environment;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
-
-import play.Configuration;
-import play.Play;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -46,9 +44,9 @@ public class ConverterModule extends AbstractModule {
     private final Configuration configuration;
     private final ClassLoader classLoader;
 
-    public ConverterModule(ClassLoader classLoader) {
-        this.configuration = Play.application().configuration();
-        this.classLoader = classLoader;
+    public ConverterModule(Environment environment, Configuration configuration) {
+        this.configuration = configuration;
+        this.classLoader = environment.classLoader();
     }
 
     /**

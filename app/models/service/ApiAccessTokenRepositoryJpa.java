@@ -20,8 +20,8 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
 import models.ApiAccessToken;
+import play.db.jpa.JPAApi;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,8 +31,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
     implements ApiAccessTokenRepository {
 
-    @Inject ApiAccessTokenRepositoryJpa(TypeLiteral<ApiAccessToken> type) {
-        super(type);
+    @Inject public ApiAccessTokenRepositoryJpa(JPAApi jpaApi, TypeLiteral<ApiAccessToken> type) {
+        super(jpaApi, type);
     }
 
     @Override public ApiAccessToken findByToken(String token) {

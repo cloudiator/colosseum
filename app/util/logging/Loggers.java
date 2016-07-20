@@ -25,6 +25,7 @@ import play.Logger;
  */
 public class Loggers {
 
+    public static final String SYSTEM = "colosseum.system";
     public static final String CLOUD_SYNC = "colosseum.cloud.sync";
     public static final String MODEL = "colosseum.model";
     public static final String CLOUD_REMOTE = "colosseum.cloud.remote";

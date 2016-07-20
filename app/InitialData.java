@@ -26,32 +26,40 @@ import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 25.11.14.
  */
-public class InitialData {
+class InitialData {
 
     private final FrontendUserService frontendUserService;
     private final ModelService<Tenant> tenantModelService;
     private final ModelService<OperatingSystem> operatingSystemModelService;
     private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
     private static final String DEFAULT_GROUP = "admin";
+    private final JPAApi jpaApi;
 
     @Inject public InitialData(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService,
         ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
+        ModelService<OperatingSystemVendor> operatingSystemVendorModelService, JPAApi jpaApi) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
         this.operatingSystemModelService = operatingSystemModelService;
         this.operatingSystemVendorModelService = operatingSystemVendorModelService;
+        this.jpaApi = jpaApi;
     }
 
-    public void loadInitialData() {
-        /**
-         * Creates a default system user and a default tenant.
-         */
+    void load() {
+        jpaApi.withTransaction(this::loadInitialData);
+    }
+
+    /**
+     * Creates a default system user and a default tenant.
+     */
+    private void loadInitialData() {
+
         if (frontendUserService.getAll().isEmpty()) {
             Tenant tenant = null;
             for (Tenant storedTenant : tenantModelService.getAll()) {
@@ -62,13 +70,13 @@ public class InitialData {
             }
             if (tenant == null) {
                 tenant = new Tenant(DEFAULT_GROUP);
-                tenantModelService.save(tenant);
+                //tenantModelService.save(tenant);
             }
 
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
             frontendUserService.save(frontendUser);
-            tenant.getFrontendUsers().add(frontendUser);
+            tenant.addFrontendUser(frontendUser);
             tenantModelService.save(tenant);
 
         }

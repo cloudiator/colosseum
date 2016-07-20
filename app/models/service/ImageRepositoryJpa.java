@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 
 import models.Image;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 31.10.14.
@@ -29,7 +30,7 @@ import models.Image;
 class ImageRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Image> implements ImageRepository {
 
 
-    @Inject ImageRepositoryJpa(TypeLiteral<Image> type) {
-        super(type);
+    @Inject public ImageRepositoryJpa(JPAApi jpaApi, TypeLiteral<Image> type) {
+        super(jpaApi, type);
     }
 }

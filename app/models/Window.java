@@ -18,12 +18,15 @@
 
 package models;
 
-import javax.persistence.Entity;
-
 import models.generic.Model;
+
+import javax.persistence.Entity;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 /**
  * Created by Frank on 20.05.2015.
  */
-@Entity public abstract class Window extends Model {
+@Entity @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS) public abstract class Window
+    extends Model {
 }

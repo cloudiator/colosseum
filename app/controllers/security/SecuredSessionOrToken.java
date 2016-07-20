@@ -18,6 +18,8 @@
 
 package controllers.security;
 
+import com.google.inject.Inject;
+import play.db.jpa.JPAApi;
 import play.mvc.Http;
 import play.mvc.Result;
 
@@ -29,9 +31,10 @@ public class SecuredSessionOrToken extends SecuredToken {
     private final SecuredSession securedSession;
     private final SecuredToken securedToken;
 
-    public SecuredSessionOrToken() {
+    @Inject public SecuredSessionOrToken(JPAApi jpaApi) {
+        super(jpaApi);
         securedSession = new SecuredSession();
-        securedToken = new SecuredToken();
+        securedToken = new SecuredToken(jpaApi);
     }
 
     protected String authorizedSession(Http.Context context) {
@@ -40,6 +43,14 @@ public class SecuredSessionOrToken extends SecuredToken {
 
     protected String authorizedToken(Http.Context context) {
         return this.securedToken.getUsername(context);
+    }
+
+    @Override public String getUser(Http.Context context) {
+        return null;
+    }
+
+    @Override public String getTenant(Http.Context context) {
+        return null;
     }
 
     @Override public String getUsername(Http.Context context) {

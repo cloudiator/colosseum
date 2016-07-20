@@ -26,6 +26,7 @@ import models.Tenant;
 import models.service.FrontendUserService;
 import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -38,6 +39,12 @@ import javax.persistence.EntityManager;
  */
 
 public class SecuredToken extends TenantAwareAuthenticator {
+
+    private final JPAApi jpaApi;
+
+    public SecuredToken(JPAApi jpaApi) {
+        this.jpaApi = jpaApi;
+    }
 
     @Nullable private FrontendUser getFrontendUser(Http.Context context) {
         final String token = context.request().getHeader("X-Auth-Token");
@@ -58,30 +65,30 @@ public class SecuredToken extends TenantAwareAuthenticator {
 
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
-        //final EntityManager em = JPA.em();
+        final EntityManager em = JPA.em();
         FrontendUser frontendUser;
         try {
-            frontendUser = JPA.withTransaction(
+            frontendUser = jpaApi.withTransaction(
                 () -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
         // workaround continue. Bind the old one.
-        //JPA.bindForCurrentThread(em);
+        JPA.bindForSync(em);
 
         //remember the entity manager
         //workaround for https://github.com/playframework/playframework/pull/3388
-        //final EntityManager em1 = JPA.em();
+        final EntityManager em1 = JPA.em();
         final FrontendUser finalUser = frontendUser;
         boolean valid;
         try {
-            valid = JPA.withTransaction(
+            valid = jpaApi.withTransaction(
                 () -> References.tokenService.isTokenValidForUser(token, finalUser));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
         // workaround continue. Bind the old one.
-        //JPA.bindForCurrentThread(em1);
+        JPA.bindForSync(em1);
 
         if (!valid) {
             frontendUser = null;
@@ -111,7 +118,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
         final EntityManager em = JPA.em();
 
         try {
-            Tenant foundTenant = JPA.withTransaction(new F.Function0<Tenant>() {
+            Tenant foundTenant = jpaApi.withTransaction(new F.Function0<Tenant>() {
                 @Override public Tenant apply() throws Throwable {
                     FrontendUser frontendUser1 =
                         References.frontendUserServiceInterfaceProvider.get()
@@ -138,7 +145,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
             // loosing the em....
             Hibernate.initialize(frontendUser);
             // workaround continue. Bind the old one.
-            //JPA.bindForCurrentThread(em);
+            JPA.bindForSync(em);
         }
     }
 

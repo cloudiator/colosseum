@@ -23,6 +23,7 @@ import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import de.uniulm.omi.cloudiator.common.FieldFinder;
 import models.generic.Model;
+import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;
 
 import javax.annotation.Nullable;
@@ -44,7 +45,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
 
     protected final Class<T> type;
-    private final JPAApi jpaApi;
+    @SuppressWarnings("unused") private final JPAApi jpaApi;
 
     @Inject BaseModelRepositoryJpa(JPAApi jpaApi, TypeLiteral<T> type) {
         //noinspection unchecked
@@ -52,8 +53,10 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         this.jpaApi = jpaApi;
     }
 
-    protected EntityManager em() {
-        return jpaApi.em("default");
+    EntityManager em() {
+        //todo: replace with correct call to jpaAPI
+        //todo: currently blocked by https://github.com/playframework/playframework/issues/4890
+        return JPA.em();
     }
 
     @Override @Nullable public T findById(Long id) {
@@ -81,7 +84,7 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         return em().createQuery(criteria).getResultList();
     }
 
-    protected void persist(final T t) {
+    private void persist(final T t) {
         em().persist(t);
     }
 
@@ -92,17 +95,19 @@ class BaseModelRepositoryJpa<T extends Model> implements ModelRepository<T> {
         } else {
             this.update(t);
         }
+        this.flush();
+        this.refresh(t);
     }
 
     protected T update(final T t) {
         return em().merge(t);
     }
 
-    protected void flush() {
+    private void flush() {
         em().flush();
     }
 
-    protected T refresh(final T t) {
+    private T refresh(final T t) {
         em().refresh(t);
         return t;
     }

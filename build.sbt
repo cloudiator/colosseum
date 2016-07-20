@@ -3,6 +3,8 @@ import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
+scalaVersion := "2.11.8"
+
 name := "colosseum"
 
 //disable scala version suffix
@@ -132,4 +134,6 @@ useGpg := true
 credentials += Credentials(Path.userHome / ".m2" / ".credentials")
 
 ApiDocSettings.apiDocTask
+
+PlayKeys.externalizeResources := false
 

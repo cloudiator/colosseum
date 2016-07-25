@@ -18,19 +18,25 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.common.collect.Maps;
-import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
 import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
-import de.uniulm.omi.cloudiator.lance.application.component.*;
+import de.uniulm.omi.cloudiator.lance.application.component.ComponentId;
+import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponent;
+import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponentBuilder;
+import de.uniulm.omi.cloudiator.lance.application.component.InPort;
+import de.uniulm.omi.cloudiator.lance.application.component.OutPort;
+import de.uniulm.omi.cloudiator.lance.application.component.PortProperties;
+import de.uniulm.omi.cloudiator.lance.application.component.PortReference;
 import de.uniulm.omi.cloudiator.lance.client.DeploymentHelper;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.DeploymentException;
 import de.uniulm.omi.cloudiator.lance.lca.container.ComponentInstanceId;
+import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandler;
 import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleHandlerType;
@@ -39,16 +45,28 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.DefaultDetectorFactories;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
-import models.*;
-import models.generic.RemoteState;
-import models.service.ModelService;
-import models.service.PortProvidedService;
-import models.service.RemoteModelService;
-import play.db.jpa.JPA;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 
+import javax.annotation.Nullable;
+
+import cloud.colosseum.ColosseumComputeService;
+import components.model.ModelValidationService;
+import models.ApplicationComponent;
+import models.Instance;
+import models.LifecycleComponent;
+import models.PortProvided;
+import models.PortRequired;
+import models.Tenant;
+import models.generic.RemoteState;
+import models.service.ModelService;
+import models.service.RemoteModelService;
+import play.Configuration;
+import play.Logger;
+import play.db.jpa.JPAApi;
+import util.logging.Loggers;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -56,20 +74,42 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
+    private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
+    private final ModelValidationService modelValidationService;
+    private final Configuration configuration;
 
-    @Inject public CreateInstanceJob(Instance instance, RemoteModelService<Instance> modelService,
-        ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
-        Tenant tenant) {
-        super(instance, modelService, tenantModelService, colosseumComputeService, tenant);
+    public CreateInstanceJob(Configuration configuration, JPAApi jpaApi, Instance instance,
+        RemoteModelService<Instance> modelService, ModelService<Tenant> tenantModelService,
+        ColosseumComputeService colosseumComputeService, Tenant tenant,
+        ModelValidationService modelValidationService) {
+        super(jpaApi, instance, modelService, tenantModelService, colosseumComputeService, tenant);
+
+        checkNotNull(modelValidationService);
+        checkNotNull(configuration);
+
+        this.modelValidationService = modelValidationService;
+        this.configuration = configuration;
     }
 
     @Override protected void doWork(ModelService<Instance> modelService,
         ColosseumComputeService computeService) throws JobException {
 
+
+        //todo: should normally be validated in an application instance method.
+        LOGGER.info("Starting validation of model.");
+        try {
+            jpaApi().withTransaction(() -> modelValidationService
+                .validate(getT().getApplicationComponent().getApplication()));
+        } catch (Throwable t) {
+            throw new JobException(t);
+        }
+        LOGGER.info("Finished validation of model.");
+
+
         ComponentInstanceId componentInstanceId;
         try {
-            componentInstanceId = JPA.withTransaction("default", true, () -> {
+            componentInstanceId = jpaApi().withTransaction("default", true, () -> {
 
                 Instance instance = getT();
                 LifecycleClient client;
@@ -108,12 +148,19 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
                 }
                 try {
+
+                    ContainerType containerType;
+                    if (!dockerInstalled()) {
+                        containerType = ContainerType.PLAIN;
+                    } else {
+                        containerType = instance.getApplicationComponent().containerTypeOrDefault();
+                    }
+
                     return client
                         .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
                             deploymentContext, deployableComponent,
                             instance.getVirtualMachine().operatingSystemVendorTypeOrDefault()
-                                .lanceOs(),
-                            instance.getApplicationComponent().containerTypeOrDefault());
+                                .lanceOs(), containerType);
                 } catch (DeploymentException e) {
                     throw new JobException(e);
                 }
@@ -122,7 +169,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             throw new JobException(throwable);
         }
 
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             Instance instance = getT();
             instance.bindRemoteId(componentInstanceId.toString());
             modelService.save(instance);
@@ -205,6 +252,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 .setProperty(portProvided.name(), portProvided.getPort(), InPort.class);
         }
         for (PortRequired portRequired : instance.getApplicationComponent().getRequiredPorts()) {
+            checkState(portRequired.communication() != null,
+                String.format("portRequired %s is missing communication entity", portRequired));
             deploymentContext.setProperty(portRequired.name(), new PortReference(ComponentId
                 .fromString(portRequired.communication().getProvidedPort().getApplicationComponent()
                     .getUuid()), portRequired.communication().getProvidedPort().name(),
@@ -216,7 +265,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     @Override public boolean canStart() throws JobException {
         try {
-            return JPA.withTransaction(() -> {
+            return jpaApi().withTransaction(() -> {
                 Instance instance = getT();
 
                 if (RemoteState.ERROR.equals(instance.getVirtualMachine().getRemoteState())) {
@@ -300,6 +349,11 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
             return lifecycleStoreBuilder.build();
         }
+    }
+
+    private boolean dockerInstalled() {
+        return this.configuration.getBoolean("colosseum.installer.linux.lance.docker.install.flag");
+
     }
 
 

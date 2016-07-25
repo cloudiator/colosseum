@@ -20,15 +20,18 @@ package components.scalability;
 
 import de.uniulm.omi.cloudiator.visor.client.ClientBuilder;
 import de.uniulm.omi.cloudiator.visor.client.ClientController;
-import de.uniulm.omi.cloudiator.visor.client.entities.*;
-import models.MonitorInstance;
-import models.RawMonitor;
-import models.generic.ExternalReference;
+import de.uniulm.omi.cloudiator.visor.client.entities.Interval;
+import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitorBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import models.MonitorInstance;
+import models.RawMonitor;
 
 /**
  * Created by Frank on 01.09.2015.
@@ -164,8 +167,8 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
             }
         }
 
-        for(ExternalReference er : mi.getExternalReferences()){
-            m.getMonitorContext().put("er_" + er.getId(), er.getReference());
+        for(Map.Entry<String, String> er : mi.externalReferences().entrySet()){
+            m.getMonitorContext().put("er_" + er.getKey(), er.getValue());
         }
 
         m.setSensorClassName(((RawMonitor)mi.getMonitor()).getSensorDescription().getClassName());

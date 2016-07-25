@@ -19,7 +19,7 @@
 package dtos.conversion;
 
 import com.google.inject.ImplementedBy;
-import dtos.conversion.DefaultModelDtoConversionService;
+
 import dtos.api.Dto;
 import models.generic.Model;
 

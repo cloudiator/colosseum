@@ -32,6 +32,9 @@ POST          /api/application                                    @controllers.A
 PUT           /api/application/:id                                @controllers.ApplicationController.put(id: Long)
 DELETE        /api/application/:id                                @controllers.ApplicationController.delete(id: Long)
 
+GET           /application/:id/graph                              @controllers.ApplicationController.graph(id: Long)
+GET           /application/:id/display                              @controllers.ApplicationController.display(id: Long)
+
 #ApplicationComponent
 GET           /api/ac                                             @controllers.ApplicationComponentController.list()
 GET           /api/ac/:id                                         @controllers.ApplicationComponentController.get(id: Long)
@@ -47,6 +50,8 @@ PUT           /api/applicationInstance/:id                        @controllers.A
 DELETE        /api/applicationInstance/:id                        @controllers.ApplicationInstanceController.delete(id: Long)
 
 GET           /applicationInstance/:id/log                        @controllers.ApplicationInstanceController.log(id: Long)
+GET           /applicationInstance/:id/graph                              @controllers.ApplicationInstanceController.graph(id: Long)
+GET           /applicationInstance/:id/display                              @controllers.ApplicationInstanceController.display(id: Long)
 
 #Cloud
 GET           /api/cloud                                          @controllers.CloudController.list()

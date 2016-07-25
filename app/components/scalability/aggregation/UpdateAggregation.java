@@ -19,10 +19,11 @@
 package components.scalability.aggregation;
 
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
-import models.Monitor;
-import play.Logger;
 
 import java.rmi.RemoteException;
+
+import models.Monitor;
+import play.Logger;
 
 /**
  * Created by Frank on 19.08.2015.

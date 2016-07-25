@@ -20,11 +20,12 @@ package cloud.resources;
 
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import de.uniulm.omi.cloudiator.sword.api.domain.LocationScoped;
+
+import java.util.Optional;
+
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

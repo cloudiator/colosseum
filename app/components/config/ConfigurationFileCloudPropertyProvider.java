@@ -18,15 +18,16 @@
 
 package components.config;
 
-import cloud.CloudPropertyProvider;
 import com.typesafe.config.ConfigValue;
-import play.Configuration;
-import play.Play;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+
+import cloud.CloudPropertyProvider;
+import play.Configuration;
+import play.Play;
 
 /**
  * Created by daniel on 03.05.16.

@@ -18,13 +18,15 @@
 
 package models;
 
-import components.scalability.internal.TsdbLocator;
-import models.generic.ModelWithExternalReference;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+
+import components.scalability.internal.TsdbLocator;
+import models.generic.ModelWithExternalReference;
 
 /**
  * Created by Frank on 20.05.2015.

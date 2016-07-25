@@ -18,11 +18,15 @@
 
 package models;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToOne;
+
 import models.generic.Model;
 import models.scalability.FilterType;
 import models.scalability.SubscriptionType;
-
-import javax.persistence.*;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

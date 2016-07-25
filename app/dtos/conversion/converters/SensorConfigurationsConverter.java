@@ -19,15 +19,16 @@
 package dtos.conversion.converters;
 
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+import java.util.Map;
+
 import dtos.SensorConfigurationsDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
 import models.SensorConfigurations;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by Frank on 17.03.2016.

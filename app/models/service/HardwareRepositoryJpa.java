@@ -20,7 +20,9 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
 import models.Hardware;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 31.10.14.
@@ -28,9 +30,7 @@ import models.Hardware;
 class HardwareRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Hardware>
     implements HardwareRepository {
 
-
-
-    @Inject HardwareRepositoryJpa(TypeLiteral<Hardware> type) {
-        super(type);
+    @Inject public HardwareRepositoryJpa(JPAApi jpaApi, TypeLiteral<Hardware> type) {
+        super(jpaApi, type);
     }
 }

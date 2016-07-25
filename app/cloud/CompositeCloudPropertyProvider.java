@@ -18,13 +18,13 @@
 
 package cloud;
 
-import components.config.ConfigurationFileCloudPropertyProvider;
-import models.Cloud;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import components.config.ConfigurationFileCloudPropertyProvider;
+import models.Cloud;
 
 /**
  * Created by daniel on 03.05.16.

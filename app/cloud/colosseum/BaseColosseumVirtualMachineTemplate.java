@@ -19,11 +19,17 @@
 package cloud.colosseum;
 
 import com.google.common.base.Optional;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import de.uniulm.omi.cloudiator.sword.core.util.Name;
-import models.*;
 
 import javax.annotation.Nullable;
+
+import models.Cloud;
+import models.CloudCredential;
+import models.Hardware;
+import models.Image;
+import models.Location;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

@@ -18,10 +18,19 @@
 
 package cloud.sync.config;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
+
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
-import cloud.sync.*;
+import cloud.sync.Problem;
+import cloud.sync.ProblemDetector;
+import cloud.sync.ProblemQueueImpl;
+import cloud.sync.ProblemSolver;
+import cloud.sync.Solution;
 import cloud.sync.detectors.HardwareNotInDatabaseDetector;
 import cloud.sync.detectors.ImageNotInDatabaseDetector;
 import cloud.sync.detectors.LocationNotInDatabaseDetector;
@@ -31,10 +40,6 @@ import cloud.sync.solutions.ImportLocationInDatabase;
 import cloud.sync.watchdogs.HardwareCloudWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
 import cloud.sync.watchdogs.LocationWatchdog;
-import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
 import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 

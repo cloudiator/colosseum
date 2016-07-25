@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import dtos.FormulaQuantifierDto;
 import dtos.conversion.AbstractConverter;
 import models.FormulaQuantifier;

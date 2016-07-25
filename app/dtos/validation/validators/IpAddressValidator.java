@@ -19,14 +19,14 @@
 package dtos.validation.validators;
 
 
-import dtos.validation.ValidationErrorMessage;
-import dtos.validation.ValidationException;
-import dtos.validation.Validator;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+
+import dtos.validation.ValidationErrorMessage;
+import dtos.validation.ValidationException;
+import dtos.validation.Validator;
 
 public class IpAddressValidator implements Validator<String> {
 

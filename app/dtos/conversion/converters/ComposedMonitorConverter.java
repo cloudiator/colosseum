@@ -21,16 +21,25 @@ package dtos.conversion.converters;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+import java.util.Map;
+
 import dtos.ComposedMonitorDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import dtos.conversion.transformers.StringToExternalReferenceTransformer;
-import models.*;
-import models.generic.ExternalReference;
+import dtos.conversion.transformers.Transformer;
+import dtos.generic.KeyValue;
+import dtos.generic.KeyValues;
+import models.ComposedMonitor;
+import models.FormulaQuantifier;
+import models.Monitor;
+import models.MonitorInstance;
+import models.ScalingAction;
+import models.Schedule;
+import models.Window;
 import models.service.ModelService;
-
-import java.util.List;
 
 
 @Singleton public class ComposedMonitorConverter
@@ -41,7 +50,6 @@ import java.util.List;
     private final ModelService<ScalingAction> scalingActionModelService;
     private final ModelService<Monitor> monitorModelService;
     private final ModelService<FormulaQuantifier> formulaQuantifierModelService;
-    private final ModelService<ExternalReference> externalReferenceModelService;
     private final ModelService<MonitorInstance> monitorInstanceModelService;
 
     @Inject protected ComposedMonitorConverter(
@@ -50,8 +58,7 @@ import java.util.List;
         ModelService<Window> windowModelService,
         ModelService<ScalingAction> scalingActionModelService,
         ModelService<Monitor> monitorModelService,
-        ModelService<FormulaQuantifier> formulaQuantifierModelService,
-        ModelService<ExternalReference> externalReferenceModelService) {
+        ModelService<FormulaQuantifier> formulaQuantifierModelService) {
         super(ComposedMonitor.class, ComposedMonitorDto.class);
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.scheduleModelService = scheduleModelService;
@@ -59,7 +66,6 @@ import java.util.List;
         this.scalingActionModelService = scalingActionModelService;
         this.monitorModelService = monitorModelService;
         this.formulaQuantifierModelService = formulaQuantifierModelService;
-        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -84,10 +90,19 @@ import java.util.List;
             .withTransformation(new ModelToListIdTransformer<>(
                     new IdToModelTransformer<>(scalingActionModelService)));
 
-        binding(new TypeLiteral<List<String>>() {
-        }, new TypeLiteral<List<ExternalReference>>() {
-        }).fromField("externalReferences").toField("externalReferences")
-            .withTransformation(new StringToExternalReferenceTransformer());
+        binding(new TypeLiteral<List<KeyValue>>() {
+        }, new TypeLiteral<Map<String, String>>() {
+        }).fromField("externalReferences").toField("externalReferences").withTransformation(
+                new Transformer<List<KeyValue>, Map<String, String>>() {
+                    @Override public Map<String, String> transform(List<KeyValue> tags) {
+                        return KeyValues.to(tags);
+                    }
+
+                    @Override public List<KeyValue> transformReverse(
+                            Map<String, String> stringStringMap) {
+                        return KeyValues.of(stringStringMap);
+                    }
+                });
 
 //TODO only one-way conversion
         binding(new TypeLiteral<List<Long>>() {

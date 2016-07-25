@@ -20,6 +20,7 @@ package cloud.resources;
 
 import de.uniulm.omi.cloudiator.common.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
+
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;

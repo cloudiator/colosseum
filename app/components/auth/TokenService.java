@@ -1,6 +1,7 @@
 package components.auth;
 
 import com.google.inject.ImplementedBy;
+
 import models.FrontendUser;
 
 /**

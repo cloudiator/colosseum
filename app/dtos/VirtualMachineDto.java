@@ -20,11 +20,16 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import dtos.generic.RemoteDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.*;
+import models.Cloud;
+import models.Hardware;
+import models.Image;
+import models.Location;
+import models.TemplateOptions;
 import models.service.ModelService;
 
 /**

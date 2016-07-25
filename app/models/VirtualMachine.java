@@ -18,6 +18,7 @@
 
 package models;
 
+
 import de.uniulm.omi.cloudiator.colosseum.client.entities.enums.OperatingSystemVendorType;
 import models.api.CredentialStore;
 import models.generic.RemoteResourceInLocation;

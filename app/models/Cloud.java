@@ -18,17 +18,23 @@
 
 package models;
 
-import cloud.CloudPropertyProvider;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
-import models.generic.Model;
-import models.generic.RemoteResourceInCloud;
 
-import javax.annotation.Nullable;
-import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import javax.annotation.Nullable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import cloud.CloudPropertyProvider;
+import models.generic.Model;
+import models.generic.RemoteResourceInCloud;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

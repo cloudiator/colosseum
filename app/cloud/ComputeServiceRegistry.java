@@ -18,16 +18,17 @@
 
 package cloud;
 
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+
+import java.util.List;
+import java.util.Set;
+
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
-
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by daniel on 21.06.15.

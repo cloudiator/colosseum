@@ -18,13 +18,14 @@
 
 package cloud.sync.solutions;
 
+import com.google.common.base.Optional;
+import com.google.inject.Inject;
+
 import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.LocationProblems;
-import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import models.Cloud;
 import models.Location;
 import models.service.LocationModelService;

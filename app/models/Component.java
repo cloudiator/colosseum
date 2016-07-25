@@ -18,12 +18,15 @@
 
 package models;
 
-import models.generic.Model;
+import com.google.common.base.MoreObjects;
+
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-import java.util.List;
+
+import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -62,5 +65,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", getId()).add("name", name).toString();
     }
 }

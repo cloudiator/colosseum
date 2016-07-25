@@ -18,11 +18,12 @@
 
 package cloud;
 
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import models.CloudCredential;
 
 /**

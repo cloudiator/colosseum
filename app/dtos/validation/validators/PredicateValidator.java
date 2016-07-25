@@ -18,11 +18,11 @@
 
 package dtos.validation.validators;
 
+import java.util.function.Predicate;
+
 import dtos.validation.AbstractValidator;
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
-
-import java.util.function.Predicate;
 
 /**
  * Created by daniel on 18.09.15.

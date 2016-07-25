@@ -19,17 +19,19 @@
 package dtos.generic;
 
 import com.google.inject.TypeLiteral;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.annotation.Nullable;
+
 import dtos.api.Dto;
 import dtos.api.Validatable;
 import dtos.validation.ValidateBuilder;
 import dtos.validation.ValidationException;
 import dtos.validation.ValidationHolder;
 import play.data.validation.ValidationError;
-
-import javax.annotation.Nullable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by daniel on 08.12.14.

@@ -20,7 +20,9 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
 import models.FrontendUser;
+import play.db.jpa.JPAApi;
 
 import static models.service.util.JpaResultHelper.getSingleResultOrNull;
 
@@ -30,10 +32,8 @@ import static models.service.util.JpaResultHelper.getSingleResultOrNull;
 class FrontendUserRepositoryJpa extends BaseModelRepositoryJpa<FrontendUser>
     implements FrontendUserRepository {
 
-
-
-    @Inject FrontendUserRepositoryJpa(TypeLiteral<FrontendUser> type) {
-        super(type);
+    @Inject public FrontendUserRepositoryJpa(JPAApi jpaApi, TypeLiteral<FrontendUser> type) {
+        super(jpaApi, type);
     }
 
     @Override public FrontendUser findByMail(final String mail) {

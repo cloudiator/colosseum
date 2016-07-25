@@ -18,6 +18,7 @@
 
 package models;
 
+
 import de.uniulm.omi.cloudiator.common.os.OperatingSystemArchitecture;
 import de.uniulm.omi.cloudiator.common.os.OperatingSystemFamily;
 import de.uniulm.omi.cloudiator.common.os.OperatingSystemVersion;

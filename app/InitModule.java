@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,32 +16,16 @@
  * under the License.
  */
 
-package models.generic;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
+import com.google.inject.AbstractModule;
+import components.execution.ExecutionSystemInitialization;
 
 /**
- * Created by Frank on 20.05.2015.
+ * Created by daniel on 19.07.16.
  */
-@Entity
-public class ExternalReference extends Model {
-
-    @Column(nullable = false, updatable = false) private String reference;
-    //@ManyToOne private ModelWithExternalReference modelWithExternalReference;
-
-    /**
-     * no-args constructor for hibernate.
-     */
-    protected ExternalReference() {
-    }
-
-    public ExternalReference(String reference) {
-        this.reference = reference;
-    }
-
-    public String getReference() {
-        return reference;
+public class InitModule extends AbstractModule {
+    @Override protected void configure() {
+        bind(ExecutionSystemInitialization.class);
+        bind(InitialData.class);
+        bind(OnStartClass.class).asEagerSingleton();
     }
 }

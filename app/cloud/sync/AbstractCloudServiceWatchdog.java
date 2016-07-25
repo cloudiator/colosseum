@@ -18,12 +18,13 @@
 
 package cloud.sync;
 
-import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import components.execution.SimpleBlockingQueue;
 
 import java.util.Set;
+
+import cloud.CloudService;
+import components.execution.SimpleBlockingQueue;
 
 
 

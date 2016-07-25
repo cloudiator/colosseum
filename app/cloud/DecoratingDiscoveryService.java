@@ -18,22 +18,24 @@
 
 package cloud;
 
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
 import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import javax.annotation.Nullable;
+
+import cloud.resources.HardwareInLocation;
+import cloud.resources.ImageInLocation;
+import cloud.resources.LocationInCloud;
+import cloud.resources.VirtualMachineInLocation;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

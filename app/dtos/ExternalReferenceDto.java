@@ -22,13 +22,15 @@ import dtos.generic.ValidatableDto;
 
 public class ExternalReferenceDto extends ValidatableDto {
 
+    private String key;
     private String reference;
 
     public ExternalReferenceDto() {
         super();
     }
 
-    public ExternalReferenceDto(String reference) {
+    public ExternalReferenceDto(String key, String reference) {
+        this.key = key;
         this.reference = reference;
     }
 

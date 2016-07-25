@@ -18,12 +18,13 @@
 
 package cloud.sync.solutions;
 
+import com.google.inject.Inject;
+
 import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.ImageProblems;
-import com.google.inject.Inject;
 import models.Cloud;
 import models.Image;
 import models.Location;

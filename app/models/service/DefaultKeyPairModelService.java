@@ -19,10 +19,11 @@
 package models.service;
 
 import com.google.inject.Inject;
-import models.KeyPair;
-import models.VirtualMachine;
 
 import java.util.Optional;
+
+import models.KeyPair;
+import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

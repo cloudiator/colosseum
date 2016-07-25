@@ -20,7 +20,9 @@ package models.service;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
 import models.Location;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by bwpc on 09.12.2014.
@@ -29,7 +31,7 @@ class LocationRepositoryJpa extends BaseRemoteResourceRepositoryJpa<Location>
     implements LocationRepository {
 
 
-    @Inject LocationRepositoryJpa(TypeLiteral<Location> type) {
-        super(type);
+    @Inject public LocationRepositoryJpa(JPAApi jpaApi, TypeLiteral<Location> type) {
+        super(jpaApi, type);
     }
 }

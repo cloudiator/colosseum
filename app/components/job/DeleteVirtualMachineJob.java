@@ -18,14 +18,16 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
+
+import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
 import models.VirtualMachine;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 14.10.15.
@@ -34,17 +36,17 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
     private final RemoteModelService<VirtualMachine> virtualMachineRemoteModelService;
 
-    @Inject public DeleteVirtualMachineJob(VirtualMachine virtualMachine,
+    @Inject public DeleteVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant) {
-        super(virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
         this.virtualMachineRemoteModelService = modelService;
     }
 
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService) throws JobException {
 
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             VirtualMachine virtualMachine = getT();
             computeService.deleteVirtualMachine(virtualMachine);
         });
@@ -52,7 +54,7 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
     @Override public boolean canStart() throws JobException {
         try {
-            return JPA.withTransaction(() -> {
+            return jpaApi().withTransaction(() -> {
                 VirtualMachine virtualMachine = getT();
 
                 if (RemoteState.ERROR.equals(virtualMachine.getRemoteState())) {
@@ -74,7 +76,7 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     }
 
     @Override public void onSuccess() throws JobException {
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             VirtualMachine t = getT();
             virtualMachineRemoteModelService.delete(t);
         });

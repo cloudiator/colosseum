@@ -18,11 +18,11 @@
 
 package components.log;
 
-import models.ApplicationInstance;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.Set;
+
+import models.ApplicationInstance;
 
 /**
  * Created by daniel on 17.06.16.

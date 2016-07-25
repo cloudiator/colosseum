@@ -21,6 +21,11 @@ package controllers;
 import com.google.common.io.Files;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+
 import controllers.generic.GenericApiController;
 import dtos.KeyPairDto;
 import dtos.conversion.ModelDtoConversionService;
@@ -30,10 +35,6 @@ import models.service.FrontendUserService;
 import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 /**
  * Created by daniel on 19.05.15.

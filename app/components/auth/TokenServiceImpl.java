@@ -2,9 +2,10 @@ package components.auth;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import models.FrontendUser;
 
 import java.util.Optional;
+
+import models.FrontendUser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;

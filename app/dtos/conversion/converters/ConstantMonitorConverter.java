@@ -21,34 +21,39 @@ package dtos.conversion.converters;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
-import dtos.ConstantMonitorDto;
-import dtos.conversion.AbstractConverter;
-import dtos.conversion.transformers.StringToExternalReferenceTransformer;
-import models.ConstantMonitor;
-import models.generic.ExternalReference;
-import models.service.ModelService;
 
 import java.util.List;
+import java.util.Map;
+
+import dtos.ConstantMonitorDto;
+import dtos.conversion.AbstractConverter;
+import dtos.conversion.transformers.Transformer;
+import dtos.generic.KeyValue;
+import dtos.generic.KeyValues;
+import models.ConstantMonitor;
 
 
 @Singleton public class ConstantMonitorConverter
     extends AbstractConverter<ConstantMonitor, ConstantMonitorDto> {
 
-    private final ModelService<ExternalReference> externalReferenceModelService;
-
-    @Inject protected ConstantMonitorConverter(ModelService<ExternalReference> externalReferenceModelService) {
+    @Inject protected ConstantMonitorConverter() {
         super(ConstantMonitor.class, ConstantMonitorDto.class);
-        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
         binding().fromField("value").toField("value");
-        binding(new TypeLiteral<List<String>>() {
-        }, new TypeLiteral<List<ExternalReference>>() {
-        }).
-                fromField("externalReferences").
-                toField("externalReferences")
-                .withTransformation(
-                        new StringToExternalReferenceTransformer());
+        binding(new TypeLiteral<List<KeyValue>>() {
+        }, new TypeLiteral<Map<String, String>>() {
+        }).fromField("externalReferences").toField("externalReferences").withTransformation(
+                new Transformer<List<KeyValue>, Map<String, String>>() {
+                    @Override public Map<String, String> transform(List<KeyValue> tags) {
+                        return KeyValues.to(tags);
+                    }
+
+                    @Override public List<KeyValue> transformReverse(
+                            Map<String, String> stringStringMap) {
+                        return KeyValues.of(stringStringMap);
+                    }
+                });
     }
 }

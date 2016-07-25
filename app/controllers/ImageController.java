@@ -20,6 +20,10 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
+
+import java.util.Optional;
+import java.util.function.Predicate;
+
 import controllers.generic.GenericApiController;
 import dtos.ImageDto;
 import dtos.conversion.ModelDtoConversionService;
@@ -28,9 +32,6 @@ import models.Image;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
-
-import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * Created by daniel on 09.04.15.

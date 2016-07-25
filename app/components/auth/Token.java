@@ -1,7 +1,9 @@
 package components.auth;
 
 import com.google.common.base.MoreObjects;
+
 import de.uniulm.omi.cloudiator.common.Password;
+
 import play.Play;
 
 import static com.google.common.base.Preconditions.checkArgument;

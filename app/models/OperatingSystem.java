@@ -39,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Column(nullable = false) @Enumerated(EnumType.STRING) private OperatingSystemArchitecture
         operatingSystemArchitecture;
 
-    @Column(nullable = false) private OperatingSystemFamily operatingSystemFamily;
+    @Column(nullable = false) @Enumerated(EnumType.STRING) private OperatingSystemFamily operatingSystemFamily;
 
     @Nullable private String version;
 
@@ -79,6 +79,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     @Override public OperatingSystemVersion operatingSystemVersion() {
-        return OperatingSystemVersion.of(version);
+        return OperatingSystemVersion
+            .of(version, operatingSystemFamily.operatingSystemVersionFormat());
     }
 }

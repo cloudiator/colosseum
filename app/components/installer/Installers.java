@@ -18,9 +18,8 @@
 
 package components.installer;
 
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-
 import components.installer.api.InstallApi;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import models.Tenant;
 import models.VirtualMachine;
 
@@ -35,13 +34,16 @@ public class Installers {
 
     public static InstallApi of(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
-        switch (virtualMachine.operatingSystemVendorTypeOrDefault()) {
-            case NIX:
+        switch (virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()) {
+            case UNIX:
                 return new UnixInstaller(remoteConnection, virtualMachine, tenant);
             case WINDOWS:
                 return new WindowsInstaller(remoteConnection, virtualMachine, tenant);
             default:
-                throw new AssertionError("Unsupported OsFamily.");
+                throw new UnsupportedOperationException(String
+                    .format("OperatingSystemType %s is not supported by the installation logic",
+                        virtualMachine.operatingSystem().operatingSystemFamily()
+                            .operatingSystemType()));
         }
     }
 

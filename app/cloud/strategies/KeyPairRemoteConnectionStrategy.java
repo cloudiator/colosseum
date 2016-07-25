@@ -18,28 +18,24 @@
 
 package cloud.strategies;
 
+import cloud.CompositeCloudPropertyProvider;
+import cloud.DefaultSwordConnectionService;
+import cloud.SwordLoggingModule;
 import com.google.common.net.HostAndPort;
 import com.google.inject.Inject;
-
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
+import models.KeyPair;
+import models.VirtualMachine;
 
 import java.util.Map;
 import java.util.Optional;
 
-import cloud.CompositeCloudPropertyProvider;
-import cloud.DefaultSwordConnectionService;
-import cloud.SwordLoggingModule;
-import models.KeyPair;
-import models.VirtualMachine;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
+import static com.google.common.base.Preconditions.*;
 
 /**
  * Created by daniel on 31.08.15.
@@ -58,19 +54,11 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
     @Override public RemoteConnection connect(VirtualMachine virtualMachine)
         throws RemoteException {
 
-        if (!virtualMachine.supportsKeyPair()) {
-            throw new RemoteException(
-                String.format("Virtual machine %s does not support key pairs.", virtualMachine));
-        }
-
         checkState(virtualMachine.owner().isPresent(),
             "Owner of virtual machine should be set before calling connect.");
 
         checkArgument(virtualMachine.publicIpAddress().isPresent(),
             "Virtual machine must have a public ip address.");
-
-        checkArgument(virtualMachine.loginName().isPresent(),
-            "Virtual machine must have a login name.");
 
         String privateKey;
         final Optional<KeyPair> keyPair = keyPairStrategy.retrieve(virtualMachine);
@@ -92,10 +80,10 @@ public class KeyPairRemoteConnectionStrategy implements RemoteConnectionStrategy
                 .remoteModule(new OverthereModule())
                 .properties(PropertiesBuilder.newBuilder().putProperties(properties).build())
                 .build()).getRemoteConnection(HostAndPort
-                .fromParts(virtualMachine.publicIpAddress().get().getIp(),
-                    virtualMachine.remotePortOrDefault()),
-            virtualMachine.operatingSystemVendorTypeOrDefault().osFamily(),
-            LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName().get())
+                .fromParts(virtualMachine.publicIpAddress().get().getIp(), virtualMachine.remotePort()),
+            virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()
+                .remoteType(),
+            LoginCredentialBuilder.newBuilder().username(virtualMachine.loginName())
                 .privateKey(privateKey).build());
     }
 

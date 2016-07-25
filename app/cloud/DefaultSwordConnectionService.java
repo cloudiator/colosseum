@@ -19,13 +19,11 @@
 package cloud;
 
 import com.google.common.net.HostAndPort;
-
+import de.uniulm.omi.cloudiator.common.os.RemoteType;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
-import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
-
 import play.Logger;
 import util.logging.Loggers;
 
@@ -42,13 +40,13 @@ public class DefaultSwordConnectionService implements ConnectionService {
     }
 
     @Override
-    public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, OSFamily osFamily,
+    public RemoteConnection getRemoteConnection(HostAndPort hostAndPort, RemoteType remoteType,
         LoginCredential loginCredential) throws RemoteException {
 
         LOGGER.info(String.format(
             "Creating RemoteConnection to %s, targeting operating system %s and using credentials %s",
-            hostAndPort, osFamily, loginCredential));
+            hostAndPort, remoteType, loginCredential));
 
-        return delegate.getRemoteConnection(hostAndPort, osFamily, loginCredential);
+        return delegate.getRemoteConnection(hostAndPort, remoteType, loginCredential);
     }
 }

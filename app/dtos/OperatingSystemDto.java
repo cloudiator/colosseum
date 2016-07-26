@@ -18,19 +18,9 @@
 
 package dtos;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-<<<<<<< HEAD
 import de.uniulm.omi.cloudiator.common.os.OperatingSystemArchitecture;
 import de.uniulm.omi.cloudiator.common.os.OperatingSystemFamily;
-=======
-
->>>>>>> master
 import dtos.generic.ValidatableDto;
-import dtos.validation.validators.ModelIdValidator;
-import dtos.validation.validators.NotNullOrEmptyValidator;
-import dtos.validation.validators.NotNullValidator;
-import models.service.ModelService;
 
 /**
  * Created by daniel on 15.04.15.

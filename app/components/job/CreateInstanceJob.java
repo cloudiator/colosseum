@@ -18,19 +18,14 @@
 
 package components.job;
 
+import cloud.colosseum.ColosseumComputeService;
 import com.google.common.collect.Maps;
-
+import components.model.ModelValidationService;
 import de.uniulm.omi.cloudiator.common.OneWayConverter;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationId;
 import de.uniulm.omi.cloudiator.lance.application.ApplicationInstanceId;
 import de.uniulm.omi.cloudiator.lance.application.DeploymentContext;
-import de.uniulm.omi.cloudiator.lance.application.component.ComponentId;
-import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponent;
-import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponentBuilder;
-import de.uniulm.omi.cloudiator.lance.application.component.InPort;
-import de.uniulm.omi.cloudiator.lance.application.component.OutPort;
-import de.uniulm.omi.cloudiator.lance.application.component.PortProperties;
-import de.uniulm.omi.cloudiator.lance.application.component.PortReference;
+import de.uniulm.omi.cloudiator.lance.application.component.*;
 import de.uniulm.omi.cloudiator.lance.client.DeploymentHelper;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
@@ -45,19 +40,7 @@ import de.uniulm.omi.cloudiator.lance.lifecycle.LifecycleStoreBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.bash.BashBasedHandlerBuilder;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.DefaultDetectorFactories;
 import de.uniulm.omi.cloudiator.lance.lifecycle.detector.PortUpdateHandler;
-
-import java.util.Map;
-
-import javax.annotation.Nullable;
-
-import cloud.colosseum.ColosseumComputeService;
-import components.model.ModelValidationService;
-import models.ApplicationComponent;
-import models.Instance;
-import models.LifecycleComponent;
-import models.PortProvided;
-import models.PortRequired;
-import models.Tenant;
+import models.*;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
@@ -65,6 +48,9 @@ import play.Configuration;
 import play.Logger;
 import play.db.jpa.JPAApi;
 import util.logging.Loggers;
+
+import javax.annotation.Nullable;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -159,8 +145,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                     return client
                         .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
                             deploymentContext, deployableComponent,
-                            instance.getVirtualMachine().operatingSystemVendorTypeOrDefault()
-                                .lanceOs(), containerType);
+                            new OsConverter().apply(instance.getVirtualMachine().operatingSystem()),
+                            containerType);
                 } catch (DeploymentException e) {
                     throw new JobException(e);
                 }
@@ -217,7 +203,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             } else {
                 BashBasedHandlerBuilder portUpdateBuilder = new BashBasedHandlerBuilder();
                 portUpdateBuilder.setOperatingSystem(
-                    instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs());
+                    new OsConverter().apply(instance.getVirtualMachine().operatingSystem()));
                 portUpdateBuilder.addCommand(portRequired.updateAction().get());
                 portUpdateHandler = portUpdateBuilder.buildPortUpdateHandler();
             }
@@ -235,7 +221,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
         //build a lifecycle store from the application component
         builder.addLifecycleStore(new LifecycleComponentToLifecycleStoreConverter(
-            instance.getVirtualMachine().operatingSystemVendorTypeOrDefault().lanceOs())
+            new OsConverter().apply(instance.getVirtualMachine().operatingSystem()))
             .apply((LifecycleComponent) instance.getApplicationComponent().getComponent()));
 
         return builder.build();
@@ -353,7 +339,23 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
     private boolean dockerInstalled() {
         return this.configuration.getBoolean("colosseum.installer.linux.lance.docker.install.flag");
+    }
 
+    private static class OsConverter implements
+        OneWayConverter<de.uniulm.omi.cloudiator.common.os.OperatingSystem, de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem> {
+
+        @Nullable @Override public OperatingSystem apply(
+            @Nullable de.uniulm.omi.cloudiator.common.os.OperatingSystem operatingSystem) {
+            switch (operatingSystem.operatingSystemFamily().operatingSystemType()) {
+                case LINUX:
+                    return OperatingSystem.UBUNTU_14_04;
+                case WINDOWS:
+                    return OperatingSystem.WINDOWS_7;
+                default:
+                    throw new AssertionError("Unsupported operating system type " + operatingSystem
+                        .operatingSystemFamily().operatingSystemType());
+            }
+        }
     }
 
 

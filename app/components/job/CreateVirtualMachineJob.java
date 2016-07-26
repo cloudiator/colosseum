@@ -18,33 +18,26 @@
 
 package components.job;
 
-import com.google.common.base.Optional;
-
-import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
-import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
-import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
-import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
-
 import cloud.colosseum.BaseColosseumVirtualMachineTemplate;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.colosseum.ColosseumVirtualMachineTemplateBuilder;
 import cloud.resources.VirtualMachineInLocation;
 import cloud.strategies.KeyPairStrategy;
 import cloud.strategies.RemoteConnectionStrategy;
+import com.google.common.base.Optional;
 import components.installer.Installers;
 import components.installer.ToolPorts;
 import components.installer.api.InstallApi;
-import models.IpAddress;
-import models.IpType;
-import models.KeyPair;
-import models.Tenant;
-import models.VirtualMachine;
+import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
+import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
+import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
+import de.uniulm.omi.cloudiator.sword.core.domain.TemplateOptionsBuilder;
+import models.*;
 import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;
-import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -64,7 +57,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory,
         PortProvidedService portProvidedService) {
-        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService,
+            tenant);
 
         checkNotNull(keyPairStrategy);
         checkNotNull(remoteConnectionFactory);

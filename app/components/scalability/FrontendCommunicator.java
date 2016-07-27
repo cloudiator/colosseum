@@ -44,6 +44,7 @@ public interface FrontendCommunicator {
     void removeMonitorInstance(MonitorInstance monitorInstance);
     List<MonitorInstance> getMonitorInstances(Long monitorId);
     MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long ipAddressId, Long vmId, Long componentId);
+    MonitorInstance saveMonitorInstance(MonitorInstance monitorInstance);
     MonitorInstance getMonitorInstance(Long monitorInstanceId);
     RawMonitor getRawMonitor(Long monitorId);
     ComposedMonitor getComposedMonitor(Long monitorId);

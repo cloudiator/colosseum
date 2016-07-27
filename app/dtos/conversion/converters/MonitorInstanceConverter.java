@@ -81,5 +81,6 @@ import models.service.ModelService;
                         return KeyValues.of(stringStringMap);
                     }
                 });
+        binding().fromField("port").toField("port");
     }
 }

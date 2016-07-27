@@ -18,6 +18,7 @@
 
 package components.scalability;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +87,7 @@ public class AggregatorEntitiesConverter {
     public static de.uniulm.omi.cloudiator.axe.aggregator.entities.SensorDescription convert(
         SensorDescription obj) {
         return new de.uniulm.omi.cloudiator.axe.aggregator.entities.SensorDescription(obj.getId(),
-            obj.getClassName(), obj.getMetricName(), obj.isVmSensor());
+            obj.getClassName(), obj.getMetricName(), obj.isVmSensor(), obj.isPush());
     }
 
     public static de.uniulm.omi.cloudiator.axe.aggregator.entities.FlowOperator convert(
@@ -97,7 +98,7 @@ public class AggregatorEntitiesConverter {
             case REDUCE:
                 return de.uniulm.omi.cloudiator.axe.aggregator.entities.FlowOperator.REDUCE;
             default:
-                return null; //TODO exception
+                throw new InvalidParameterException("Parameter is not a valid FlowOperator class: " + fo);
         }
     }
 
@@ -121,12 +122,14 @@ public class AggregatorEntitiesConverter {
     public static de.uniulm.omi.cloudiator.axe.aggregator.entities.Window convert(Window obj) {
         if (obj instanceof TimeWindow) {
             return new de.uniulm.omi.cloudiator.axe.aggregator.entities.TimeWindow(obj.getId(),
-                ((TimeWindow) obj).getInterval().intValue(), //TODO
+                ((TimeWindow) obj).getInterval().intValue(), //TODO: use int or long in both
                 ((TimeWindow) obj).getTimeUnit());
-        } else { //MeasurmentWindow TODO fix this
+        } else if (obj instanceof MeasurementWindow) {
             return new de.uniulm.omi.cloudiator.axe.aggregator.entities.MeasurementWindow(
-                obj.getId(), ((MeasurementWindow) obj).getMeasurements().intValue() //TODO
+                obj.getId(), ((MeasurementWindow) obj).getMeasurements().intValue() //TODO: use int or long in both
             );
+        } else {
+            throw new InvalidParameterException("Parameter is not of valid Window class: " + obj);
         }
     }
 
@@ -145,7 +148,7 @@ public class AggregatorEntitiesConverter {
                 return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.GTE;
         }
 
-        return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.SUM; /* TODO add any to formula operator enums */
+        return de.uniulm.omi.cloudiator.axe.aggregator.entities.FormulaOperator.SUM; /* TODO add 'ANY' to formula operator enums */
     }
 
     public static List<de.uniulm.omi.cloudiator.axe.aggregator.entities.ScalingAction> convertScalingActions(
@@ -171,8 +174,7 @@ public class AggregatorEntitiesConverter {
         } else if (sa instanceof ComponentHorizontalOutScalingAction) {
             return (convert((ComponentHorizontalOutScalingAction) sa));
         } else {
-            // TODO currently others not supported
-            return null;
+            throw new InvalidParameterException("ScalingAction is currently not supported: " + sa);
         }
     }
 

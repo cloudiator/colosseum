@@ -20,6 +20,7 @@ package components.scalability;
 
 
 import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor;
 import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
 
 import java.util.List;
@@ -36,6 +37,8 @@ public interface AgentCommunicator {
     void addSensorMonitor(String idMonitorInstance, String className, String metricName, long interval,
         TimeUnit unit, Map<String, String> configs);
 
+    Integer addPushMonitor(String idMonitorInstance, String metricName);
+
     void removeSensorMonitor(String className, String metricName, long interval, TimeUnit unit);
 
     void removeSensorMonitorForComponent(String className, String metricName, long interval,
@@ -43,17 +46,27 @@ public interface AgentCommunicator {
 
     void removeSensorMonitor(SensorMonitor monitor);
 
+    void removePushMonitor(PushMonitor monitor);
+
     void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName,
                                       long interval, TimeUnit unit, String componentId, Map<String, String> configs);
+
+    Integer addPushMonitorForComponent(String idMonitorInstance, String metricName,
+                                      String componentId);
 
     List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName,
                                                        String componentName);
 
-    void updateSensorMonitor(MonitorInstance mi);
+    List<PushMonitor> getPushMonitorWithSameValues(String metricName,
+                                                       String componentName);
+
+    void updateMonitor(MonitorInstance mi);
 
     boolean hasSameContext(Monitor mon, String contextKey, String contextValue);
 
     SensorMonitor copyValueFromMonitorInstance(SensorMonitor m, MonitorInstance mi);
+
+    PushMonitor copyValueFromMonitorInstance(PushMonitor m, MonitorInstance mi);
 
     int getPort();
 

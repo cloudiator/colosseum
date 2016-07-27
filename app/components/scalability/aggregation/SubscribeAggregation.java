@@ -42,7 +42,7 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
     protected final Monitor monitor;
      /*TODO dynamic port*/
      private static final int VISOR_TELNET_PORT =
-         Play.application().configuration().getInt("colosseum.scalability.visor.telnet.port");
+         Play.application().configuration().getInt("colosseum.scalability.visor.mca.telnet.port");
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
     public SubscribeAggregation(Monitor monitor, MonitorSubscription subscription) {

@@ -19,6 +19,7 @@
 package models;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -34,6 +35,7 @@ import models.generic.ModelWithExternalReference;
     @ManyToOne(optional = true) @Nullable private IpAddress ipAddress;
     @ManyToOne(optional = true) @Nullable private VirtualMachine virtualMachine;
     @ManyToOne(optional = true) @Nullable private Component component;
+    @Column() private Integer port;
 
     /**
      * Empty constructor for hibernate.
@@ -42,12 +44,13 @@ import models.generic.ModelWithExternalReference;
     }
 
     public MonitorInstance(Monitor monitor, String apiEndpoint, @Nullable IpAddress ipAddress,
-        @Nullable VirtualMachine virtualMachine, @Nullable Component component) {
+        @Nullable VirtualMachine virtualMachine, @Nullable Component component, @Nullable Integer port) {
         this.apiEndpoint = apiEndpoint;
         this.monitor = monitor;
         this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
+        this.port = port;
     }
 
     @Nullable public Monitor getMonitor() {
@@ -64,6 +67,15 @@ import models.generic.ModelWithExternalReference;
 
     @Nullable public Component getComponent() {
         return component;
+    }
+
+    @Nullable
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(@Nullable Integer port) {
+        this.port = port;
     }
 
     public String getApiEndpoint() {

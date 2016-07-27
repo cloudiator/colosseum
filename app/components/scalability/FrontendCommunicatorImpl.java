@@ -357,9 +357,16 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             apiEndpoint,
             (ipAddressId == null ? null : ipAddressModelService.getById(ipAddressId)),
             (vmId == null ? null : virtualMachineModelService.getById(vmId)),
-            (componentId == null ? null : componentModelService.getById(componentId)));
+            (componentId == null ? null : componentModelService.getById(componentId)),
+            null);
         monitorInstanceModelService.save(result);
         return result;
+    }
+
+    @Override
+    public MonitorInstance saveMonitorInstance(MonitorInstance monitorInstance) {
+        monitorInstanceModelService.save(monitorInstance);
+        return monitorInstance;
     }
 
     @Override public MonitorInstance getMonitorInstance(Long monitorInstanceId) {

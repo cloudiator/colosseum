@@ -30,9 +30,10 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 @Entity public class SensorDescription extends Model {
 
-    @Column(nullable = false, updatable = false) private String className;
+    @Column(updatable = false) private String className;
     @Column(nullable = false, updatable = false) private String metricName;
     @Column(nullable = false, updatable = false) private Boolean isVmSensor;
+    @Column(nullable = false, updatable = false) private Boolean isPush = false;
 
     /**
      * Empty constructor for hibernate.
@@ -40,12 +41,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected SensorDescription() {
     }
 
-    public SensorDescription(String className, String metricName, Boolean isVmSensor) {
+    public SensorDescription(String className, String metricName, Boolean isVmSensor, Boolean isPush) {
         checkNotNull(className);
         checkNotNull(metricName);
         this.className = className;
         this.metricName = metricName;
         this.isVmSensor = isVmSensor;
+        this.isPush = isPush;
     }
 
     public Boolean isVmSensor() {
@@ -70,5 +72,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setMetricName(String metricName) {
         this.metricName = metricName;
+    }
+
+    public Boolean isPush() {
+        return isPush;
+    }
+
+    public void setPush(Boolean push) {
+        isPush = push;
+    }
+
+    public Boolean getVmSensor() {
+        return isVmSensor;
     }
 }

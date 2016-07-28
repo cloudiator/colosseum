@@ -37,5 +37,6 @@ import models.SensorDescription;
         binding().fromField("className").toField("className");
         binding().fromField("metricName").toField("metricName");
         binding().fromField("isVmSensor").toField("isVmSensor");
+        binding().fromField("isPush").toField("isPush");
     }
 }

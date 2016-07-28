@@ -139,7 +139,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                     if (!dockerInstalled()) {
                         containerType = ContainerType.PLAIN;
                     } else {
-                        containerType = instance.getApplicationComponent().containerTypeOrDefault();
+                        containerType = instance.getApplicationComponent().containerType();
                     }
 
                     return client

@@ -20,6 +20,7 @@ package models;
 
 import com.google.common.collect.ImmutableList;
 import de.uniulm.omi.cloudiator.common.os.LoginNameSupplier;
+import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
@@ -77,6 +78,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public OperatingSystem operatingSystem() {
         return operatingSystem;
+    }
+
+    public ContainerType containerType() {
+        //todo: temporary switch case until new operating system logic is integrated into lance
+        switch (operatingSystem().operatingSystemFamily().operatingSystemType()) {
+            case LINUX:
+            case UNIX:
+                return ContainerType.DOCKER;
+            case WINDOWS:
+                return ContainerType.PLAIN;
+            default:
+                throw new IllegalStateException(String
+                    .format("Operating System Type %s is currently not supported for deployments.",
+                        operatingSystem.operatingSystemFamily().operatingSystemType()));
+        }
     }
 
     public List<VirtualMachineTemplate> virtualMachineTemplatesUsedFor() {

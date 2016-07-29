@@ -26,7 +26,7 @@ A list of all operating system entities stored in the database.
 [
   {
     "operatingSystemArchitecture":"AMD64",
-    "operatingSystemVendor":1,
+    "operatingSystemFamily":1,
     "version":"8",
     "link":[
       {
@@ -37,7 +37,7 @@ A list of all operating system entities stored in the database.
   },
   {
     "operatingSystemArchitecture":"I386",
-    "operatingSystemVendor":1,
+    "operatingSystemFamily":1,
     "version":"7",
     "link":[
       {
@@ -79,7 +79,7 @@ The operating system entity identified by the given id.
 ```
 {
   "operatingSystemArchitecture":"AMD64",
-  "operatingSystemVendor":1,
+  "operatingSystemFamily":1,
   "version":"8",
   "link":[
     {
@@ -109,7 +109,7 @@ Creates a new operating system entity. The new entity will be returned.
 Parameter                   | Description
 --------------------------- | ---------------------------------
 operatingSystemArchitecture | The architecture of the os (I386, AMD64)
-operatingSystemVendor       | The vendor of the operating system
+operatingSystemFamily       | The family of the operating system
 version                     | The version of the operating system.
 
 ###Request Example
@@ -117,7 +117,7 @@ version                     | The version of the operating system.
 ```
 {
   "operatingSystemArchitecture":"I386",
-  "operatingSystemVendor":1,
+  "operatingSystemFamily":1,
   "version":"7"
 }
 ```
@@ -146,7 +146,7 @@ Parameter                   | Description
 --------------------------- | -----------------------------------------
 os_id                       | The id of the os to update.
 operatingSystemArchitecture | The architecture of the os (I386, AMD64)
-operatingSystemVendor       | The vendor of the operating system
+operatingSystemFamily       | The family of the operating system
 version                     | The version of the operating system.
 
 ###Request Example
@@ -156,7 +156,7 @@ PUT /api/os/1
 ```
 {
   "operatingSystemArchitecture":"I386",
-  "operatingSystemVendor":1,
+  "operatingSystemFamily":1,
   "version":"7"
 }
 ```

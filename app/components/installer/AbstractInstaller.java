@@ -80,8 +80,6 @@ abstract class AbstractInstaller implements InstallApi {
         checkNotNull(virtualMachine);
         checkArgument(virtualMachine.publicIpAddress().isPresent(),
             "VirtualMachine has no public ip.");
-        checkArgument(virtualMachine.loginName().isPresent(),
-            "No login name is present on virtual machine.");
 
         this.remoteConnection = remoteConnection;
         this.virtualMachine = virtualMachine;

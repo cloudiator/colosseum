@@ -19,17 +19,11 @@
 package cloud.colosseum;
 
 import com.google.common.base.Optional;
-
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
 import de.uniulm.omi.cloudiator.sword.core.util.Name;
+import models.*;
 
 import javax.annotation.Nullable;
-
-import models.Cloud;
-import models.CloudCredential;
-import models.Hardware;
-import models.Image;
-import models.Location;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -45,7 +39,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     private final Location location;
     private final Cloud cloud;
     private final CloudCredential cloudCredential;
-    private final Optional<TemplateOptions> templateOptions;
+    @Nullable private final TemplateOptions templateOptions;
 
     BaseColosseumVirtualMachineTemplate(String name, Cloud cloud, CloudCredential cloudCredential,
         Image image, Hardware hardware, Location location,
@@ -96,7 +90,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         this.location = location;
         this.cloud = cloud;
         this.cloudCredential = cloudCredential;
-        this.templateOptions = Optional.fromNullable(templateOptions);
+        this.templateOptions = templateOptions;
     }
 
     public static ColosseumVirtualMachineTemplateBuilder builder() {
@@ -120,7 +114,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public Optional<TemplateOptions> templateOptions() {
-        return templateOptions;
+        return Optional.fromNullable(templateOptions);
     }
 
     @Override public String cloudUuid() {

@@ -19,12 +19,12 @@
 package dtos.validation.validators;
 
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
-
-import java.util.Collection;
-import java.util.LinkedList;
 
 /**
  * Checks if the given ipAddress is a valid ip address

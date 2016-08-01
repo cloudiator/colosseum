@@ -18,11 +18,13 @@
 
 package cloud.colosseum;
 
-import cloud.ComputeServiceRegistry;
-import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
+
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+
+import cloud.ComputeServiceRegistry;
+import cloud.resources.VirtualMachineInLocation;
 import models.CloudCredential;
 import models.VirtualMachine;
 

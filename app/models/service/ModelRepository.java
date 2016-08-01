@@ -18,10 +18,11 @@
 
 package models.service;
 
-import models.generic.Model;
+import java.util.List;
 
 import javax.annotation.Nullable;
-import java.util.List;
+
+import models.generic.Model;
 
 /**
  * Created by daniel on 31.10.14.

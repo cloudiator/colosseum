@@ -27,26 +27,22 @@ public class SensorDescriptionDto extends ValidatableDto {
     private String className;
     private String metricName;
     private Boolean isVmSensor;
+    private Boolean isPush;
 
     public SensorDescriptionDto() {
         super();
     }
 
-    public SensorDescriptionDto(String className, String metricName, Boolean isVmSensor) {
+    public SensorDescriptionDto(String className, String metricName, Boolean isVmSensor, Boolean isPush) {
         this.className = className;
         this.metricName = metricName;
         this.isVmSensor = isVmSensor;
+        this.isPush = isPush;
     }
 
     @Override public void validation() {
-        validator(String.class).validate(this.className)
-            .withValidator(new NotNullOrEmptyValidator());
         validator(String.class).validate(this.metricName)
             .withValidator(new NotNullOrEmptyValidator());
-        validator(String.class).validate(this.className)
-            .withValidator(new ExpressionValidator(!this.className.equals("")));
-        validator(String.class).validate(this.metricName)
-            .withValidator(new ExpressionValidator(!this.className.equals("")));
     }
 
     public static class References {
@@ -74,5 +70,13 @@ public class SensorDescriptionDto extends ValidatableDto {
 
     public void setIsVmSensor(Boolean isVmSensor) {
         this.isVmSensor = isVmSensor;
+    }
+
+    public Boolean getIsPush() {
+        return isPush;
+    }
+
+    public void setIsPush(Boolean isPush) {
+        this.isPush = isPush;
     }
 }

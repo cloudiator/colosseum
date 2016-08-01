@@ -24,40 +24,37 @@ import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
 import components.scalability.aggregation.*;
 import models.*;
-import models.generic.ExternalReference;
 import models.scalability.FlowOperator;
 import play.Logger;
-import play.Play;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by Frank on 20.07.2015.
  */
-@Singleton
-public class ScalingEngineImpl implements ScalingEngine {
+@Singleton public class ScalingEngineImpl implements ScalingEngine {
     private static final long NA = -1;
     private final SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue;
     private final FrontendCommunicator fc;
-    private final int AGENT_PORT =
-        Play.application().configuration().getInt("colosseum.scalability.visor.port");
+    private final int agentPort;
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
 
-    @Inject
-    public ScalingEngineImpl(FrontendCommunicator fc,
-        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue) {
+    @Inject public ScalingEngineImpl(FrontendCommunicator fc,
+        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue,
+        int agentPort) {
         this.fc = fc;
         this.aggregationQueue = aggregationQueue;
+        this.agentPort = agentPort;
     }
 
 
-    @Override
-    public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances) {
+    @Override public Monitor aggregateMonitors(ComposedMonitor monitor, boolean createInstances) {
 
         Logger.debug("Aggregate ComposedMonitor: " + monitor.getId());
 
-        if (monitor.getFlowOperator().equals(FlowOperator.MAP)){
+        if (monitor.getFlowOperator().equals(FlowOperator.MAP)) {
             /*
 
             TODO
@@ -66,7 +63,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             also store ip of aggregator/tsdb into monitorinstance
 
             */
-            if(createInstances) {
+            if (createInstances) {
                 for (Monitor obj : monitor.getMonitors()) {
                     List<MonitorInstance> monitorInstances = fc.getMonitorInstances(obj.getId());
                     for (MonitorInstance inst : monitorInstances) {
@@ -76,7 +73,7 @@ public class ScalingEngineImpl implements ScalingEngine {
                     }
                 }
             }
-        } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)){
+        } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)) {
             /*
 
             TODO
@@ -84,7 +81,7 @@ public class ScalingEngineImpl implements ScalingEngine {
             is always 1
 
              */
-            if(createInstances) {
+            if (createInstances) {
                 //TODO
                 String apiEndpoint = "";
                 fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
@@ -97,7 +94,7 @@ public class ScalingEngineImpl implements ScalingEngine {
     }
 
     @Override public void updateAggregation(ComposedMonitor monitor) {
-        if (monitor != null){
+        if (monitor != null) {
             Logger.debug("Update ComposedMonitor: " + monitor.getId());
 
             aggregationQueue.add(new UpdateAggregation(monitor));
@@ -107,7 +104,7 @@ public class ScalingEngineImpl implements ScalingEngine {
 
         int amountOfNeededInstances = 0;
 
-        if (monitor.getFlowOperator().equals(FlowOperator.MAP)){
+        if (monitor.getFlowOperator().equals(FlowOperator.MAP)) {
             /*
 
             TODO
@@ -120,7 +117,7 @@ public class ScalingEngineImpl implements ScalingEngine {
                 List<MonitorInstance> monInstances = fc.getMonitorInstances(obj.getId());
                 amountOfNeededInstances += monInstances.size();
             }
-        } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)){
+        } else if (monitor.getFlowOperator().equals(FlowOperator.REDUCE)) {
             /*
 
             TODO
@@ -135,7 +132,7 @@ public class ScalingEngineImpl implements ScalingEngine {
         // references etc. has to be set again for the upper ones
         int i = monitorInstances.size();
 
-        if(amountOfNeededInstances > i){
+        if (amountOfNeededInstances > i) {
             int toAdd = amountOfNeededInstances - i;
             for (int j = 0; j < toAdd; ++j) {
                 //TODO
@@ -153,7 +150,7 @@ public class ScalingEngineImpl implements ScalingEngine {
 
     @Override public void removeMonitor(long monitorId) {
         RawMonitor rawMonitor = fc.getRawMonitor(monitorId);
-        if(rawMonitor != null) {
+        if (rawMonitor != null) {
             SensorDescription desc = rawMonitor.getSensorDescription();
 
             List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
@@ -162,25 +159,42 @@ public class ScalingEngineImpl implements ScalingEngine {
                 /*TODO: dangerous, what happens if this vm changes the IP address? */
                 String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
 
-                AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
-                    ipAddress, AGENT_PORT);
+                AgentCommunicator ac =
+                    AgentCommunicatorRegistry.getAgentCommunicator("http", ipAddress, agentPort);
 
-                List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors = ac.getSensorMonitorWithSameValues(desc.getClassName(), desc.getMetricName(), null /*TODO*/);
+                if(desc.isPush()) {
+                    List<de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor> monitors =
+                            ac.getPushMonitorWithSameValues(desc.getMetricName(), null /*TODO*/);
 
-                if (!monitors.isEmpty()) {
-                /*TODO: check for interval: if(hertz(monitor.getInterval())... */
-                    for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor agentMonitor : monitors) {
-                        LOGGER.info("Delete Raw Monitor: " + monitorId);
+                    if (!monitors.isEmpty()) {
+                        for (de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor agentMonitor : monitors) {
+                            LOGGER.info("Delete Raw Push Monitor: " + monitorId);
 
-                        ac.removeSensorMonitor(agentMonitor);
+                            ac.removePushMonitor(agentMonitor);
+                        }
                     }
-                }
 
-                fc.removeMonitorInstance(monitorInstance);
+                    fc.removeMonitorInstance(monitorInstance);
+                } else {
+                    List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors =
+                            ac.getSensorMonitorWithSameValues(desc.getClassName(), desc.getMetricName(),
+                                    null /*TODO*/);
+
+                    if (!monitors.isEmpty()) {
+                        /*TODO: check for interval: if(hertz(monitor.getInterval())... */
+                        for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor agentMonitor : monitors) {
+                            LOGGER.info("Delete Raw Sensor Monitor: " + monitorId);
+
+                            ac.removeSensorMonitor(agentMonitor);
+                        }
+                    }
+
+                    fc.removeMonitorInstance(monitorInstance);
+                }
             }
         } else {
             ComposedMonitor composedMonitor = fc.getComposedMonitor(monitorId);
-            if (composedMonitor != null){
+            if (composedMonitor != null) {
                 Logger.debug("Delete ComposedMonitor: " + composedMonitor.getId());
 
                 aggregationQueue.add(new RemoveAggregation(composedMonitor));
@@ -197,44 +211,70 @@ public class ScalingEngineImpl implements ScalingEngine {
     }
 
     @Override public void addExternalIdToMonitor(Long monitorId, String externalId) {
-        fc.getMonitor(monitorId).getExternalReferences().add(new ExternalReference(externalId));
-    }
-
-    @Override public void addExternalId(Long monitorInstanceId, String externalId) {
-        fc.getMonitorInstance(monitorInstanceId).getExternalReferences().add(new ExternalReference(externalId));
-    }
-
-    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine) {
-        List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
-
-        for(MonitorInstance mi : monitorInstances){
-            if(mi.getVirtualMachine().getId().equals(virtualMachine))
-                mi.getExternalReferences().add(new ExternalReference(externalId));
-        }
-    }
-
-    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine,
-        Long componentId) {
-        List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
-
-        for(MonitorInstance mi : monitorInstances){
-            if(mi.getVirtualMachine().getId().equals(virtualMachine) &&
-                mi.getComponent().getId().equals(componentId))
-            mi.getExternalReferences().add(new ExternalReference(externalId));
-        }
+        this.addExternalIdToMonitor(monitorId, "rnd" + UUID.randomUUID().toString(), externalId);
     }
 
     @Override
-    public Monitor doMonitor(RawMonitor monitor){
-        if (monitor.getSensorDescription().isVmSensor()){
+    public void addExternalIdToMonitor(Long monitorId, String externalKey, String externalId) {
+        fc.getMonitor(monitorId).externalReferences().put(externalKey, externalId);
+    }
+
+    @Override public void addExternalId(Long monitorInstanceId, String externalId) {
+
+        this.addExternalId(monitorInstanceId, "rnd" + UUID.randomUUID().toString(), externalId);
+    }
+
+    @Override
+    public void addExternalId(Long monitorInstanceId, String externalKey, String externalId) {
+        fc.getMonitorInstance(monitorInstanceId).externalReferences().put(externalKey, externalId);
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine) {
+        this.addExternalId(monitorId, "rnd" + UUID.randomUUID().toString(), externalId,
+            virtualMachine);
+
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalKey, String externalId,
+        Long virtualMachine) {
+        List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
+
+
+        for (MonitorInstance mi : monitorInstances) {
+            if (mi.getVirtualMachine().getId().equals(virtualMachine))
+                mi.externalReferences().put(externalKey, externalId);
+        }
+    }
+
+
+    @Override public void addExternalId(Long monitorId, String externalId, Long virtualMachine,
+        Long componentId) {
+        this.addExternalId(monitorId, "rnd" + UUID.randomUUID().toString(), externalId,
+            virtualMachine, componentId);
+    }
+
+    @Override public void addExternalId(Long monitorId, String externalKey, String externalId,
+        Long virtualMachine, Long componentId) {
+        List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);
+
+
+        for (MonitorInstance mi : monitorInstances) {
+            if (mi.getVirtualMachine().getId().equals(virtualMachine) && mi.getComponent().getId()
+                .equals(componentId))
+                mi.externalReferences().put(externalKey, externalId);
+
+        }
+    }
+
+    @Override public Monitor doMonitor(RawMonitor monitor) {
+        if (monitor.getSensorDescription().isVmSensor()) {
             return doMonitorVms(monitor);
         } else {
             return doMonitorComponents(monitor);
         }
     }
 
-    @Override
-    public Monitor doMonitorComponents(RawMonitor monitor){
+    @Override public Monitor doMonitorComponents(RawMonitor monitor) {
 
         /*TODO There arent just lifecycle components */
         List<Component> components = fc.getComponents(
@@ -245,13 +285,14 @@ public class ScalingEngineImpl implements ScalingEngine {
                 monitor.getComponentInstance().getId()),
             (monitor.getCloud() == null ? null : monitor.getCloud().getId()));
 
-        for(Component cid : components){
+        for (Component cid : components) {
 
             List<VirtualMachine> virtualMachines = fc.getVirtualMachines(
-                (monitor.getApplication() == null? null : monitor.getApplication().getId()),
-                cid.getId(),
-                (monitor.getComponentInstance() == null? null : monitor.getComponentInstance().getId()),
-                (monitor.getCloud() == null? null : monitor.getCloud().getId()));
+                (monitor.getApplication() == null ? null : monitor.getApplication().getId()),
+                cid.getId(), (monitor.getComponentInstance() == null ?
+                    null :
+                    monitor.getComponentInstance().getId()),
+                (monitor.getCloud() == null ? null : monitor.getCloud().getId()));
             //List<VirtualMachine> virtualMachines = fc.getVirtualMachines(null, comp, null, null);
 
             addMonitorToVMs(monitor, virtualMachines);
@@ -261,77 +302,124 @@ public class ScalingEngineImpl implements ScalingEngine {
         return monitor;
     }
 
-    @Override
-    public Monitor doMonitorVms(RawMonitor monitor){
+    @Override public Monitor doMonitorVms(RawMonitor monitor) {
 
         List<VirtualMachine> virtualMachines = fc.getVirtualMachines(
-            (monitor.getApplication() == null? null : monitor.getApplication().getId()),
-            (monitor.getComponent() == null? null : monitor.getComponent().getId()),
-            (monitor.getComponentInstance() == null? null : monitor.getComponentInstance().getId()),
-            (monitor.getCloud() == null? null : monitor.getCloud().getId()));
+            (monitor.getApplication() == null ? null : monitor.getApplication().getId()),
+            (monitor.getComponent() == null ? null : monitor.getComponent().getId()),
+            (monitor.getComponentInstance() == null ?
+                null :
+                monitor.getComponentInstance().getId()),
+            (monitor.getCloud() == null ? null : monitor.getCloud().getId()));
 
         addMonitorToVMs(monitor, virtualMachines);
 
         return monitor;
     }
 
-    private void addMonitorToVMs(RawMonitor monitor, List<VirtualMachine> virtualMachines){
-        for(VirtualMachine vm : virtualMachines) {
-            LOGGER.info("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " " + " to this application " + monitor.getApplication());
+    private void addMonitorToVMs(RawMonitor monitor, List<VirtualMachine> virtualMachines) {
+        for (VirtualMachine vm : virtualMachines) {
+            LOGGER.info("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " "
+                + " to this application " + monitor.getApplication());
 
             /* TODO not magical static values : monitoring agent config (at least port) has to be saved in db */
-            AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
-                fc.getPublicAddressOfVM(vm), AGENT_PORT);
+            AgentCommunicator ac = AgentCommunicatorRegistry
+                .getAgentCommunicator("http", fc.getPublicAddressOfVM(vm), agentPort);
 
-            List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors = ac.getSensorMonitorWithSameValues(monitor.getSensorDescription().getClassName(), monitor.getSensorDescription().getMetricName(), null);
+            if(monitor.getSensorDescription().isPush()){
+                List<de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor> monitors =
+                        ac.getPushMonitorWithSameValues(
+                                monitor.getSensorDescription().getMetricName(), null);
 
-            if (!monitors.isEmpty()) {
-                /*TODO: check for interval: if(hertz(monitor.getInterval())... */
-                for(de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor _monitor : monitors) {
-                    ac.removeSensorMonitor(_monitor);
+                if (!monitors.isEmpty()) {
+                    for (de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor _monitor : monitors) {
+                        ac.removePushMonitor(_monitor);
+                    }
                 }
+
+                /* TODO create monitor instance not by frontend communicator... */
+                String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
+
+                MonitorInstance instance =
+                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                                vm.getId(),
+                                (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
+
+                addMonitorToAgent(ac, instance, monitor);
+            } else {
+                List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors =
+                        ac.getSensorMonitorWithSameValues(monitor.getSensorDescription().getClassName(),
+                                monitor.getSensorDescription().getMetricName(), null);
+
+                if (!monitors.isEmpty()) {
+                    /*TODO: check for interval: if(hertz(monitor.getInterval())... */
+                    for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor _monitor : monitors) {
+                        ac.removeSensorMonitor(_monitor);
+                    }
+                }
+
+                /* TODO create monitor instance not by frontend communicator... */
+                String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
+
+                MonitorInstance instance =
+                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                                vm.getId(),
+                                (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
+
+                addMonitorToAgent(ac, instance, monitor);
             }
-
-            /* TODO create monitor instance */
-
-            String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
-
-            MonitorInstance instance = fc.saveMonitorInstance(monitor.getId(), apiEndpoint,
-                fc.getIdPublicAddressOfVM(vm), vm.getId(),
-                (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
-
-            addMonitorToAgent(ac, instance.getId(), monitor);
         }
     }
 
-    private void addMonitorToAgent(AgentCommunicator ac, Long monitorInstanceId, RawMonitor monitor){
-        String sMonitorInstanceId = String.valueOf(monitorInstanceId);
+    private void addMonitorToAgent(AgentCommunicator ac, MonitorInstance instance,
+        RawMonitor monitor) {
+        String sMonitorInstanceId = String.valueOf(instance.getId());
         Map<String, String> configs = null;
-        if(monitor.getSensorConfigurations().isPresent()) {
-            final SensorConfigurations sensorConfigurations = monitor.getSensorConfigurations().get();
+        if (monitor.getSensorConfigurations().isPresent()) {
+            final SensorConfigurations sensorConfigurations =
+                monitor.getSensorConfigurations().get();
             configs = sensorConfigurations.configs();
         }
 
 
-        if(monitor.getSensorDescription().isVmSensor()) {
-            ac.addSensorMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
-                monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit(), configs);
-        } else {
-            String sComponentId = String.valueOf(monitor.getComponent().getId());
+        if(monitor.getSensorDescription().isPush()){
+            if (monitor.getSensorDescription().isVmSensor()) {
+                Integer port = ac.addPushMonitor(sMonitorInstanceId,
+                        monitor.getSensorDescription().getMetricName());
 
-            ac.addSensorMonitorForComponent(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
-                monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
-                monitor.getSchedule().getTimeUnit(), sComponentId, configs);
+                instance.setPort(port);
+                fc.saveMonitorInstance(instance);
+            } else {
+                String sComponentId = String.valueOf(monitor.getComponent().getId());
+
+                Integer port = ac.addPushMonitorForComponent(sMonitorInstanceId,
+                        monitor.getSensorDescription().getMetricName(), sComponentId);
+
+                instance.setPort(port);
+                fc.saveMonitorInstance(instance);
+            }
+        } else {
+            if (monitor.getSensorDescription().isVmSensor()) {
+                ac.addSensorMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
+                        monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
+                        monitor.getSchedule().getTimeUnit(), configs);
+            } else {
+                String sComponentId = String.valueOf(monitor.getComponent().getId());
+
+                ac.addSensorMonitorForComponent(sMonitorInstanceId,
+                        monitor.getSensorDescription().getClassName(),
+                        monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
+                        monitor.getSchedule().getTimeUnit(), sComponentId, configs);
+            }
         }
     }
 
     @Override public void updateMonitor(RawMonitor monitor) {
-        for(MonitorInstance mi : fc.getMonitorInstances(monitor.getId())){
-            AgentCommunicator ac = AgentCommunicatorRegistry.getAgentCommunicator("http",
-                mi.getIpAddress().getIp(), AGENT_PORT);
+        for (MonitorInstance mi : fc.getMonitorInstances(monitor.getId())) {
+            AgentCommunicator ac = AgentCommunicatorRegistry
+                .getAgentCommunicator("http", mi.getIpAddress().getIp(), agentPort);
 
-            ac.updateSensorMonitor(mi);
+            ac.updateMonitor(mi);
         }
     }
 

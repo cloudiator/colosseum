@@ -21,14 +21,15 @@ package cloud.sync;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+
+import java.util.Optional;
+import java.util.Set;
+
 import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
 import util.logging.Loggers;
-
-import java.util.Optional;
-import java.util.Set;
 
 /**
  * Created by daniel on 04.11.15.

@@ -18,12 +18,15 @@
 
 package cloud.sync.solutions;
 
+import com.google.inject.Inject;
+
+import javax.annotation.Nullable;
+
 import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.HardwareProblems;
-import com.google.inject.Inject;
 import models.Cloud;
 import models.Hardware;
 import models.HardwareOffer;
@@ -31,8 +34,6 @@ import models.Location;
 import models.service.HardwareModelService;
 import models.service.LocationModelService;
 import models.service.ModelService;
-
-import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 

@@ -19,12 +19,24 @@
 package components.scalability;
 
 import com.google.inject.Inject;
-import models.*;
-import models.service.ModelService;
-import play.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import models.ApplicationComponent;
+import models.Component;
+import models.ComposedMonitor;
+import models.Instance;
+import models.IpAddress;
+import models.IpType;
+import models.Monitor;
+import models.MonitorInstance;
+import models.RawMonitor;
+import models.Schedule;
+import models.SensorDescription;
+import models.VirtualMachine;
+import models.service.ModelService;
+import play.Logger;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -345,9 +357,16 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
             apiEndpoint,
             (ipAddressId == null ? null : ipAddressModelService.getById(ipAddressId)),
             (vmId == null ? null : virtualMachineModelService.getById(vmId)),
-            (componentId == null ? null : componentModelService.getById(componentId)));
+            (componentId == null ? null : componentModelService.getById(componentId)),
+            null);
         monitorInstanceModelService.save(result);
         return result;
+    }
+
+    @Override
+    public MonitorInstance saveMonitorInstance(MonitorInstance monitorInstance) {
+        monitorInstanceModelService.save(monitorInstance);
+        return monitorInstance;
     }
 
     @Override public MonitorInstance getMonitorInstance(Long monitorInstanceId) {

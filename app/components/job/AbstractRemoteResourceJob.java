@@ -18,14 +18,15 @@
 
 package components.job;
 
-import cloud.colosseum.ColosseumComputeService;
 import com.google.common.base.MoreObjects;
+
+import cloud.colosseum.ColosseumComputeService;
 import models.Tenant;
 import models.generic.RemoteResource;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
-import play.db.jpa.JPA;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by daniel on 08.05.15.
@@ -38,8 +39,9 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
     private final ColosseumComputeService colosseumComputeService;
     private JobState jobState;
     private final ModelService<Tenant> tenantModelService;
+    private final JPAApi jpaApi;
 
-    public AbstractRemoteResourceJob(T t, RemoteModelService<T> modelService,
+    public AbstractRemoteResourceJob(JPAApi jpaApi, T t, RemoteModelService<T> modelService,
         ModelService<Tenant> tenantModelService, ColosseumComputeService colosseumComputeService,
         Tenant tenant) {
         this.colosseumComputeService = colosseumComputeService;
@@ -47,6 +49,7 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
         this.modelService = modelService;
         this.tenantModelService = tenantModelService;
         this.tenantUuid = tenant.getUuid();
+        this.jpaApi = jpaApi;
     }
 
     @Override public final String getResourceUuid() {
@@ -70,6 +73,10 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
         this.doWork(modelService, colosseumComputeService);
     }
 
+    protected final JPAApi jpaApi() {
+        return this.jpaApi;
+    }
+
     protected final T getT() {
         /**
          * todo: find a better way for waiting for the database
@@ -91,7 +98,7 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
     }
 
     public void init() {
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             T t = getT();
             t.setRemoteState(RemoteState.INPROGRESS);
             modelService.save(t);
@@ -102,7 +109,7 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
         ColosseumComputeService computeService) throws JobException;
 
     @Override public void onSuccess() throws JobException {
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             T t = getT();
             t.setRemoteState(RemoteState.OK);
             modelService.save(t);
@@ -110,7 +117,7 @@ public abstract class AbstractRemoteResourceJob<T extends RemoteResource> implem
     }
 
     @Override public void onError() throws JobException {
-        JPA.withTransaction(() -> {
+        jpaApi().withTransaction(() -> {
             T t = getT();
             t.setRemoteState(RemoteState.ERROR);
             modelService.save(t);

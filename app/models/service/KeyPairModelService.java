@@ -18,10 +18,10 @@
 
 package models.service;
 
+import java.util.Optional;
+
 import models.KeyPair;
 import models.VirtualMachine;
-
-import java.util.Optional;
 
 /**
  * Created by daniel on 28.08.15.

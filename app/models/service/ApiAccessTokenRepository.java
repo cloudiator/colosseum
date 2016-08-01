@@ -18,16 +18,16 @@
 
 package models.service;
 
-import models.ApiAccessToken;
-import models.FrontendUser;
+import javax.annotation.Nullable;
 
-import java.util.List;
+import models.ApiAccessToken;
 
 /**
  * Created by daniel on 19.12.14.
  */
 interface ApiAccessTokenRepository extends ModelRepository<ApiAccessToken> {
 
-    List<ApiAccessToken> findByFrontendUser(FrontendUser frontendUser);
+    @Nullable ApiAccessToken findByToken(String token);
 
+    void deleteExpiredTokens();
 }

@@ -21,9 +21,9 @@ package models.service;
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
 import models.ApiAccessToken;
-import models.FrontendUser;
+import play.db.jpa.JPAApi;
 
-import java.util.List;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 19.12.14.
@@ -31,13 +31,20 @@ import java.util.List;
 class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
     implements ApiAccessTokenRepository {
 
-    @Inject ApiAccessTokenRepositoryJpa(TypeLiteral<ApiAccessToken> type) {
-        super(type);
+    @Inject public ApiAccessTokenRepositoryJpa(JPAApi jpaApi, TypeLiteral<ApiAccessToken> type) {
+        super(jpaApi, type);
     }
 
-    @Override public List<ApiAccessToken> findByFrontendUser(final FrontendUser frontendUser) {
+    @Override public ApiAccessToken findByToken(String token) {
+        checkNotNull(token);
+        deleteExpiredTokens();
         //noinspection unchecked
-        return em().createQuery("from ApiAccessToken aat where frontendUser = :frontendUser")
-            .setParameter("frontendUser", frontendUser).getResultList();
+        return (ApiAccessToken) em().createQuery("from ApiAccessToken where token = :token")
+            .setParameter("token", token).getResultList().stream().findFirst().orElse(null);
+    }
+
+    @Override public void deleteExpiredTokens() {
+        em().createQuery("delete from ApiAccessToken where expiresAt < :timestamp")
+            .setParameter("timestamp", System.currentTimeMillis()).executeUpdate();
     }
 }

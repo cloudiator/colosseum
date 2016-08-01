@@ -20,6 +20,7 @@ package dtos.conversion.converters;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
 import dtos.SensorDescriptionDto;
 import dtos.conversion.AbstractConverter;
 import models.SensorDescription;
@@ -36,5 +37,6 @@ import models.SensorDescription;
         binding().fromField("className").toField("className");
         binding().fromField("metricName").toField("metricName");
         binding().fromField("isVmSensor").toField("isVmSensor");
+        binding().fromField("isPush").toField("isPush");
     }
 }

@@ -18,9 +18,11 @@
 
 package cloud.resources;
 
-import cloud.SlashEncodedId;
 import com.google.common.base.Optional;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.KeyPair;
+
+import cloud.SlashEncodedId;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;

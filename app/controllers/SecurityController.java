@@ -18,11 +18,13 @@
 
 package controllers;
 
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
+
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
+import components.auth.Token;
+import components.auth.TokenService;
 import dtos.LoginDto;
-import models.ApiAccessToken;
-import models.service.ApiAccessTokenService;
 import models.service.FrontendUserService;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -30,7 +32,6 @@ import play.libs.Json;
 import play.mvc.BodyParser;
 import play.mvc.Controller;
 import play.mvc.Result;
-import de.uniulm.omi.cloudiator.common.Password;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -41,15 +42,16 @@ public class SecurityController extends Controller {
 
     private static final Form<LoginDto> loginForm = Form.form(LoginDto.class);
     private final FrontendUserService frontendUserService;
-    private final ApiAccessTokenService apiAccessTokenService;
+    private final TokenService tokenService;
 
     @Inject public SecurityController(FrontendUserService frontendUserService,
-        ApiAccessTokenService apiAccessTokenService) {
+        TokenService tokenService) {
+
         checkNotNull(frontendUserService);
-        checkNotNull(apiAccessTokenService);
+        checkNotNull(tokenService);
 
         this.frontendUserService = frontendUserService;
-        this.apiAccessTokenService = apiAccessTokenService;
+        this.tokenService = tokenService;
     }
 
     public Result login() {
@@ -74,16 +76,14 @@ public class SecurityController extends Controller {
             return badRequest(filledForm.errorsAsJson());
         }
         //generate a new token
-        ApiAccessToken apiAccessToken =
-            new ApiAccessToken(this.frontendUserService.getByMail(filledForm.get().getEmail()),
-                Password.getInstance().generateToken());
-        this.apiAccessTokenService.save(apiAccessToken);
+        Token token = tokenService
+            .newToken(this.frontendUserService.getByMail(filledForm.get().getEmail()));
 
         ObjectNode result = Json.newObject();
-        result.put("createdOn", apiAccessToken.getCreatedOn());
-        result.put("expiresAt", apiAccessToken.getExpiresAt());
-        result.put("token", apiAccessToken.getToken());
-        result.put("userId", apiAccessToken.getFrontendUser().getId());
+        result.put("createdOn", token.createdOn());
+        result.put("expiresAt", token.expiresAt());
+        result.put("token", token.token());
+        result.put("userId", token.userId());
         return ok(result);
     }
 

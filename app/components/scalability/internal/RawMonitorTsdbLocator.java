@@ -18,12 +18,12 @@
 
 package components.scalability.internal;
 
-import models.MonitorInstance;
-import models.RawMonitor;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import models.MonitorInstance;
+import models.RawMonitor;
 
 /**
  * Created by Frank on 01.09.2015.

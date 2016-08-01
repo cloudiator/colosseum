@@ -18,13 +18,14 @@
 
 package components.log;
 
-import cloud.strategies.RemoteConnectionStrategy;
 import com.google.inject.Inject;
-import models.ApplicationInstance;
-import models.VirtualMachine;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import cloud.strategies.RemoteConnectionStrategy;
+import models.ApplicationInstance;
+import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

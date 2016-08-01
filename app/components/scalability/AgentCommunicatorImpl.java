@@ -20,15 +20,20 @@ package components.scalability;
 
 import de.uniulm.omi.cloudiator.visor.client.ClientBuilder;
 import de.uniulm.omi.cloudiator.visor.client.ClientController;
-import de.uniulm.omi.cloudiator.visor.client.entities.*;
-import models.MonitorInstance;
-import models.RawMonitor;
-import models.generic.ExternalReference;
+import de.uniulm.omi.cloudiator.visor.client.entities.Interval;
+import de.uniulm.omi.cloudiator.visor.client.entities.Monitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.PushMonitorBuilder;
+import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor;
+import de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitorBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import models.MonitorInstance;
+import models.RawMonitor;
 
 /**
  * Created by Frank on 01.09.2015.
@@ -79,6 +84,16 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
         monitor = (SensorMonitor) controller.create(monitor);
     }
 
+    @Override public Integer addPushMonitor(String idMonitorInstance, String metricName){
+        PushMonitor monitor = (new PushMonitorBuilder())
+                .metricName(metricName)
+                .addMonitorContext("monitorinstance", idMonitorInstance).build();
+
+        //create a new Monitor
+        monitor = (PushMonitor) controller.create(monitor);
+        return monitor.getPort();
+    }
+
     /*
     TODO This probably won't work...
      */
@@ -99,6 +114,10 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
         controller.delete(monitor);
     }
 
+    @Override public void removePushMonitor(PushMonitor monitor) {
+        //remove a Monitor
+        controller.delete(monitor);
+    }
 
     @Override public void addSensorMonitorForComponent(String idMonitorInstance, String className, String metricName, long interval, TimeUnit unit, String componentId, Map<String, String> configs){
         SensorMonitor monitor = (new SensorMonitorBuilder())
@@ -112,6 +131,19 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
 
         //create a new Monitor
         monitor = (SensorMonitor) controller.create(monitor);
+    }
+
+    @Override public Integer addPushMonitorForComponent(String idMonitorInstance, String metricName, String componentId){
+        PushMonitor monitor = (new PushMonitorBuilder())
+                .metricName(metricName)
+                .componentId(componentId)
+                .addMonitorContext("component", componentId)
+                .addMonitorContext("monitorinstance", idMonitorInstance).build();
+
+        //create a new Monitor
+        monitor = (PushMonitor) controller.create(monitor);
+
+        return monitor.getPort();
     }
 
     @Override public List<SensorMonitor> getSensorMonitorWithSameValues(String className, String metricName, String componentName) {
@@ -133,7 +165,26 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
         //return new ArrayList<Monitor>();
     }
 
-    @Override public void updateSensorMonitor(MonitorInstance mi) {
+    //TODO also check for port?
+    @Override public List<PushMonitor> getPushMonitorWithSameValues(String metricName, String componentName) {
+        List<Monitor> monitors = controller.getList();
+        List<PushMonitor> result = new ArrayList<PushMonitor>();
+
+        for(Monitor m : monitors){
+            if(m instanceof PushMonitor) {
+                PushMonitor pm = (PushMonitor)m;
+                if (pm.getMetricName().equals(metricName) &&
+                        checkForComponentContext(componentName, pm.getMonitorContext())) {
+                    result.add(pm);
+                }
+            }
+        }
+
+        return result;
+        //return new ArrayList<Monitor>();
+    }
+
+    @Override public void updateMonitor(MonitorInstance mi) {
         List<Monitor> mons = controller.getList();
 
         for(Monitor m : mons){
@@ -142,6 +193,12 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
 
                 if (hasSameContext(sm, "monitorinstance", mi.getId().toString())){
                     controller.update(copyValueFromMonitorInstance(sm, mi));
+                }
+            } else if (m instanceof PushMonitor){
+                PushMonitor pm = (PushMonitor)m;
+
+                if (hasSameContext(pm, "monitorinstance", mi.getId().toString())){
+                    controller.update(copyValueFromMonitorInstance(pm, mi));
                 }
             }
         }
@@ -164,13 +221,30 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
             }
         }
 
-        for(ExternalReference er : mi.getExternalReferences()){
-            m.getMonitorContext().put("er_" + er.getId(), er.getReference());
+        for(Map.Entry<String, String> er : mi.externalReferences().entrySet()){
+            m.getMonitorContext().put("er_" + er.getKey(), er.getValue());
         }
 
         m.setSensorClassName(((RawMonitor)mi.getMonitor()).getSensorDescription().getClassName());
         m.setMetricName(((RawMonitor)mi.getMonitor()).getSensorDescription().getMetricName());
         m.setInterval(new Interval(((RawMonitor)mi.getMonitor()).getSchedule().getInterval(), ((RawMonitor)mi.getMonitor()).getSchedule().getTimeUnit().toString()));
+        return m;
+    }
+
+    @Override public PushMonitor copyValueFromMonitorInstance(PushMonitor m, MonitorInstance mi){
+        for(Map.Entry entry : m.getMonitorContext().entrySet()){
+            if(entry.getKey().equals("monitorinstance")){
+                entry.setValue(mi.getId().toString());
+            }
+        }
+
+        for(Map.Entry<String, String> er : mi.externalReferences().entrySet()){
+            m.getMonitorContext().put("er_" + er.getKey(), er.getValue());
+        }
+
+        m.setMetricName(((RawMonitor)mi.getMonitor()).getSensorDescription().getMetricName());
+        //TODO: does Port need to be checked? Can't be known on deploy-time...
+        //m.setPort(((RawMonitor)mi.getMonitor()).getSensorDescription().getPort());
         return m;
     }
 

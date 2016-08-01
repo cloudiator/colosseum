@@ -20,14 +20,19 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import java.util.List;
+
 import dtos.generic.MonitorDto;
 import dtos.validation.validators.ModelIdValidator;
-import models.*;
+import models.FormulaQuantifier;
+import models.Monitor;
+import models.ScalingAction;
+import models.Schedule;
+import models.Window;
 import models.scalability.FlowOperator;
 import models.scalability.FormulaOperator;
 import models.service.ModelService;
-
-import java.util.List;
 
 public class ComposedMonitorDto extends MonitorDto {
 
@@ -42,19 +47,6 @@ public class ComposedMonitorDto extends MonitorDto {
 
     public ComposedMonitorDto() {
         super();
-    }
-
-    public ComposedMonitorDto(List<String> externalReferences, List<Long> monitorInstances,
-        FlowOperator flowOperator, FormulaOperator function, Long quantifier, Long schedule,
-        Long window, List<Long> monitors, List<Long> scalingActions) {
-        super(externalReferences, monitorInstances);
-        this.flowOperator = flowOperator;
-        this.function = function;
-        this.quantifier = quantifier;
-        this.schedule = schedule;
-        this.window = window;
-        this.monitors = monitors;
-        this.scalingActions = scalingActions;
     }
 
     @Override public void validation() {

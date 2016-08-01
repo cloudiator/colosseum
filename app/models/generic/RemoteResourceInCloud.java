@@ -19,17 +19,19 @@
 package models.generic;
 
 import com.google.common.collect.ImmutableList;
-import models.Cloud;
-import models.CloudCredential;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+
+import models.Cloud;
+import models.CloudCredential;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

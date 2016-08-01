@@ -22,8 +22,13 @@ import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+
 import components.execution.SimpleBlockingQueue;
-import components.job.*;
+import components.job.BaseJobService;
+import components.job.Job;
+import components.job.JobDispatcher;
+import components.job.JobQueue;
+import components.job.JobService;
 
 /**
  * Created by daniel on 12.05.15.

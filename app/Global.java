@@ -16,23 +16,9 @@
  * under the License.
  */
 
-import cloud.config.CloudModule;
-import cloud.sync.config.SolutionModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import components.execution.ExecutionModule;
-import components.execution.Init;
-import components.job.config.JobModule;
-import components.log.LogCollectorModule;
-import components.scalability.AggregationModule;
-import components.scalability.ScalingEngineModule;
-import dtos.conversion.ConverterModule;
-import models.service.DatabaseServiceModule;
-import models.service.JPAModule;
 import play.Application;
 import play.GlobalSettings;
 import play.data.format.Formatters;
-import play.db.jpa.JPA;
 
 import java.text.ParseException;
 import java.util.Locale;
@@ -53,27 +39,10 @@ import java.util.Locale;
 public class Global extends GlobalSettings {
 
     /**
-     * The injector used for creating the controllers.
-     */
-    private Injector injector;
-
-    /**
      * On start hook.
      */
     public void onStart(final Application app) {
         super.onStart(app);
-
-
-        this.injector = Guice
-            .createInjector(new JPAModule(), new ConverterModule(app.classloader()),
-                new DatabaseServiceModule(), new CloudModule(), new SolutionModule(),
-                new JobModule(), new ExecutionModule(), new ScalingEngineModule(),
-                new AggregationModule(), new LogCollectorModule());
-
-
-        final InitialData initialData = this.injector.getInstance(InitialData.class);
-
-        JPA.withTransaction(initialData::loadInitialData);
 
         // register formatters
         this.registerFormatters();
@@ -81,26 +50,12 @@ public class Global extends GlobalSettings {
 
     @Override public void onStop(Application application) {
         super.onStop(application);
-
-        injector.getInstance(Init.class).shutdown();
-    }
-
-    /**
-     * Overridden to allow dependency injection with Google Guice.
-     *
-     * @param aClass The controller class to create
-     * @param <A>    The controller to create
-     * @return An instance of the given class, with injected dependencies.
-     * @throws Exception if creating the controller fails.
-     */
-    @Override public <A> A getControllerInstance(Class<A> aClass) throws Exception {
-        return injector.getInstance(aClass);
     }
 
     /**
      * Registers commonly used formatters.
      */
-    protected void registerFormatters() {
+    private void registerFormatters() {
 
         /**
          * A formatter for the string class.

@@ -20,13 +20,12 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import models.Component;
 import models.IpAddress;
 import models.Monitor;
 import models.VirtualMachine;
 import models.service.ModelService;
-
-import java.util.List;
 
 public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
@@ -35,20 +34,24 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
     private Long ipAddress;
     private Long virtualMachine;
     private Long component;
+    private Integer port;
 
     public MonitorInstanceDto() {
         super();
     }
 
-    public MonitorInstanceDto(List<String> externalReferences, Long monitor, String apiEndpoint,
-        Long ipAddress,
-        Long virtualMachine, Long component) {
-        super(externalReferences);
+    public MonitorInstanceDto(Long monitor, String apiEndpoint,
+                              Long ipAddress,
+                              Long virtualMachine,
+                              Long component,
+                              Integer port) {
+        super();
         this.monitor = monitor;
         this.apiEndpoint = apiEndpoint;
         this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
+        this.port = port;
     }
 
     @Override public void validation() {
@@ -56,7 +59,7 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
         //        .withValidator(new ModelIdValidator<>(References.monitorService.get()));
     }
 
-    public static class References extends ModelWithExternalReferenceDto.References {
+    public static class References {
         @Inject public static Provider<ModelService<Monitor>> monitorModelService;
         @Inject public static Provider<ModelService<IpAddress>> ipAddressModelService;
         @Inject public static Provider<ModelService<VirtualMachine>> virtualMachineModelService;
@@ -101,5 +104,13 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     public void setApiEndpoint(String apiEndpoint) {
         this.apiEndpoint = apiEndpoint;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }

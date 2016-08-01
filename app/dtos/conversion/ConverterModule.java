@@ -27,7 +27,7 @@ import org.reflections.scanners.SubTypesScanner;
 import org.reflections.util.ClasspathHelper;
 import org.reflections.util.ConfigurationBuilder;
 import play.Configuration;
-import play.Play;
+import play.Environment;
 
 import java.lang.reflect.Modifier;
 import java.util.Set;
@@ -44,9 +44,9 @@ public class ConverterModule extends AbstractModule {
     private final Configuration configuration;
     private final ClassLoader classLoader;
 
-    public ConverterModule(ClassLoader classLoader) {
-        this.configuration = Play.application().configuration();
-        this.classLoader = classLoader;
+    public ConverterModule(Environment environment, Configuration configuration) {
+        this.configuration = configuration;
+        this.classLoader = environment.classLoader();
     }
 
     /**

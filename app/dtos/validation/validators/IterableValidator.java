@@ -19,13 +19,12 @@
 package dtos.validation.validators;
 
 
+import java.util.Collection;
 
 import dtos.validation.AbstractValidator;
 import dtos.validation.ValidationErrorMessage;
 import dtos.validation.ValidationException;
 import dtos.validation.Validator;
-
-import java.util.Collection;
 
 /**
  * Created by daniel on 19.03.15.

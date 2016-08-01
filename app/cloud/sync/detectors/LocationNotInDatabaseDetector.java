@@ -18,15 +18,16 @@
 
 package cloud.sync.detectors;
 
+import com.google.inject.Inject;
+
+import java.util.Optional;
+
 import cloud.resources.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.LocationProblems;
-import com.google.inject.Inject;
 import models.Location;
 import models.service.LocationModelService;
-
-import java.util.Optional;
 
 /**
  * Created by daniel on 04.11.15.

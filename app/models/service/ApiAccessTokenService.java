@@ -18,13 +18,15 @@
 
 package models.service;
 
+import javax.annotation.Nullable;
+
 import models.ApiAccessToken;
-import models.FrontendUser;
 
 /**
  * Created by daniel on 19.12.14.
  */
 public interface ApiAccessTokenService extends ModelService<ApiAccessToken> {
 
-    boolean isValid(String token, FrontendUser frontendUser);
+    @Nullable ApiAccessToken findByToken(String token);
+
 }

@@ -21,25 +21,25 @@ package models;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
-import play.Play;
 
 import java.util.function.Function;
+
+import play.Play;
 
 /**
  * Created by daniel on 04.11.14.
  */
 public enum OperatingSystemVendorType {
 
-    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, getDefaultNIXContainer(),
-        (Function<String, String>) username -> {
+    NIX("*nix", true, OSFamily.UNIX, 22, OperatingSystem.UBUNTU_14_04, ContainerType.DOCKER,
+        username -> {
             if (username.equals("root")) {
                 return "/root";
             } else {
                 return "/home/" + username;
             }
-        }),
-    WINDOWS("windows", false, OSFamily.WINDOWS, 5985, OperatingSystem.WINDOWS_7,
-        ContainerType.PLAIN, (Function<String, String>) username -> "C:\\Users\\" + username);
+        }), WINDOWS("windows", false, OSFamily.WINDOWS, 5985, OperatingSystem.WINDOWS_7,
+        ContainerType.PLAIN, username -> "C:\\Users\\" + username);
 
     public static final OperatingSystemVendorType DEFAULT_VENDOR_TYPE = NIX;
     private final String text;
@@ -89,14 +89,6 @@ public enum OperatingSystemVendorType {
 
     public Function<String, String> homeDirFunction() {
         return homeDirFunction;
-    }
-
-    private static ContainerType getDefaultNIXContainer() {
-        if (Play.application().configuration()
-            .getBoolean("colosseum.installer.linux.lance.docker.install.flag")) {
-            return ContainerType.DOCKER;
-        }
-        return ContainerType.PLAIN;
     }
 
 }

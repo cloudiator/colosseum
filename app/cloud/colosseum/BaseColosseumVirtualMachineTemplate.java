@@ -19,10 +19,17 @@
 package cloud.colosseum;
 
 import com.google.common.base.Optional;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
-import models.*;
+import de.uniulm.omi.cloudiator.sword.core.util.Name;
 
 import javax.annotation.Nullable;
+
+import models.Cloud;
+import models.CloudCredential;
+import models.Hardware;
+import models.Image;
+import models.Location;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -32,6 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMachineTemplate {
 
+    private final String name;
     private final Image image;
     private final Hardware hardware;
     private final Location location;
@@ -39,8 +47,9 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     private final CloudCredential cloudCredential;
     private final Optional<TemplateOptions> templateOptions;
 
-    BaseColosseumVirtualMachineTemplate(Cloud cloud, CloudCredential cloudCredential, Image image,
-        Hardware hardware, Location location, @Nullable TemplateOptions templateOptions) {
+    BaseColosseumVirtualMachineTemplate(String name, Cloud cloud, CloudCredential cloudCredential,
+        Image image, Hardware hardware, Location location,
+        @Nullable TemplateOptions templateOptions) {
 
 
         // everything needs to be not null.
@@ -81,6 +90,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         checkArgument(hardware.swordId().isPresent(), "hardware not bound");
         checkArgument(image.swordId().isPresent(), "image not bound");
 
+        this.name = name;
         this.image = image;
         this.hardware = hardware;
         this.location = location;
@@ -91,6 +101,10 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
 
     public static ColosseumVirtualMachineTemplateBuilder builder() {
         return new ColosseumVirtualMachineTemplateBuilder();
+    }
+
+    @Override public String name() {
+        return Name.of(name).uniqueName();
     }
 
     @Override public String imageId() {

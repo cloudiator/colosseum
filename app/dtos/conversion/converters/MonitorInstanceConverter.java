@@ -21,15 +21,22 @@ package dtos.conversion.converters;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+import java.util.Map;
+
 import dtos.MonitorInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import dtos.conversion.transformers.StringToExternalReferenceTransformer;
-import models.*;
-import models.generic.ExternalReference;
+import dtos.conversion.transformers.Transformer;
+import dtos.generic.KeyValue;
+import dtos.generic.KeyValues;
+import models.Component;
+import models.IpAddress;
+import models.Monitor;
+import models.MonitorInstance;
+import models.VirtualMachine;
 import models.service.ModelService;
-
-import java.util.List;
 
 
 @Singleton public class MonitorInstanceConverter
@@ -39,19 +46,16 @@ import java.util.List;
     private final ModelService<IpAddress> ipAddressModelService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Component> componentModelService;
-    private final ModelService<ExternalReference> externalReferenceModelService;
 
     @Inject protected MonitorInstanceConverter(ModelService<Monitor> monitorModelService,
         ModelService<IpAddress> ipAddressModelService,
         ModelService<VirtualMachine> virtualMachineModelService,
-        ModelService<Component> componentModelService,
-        ModelService<ExternalReference> externalReferenceModelService) {
+        ModelService<Component> componentModelService) {
         super(MonitorInstance.class, MonitorInstanceDto.class);
         this.monitorModelService = monitorModelService;
         this.ipAddressModelService = ipAddressModelService;
         this.virtualMachineModelService = virtualMachineModelService;
         this.componentModelService = componentModelService;
-        this.externalReferenceModelService = externalReferenceModelService;
     }
 
     @Override public void configure() {
@@ -64,12 +68,19 @@ import java.util.List;
             .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
         binding(Long.class, VirtualMachine.class).fromField("virtualMachine").toField("virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
-        binding(new TypeLiteral<List<String>>() {
-        }, new TypeLiteral<List<ExternalReference>>() {
-        }).
-                fromField("externalReferences").
-                toField("externalReferences")
-                .withTransformation(
-                        new StringToExternalReferenceTransformer());
+        binding(new TypeLiteral<List<KeyValue>>() {
+        }, new TypeLiteral<Map<String, String>>() {
+        }).fromField("externalReferences").toField("externalReferences").withTransformation(
+                new Transformer<List<KeyValue>, Map<String, String>>() {
+                    @Override public Map<String, String> transform(List<KeyValue> tags) {
+                        return KeyValues.to(tags);
+                    }
+
+                    @Override public List<KeyValue> transformReverse(
+                            Map<String, String> stringStringMap) {
+                        return KeyValues.of(stringStringMap);
+                    }
+                });
+        binding().fromField("port").toField("port");
     }
 }

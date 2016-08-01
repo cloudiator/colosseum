@@ -25,6 +25,7 @@ public enum SubscriptionType {
 
     CDO("CDO"),
     CDO_EVENT("CDO_EVENT"),
+    JSON_CS("JSON_CS"),
     SCALING("SCALING");
 
     private final String text;

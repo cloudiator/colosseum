@@ -18,12 +18,12 @@
 
 package models;
 
-import models.generic.Model;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import models.generic.Model;
 
 /**
  * Created by daniel on 07.01.15.
@@ -54,10 +54,20 @@ import javax.persistence.OneToOne;
         return providedPort;
     }
 
+    public ApplicationComponent getSource() {
+        return getRequiredPort().getApplicationComponent();
+    }
+
+    public ApplicationComponent getTarget() {
+        return getProvidedPort().getApplicationComponent();
+    }
+
+    public boolean isMandatory() {
+        return requiredPort.isMandatory();
+    }
+
     public boolean isReflexive() {
-        if (requiredPort.getApplicationComponent().equals(providedPort.getApplicationComponent())) {
-            return true;
-        }
-        return false;
+        return requiredPort.getApplicationComponent()
+            .equals(providedPort.getApplicationComponent());
     }
 }

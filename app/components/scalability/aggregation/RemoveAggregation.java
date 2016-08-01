@@ -19,12 +19,14 @@
 package components.scalability.aggregation;
 
 import com.google.inject.Inject;
+
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
+
+import java.rmi.RemoteException;
+
 import models.ComposedMonitor;
 import models.Monitor;
 import models.service.ModelService;
-
-import java.rmi.RemoteException;
 
 /**
  * Created by Frank on 30.07.2015.

@@ -18,15 +18,17 @@
 
 package cloud.resources;
 
-import cloud.SlashEncodedId;
 import com.google.common.base.MoreObjects;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.Location;
 import de.uniulm.omi.cloudiator.sword.api.domain.LocationScope;
+
+import java.util.Optional;
+
+import cloud.SlashEncodedId;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
-
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

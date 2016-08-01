@@ -19,11 +19,17 @@
 package models;
 
 import com.google.common.collect.ImmutableList;
-import models.generic.RemoteResourceInLocation;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
+import models.generic.RemoteResourceInLocation;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;

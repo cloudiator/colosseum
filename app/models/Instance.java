@@ -18,10 +18,13 @@
 
 package models;
 
-import models.generic.RemoteResource;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import models.generic.RemoteResource;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -72,5 +75,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setApplicationInstance(ApplicationInstance applicationInstance) {
         this.applicationInstance = applicationInstance;
+    }
+
+    public Set<Instance> getTargetCommunicationInstances() {
+
+        return applicationComponent.getRequiredCommunications().stream()
+            .map(communication -> communication.getProvidedPort().getApplicationComponent())
+            .flatMap(applicationComponent -> applicationComponent.getInstances().stream())
+            .filter(instance -> instance.applicationInstance.equals(applicationInstance))
+            .collect(Collectors.toSet());
     }
 }

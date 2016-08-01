@@ -30,8 +30,11 @@ public class ToolPorts {
         throw new AssertionError("static only");
     }
 
-    static String ports =
-        "8083,7072,7071,7070,2510,8082,9092,9042,2181,22,80,1099,3306,4242,8080,8081,9001,9002,5985,443,445,33033,30001,10001,9090,2182,1234,2181,5432,6379";
+    static String ports = "22," + //ssh
+        "8080," + //kairos
+        "31415," +  //visor
+        "1099," +  //lance rmi registry
+        "33033"; // lance rmi
 
     public static Set<Integer> inBoundPorts() {
         Set<Integer> intPorts = new HashSet<>();

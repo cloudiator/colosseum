@@ -18,11 +18,12 @@
 
 package models.generic;
 
+import java.util.Optional;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
-import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -37,6 +38,9 @@ public abstract class RemoteResource extends Model {
 
 
     public RemoteState getRemoteState() {
+        if (remoteState == null) {
+            return RemoteState.INPROGRESS;
+        }
         return remoteState;
     }
 
@@ -63,6 +67,11 @@ public abstract class RemoteResource extends Model {
     public RemoteResource(@Nullable String remoteId) {
         this.remoteId = remoteId;
 
+    }
+
+    public RemoteResource(@Nullable String remoteId, @Nullable RemoteState remoteState) {
+        this.remoteId = remoteId;
+        this.remoteState = remoteState;
     }
 
 

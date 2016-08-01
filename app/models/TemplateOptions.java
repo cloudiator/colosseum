@@ -19,13 +19,15 @@
 package models;
 
 import com.google.common.collect.ImmutableMap;
-import models.generic.Model;
+
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.MapKeyColumn;
-import java.util.Map;
+
+import models.generic.Model;
 
 /**
  * Created by daniel on 06.10.15.

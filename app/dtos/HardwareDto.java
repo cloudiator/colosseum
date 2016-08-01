@@ -21,6 +21,9 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.TypeLiteral;
+
+import java.util.List;
+
 import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
@@ -32,8 +35,6 @@ import models.HardwareOffer;
 import models.Location;
 import models.service.BaseModelService;
 import models.service.ModelService;
-
-import java.util.List;
 
 public class HardwareDto extends RemoteDto {
 

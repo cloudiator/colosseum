@@ -18,10 +18,8 @@
 
 package cloud.strategies;
 
-import cloud.CompositeCloudPropertyProvider;
-import cloud.DefaultSwordConnectionService;
-import cloud.SwordLoggingModule;
 import com.google.common.net.HostAndPort;
+
 import de.uniulm.omi.cloudiator.sword.api.domain.OSFamily;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
@@ -29,9 +27,13 @@ import de.uniulm.omi.cloudiator.sword.core.domain.LoginCredentialBuilder;
 import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.internal.RemoteBuilder;
 import de.uniulm.omi.cloudiator.sword.remote.overthere.OverthereModule;
-import models.VirtualMachine;
 
 import java.util.Map;
+
+import cloud.CompositeCloudPropertyProvider;
+import cloud.DefaultSwordConnectionService;
+import cloud.SwordLoggingModule;
+import models.VirtualMachine;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkState;

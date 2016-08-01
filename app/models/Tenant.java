@@ -22,6 +22,7 @@ import com.google.common.collect.ImmutableList;
 import models.generic.Model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +54,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public List<FrontendUser> getFrontendUsers() {
-        return frontendUsers;
+        return ImmutableList.copyOf(frontendUsers);
+    }
+
+    public void addFrontendUser(FrontendUser frontendUser) {
+        if (frontendUsers == null) {
+            frontendUsers = new ArrayList<>();
+        }
+        frontendUsers.add(frontendUser);
     }
 
     public List<CloudCredential> getCloudCredentials() {

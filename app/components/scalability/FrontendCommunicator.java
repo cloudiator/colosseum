@@ -18,9 +18,16 @@
 
 package components.scalability;
 
-import models.*;
-
 import java.util.List;
+
+import models.ApplicationComponent;
+import models.Component;
+import models.ComposedMonitor;
+import models.Instance;
+import models.Monitor;
+import models.MonitorInstance;
+import models.RawMonitor;
+import models.VirtualMachine;
 
 /**
  * Created by Frank on 23.07.2015.
@@ -37,6 +44,7 @@ public interface FrontendCommunicator {
     void removeMonitorInstance(MonitorInstance monitorInstance);
     List<MonitorInstance> getMonitorInstances(Long monitorId);
     MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long ipAddressId, Long vmId, Long componentId);
+    MonitorInstance saveMonitorInstance(MonitorInstance monitorInstance);
     MonitorInstance getMonitorInstance(Long monitorInstanceId);
     RawMonitor getRawMonitor(Long monitorId);
     ComposedMonitor getComposedMonitor(Long monitorId);

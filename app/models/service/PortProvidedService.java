@@ -18,9 +18,9 @@
 
 package models.service;
 
-import models.PortProvided;
-
 import java.util.Set;
+
+import models.PortProvided;
 
 /**
  * Created by daniel on 15.03.16.

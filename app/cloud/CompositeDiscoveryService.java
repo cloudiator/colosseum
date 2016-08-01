@@ -18,16 +18,19 @@
 
 package cloud;
 
+import com.google.inject.Inject;
+
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.annotation.Nullable;
+
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
-import com.google.inject.Inject;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
-
-import javax.annotation.Nullable;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Created by daniel on 17.04.15.

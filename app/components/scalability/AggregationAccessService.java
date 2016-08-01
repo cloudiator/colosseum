@@ -19,8 +19,6 @@
 package components.scalability;
 
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
-import play.Logger;
-import play.Play;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -28,6 +26,9 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import play.Logger;
+import play.Play;
 
 /**
  * Created by Frank on 24.08.2015.

@@ -19,11 +19,12 @@
 package components.log;
 
 import com.google.inject.Inject;
-import models.ApplicationInstance;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
+
+import models.ApplicationInstance;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

@@ -70,7 +70,7 @@ public class ModelValidationServiceImpl implements ModelValidationService {
     }
 
     private String buildErrorMessage(Set<ValidationMessage> validationMessages) {
-        return String.format("%s errors have been found while validating the application: %s",
+        return String.format("%s error(s) have been found while validating the application: %s",
             validationMessages.size(), Arrays.toString(validationMessages.toArray()));
     }
 }

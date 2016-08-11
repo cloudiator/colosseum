@@ -26,7 +26,7 @@ A list of all operating system entities stored in the database.
 [
   {
     "operatingSystemArchitecture":"AMD64",
-    "operatingSystemFamily":1,
+    "operatingSystemFamily": "UBUNTU",
     "version":"8",
     "link":[
       {
@@ -37,7 +37,7 @@ A list of all operating system entities stored in the database.
   },
   {
     "operatingSystemArchitecture":"I386",
-    "operatingSystemFamily":1,
+    "operatingSystemFamily": "UBUNTU",
     "version":"7",
     "link":[
       {
@@ -79,7 +79,7 @@ The operating system entity identified by the given id.
 ```
 {
   "operatingSystemArchitecture":"AMD64",
-  "operatingSystemFamily":1,
+  "operatingSystemFamily": "UBUNTU",
   "version":"8",
   "link":[
     {
@@ -117,7 +117,7 @@ version                     | The version of the operating system.
 ```
 {
   "operatingSystemArchitecture":"I386",
-  "operatingSystemFamily":1,
+  "operatingSystemFamily": "UBUNTU",
   "version":"7"
 }
 ```
@@ -156,7 +156,7 @@ PUT /api/os/1
 ```
 {
   "operatingSystemArchitecture":"I386",
-  "operatingSystemFamily":1,
+  "operatingSystemFamily": "UBUNTU",
   "version":"7"
 }
 ```

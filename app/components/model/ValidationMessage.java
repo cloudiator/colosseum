@@ -25,6 +25,10 @@ public class ValidationMessage {
         return type;
     }
 
+    @Override public String toString() {
+        return message;
+    }
+
     public enum Type {
         WARNING,
         ERROR

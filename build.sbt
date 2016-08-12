@@ -30,11 +30,11 @@ version := "0.2.0-SNAPSHOT"
 
 resolvers += Resolver.mavenLocal
 
-//resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
+resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
-//resolvers += {
-//  "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
-//}
+resolvers += {
+  "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
+}
 
 libraryDependencies ++= Seq(
   javaJdbc,

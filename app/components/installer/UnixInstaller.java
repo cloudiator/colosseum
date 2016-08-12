@@ -20,8 +20,6 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
-
-import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -55,10 +53,12 @@ public class UnixInstaller extends AbstractInstaller {
     public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
+        String user = virtualMachine.loginName();
         this.tenant = tenant;
         //TODO: maybe use a common installation directory, e.g. /opt/cloudiator
         this.homeDir =
-            OperatingSystemVendorType.NIX.homeDirFunction().apply(virtualMachine.loginName().get());
+            virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()
+                .homeDirFunction().apply(user);
         this.JAVA_BINARY = this.homeDir + "/" + UnixInstaller.JAVA_DIR + "/bin/java";
     }
 
@@ -165,15 +165,14 @@ public class UnixInstaller extends AbstractInstaller {
         LOGGER.debug(String.format("Installing and starting Lance on vm %s", virtualMachine));
 
         //start Lance
-        this.remoteConnection.executeCommand("nohup bash -c '" + this.JAVA_BINARY + " " +
-            " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
-            " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
-            " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +
-            " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
-            " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
-            " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
-            " -jar " + UnixInstaller.LANCE_JAR +
-            " > lance.out 2>&1 &' > lance.out 2>&1");
+        this.remoteConnection.executeCommand(
+            "nohup bash -c '" + this.JAVA_BINARY + " " + " -Dhost.ip.public=" + this.virtualMachine
+                .publicIpAddress().get().getIp() + " -Dhost.ip.private=" + this.virtualMachine
+                .privateIpAddress(true).get().getIp() + " -Djava.rmi.server.hostname="
+                + this.virtualMachine.publicIpAddress().get().getIp() + " -Dhost.vm.id="
+                + this.virtualMachine.getUuid() + " -Dhost.vm.cloud.tenant.id=" + this.tenant
+                .getUuid() + " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid()
+                + " -jar " + UnixInstaller.LANCE_JAR + " > lance.out 2>&1 &' > lance.out 2>&1");
 
         LOGGER.debug(
             String.format("Lance installed and started successfully on vm %s", virtualMachine));

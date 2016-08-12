@@ -20,8 +20,6 @@ package components.installer;
 
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
-
-import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.VirtualMachine;
 import play.Logger;
@@ -60,12 +58,14 @@ public class WindowsInstaller extends AbstractInstaller {
         Tenant tenant) {
         super(remoteConnection, virtualMachine);
 
-        this.user = virtualMachine.loginName().get();
+        this.user = virtualMachine.loginName();
         checkArgument(virtualMachine.loginPassword().isPresent(),
             "Expected login password for WindowsInstaller");
         this.password = virtualMachine.loginPassword().get();
 
-        this.homeDir = OperatingSystemVendorType.WINDOWS.homeDirFunction().apply(this.user);
+        this.homeDir =
+            virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()
+                .homeDirFunction().apply(this.user);
         this.tenant = tenant;
 
     }
@@ -156,14 +156,10 @@ public class WindowsInstaller extends AbstractInstaller {
 
 
         //create schtaks
-        this.remoteConnection.executeCommand("schtasks.exe " +
-            "/create " +
-            "/st 00:00  " +
-            "/sc ONCE " +
-            "/ru " + this.user + " " +
-            "/rp " + this.password + " " +
-            "/tn " + visorJobId +
-            " /tr \"" + this.homeDir + "\\" + WindowsInstaller.VISOR_BAT + "\"");
+        this.remoteConnection.executeCommand(
+            "schtasks.exe " + "/create " + "/st 00:00  " + "/sc ONCE " + "/ru " + this.user + " "
+                + "/rp " + this.password + " " + "/tn " + visorJobId + " /tr \"" + this.homeDir
+                + "\\" + WindowsInstaller.VISOR_BAT + "\"");
         this.waitForSchtaskCreation();
         //run schtask
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + visorJobId);
@@ -202,13 +198,10 @@ public class WindowsInstaller extends AbstractInstaller {
 
             //start kairosdb in backround
             String kairosJobId = "kairosDB";
-            this.remoteConnection.executeCommand("schtasks.exe /create " +
-                "/st 00:00  " +
-                "/sc ONCE " +
-                "/ru " + this.user + " " +
-                "/rp " + this.password + " " +
-                "/tn " + kairosJobId + " " +
-                "/tr \"" + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
+            this.remoteConnection.executeCommand(
+                "schtasks.exe /create " + "/st 00:00  " + "/sc ONCE " + "/ru " + this.user + " "
+                    + "/rp " + this.password + " " + "/tn " + kairosJobId + " " + "/tr \""
+                    + this.homeDir + "\\" + WindowsInstaller.KAIROSDB_BAT + "\"");
             this.waitForSchtaskCreation();
             this.remoteConnection.executeCommand("schtasks.exe /run /tn " + kairosJobId);
             LOGGER.debug("KairosDB successfully started!");
@@ -230,27 +223,23 @@ public class WindowsInstaller extends AbstractInstaller {
                 .getString("colosseum.installer.abstract.lance.serverPort"));
 
         //create a .bat file to start Lance, because it is not possible to pass schtasks paramters using overthere
-        String startCommand = " java " +
-            " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp() +
-            " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp() +
-            " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get().getIp() +
-            " -Dhost.vm.id=" + this.virtualMachine.getUuid() +
-            " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() +
-            " -Dhost.vm.cloud.id=" + this.virtualMachine.cloud().getUuid() +
-            " -jar " + this.homeDir + "\\" + WindowsInstaller.LANCE_JAR;
+        String startCommand =
+            " java " + " -Dhost.ip.public=" + this.virtualMachine.publicIpAddress().get().getIp()
+                + " -Dhost.ip.private=" + this.virtualMachine.privateIpAddress(true).get().getIp()
+                + " -Djava.rmi.server.hostname=" + this.virtualMachine.publicIpAddress().get()
+                .getIp() + " -Dhost.vm.id=" + this.virtualMachine.getUuid()
+                + " -Dhost.vm.cloud.tenant.id=" + this.tenant.getUuid() + " -Dhost.vm.cloud.id="
+                + this.virtualMachine.cloud().getUuid() + " -jar " + this.homeDir + "\\"
+                + WindowsInstaller.LANCE_JAR;
         this.remoteConnection
             .writeFile(this.homeDir + "\\" + WindowsInstaller.LANCE_BAT, startCommand, false);
 
         //start lance in backround
         String lanceJobId = "lance";
-        this.remoteConnection.executeCommand("schtasks.exe " +
-            "/create " +
-            "/st 00:00  " +
-            "/sc ONCE " +
-            "/ru " + this.user + " " +
-            "/rp " + this.password + " " +
-            "/tn " + lanceJobId + " " +
-            "/tr \"" + this.homeDir + "\\" + WindowsInstaller.LANCE_BAT + "\"");
+        this.remoteConnection.executeCommand(
+            "schtasks.exe " + "/create " + "/st 00:00  " + "/sc ONCE " + "/ru " + this.user + " "
+                + "/rp " + this.password + " " + "/tn " + lanceJobId + " " + "/tr \"" + this.homeDir
+                + "\\" + WindowsInstaller.LANCE_BAT + "\"");
         this.waitForSchtaskCreation();
         this.remoteConnection.executeCommand("schtasks.exe /run /tn " + lanceJobId);
         LOGGER.debug("Lance successfully started!");

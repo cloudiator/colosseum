@@ -18,13 +18,12 @@
 
 package cloud.sync.solutions;
 
-import com.google.inject.Inject;
-
 import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.ImageProblems;
+import com.google.inject.Inject;
 import models.Cloud;
 import models.Image;
 import models.Location;
@@ -85,8 +84,10 @@ public class ImportImageToDatabase implements Solution {
             }
         }
 
+        //todo: what to do with images that do not have an operating system?
         OperatingSystem operatingSystem =
-            operatingSystemService.findByImageName(imageNotInDatabase.getImageInLocation().name());
+            new OperatingSystem(imageNotInDatabase.getImageInLocation().operatingSystem());
+        operatingSystemService.save(operatingSystem);
 
         //todo check this
         Image image = new Image(imageNotInDatabase.getImageInLocation().cloudId(),

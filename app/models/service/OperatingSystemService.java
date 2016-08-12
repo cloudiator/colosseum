@@ -25,5 +25,4 @@ import models.OperatingSystem;
  */
 public interface OperatingSystemService extends ModelService<OperatingSystem> {
 
-    OperatingSystem findByImageName(String imageName);
 }

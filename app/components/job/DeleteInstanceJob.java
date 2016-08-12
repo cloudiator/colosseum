@@ -83,7 +83,7 @@ public class DeleteInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 if (!dockerInstalled()) {
                     containerType = ContainerType.PLAIN;
                 } else {
-                    containerType = instance.getApplicationComponent().containerTypeOrDefault();
+                    containerType = instance.getApplicationComponent().containerType();
                 }
 
                 final boolean undeploy = LifecycleClient.getClient()

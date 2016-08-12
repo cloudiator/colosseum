@@ -18,9 +18,8 @@
 
 package components.log;
 
-import com.google.inject.Inject;
-
 import cloud.strategies.RemoteConnectionStrategy;
+import com.google.inject.Inject;
 import models.VirtualMachine;
 import play.Play;
 
@@ -40,9 +39,9 @@ public class LanceLogFile extends VMLogFile {
     }
 
     @Override protected String location(VirtualMachine virtualMachine) {
-        checkState(virtualMachine.loginName().isPresent());
-        String homeDir = virtualMachine.operatingSystemVendorTypeOrDefault().homeDirFunction()
-            .apply(virtualMachine.loginName().get());
+        String homeDir =
+            virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()
+                .homeDirFunction().apply(virtualMachine.loginName());
         return homeDir + "/" + LANCE_FILE_NAME;
     }
 }

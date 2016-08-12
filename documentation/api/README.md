@@ -31,7 +31,6 @@ Entity                                                       | URL
 [MonitorInstance](entities/MonitorInstance.md)               | /api/monitorInstance
 [MonitorSubscription](entities/MonitorSubscription.md)       | /api/monitorSubscription
 [OperatingSystem](entities/OperatingSystem.md)               | /api/os
-[OperatingSystemVendor](entities/OperatingSystemVendor.md)   | /api/osVendor
 [RawMonitor](entities/RawMonitor.md)                         | /api/rawMonitor
 [Schedule](entities/Schedule.md)                             | /api/schedule
 [SensorDescription](entities/SensorDescription.md)           | /api/sensorDescription

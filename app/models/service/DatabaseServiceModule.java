@@ -50,7 +50,6 @@ import models.Monitor;
 import models.MonitorInstance;
 import models.MonitorSubscription;
 import models.OperatingSystem;
-import models.OperatingSystemVendor;
 import models.PortProvided;
 import models.PortRequired;
 import models.RawMonitor;
@@ -206,10 +205,6 @@ public class DatabaseServiceModule extends AbstractModule {
         }).to(new TypeLiteral<BaseModelService<OperatingSystem>>() {
         });
         bind(OperatingSystemService.class).to(DefaultOperatingSystemService.class);
-        //Operating System Vendor
-        bind(new TypeLiteral<ModelService<OperatingSystemVendor>>() {
-        }).to(new TypeLiteral<BaseModelService<OperatingSystemVendor>>() {
-        });
         //RawMonitor
         bind(new TypeLiteral<ModelService<RawMonitor>>() {
         }).to(new TypeLiteral<BaseModelService<RawMonitor>>() {

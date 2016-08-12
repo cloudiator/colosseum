@@ -19,11 +19,8 @@
 package models.service;
 
 import com.google.inject.Inject;
-
-import java.util.HashSet;
-import java.util.Set;
-
 import models.OperatingSystem;
+
 
 /**
  * Created by daniel on 23.07.15.
@@ -33,28 +30,5 @@ public class DefaultOperatingSystemService extends BaseModelService<OperatingSys
 
     @Inject public DefaultOperatingSystemService(ModelRepository<OperatingSystem> modelRepository) {
         super(modelRepository);
-    }
-
-    @Override public OperatingSystem findByImageName(String imageName) {
-        Set<OperatingSystem> matches = new HashSet<>();
-        for (OperatingSystem operatingSystem : getAll()) {
-            String[] needsToContain = {operatingSystem.version(),
-                operatingSystem.operatingSystemArchitecture().toString(),
-                operatingSystem.operatingSystemVendor().getName()};
-            boolean isMatch = true;
-            for (String check : needsToContain) {
-                if (!imageName.toLowerCase().contains(check.toLowerCase())) {
-                    isMatch = false;
-                    break;
-                }
-            }
-            if (isMatch) {
-                matches.add(operatingSystem);
-            }
-        }
-        if (matches.size() == 1) {
-            return matches.iterator().next();
-        }
-        return null;
     }
 }

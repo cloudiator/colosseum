@@ -17,12 +17,7 @@
  */
 
 import com.google.inject.Inject;
-
 import models.FrontendUser;
-import models.OperatingSystem;
-import models.OperatingSystemArchitecture;
-import models.OperatingSystemVendor;
-import models.OperatingSystemVendorType;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
@@ -35,19 +30,13 @@ class InitialData {
 
     private final FrontendUserService frontendUserService;
     private final ModelService<Tenant> tenantModelService;
-    private final ModelService<OperatingSystem> operatingSystemModelService;
-    private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
     private static final String DEFAULT_GROUP = "admin";
     private final JPAApi jpaApi;
 
     @Inject public InitialData(FrontendUserService frontendUserService,
-        ModelService<Tenant> tenantModelService,
-        ModelService<OperatingSystem> operatingSystemModelService,
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService, JPAApi jpaApi) {
+        ModelService<Tenant> tenantModelService, JPAApi jpaApi) {
         this.frontendUserService = frontendUserService;
         this.tenantModelService = tenantModelService;
-        this.operatingSystemModelService = operatingSystemModelService;
-        this.operatingSystemVendorModelService = operatingSystemVendorModelService;
         this.jpaApi = jpaApi;
     }
 
@@ -80,36 +69,5 @@ class InitialData {
             tenantModelService.save(tenant);
 
         }
-
-        if (operatingSystemVendorModelService.getAll().isEmpty()) {
-
-            //load ubuntu
-            OperatingSystemVendor ubuntu =
-                new OperatingSystemVendor("Ubuntu", OperatingSystemVendorType.NIX, "ubuntu", null);
-            operatingSystemVendorModelService.save(ubuntu);
-
-            //ubuntu 14.04 amd64
-            OperatingSystem ubuntu1404amd64 =
-                new OperatingSystem(OperatingSystemArchitecture.AMD64, ubuntu, "14.04");
-            operatingSystemModelService.save(ubuntu1404amd64);
-
-            //ubuntu 14.04.2 amd64
-            OperatingSystem ubuntu14042amd64 =
-                new OperatingSystem(OperatingSystemArchitecture.AMD64, ubuntu, "14.04.2");
-            operatingSystemModelService.save(ubuntu14042amd64);
-
-            //load windows
-            OperatingSystemVendor windows =
-                new OperatingSystemVendor("Windows", OperatingSystemVendorType.WINDOWS,
-                    "Administrator", "Admin1");
-            operatingSystemVendorModelService.save(windows);
-
-            //Windows Server 2012 R2
-            OperatingSystem windowsServer2012R2 =
-                new OperatingSystem(OperatingSystemArchitecture.AMD64, windows, "Server 2012 R2");
-            operatingSystemModelService.save(windowsServer2012R2);
-        }
-
-
     }
 }

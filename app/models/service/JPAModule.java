@@ -50,7 +50,6 @@ import models.Monitor;
 import models.MonitorInstance;
 import models.MonitorSubscription;
 import models.OperatingSystem;
-import models.OperatingSystemVendor;
 import models.PortProvided;
 import models.PortRequired;
 import models.RawMonitor;
@@ -203,10 +202,6 @@ public class JPAModule extends AbstractModule {
         //Operating System
         bind(new TypeLiteral<ModelRepository<OperatingSystem>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystem>>() {
-        });
-        //Operating System Vendor
-        bind(new TypeLiteral<ModelRepository<OperatingSystemVendor>>() {
-        }).to(new TypeLiteral<BaseModelRepositoryJpa<OperatingSystemVendor>>() {
         });
         //RawMonitor
         bind(new TypeLiteral<ModelRepository<RawMonitor>>() {

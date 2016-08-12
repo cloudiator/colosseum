@@ -18,8 +18,8 @@
 
 package cloud.resources;
 
+import de.uniulm.omi.cloudiator.common.os.OperatingSystem;
 import de.uniulm.omi.cloudiator.sword.api.domain.Image;
-
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
@@ -29,9 +29,16 @@ import models.service.ModelService;
  */
 public class ImageInLocation extends ResourceWithCredential implements Image {
 
+    private final Image image;
+
     public ImageInLocation(Image image, String cloud, String credential,
         ModelService<Cloud> cloudModelService,
         ModelService<CloudCredential> cloudCredentialModelService) {
         super(image, cloud, credential, cloudModelService, cloudCredentialModelService);
+        this.image = image;
+    }
+
+    @Override public OperatingSystem operatingSystem() {
+        return image.operatingSystem();
     }
 }

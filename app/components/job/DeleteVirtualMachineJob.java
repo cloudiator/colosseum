@@ -18,15 +18,13 @@
 
 package components.job;
 
-import com.google.inject.Inject;
-
 import cloud.colosseum.ColosseumComputeService;
+import com.google.inject.Inject;
 import models.Tenant;
 import models.VirtualMachine;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
-import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;
 
 /**
@@ -39,7 +37,8 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     @Inject public DeleteVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant) {
-        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService, tenant);
+        super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService,
+            tenant);
         this.virtualMachineRemoteModelService = modelService;
     }
 

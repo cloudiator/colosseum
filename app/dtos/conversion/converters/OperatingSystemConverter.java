@@ -18,34 +18,18 @@
 
 package dtos.conversion.converters;
 
-import com.google.inject.Inject;
 
 import dtos.OperatingSystemDto;
-import dtos.conversion.AbstractConverter;
-import dtos.conversion.transformers.IdToModelTransformer;
+import dtos.conversion.DefaultFieldConverter;
 import models.OperatingSystem;
-import models.OperatingSystemVendor;
-import models.service.ModelService;
 
 /**
  * Created by daniel on 15.04.15.
  */
 public class OperatingSystemConverter
-    extends AbstractConverter<OperatingSystem, OperatingSystemDto> {
+    extends DefaultFieldConverter<OperatingSystem, OperatingSystemDto> {
 
-    private final ModelService<OperatingSystemVendor> operatingSystemVendorModelService;
-
-    @Inject protected OperatingSystemConverter(
-        ModelService<OperatingSystemVendor> operatingSystemVendorModelService) {
+    public OperatingSystemConverter() {
         super(OperatingSystem.class, OperatingSystemDto.class);
-        this.operatingSystemVendorModelService = operatingSystemVendorModelService;
-    }
-
-    @Override public void configure() {
-        binding().fromField("operatingSystemArchitecture").toField("operatingSystemArchitecture");
-        binding(Long.class, OperatingSystemVendor.class).fromField("operatingSystemVendor")
-            .toField("operatingSystemVendor")
-            .withTransformation(new IdToModelTransformer<>(operatingSystemVendorModelService));
-        binding().fromField("version").toField("version");
     }
 }

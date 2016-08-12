@@ -28,15 +28,13 @@ publishMavenStyle := true
 
 version := "0.2.0-SNAPSHOT"
 
+resolvers += Resolver.mavenLocal
+
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
 resolvers += {
   "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
 }
-
-resolvers := (
-  "Local Maven Repository" at "file:///" + Path.userHome.absolutePath + "/.m2/repository"
-  ) +: resolvers.value
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -63,6 +61,7 @@ libraryDependencies ++= Seq(
   "org.jgrapht" % "jgrapht-ext" % "0.9.2",
   "org.apache.commons" % "commons-lang3" % "3.4"
 )
+
 
 TwirlKeys.templateImports += "dtos._"
 

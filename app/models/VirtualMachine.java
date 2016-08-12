@@ -18,27 +18,19 @@
 
 package models;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+
+import de.uniulm.omi.cloudiator.common.os.LoginNameSupplier;
+import de.uniulm.omi.cloudiator.common.os.RemotePortProvider;
+import models.generic.RemoteResourceInLocation;
 
 import javax.annotation.Nullable;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import models.api.CredentialStore;
-import models.generic.RemoteResourceInLocation;
+import javax.persistence.*;
+import java.util.*;
 
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends RemoteResourceInLocation implements CredentialStore {
+@Entity public class VirtualMachine extends RemoteResourceInLocation implements LoginNameSupplier {
 
     @Column(unique = true, nullable = false) private String name;
 
@@ -123,31 +115,12 @@ import models.generic.RemoteResourceInLocation;
         return Optional.ofNullable(generatedPrivateKey);
     }
 
-    public OperatingSystemVendorType operatingSystemVendorTypeOrDefault() {
-        if (image != null && image.operatingSystem().isPresent()) {
-            return image.operatingSystemVendorTypeOrDefault();
+    public int remotePort() {
+        if (image == null) {
+            throw new RemotePortProvider.UnknownRemotePortException(
+                "Remote port is unknown as image is no longer known.");
         }
-        return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE;
-    }
-
-    public boolean supportsKeyPair() {
-        return image != null && image.operatingSystem().isPresent() && image.operatingSystem().get()
-            .operatingSystemVendor().operatingSystemVendorType().supportsKeyPair();
-    }
-
-    public Optional<Integer> remotePort() {
-        if (image != null && image.operatingSystem().isPresent()) {
-            return Optional.of(image.operatingSystem().get().operatingSystemVendor()
-                .operatingSystemVendorType().port());
-        }
-        return Optional.empty();
-    }
-
-    public Integer remotePortOrDefault() {
-        if (remotePort().isPresent()) {
-            return remotePort().get();
-        }
-        return OperatingSystemVendorType.DEFAULT_VENDOR_TYPE.port();
+        return image.operatingSystem().operatingSystemFamily().remotePort();
     }
 
     public Optional<TemplateOptions> templateOptions() {
@@ -175,24 +148,26 @@ import models.generic.RemoteResourceInLocation;
         this.generatedPrivateKey = generatedPrivateKey;
     }
 
-    @Override public Optional<? extends CredentialStore> getParent() {
-        return image();
-    }
-
-    @Override public Optional<String> getLoginNameCandidate() {
-        return Optional.ofNullable(generatedLoginUsername);
-    }
-
-    @Override public Optional<String> getLoginPasswordCandidate() {
-        return Optional.ofNullable(generatedLoginPassword);
-    }
-
-    public Optional<String> loginName() {
-        return CredentialStoreStrategies.NEAREST_FIRST.loginName(this);
+    public String loginName() {
+        if (generatedLoginUsername != null) {
+            return generatedLoginUsername;
+        }
+        if (image == null) {
+            throw new UnknownLoginNameException(
+                "Login name is unknown as image is not longer known.");
+        }
+        return image.operatingSystem().operatingSystemFamily().loginName();
     }
 
     public Optional<String> loginPassword() {
-        return CredentialStoreStrategies.NEAREST_FIRST.loginPassword(this);
+        if (generatedLoginPassword != null) {
+            return Optional.of(generatedLoginPassword);
+        }
+        if (image == null) {
+            return Optional.empty();
+        } else {
+            return image.getLoginPasswordOverride();
+        }
     }
 
     public List<Instance> instances() {
@@ -200,5 +175,12 @@ import models.generic.RemoteResourceInLocation;
             return Collections.emptyList();
         }
         return instances;
+    }
+
+    public OperatingSystem operatingSystem() {
+        if (image == null) {
+            throw new IllegalStateException("Image is not longer known.");
+        }
+        return image.operatingSystem();
     }
 }

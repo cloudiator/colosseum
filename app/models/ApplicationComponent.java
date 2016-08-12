@@ -20,21 +20,14 @@ package models;
 
 import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
+import models.generic.Model;
 
+import javax.annotation.Nullable;
+import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
-import models.generic.Model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -124,11 +117,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
             .flatMap(port -> port.getAttachedCommunications().stream()).collect(Collectors.toSet());
     }
 
-    public ContainerType containerTypeOrDefault() {
+    public ContainerType containerType() {
         if (containerType != null) {
             return containerType;
         }
-        return virtualMachineTemplate.image().operatingSystemVendorTypeOrDefault().containerType();
+        return virtualMachineTemplate.image().containerType();
     }
 
     @Override public String toString() {

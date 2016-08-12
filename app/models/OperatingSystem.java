@@ -18,36 +18,35 @@
 
 package models;
 
-import com.google.common.collect.ImmutableList;
 
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-
+import de.uniulm.omi.cloudiator.common.os.OperatingSystemArchitecture;
+import de.uniulm.omi.cloudiator.common.os.OperatingSystemFamily;
+import de.uniulm.omi.cloudiator.common.os.OperatingSystemVersion;
 import models.generic.Model;
 
-import static com.google.common.base.Preconditions.checkArgument;
+import javax.annotation.Nullable;
+import javax.persistence.*;
+import java.util.List;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 04.11.14.
  */
-@Entity public class OperatingSystem extends Model {
+@Entity public class OperatingSystem extends Model
+    implements de.uniulm.omi.cloudiator.common.os.OperatingSystem {
 
     @Column(nullable = false) @Enumerated(EnumType.STRING) private OperatingSystemArchitecture
         operatingSystemArchitecture;
 
+    @Column(nullable = false) @Enumerated(EnumType.STRING) private OperatingSystemFamily
+        operatingSystemFamily;
+
+    @Nullable private String version;
+
     @OneToMany(mappedBy = "operatingSystem") private List<Image> images;
 
-    @ManyToOne(optional = false) private OperatingSystemVendor operatingSystemVendor;
 
-    @Column(nullable = false) private String version;
-    
     /**
      * Empty constructor for hibernate.
      */
@@ -55,29 +54,36 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public OperatingSystem(OperatingSystemArchitecture operatingSystemArchitecture,
-        OperatingSystemVendor operatingSystemVendor, String version) {
-        checkNotNull(operatingSystemVendor);
+        OperatingSystemFamily operatingSystemFamily, @Nullable String version) {
+
         checkNotNull(operatingSystemArchitecture);
-        checkNotNull(version);
-        checkArgument(!version.isEmpty());
+        checkNotNull(operatingSystemFamily);
+
         this.operatingSystemArchitecture = operatingSystemArchitecture;
-        this.operatingSystemVendor = operatingSystemVendor;
+        this.operatingSystemFamily = operatingSystemFamily;
         this.version = version;
     }
 
-    public OperatingSystemArchitecture operatingSystemArchitecture() {
+    public OperatingSystem(de.uniulm.omi.cloudiator.common.os.OperatingSystem operatingSystem) {
+        checkNotNull(operatingSystem);
+        this.operatingSystemArchitecture = operatingSystem.operatingSystemArchitecture();
+        this.operatingSystemFamily = operatingSystem.operatingSystemFamily();
+        this.version = operatingSystem.operatingSystemVersion().name().orElse(null);
+    }
+
+    @Override public OperatingSystemFamily operatingSystemFamily() {
+        return operatingSystemFamily;
+    }
+
+    @Override public OperatingSystemArchitecture operatingSystemArchitecture() {
         return operatingSystemArchitecture;
     }
 
-    public List<Image> imagesUsedFor() {
-        return ImmutableList.copyOf(images);
-    }
-
-    public String version() {
-        return version;
-    }
-
-    public OperatingSystemVendor operatingSystemVendor() {
-        return operatingSystemVendor;
+    @Override public OperatingSystemVersion operatingSystemVersion() {
+        if (version == null) {
+            return OperatingSystemVersion.unknown();
+        }
+        return OperatingSystemVersion
+            .of(version, operatingSystemFamily.operatingSystemVersionFormat());
     }
 }

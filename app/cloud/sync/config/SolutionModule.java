@@ -23,9 +23,9 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
+import cloud.sword.resources.HardwareInLocation;
+import cloud.sword.resources.ImageInLocation;
+import cloud.sword.resources.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.ProblemQueueImpl;

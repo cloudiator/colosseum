@@ -24,8 +24,8 @@ import com.google.inject.name.Named;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import cloud.CloudService;
-import cloud.resources.LocationInCloud;
+import cloud.sword.CloudService;
+import cloud.sword.resources.LocationInCloud;
 import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;

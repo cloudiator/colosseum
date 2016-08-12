@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 
-import cloud.CloudService;
+import cloud.sword.CloudService;
 import cloud.colosseum.ColosseumComputeService;
-import cloud.strategies.KeyPairStrategy;
-import cloud.strategies.RemoteConnectionStrategy;
+import cloud.keypair.KeyPairStrategy;
+import cloud.connection.RemoteConnectionStrategy;
 import components.execution.SimpleBlockingQueue;
 import components.model.ModelValidationService;
 import models.Instance;

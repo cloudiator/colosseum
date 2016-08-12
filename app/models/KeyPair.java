@@ -19,27 +19,24 @@
 package models;
 
 import com.google.common.collect.Lists;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import models.generic.RemoteResourceInCloud;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import java.util.Collections;
+import java.util.List;
 
-import models.generic.RemoteResourceInCloud;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 18.05.15.
  */
 @Entity public class KeyPair extends RemoteResourceInCloud {
 
-    @Lob private String privateKey;
-    @Lob @Nullable @Column(nullable = true) private String publicKey;
-    @Nullable @ManyToOne(optional = true) private VirtualMachine virtualMachine;
+    @Lob @Column(nullable = false) private String privateKey;
+    @Lob @Nullable private String publicKey;
 
     /**
      * No-args constructor for hibernate
@@ -48,28 +45,20 @@ import models.generic.RemoteResourceInCloud;
     }
 
     public KeyPair(@Nullable String remoteId, @Nullable String providerId, @Nullable String swordId,
-        Cloud cloud, @Nullable CloudCredential owner, String privateKey, @Nullable String publicKey,
-        @Nullable VirtualMachine virtualMachine) {
+        Cloud cloud, @Nullable CloudCredential owner, String privateKey,
+        @Nullable String publicKey) {
         super(remoteId, providerId, swordId, cloud, owner);
+        checkNotNull(privateKey);
         this.privateKey = privateKey;
         this.publicKey = publicKey;
-        this.virtualMachine = virtualMachine;
     }
 
     public String getPrivateKey() {
         return privateKey;
     }
 
-    public void setPrivateKey(String privateKey) {
-        this.privateKey = privateKey;
-    }
-
     @Nullable public String getPublicKey() {
         return publicKey;
-    }
-
-    public void setPublicKey(@Nullable String publicKey) {
-        this.publicKey = publicKey;
     }
 
     @Override public List<CloudCredential> cloudCredentials() {
@@ -87,7 +76,4 @@ import models.generic.RemoteResourceInCloud;
         return providerId().get();
     }
 
-    public Optional<VirtualMachine> virtualMachine() {
-        return Optional.ofNullable(virtualMachine);
-    }
 }

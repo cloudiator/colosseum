@@ -18,20 +18,13 @@
 
 package models;
 
+import com.google.common.base.MoreObjects;
 import com.google.common.collect.ImmutableList;
-
-import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
 import models.generic.Model;
 import models.generic.RemoteResourceInCloud;
+
+import javax.persistence.*;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -89,23 +82,20 @@ public class CloudCredential extends Model {
         this.secret = secret;
     }
 
-    public Cloud getCloud() {
+    public Cloud cloud() {
         return cloud;
     }
 
-    public void setCloud(Cloud cloud) {
-        this.cloud = cloud;
-    }
-
-    public Tenant getTenant() {
+    public Tenant tenant() {
         return tenant;
-    }
-
-    public void setTenant(Tenant tenant) {
-        this.tenant = tenant;
     }
 
     public List<RemoteResourceInCloud> remoteResources() {
         return ImmutableList.copyOf(remoteResources);
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", getId()).add("cloud", cloud)
+            .add("user", user).toString();
     }
 }

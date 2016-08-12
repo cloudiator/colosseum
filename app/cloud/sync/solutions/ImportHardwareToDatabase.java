@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 
 import javax.annotation.Nullable;
 
-import cloud.SlashEncodedId;
+import cloud.sword.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;

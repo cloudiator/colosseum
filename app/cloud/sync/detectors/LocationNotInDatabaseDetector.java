@@ -22,7 +22,7 @@ import com.google.inject.Inject;
 
 import java.util.Optional;
 
-import cloud.resources.LocationInCloud;
+import cloud.sword.resources.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.LocationProblems;

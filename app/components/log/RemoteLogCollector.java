@@ -26,7 +26,7 @@ import de.uniulm.omi.cloudiator.sword.api.remote.RemoteException;
 import java.io.File;
 import java.util.Optional;
 
-import cloud.strategies.RemoteConnectionStrategy;
+import cloud.connection.RemoteConnectionStrategy;
 import models.VirtualMachine;
 import play.Logger;
 import util.logging.Loggers;

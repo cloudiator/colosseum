@@ -59,7 +59,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
         checkArgument(hardware.cloud().equals(cloud), "hardware not in cloud");
 
         //check that the credential is correct
-        checkArgument(cloudCredential.getCloud().equals(cloud), "cloud credential not in cloud");
+        checkArgument(cloudCredential.cloud().equals(cloud), "cloud credential not in cloud");
         checkArgument(image.cloudCredentials().contains(cloudCredential),
             "image not allowed for user");
         checkArgument(location.cloudCredentials().contains(cloudCredential),

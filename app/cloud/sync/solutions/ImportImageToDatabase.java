@@ -18,7 +18,7 @@
 
 package cloud.sync.solutions;
 
-import cloud.SlashEncodedId;
+import cloud.sword.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;

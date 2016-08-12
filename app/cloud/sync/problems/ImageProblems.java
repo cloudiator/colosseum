@@ -18,7 +18,7 @@
 
 package cloud.sync.problems;
 
-import cloud.resources.ImageInLocation;
+import cloud.sword.resources.ImageInLocation;
 import cloud.sync.Problem;
 
 import static com.google.common.base.Preconditions.checkNotNull;

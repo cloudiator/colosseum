@@ -18,7 +18,7 @@
 
 package cloud.sync.problems;
 
-import cloud.resources.LocationInCloud;
+import cloud.sword.resources.LocationInCloud;
 import cloud.sync.Problem;
 
 /**

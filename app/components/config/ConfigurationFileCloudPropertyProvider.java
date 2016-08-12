@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import cloud.CloudPropertyProvider;
+import cloud.sword.CloudPropertyProvider;
 import play.Configuration;
 import play.Play;
 

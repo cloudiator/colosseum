@@ -23,16 +23,16 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 
-import cloud.CloudService;
-import cloud.ComputeServiceFactory;
-import cloud.DefaultCloudService;
-import cloud.SwordComputeServiceFactory;
-import cloud.strategies.CompositeRemoteConnectionStrategy;
-import cloud.strategies.KeyPairPerCredentialStrategy;
-import cloud.strategies.KeyPairRemoteConnectionStrategy;
-import cloud.strategies.KeyPairStrategy;
-import cloud.strategies.PasswordRemoteConnectionStrategy;
-import cloud.strategies.RemoteConnectionStrategy;
+import cloud.sword.CloudService;
+import cloud.sword.ComputeServiceFactory;
+import cloud.sword.DefaultCloudService;
+import cloud.sword.SwordComputeServiceFactory;
+import cloud.connection.CompositeRemoteConnectionStrategy;
+import cloud.keypair.KeyPairPerCredentialStrategy;
+import cloud.keypair.KeyPairRemoteConnectionStrategy;
+import cloud.keypair.KeyPairStrategy;
+import cloud.connection.PasswordRemoteConnectionStrategy;
+import cloud.connection.RemoteConnectionStrategy;
 
 /**
  * Created by daniel on 28.04.15.

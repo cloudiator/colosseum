@@ -18,7 +18,7 @@
 
 package cloud.sync.problems;
 
-import cloud.resources.HardwareInLocation;
+import cloud.sword.resources.HardwareInLocation;
 import cloud.sync.Problem;
 
 import static com.google.common.base.Preconditions.checkNotNull;

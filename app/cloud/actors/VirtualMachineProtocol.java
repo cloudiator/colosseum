@@ -25,10 +25,23 @@ public class VirtualMachineProtocol {
 
     public static class VirtualMachineRequest {
 
-        public final String test;
+        public String name;
+        public Long owner;
+        public Long cloud;
+        public Long image;
+        public Long hardware;
+        public Long location;
+        public Long templateOptions;
 
-        public VirtualMachineRequest(String test) {
-            this.test = test;
+        public VirtualMachineRequest(String name, Long owner, Long cloud, Long image, Long hardware,
+            Long location, Long templateOptions) {
+            this.name = name;
+            this.owner = owner;
+            this.cloud = cloud;
+            this.image = image;
+            this.hardware = hardware;
+            this.location = location;
+            this.templateOptions = templateOptions;
         }
     }
 

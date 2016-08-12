@@ -39,7 +39,7 @@ public class DefaultCloudCredentialModelService extends BaseModelService<CloudCr
 
     @Override public Optional<CloudCredential> get(Cloud cloud, Tenant tenant) {
         return getAll().parallelStream().filter(
-            cloudCredential -> cloudCredential.getTenant().equals(tenant) && cloudCredential
-                .getCloud().equals(cloud)).findAny();
+            cloudCredential -> cloudCredential.tenant().equals(tenant) && cloudCredential
+                .cloud().equals(cloud)).findAny();
     }
 }

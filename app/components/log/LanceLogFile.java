@@ -18,7 +18,7 @@
 
 package components.log;
 
-import cloud.strategies.RemoteConnectionStrategy;
+import cloud.connection.RemoteConnectionStrategy;
 import com.google.inject.Inject;
 import models.VirtualMachine;
 import play.Play;

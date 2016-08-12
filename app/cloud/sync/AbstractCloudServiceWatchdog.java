@@ -23,7 +23,7 @@ import com.google.inject.name.Named;
 
 import java.util.Set;
 
-import cloud.CloudService;
+import cloud.sword.CloudService;
 import components.execution.SimpleBlockingQueue;
 
 

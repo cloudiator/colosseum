@@ -86,7 +86,7 @@ public class AuthenticationController extends Controller {
     @Nullable protected CloudCredential getCloudCredential(Cloud cloud) {
         Tenant tenant = getActiveTenant();
         for (CloudCredential cloudCredential : tenant.getCloudCredentials()) {
-            if (cloudCredential.getCloud().equals(cloud)) {
+            if (cloudCredential.cloud().equals(cloud)) {
                 return cloudCredential;
             }
         }

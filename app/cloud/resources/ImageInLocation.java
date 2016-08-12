@@ -24,8 +24,6 @@ import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
 
-import java.util.Optional;
-
 /**
  * Created by daniel on 28.05.15.
  */
@@ -40,7 +38,7 @@ public class ImageInLocation extends ResourceWithCredential implements Image {
         this.image = image;
     }
 
-    @Override public Optional<OperatingSystem> operatingSystem() {
+    @Override public OperatingSystem operatingSystem() {
         return image.operatingSystem();
     }
 }

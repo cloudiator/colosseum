@@ -86,7 +86,7 @@ public class ImportImageToDatabase implements Solution {
 
         //todo: what to do with images that do not have an operating system?
         OperatingSystem operatingSystem =
-            new OperatingSystem(imageNotInDatabase.getImageInLocation().operatingSystem().get());
+            new OperatingSystem(imageNotInDatabase.getImageInLocation().operatingSystem());
         operatingSystemService.save(operatingSystem);
 
         //todo check this

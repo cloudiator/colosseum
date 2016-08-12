@@ -36,6 +36,11 @@
     <appender name="JCLOUDS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>logs/jclouds.log</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- or whenever the file size reaches 50MB -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
             <!-- Daily rollover with compression -->
             <fileNamePattern>logs/jclouds-log-%d{yyyy-MM-dd}.gz</fileNamePattern>
             <!-- keep 30 days worth of history -->

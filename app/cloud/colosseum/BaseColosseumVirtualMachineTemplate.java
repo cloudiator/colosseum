@@ -20,7 +20,6 @@ package cloud.colosseum;
 
 import com.google.common.base.Optional;
 import de.uniulm.omi.cloudiator.sword.api.domain.TemplateOptions;
-import de.uniulm.omi.cloudiator.sword.core.util.Name;
 import models.*;
 
 import javax.annotation.Nullable;
@@ -98,7 +97,7 @@ public class BaseColosseumVirtualMachineTemplate implements ColosseumVirtualMach
     }
 
     @Override public String name() {
-        return Name.of(name).uniqueName();
+        return name;
     }
 
     @Override public String imageId() {

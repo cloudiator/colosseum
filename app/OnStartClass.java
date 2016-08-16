@@ -35,14 +35,17 @@ class OnStartClass {
 
         LOGGER.info("Initialization of system, executing on start actions.");
 
+
         executionSystemInitialization.init();
         initialData.load();
 
-        LOGGER.debug("Registering shutdown hook for execution system.");
+        LOGGER.info("Registering shutdown hook for execution system.");
         applicationLifecycle.addStopHook(() -> F.Promise.promise(() -> {
             executionSystemInitialization.shutdown();
             return null;
         }));
+
+        LOGGER.info("Finished execution onStart actions.");
     }
 
 }

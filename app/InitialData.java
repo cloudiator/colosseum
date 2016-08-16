@@ -21,13 +21,16 @@ import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
 import models.service.ModelService;
+import play.Logger;
 import play.db.jpa.JPAApi;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 25.11.14.
  */
 class InitialData {
 
+    private static Logger.ALogger LOGGER = Loggers.of(Loggers.SYSTEM);
     private final FrontendUserService frontendUserService;
     private final ModelService<Tenant> tenantModelService;
     private static final String DEFAULT_GROUP = "admin";
@@ -41,7 +44,9 @@ class InitialData {
     }
 
     void load() {
+        LOGGER.info("Starting to load initial data.");
         jpaApi.withTransaction(this::loadInitialData);
+        LOGGER.info("Finished to load initial data.");
     }
 
     /**
@@ -49,8 +54,11 @@ class InitialData {
      */
     private void loadInitialData() {
 
+        LOGGER.debug("Checking if default FrontendUser does exist...");
         if (frontendUserService.getAll().isEmpty()) {
+            LOGGER.debug("No FrontendUser exists...");
             Tenant tenant = null;
+            LOGGER.debug("Checking if default tenant (" + DEFAULT_GROUP + ") exists...");
             for (Tenant storedTenant : tenantModelService.getAll()) {
                 if (DEFAULT_GROUP.equals(storedTenant.getName())) {
                     tenant = storedTenant;
@@ -58,16 +66,17 @@ class InitialData {
                 }
             }
             if (tenant == null) {
+                LOGGER.debug("Default Tenant is missing, creating it (" + DEFAULT_GROUP + ")");
                 tenant = new Tenant(DEFAULT_GROUP);
-                //tenantModelService.save(tenant);
             }
 
             FrontendUser frontendUser =
                 new FrontendUser("John", "Doe", "admin", "john.doe@example.com");
+            LOGGER.debug("Creating default frontendUser " + frontendUser);
+            LOGGER.debug("Persisting changes.");
             frontendUserService.save(frontendUser);
             tenant.addFrontendUser(frontendUser);
             tenantModelService.save(tenant);
-
         }
     }
 }

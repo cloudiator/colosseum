@@ -18,10 +18,10 @@
 
 package dtos;
 
-import java.util.List;
-
 import dtos.api.Dto;
 import dtos.generic.KeyValue;
+
+import java.util.List;
 
 /**
  * Created by daniel on 06.10.15.
@@ -29,6 +29,7 @@ import dtos.generic.KeyValue;
 public class TemplateOptionsDto implements Dto {
 
     private List<KeyValue> tags;
+    private String userData;
 
     public List<KeyValue> getTags() {
         return tags;
@@ -36,5 +37,13 @@ public class TemplateOptionsDto implements Dto {
 
     public void setTags(List<KeyValue> tags) {
         this.tags = tags;
+    }
+
+    public String getUserData() {
+        return userData;
+    }
+
+    public void setUserData(String userData) {
+        this.userData = userData;
     }
 }

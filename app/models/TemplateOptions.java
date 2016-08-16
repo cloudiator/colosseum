@@ -19,15 +19,16 @@
 package models;
 
 import com.google.common.collect.ImmutableMap;
+import models.generic.Model;
 
-import java.util.Map;
-
+import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.MapKeyColumn;
-
-import models.generic.Model;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by daniel on 06.10.15.
@@ -36,11 +37,12 @@ import models.generic.Model;
 
     @ElementCollection @MapKeyColumn(name = "tagName") @Column(name = "tagValue")
     private Map<String, String> tags;
+    @Nullable String userData;
 
     /**
      * Empty constructor for hibernate.
      */
-    protected TemplateOptions(){
+    protected TemplateOptions() {
 
     }
 
@@ -48,7 +50,14 @@ import models.generic.Model;
         return ImmutableMap.copyOf(tags);
     }
 
+    public Optional<String> userData() {
+        return Optional.ofNullable(userData);
+    }
+
     public void addTag(String tagName, String tagValue) {
+        if (tags == null) {
+            tags = new HashMap<>();
+        }
         this.tags.put(tagName, tagValue);
     }
 }

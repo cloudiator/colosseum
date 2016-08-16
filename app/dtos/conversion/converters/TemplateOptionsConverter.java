@@ -19,16 +19,15 @@
 package dtos.conversion.converters;
 
 import com.google.inject.TypeLiteral;
-
-import java.util.List;
-import java.util.Map;
-
 import dtos.TemplateOptionsDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
 import models.TemplateOptions;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by daniel on 06.10.15.
@@ -43,16 +42,17 @@ public class TemplateOptionsConverter
     @Override public void configure() {
         binding(new TypeLiteral<List<KeyValue>>() {
         }, new TypeLiteral<Map<String, String>>() {
-        }).fromField("tags").toField("tags").withTransformation(
-            new Transformer<List<KeyValue>, Map<String, String>>() {
+        }).fromField("tags").toField("tags")
+            .withTransformation(new Transformer<List<KeyValue>, Map<String, String>>() {
                 @Override public Map<String, String> transform(List<KeyValue> tags) {
                     return KeyValues.to(tags);
                 }
 
-                @Override public List<KeyValue> transformReverse(
-                    Map<String, String> stringStringMap) {
+                @Override
+                public List<KeyValue> transformReverse(Map<String, String> stringStringMap) {
                     return KeyValues.of(stringStringMap);
                 }
             });
+        binding().fromField("userData").toField("userData");
     }
 }

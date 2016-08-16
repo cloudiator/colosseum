@@ -18,56 +18,77 @@
 
 package cloud.keypair;
 
+import cloud.sword.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-
-import java.util.Optional;
-
-import cloud.sword.CloudService;
+import models.CloudCredential;
 import models.KeyPair;
 import models.VirtualMachine;
 import models.service.KeyPairModelService;
 
+import java.util.Optional;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 17.12.15.
  */
-@Singleton public class KeyPairPerCredentialStrategy extends AbstractKeyPairStrategy {
+@Singleton public class KeyPairPerCredentialStrategy implements KeyPairStrategy {
 
     private final KeyPairModelService keyPairModelService;
+    private final CloudService cloudService;
 
     @Inject public KeyPairPerCredentialStrategy(CloudService cloudService,
         KeyPairModelService keyPairModelService) {
-        super(cloudService);
+
+        checkNotNull(keyPairModelService);
+        checkNotNull(cloudService);
+
         this.keyPairModelService = keyPairModelService;
+        this.cloudService = cloudService;
     }
 
-    @Override protected Optional<KeyPair> existsFor(VirtualMachine virtualMachine) {
-        return keyPairModelService.getKeyPair(virtualMachine);
-    }
 
-    @Override protected KeyPair createKeyPairFor(VirtualMachine virtualMachine,
-        KeyPairService keyPairService) {
+    private class KeyPairPerCredentialCreationStrategy implements KeyPairCreationStrategy {
 
-        synchronized (KeyPairPerCredentialStrategy.class) {
+        @Override public KeyPair create(CloudCredential owner) throws KeyPairCreationException {
 
-            checkState(virtualMachine.owner().isPresent());
+            if (!cloudService.computeService().getKeyPairService(owner).isPresent()) {
+                throw new KeyPairCreationException(
+                    String.format("KeyPairService is not present for %s", owner));
+            }
 
             de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                keyPairService.create(virtualMachine.owner().get().getUuid());
+                cloudService.computeService().getKeyPairService(owner).get()
+                    .create(owner.getUuid());
 
             checkState(remoteKeyPair.privateKey().isPresent(),
                 "Expected remote keypair to have a private key, but it has none.");
 
             KeyPair keyPair =
                 new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
-                    virtualMachine.cloud(), virtualMachine.owner().get(),
-                    remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey());
-            this.keyPairModelService.save(keyPair);
+                    owner.cloud(), owner, remoteKeyPair.privateKey().get(),
+                    remoteKeyPair.publicKey());
+            keyPairModelService.save(keyPair);
             return keyPair;
+
         }
+    }
+
+
+    private class KeyPairPerCredentialRetrievalStrategy implements KeyPairRetrievalStrategy {
+        @Override public Optional<KeyPair> retrieve(VirtualMachine virtualMachine) {
+            
+        }
+    }
+
+    @Override public KeyPairCreationStrategy creation() {
+        return new KeyPairPerCredentialCreationStrategy();
+    }
+
+    @Override public KeyPairRetrievalStrategy retrieval() {
+        return new KeyPairPerCredentialRetrievalStrategy();
     }
 }

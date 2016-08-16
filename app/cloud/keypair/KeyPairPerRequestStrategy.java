@@ -19,7 +19,6 @@
 package cloud.keypair;
 
 import cloud.sword.CloudService;
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
@@ -27,6 +26,8 @@ import models.CloudCredential;
 import models.KeyPair;
 import models.VirtualMachine;
 import models.service.KeyPairModelService;
+
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -49,11 +50,11 @@ import static com.google.common.base.Preconditions.checkState;
         this.cloudService = cloudService;
     }
 
-    public class KeyPairPerRequestCreationStrategy implements KeyPairCreationStrategy {
+    private class KeyPairPerRequestCreationStrategy implements KeyPairCreationStrategy {
 
         @Override public KeyPair create(CloudCredential owner) throws KeyPairCreationException {
 
-            Optional<KeyPairService> keyPairServiceOptional =
+            com.google.common.base.Optional<KeyPairService> keyPairServiceOptional =
                 cloudService.computeService().getKeyPairService(owner);
 
             if (!keyPairServiceOptional.isPresent()) {
@@ -61,57 +62,40 @@ import static com.google.common.base.Preconditions.checkState;
                     String.format("KeyPairService is not present for %s", owner));
             }
 
-            de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                keyPairServiceOptional.get().create(null);
+            try {
+                de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
+                    keyPairServiceOptional.get().create(null);
 
-            checkState(remoteKeyPair.privateKey().isPresent(),
-                "Remote keyPair does not hold a private key.");
+                checkState(remoteKeyPair.privateKey().isPresent(),
+                    "Remote keyPair does not hold a private key.");
 
-            KeyPair keyPair =
-                new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
-                    owner.cloud(), owner, remoteKeyPair.privateKey().get(),
-                    remoteKeyPair.publicKey());
-            keyPairModelService.save(keyPair);
-            return keyPair;
+                KeyPair keyPair =
+                    new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
+                        owner.cloud(), owner, remoteKeyPair.privateKey().get(),
+                        remoteKeyPair.publicKey());
+                keyPairModelService.save(keyPair);
+                return keyPair;
 
+            } catch (Exception e) {
+                throw new KeyPairCreationException(e);
+            }
         }
     }
 
 
-    public class KeyPairPerRequestRetrievalStrategy implements KeyPairRetrievalStrategy {
+    private class KeyPairPerRequestRetrievalStrategy implements KeyPairRetrievalStrategy {
 
         @Override public Optional<KeyPair> retrieve(VirtualMachine virtualMachine) {
-            return null;
+            return virtualMachine.keyPair();
         }
-    }
-
-
-
-    @Override protected Optional<KeyPair> existsFor(VirtualMachine virtualMachine) {
-        return keyPairModelService.getKeyPair(virtualMachine);
-    }
-
-    @Override protected KeyPair createKeyPairFor(VirtualMachine virtualMachine,
-        KeyPairService keyPairService) {
-
-
-        checkState(remoteKeyPair.privateKey().isPresent(),
-            "Expected remote keypair to have a private key, but it has none.");
-
-        KeyPair keyPair =
-            new KeyPair(remoteKeyPair.id(), remoteKeyPair.providerId(), remoteKeyPair.id(),
-                virtualMachine.cloud(), virtualMachine.owner().get(),
-                remoteKeyPair.privateKey().get(), remoteKeyPair.publicKey());
-        this.keyPairModelService.save(keyPair);
-        return keyPair;
     }
 
 
     @Override public KeyPairCreationStrategy creation() {
-        return null;
+        return new KeyPairPerRequestCreationStrategy();
     }
 
     @Override public KeyPairRetrievalStrategy retrieval() {
-        return null;
+        return new KeyPairPerRequestRetrievalStrategy();
     }
 }

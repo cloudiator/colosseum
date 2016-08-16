@@ -16,15 +16,13 @@
  * under the License.
  */
 
-package cloud.actors;
+package cloud.vm;
 
 /**
- * Created by daniel on 12.08.16.
+ * Created by daniel on 15.08.16.
  */
-public class KeyPairProtocol {
+public interface VirtualMachineRequestVisitor {
 
-    public static class KeyPairRequest {
 
-    }
 
 }

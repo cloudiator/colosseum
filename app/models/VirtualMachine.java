@@ -34,14 +34,14 @@ import java.util.*;
 
     @Column(unique = true, nullable = false) private String name;
 
-    @Nullable @Column(nullable = true) private String generatedLoginUsername;
-    @Nullable @Column(nullable = true) private String generatedLoginPassword;
-    @Nullable @Lob @Column(nullable = true) private String generatedPrivateKey;
+    @Nullable private String generatedLoginUsername;
+    @Nullable private String generatedLoginPassword;
+    @Nullable @OneToOne private KeyPair keyPair;
 
-    @Nullable @ManyToOne(optional = true) private Image image;
-    @Nullable @ManyToOne(optional = true) private Hardware hardware;
+    @Nullable @ManyToOne private Image image;
+    @Nullable @ManyToOne private Hardware hardware;
 
-    @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
+    @Nullable @ManyToOne private TemplateOptions templateOptions;
 
     @OneToMany(mappedBy = "virtualMachine") private List<Instance> instances;
 
@@ -61,14 +61,13 @@ import java.util.*;
     public VirtualMachine(@Nullable String remoteId, @Nullable String providerId,
         @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
         String name, @Nullable String generatedLoginUsername,
-        @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
-        @Nullable Image image, @Nullable Hardware hardware,
-        @Nullable TemplateOptions templateOptions) {
+        @Nullable String generatedLoginPassword, @Nullable KeyPair keyPair, @Nullable Image image,
+        @Nullable Hardware hardware, @Nullable TemplateOptions templateOptions) {
         super(remoteId, providerId, swordId, cloud, owner, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
         this.generatedLoginPassword = generatedLoginPassword;
-        this.generatedPrivateKey = generatedPrivateKey;
+        this.keyPair = keyPair;
         this.image = image;
         this.hardware = hardware;
         this.templateOptions = templateOptions;
@@ -141,13 +140,6 @@ import java.util.*;
         this.generatedLoginPassword = generatedLoginPassword;
     }
 
-    public void setGeneratedPrivateKey(@Nullable String generatedPrivateKey) {
-        if (this.generatedPrivateKey != null) {
-            throw new IllegalStateException("Changing generatedPrivateKey not permitted.");
-        }
-        this.generatedPrivateKey = generatedPrivateKey;
-    }
-
     public String loginName() {
         if (generatedLoginUsername != null) {
             return generatedLoginUsername;
@@ -182,5 +174,9 @@ import java.util.*;
             throw new IllegalStateException("Image is not longer known.");
         }
         return image.operatingSystem();
+    }
+
+    public Optional<KeyPair> keyPair() {
+        return Optional.ofNullable(keyPair);
     }
 }

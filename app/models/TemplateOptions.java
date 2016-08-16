@@ -47,8 +47,4 @@ import models.generic.Model;
     public Map<String, String> tags() {
         return ImmutableMap.copyOf(tags);
     }
-
-    public void addTag(String tagName, String tagValue) {
-        this.tags.put(tagName, tagValue);
-    }
-}
+<}

@@ -102,6 +102,8 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 templateOptionsBuilder.inboundPorts(portProvidedService.allProvidedPorts());
                 if (virtualMachine.templateOptions().isPresent()) {
                     templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());
+                    templateOptionsBuilder
+                        .userData(virtualMachine.templateOptions().get().userData().orElse(null));
                 }
                 builder.templateOptions(templateOptionsBuilder.build());
 

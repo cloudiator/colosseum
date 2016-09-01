@@ -106,7 +106,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         return operatingSystem.operatingSystemFamily().loginName();
     }
 
-    @Nullable public Optional<String> getLoginPasswordOverride() {
+    public Optional<String> getLoginPasswordOverride() {
         return Optional.ofNullable(loginPasswordOverride);
     }
 }

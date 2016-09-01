@@ -18,16 +18,14 @@
 
 package cloud;
 
-import com.google.inject.Inject;
-
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
-
 import cloud.colosseum.BaseColosseumComputeService;
 import cloud.colosseum.ColosseumComputeService;
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
+import com.google.inject.Inject;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.CloudCredential;
 import models.service.ModelService;
 
@@ -38,8 +36,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  */
 public class DefaultCloudService implements CloudService {
 
-    private final ModelService<CloudCredential> cloudCredentialModelService;
-    private final ComputeServiceFactory computeServiceFactory;
+    private final BaseComputeServiceRegistry computeServiceRegistry;
 
     @Inject public DefaultCloudService(ModelService<CloudCredential> cloudCredentialModelService,
         ComputeServiceFactory computeServiceFactory) {
@@ -47,21 +44,16 @@ public class DefaultCloudService implements CloudService {
         checkNotNull(cloudCredentialModelService);
         checkNotNull(computeServiceFactory);
 
-
-        this.cloudCredentialModelService = cloudCredentialModelService;
-        this.computeServiceFactory = computeServiceFactory;
-
+        computeServiceRegistry =
+            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService);
     }
 
     @Override
     public DiscoveryService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation> discoveryService() {
-        return new CompositeDiscoveryService(
-            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService)
-                .getDiscoveryServices());
+        return new CompositeDiscoveryService(computeServiceRegistry.getDiscoveryServices());
     }
 
     @Override public ColosseumComputeService computeService() {
-        return new BaseColosseumComputeService(
-            new BaseComputeServiceRegistry(computeServiceFactory, cloudCredentialModelService));
+        return new BaseColosseumComputeService(computeServiceRegistry);
     }
 }

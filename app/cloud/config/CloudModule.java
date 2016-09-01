@@ -18,21 +18,16 @@
 
 package cloud.config;
 
-import com.google.common.collect.Sets;
-import com.google.inject.AbstractModule;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-
 import cloud.CloudService;
 import cloud.ComputeServiceFactory;
 import cloud.DefaultCloudService;
 import cloud.SwordComputeServiceFactory;
-import cloud.strategies.CompositeRemoteConnectionStrategy;
-import cloud.strategies.KeyPairPerCredentialStrategy;
-import cloud.strategies.KeyPairRemoteConnectionStrategy;
-import cloud.strategies.KeyPairStrategy;
-import cloud.strategies.PasswordRemoteConnectionStrategy;
-import cloud.strategies.RemoteConnectionStrategy;
+import cloud.strategies.*;
+import com.google.common.collect.Sets;
+import com.google.inject.AbstractModule;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
 
 /**
  * Created by daniel on 28.04.15.
@@ -43,7 +38,7 @@ public class CloudModule extends AbstractModule {
 
         bind(KeyPairStrategy.class).to(KeyPairPerCredentialStrategy.class);
         bind(ComputeServiceFactory.class).to(SwordComputeServiceFactory.class);
-        bind(CloudService.class).to(DefaultCloudService.class);
+        bind(CloudService.class).to(DefaultCloudService.class).in(Singleton.class);
     }
 
     @Provides

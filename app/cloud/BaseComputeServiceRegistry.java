@@ -18,24 +18,22 @@
 
 package cloud;
 
+import cloud.resources.HardwareInLocation;
+import cloud.resources.ImageInLocation;
+import cloud.resources.LocationInCloud;
+import cloud.resources.VirtualMachineInLocation;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-
 import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
 import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
+import models.CloudCredential;
+import models.service.ModelService;
 
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import cloud.resources.HardwareInLocation;
-import cloud.resources.ImageInLocation;
-import cloud.resources.LocationInCloud;
-import cloud.resources.VirtualMachineInLocation;
-import models.CloudCredential;
-import models.service.ModelService;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -46,11 +44,13 @@ public class BaseComputeServiceRegistry implements ComputeServiceRegistry {
 
     private final ComputeServiceFactory computeServiceFactory;
     private final ModelService<CloudCredential> cloudCredentialModelService;
+    private final ComputeServiceCache computeServiceCache;
 
     BaseComputeServiceRegistry(ComputeServiceFactory computeServiceFactory,
         ModelService<CloudCredential> cloudCredentialModelService) {
         this.computeServiceFactory = computeServiceFactory;
         this.cloudCredentialModelService = cloudCredentialModelService;
+        this.computeServiceCache = new ComputeServiceCache();
     }
 
     @Override
@@ -81,9 +81,10 @@ public class BaseComputeServiceRegistry implements ComputeServiceRegistry {
     @Override
     public Set<ComputeService<HardwareInLocation, ImageInLocation, LocationInCloud, VirtualMachineInLocation>> getComputeServices(
         List<CloudCredential> cloudCredentials) {
-        return ImmutableSet.copyOf(
-            cloudCredentials.stream().map(computeServiceFactory::computeService)
-                .collect(Collectors.toList()));
+
+        return ImmutableSet.copyOf(cloudCredentials.stream().map(
+            cloudCredential -> computeServiceCache.retrieve(cloudCredential, computeServiceFactory))
+            .collect(Collectors.toList()));
     }
 
     @Override

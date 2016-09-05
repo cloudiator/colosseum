@@ -156,10 +156,7 @@ import java.util.*;
             throw new UnknownLoginNameException(
                 "Login name is unknown as image is not longer known.");
         }
-        if (image.getLoginPasswordOverride().isPresent()) {
-            return image.getLoginPasswordOverride().get();
-        }
-        return image.operatingSystem().operatingSystemFamily().loginName();
+        return image.loginName();
     }
 
     public Optional<String> loginPassword() {

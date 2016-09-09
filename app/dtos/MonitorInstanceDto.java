@@ -31,7 +31,6 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     private Long monitor;
     private String apiEndpoint;
-    private Long ipAddress;
     private Long virtualMachine;
     private Long component;
     private Integer port;
@@ -41,14 +40,12 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
     }
 
     public MonitorInstanceDto(Long monitor, String apiEndpoint,
-                              Long ipAddress,
                               Long virtualMachine,
                               Long component,
                               Integer port) {
         super();
         this.monitor = monitor;
         this.apiEndpoint = apiEndpoint;
-        this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
         this.port = port;
@@ -61,7 +58,6 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     public static class References {
         @Inject public static Provider<ModelService<Monitor>> monitorModelService;
-        @Inject public static Provider<ModelService<IpAddress>> ipAddressModelService;
         @Inject public static Provider<ModelService<VirtualMachine>> virtualMachineModelService;
         @Inject public static Provider<ModelService<Component>> componentModelService;
     }
@@ -72,14 +68,6 @@ public class MonitorInstanceDto extends ModelWithExternalReferenceDto {
 
     public void setMonitor(Long monitor) {
         this.monitor = monitor;
-    }
-
-    public Long getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(Long ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     public Long getVirtualMachine() {

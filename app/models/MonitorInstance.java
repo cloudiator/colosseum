@@ -32,7 +32,6 @@ import models.generic.ModelWithExternalReference;
 
     @ManyToOne(optional = false) private Monitor monitor;
     private String apiEndpoint;
-    @ManyToOne(optional = true) @Nullable private IpAddress ipAddress;
     @ManyToOne(optional = true) @Nullable private VirtualMachine virtualMachine;
     @ManyToOne(optional = true) @Nullable private Component component;
     @Column() private Integer port;
@@ -43,11 +42,10 @@ import models.generic.ModelWithExternalReference;
     protected MonitorInstance() {
     }
 
-    public MonitorInstance(Monitor monitor, String apiEndpoint, @Nullable IpAddress ipAddress,
+    public MonitorInstance(Monitor monitor, String apiEndpoint,
         @Nullable VirtualMachine virtualMachine, @Nullable Component component, @Nullable Integer port) {
         this.apiEndpoint = apiEndpoint;
         this.monitor = monitor;
-        this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
         this.port = port;
@@ -55,10 +53,6 @@ import models.generic.ModelWithExternalReference;
 
     @Nullable public Monitor getMonitor() {
         return monitor;
-    }
-
-    @Nullable public IpAddress getIpAddress() {
-        return ipAddress;
     }
 
     @Nullable public VirtualMachine getVirtualMachine() {

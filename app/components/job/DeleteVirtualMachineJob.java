@@ -75,6 +75,13 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
     }
 
     @Override public void onSuccess() throws JobException {
+        // TODO when VM is deleted,
+        // delete also MonitorIsntances,
+        // if only one monitor instance, also delete monitor
+        // update all monitors that are linked to it,
+        // do this recursivley through ALL monitors
+        // actually this should be handled by an event bus
+
         jpaApi().withTransaction(() -> {
             VirtualMachine t = getT();
             virtualMachineRemoteModelService.delete(t);

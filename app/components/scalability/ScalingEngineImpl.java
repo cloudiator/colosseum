@@ -157,7 +157,7 @@ import java.util.UUID;
 
             for (MonitorInstance monitorInstance : monitorInstances) {
                 /*TODO: dangerous, what happens if this vm changes the IP address? */
-                String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
+                String ipAddress = monitorInstance.getIpOfVisor();
 
                 AgentCommunicator ac =
                     AgentCommunicatorRegistry.getAgentCommunicator("http", ipAddress, agentPort);
@@ -341,7 +341,9 @@ import java.util.UUID;
                 String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
 
                 MonitorInstance instance =
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                        fc.saveMonitorInstance(
+                                monitor.getId(),
+                                apiEndpoint,
                                 vm.getId(),
                                 (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
 
@@ -362,7 +364,9 @@ import java.util.UUID;
                 String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
 
                 MonitorInstance instance =
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                        fc.saveMonitorInstance(
+                                monitor.getId(),
+                                apiEndpoint,
                                 vm.getId(),
                                 (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
 

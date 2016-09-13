@@ -22,6 +22,9 @@ import cloud.colosseum.ColosseumComputeService;
 import com.google.inject.Inject;
 import models.Tenant;
 import models.VirtualMachine;
+import models.MonitorInstance;
+import models.RawMonitor;
+import models.ComposedMonitor;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
@@ -33,13 +36,24 @@ import play.db.jpa.JPAApi;
 public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
     private final RemoteModelService<VirtualMachine> virtualMachineRemoteModelService;
+    private final ModelService<MonitorInstance> monitorInstanceModelService;
+    private final ModelService<RawMonitor> rawMonitorModelService;
+    private final ModelService<ComposedMonitor> composedMonitorModelService;
+    //TODO add ComposedMonitor service, once the aggregator are concerned by
+    //TODO cross-VM distribution
 
     @Inject public DeleteVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
-        ColosseumComputeService colosseumComputeService, Tenant tenant) {
+        ColosseumComputeService colosseumComputeService, Tenant tenant,
+        ModelService<MonitorInstance> monitorInstanceModelService,
+        ModelService<RawMonitor> rawMonitorModelService,
+        ModelService<ComposedMonitor> composedMonitorModelService) {
         super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService,
             tenant);
         this.virtualMachineRemoteModelService = modelService;
+        this.monitorInstanceModelService = monitorInstanceModelService;
+        this.rawMonitorModelService = rawMonitorModelService;
+        this.composedMonitorModelService = composedMonitorModelService;
     }
 
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
@@ -84,6 +98,33 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
 
         jpaApi().withTransaction(() -> {
             VirtualMachine t = getT();
+
+            for(MonitorInstance mi : monitorInstanceModelService.getAll()){
+                boolean monitorInstanceAffected = mi.getVirtualMachine().equals(t);
+                monitorInstanceAffected = monitorInstanceAffected ||
+                        (t.publicIpAddress().isPresent()?
+                                (mi.getApiEndpoint().equals(t.publicIpAddress().get())):false);
+
+                if(monitorInstanceAffected){
+                    // Delete monitor instance reference in raw monitor:
+                    for(RawMonitor rm : rawMonitorModelService.getAll()){
+                        if(rm.getMonitorInstances().contains(mi)){
+                            rm.getMonitorInstances().remove(mi);
+
+                            if(rm.getMonitorInstances().isEmpty()){
+                                //TODO remove monitor completely and update
+                                //TODO referencing monitors
+                            }
+
+                            //TODO recursive updating of changed monitors
+                        }
+                    }
+
+                    //TODO Do the same for composed monitors
+                    //TODO once cross-vm distribution of aggregation is integrated
+                }
+            }
+
             virtualMachineRemoteModelService.delete(t);
         });
     }

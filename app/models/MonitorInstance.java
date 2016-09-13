@@ -75,4 +75,18 @@ import models.generic.ModelWithExternalReference;
     public String getApiEndpoint() {
         return apiEndpoint;
     }
+
+    public String getIpOfVisor(){
+        // TODO: implement according to TSDB distribution strategy
+        if(this.getVirtualMachine() != null){
+            Optional<IpAddress> ip = this.getVirtualMachine().publicIpAddress();
+            if(ip.isPresent()) return ip.any();
+        }
+
+        if(!getApiEndpoint().empty()){
+            return getApiEndpoint();
+        }
+
+        throw new IllegalStateException("No Visor API found!");
+    }
 }

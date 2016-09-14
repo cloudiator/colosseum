@@ -25,6 +25,8 @@ import javax.persistence.ManyToOne;
 
 import models.generic.ModelWithExternalReference;
 
+import java.util.Optional;
+
 /**
  * Created by Frank on 20.05.2015.
  */
@@ -77,16 +79,23 @@ import models.generic.ModelWithExternalReference;
     }
 
     public String getIpOfVisor(){
-        // TODO: implement according to TSDB distribution strategy
+        // TODO: implement according to Visor distribution strategy
         if(this.getVirtualMachine() != null){
             Optional<IpAddress> ip = this.getVirtualMachine().publicIpAddress();
-            if(ip.isPresent()) return ip.any();
+            if(ip.isPresent()) return ip.get().getIp();
         }
 
-        if(!getApiEndpoint().empty()){
+        // TODO: We do not use isEmpty() as an empty string is aloud for home domain
+        if(getApiEndpoint() != null){
             return getApiEndpoint();
         }
 
         throw new IllegalStateException("No Visor API found!");
+    }
+
+    public String getIpOfTsdb(){
+        // TODO: implement according to TSBD distribution strategy
+        // TODO: currently we assume Visor and TSBD are installed equivalent
+        return getIpOfVisor();
     }
 }

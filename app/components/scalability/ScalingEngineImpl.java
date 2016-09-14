@@ -67,9 +67,9 @@ import java.util.UUID;
                 for (Monitor obj : monitor.getMonitors()) {
                     List<MonitorInstance> monitorInstances = fc.getMonitorInstances(obj.getId());
                     for (MonitorInstance inst : monitorInstances) {
-                        //TODO
+                        //TODO empty string is allowed for home domain
                         String apiEndpoint = "";
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
                     }
                 }
             }
@@ -82,9 +82,9 @@ import java.util.UUID;
 
              */
             if (createInstances) {
-                //TODO
+                //TODO empty String is allowed for home domain
                 String apiEndpoint = "";
-                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
             }
         }
 
@@ -135,9 +135,9 @@ import java.util.UUID;
         if (amountOfNeededInstances > i) {
             int toAdd = amountOfNeededInstances - i;
             for (int j = 0; j < toAdd; ++j) {
-                //TODO
+                //TODO emptry string is allowed for home domain
                 String apiEndpoint = "";
-                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
             }
 
         } else if (i > amountOfNeededInstances) {
@@ -421,7 +421,7 @@ import java.util.UUID;
     @Override public void updateMonitor(RawMonitor monitor) {
         for (MonitorInstance mi : fc.getMonitorInstances(monitor.getId())) {
             AgentCommunicator ac = AgentCommunicatorRegistry
-                .getAgentCommunicator("http", mi.getIpAddress().getIp(), agentPort);
+                .getAgentCommunicator("http", mi.getIpOfVisor(), agentPort);
 
             ac.updateMonitor(mi);
         }

@@ -28,32 +28,34 @@ import models.ComposedMonitor;
 import models.generic.RemoteState;
 import models.service.ModelService;
 import models.service.RemoteModelService;
+import play.Logger;
 import play.db.jpa.JPAApi;
+import util.logging.Loggers;
 
 /**
  * Created by daniel on 14.10.15.
  */
 public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
 
+    private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
+
     private final RemoteModelService<VirtualMachine> virtualMachineRemoteModelService;
     private final ModelService<MonitorInstance> monitorInstanceModelService;
     private final ModelService<RawMonitor> rawMonitorModelService;
-    private final ModelService<ComposedMonitor> composedMonitorModelService;
+    //private final ModelService<ComposedMonitor> composedMonitorModelService;
     //TODO add ComposedMonitor service, once the aggregator are concerned by
     //TODO cross-VM distribution
 
-    @Inject public DeleteVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
+    public DeleteVirtualMachineJob(JPAApi jpaApi, VirtualMachine virtualMachine,
         RemoteModelService<VirtualMachine> modelService, ModelService<Tenant> tenantModelService,
         ColosseumComputeService colosseumComputeService, Tenant tenant,
         ModelService<MonitorInstance> monitorInstanceModelService,
-        ModelService<RawMonitor> rawMonitorModelService,
-        ModelService<ComposedMonitor> composedMonitorModelService) {
+        ModelService<RawMonitor> rawMonitorModelService) {
         super(jpaApi, virtualMachine, modelService, tenantModelService, colosseumComputeService,
             tenant);
         this.virtualMachineRemoteModelService = modelService;
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.rawMonitorModelService = rawMonitorModelService;
-        this.composedMonitorModelService = composedMonitorModelService;
     }
 
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
@@ -95,37 +97,59 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         // update all monitors that are linked to it,
         // do this recursivley through ALL monitors
         // actually this should be handled by an event bus
-
         jpaApi().withTransaction(() -> {
             VirtualMachine t = getT();
 
             for(MonitorInstance mi : monitorInstanceModelService.getAll()){
-                boolean monitorInstanceAffected = mi.getVirtualMachine().equals(t);
+                LOGGER.debug("Check to delete monitor instance " + mi.getId() + " for VM " + t.getId());
+
+                boolean monitorInstanceAffected =
+                        (mi.getVirtualMachine() != null && mi.getVirtualMachine().getId().equals(t.getId()));
                 monitorInstanceAffected = monitorInstanceAffected ||
-                        (t.publicIpAddress().isPresent()?
-                                (mi.getApiEndpoint().equals(t.publicIpAddress().get())):false);
+                        (t.publicIpAddress().isPresent() && (mi.getApiEndpoint().equals(t.publicIpAddress().get().getIp())));
 
                 if(monitorInstanceAffected){
                     // Delete monitor instance reference in raw monitor:
+                    //TODO remove monitor completely and update
+                    //TODO referencing monitors
+                    //TODO recursive updating of changed monitors
+
                     for(RawMonitor rm : rawMonitorModelService.getAll()){
-                        if(rm.getMonitorInstances().contains(mi)){
-                            rm.getMonitorInstances().remove(mi);
+                        MonitorInstance miToRemove = null;
 
-                            if(rm.getMonitorInstances().isEmpty()){
-                                //TODO remove monitor completely and update
-                                //TODO referencing monitors
+                        for(MonitorInstance mi2 : rm.getMonitorInstances()){
+                            if(mi2.getId().equals(mi.getId())){
+                                miToRemove = mi2;
                             }
+                        }
 
+                        if (rm.getMonitorInstances().size() <= 1) {
+                            //TODO remove monitor completely and update
+                            //TODO referencing monitors
                             //TODO recursive updating of changed monitors
                         }
+
+                        if(miToRemove != null) {
+                            rm.getMonitorInstances().remove(miToRemove);
+                        }
+
+                        rawMonitorModelService.save(rm);
                     }
 
                     //TODO Do the same for composed monitors
                     //TODO once cross-vm distribution of aggregation is integrated
+
+                    monitorInstanceModelService.delete(mi);
                 }
             }
 
             virtualMachineRemoteModelService.delete(t);
         });
+
+        //jpaApi().withTransaction(() -> {
+        //    VirtualMachine t = getT();
+        //
+        //    virtualMachineRemoteModelService.delete(t);
+        //});
     }
 }

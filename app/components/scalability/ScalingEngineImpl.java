@@ -67,9 +67,9 @@ import java.util.UUID;
                 for (Monitor obj : monitor.getMonitors()) {
                     List<MonitorInstance> monitorInstances = fc.getMonitorInstances(obj.getId());
                     for (MonitorInstance inst : monitorInstances) {
-                        //TODO
+                        //TODO empty string is allowed for home domain
                         String apiEndpoint = "";
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
                     }
                 }
             }
@@ -82,9 +82,9 @@ import java.util.UUID;
 
              */
             if (createInstances) {
-                //TODO
+                //TODO empty String is allowed for home domain
                 String apiEndpoint = "";
-                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
             }
         }
 
@@ -135,9 +135,9 @@ import java.util.UUID;
         if (amountOfNeededInstances > i) {
             int toAdd = amountOfNeededInstances - i;
             for (int j = 0; j < toAdd; ++j) {
-                //TODO
+                //TODO emptry string is allowed for home domain
                 String apiEndpoint = "";
-                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null, null);
+                fc.saveMonitorInstance(monitor.getId(), apiEndpoint, null, null);
             }
 
         } else if (i > amountOfNeededInstances) {
@@ -157,7 +157,7 @@ import java.util.UUID;
 
             for (MonitorInstance monitorInstance : monitorInstances) {
                 /*TODO: dangerous, what happens if this vm changes the IP address? */
-                String ipAddress = fc.getIpAddress(monitorInstance.getIpAddress().getId());
+                String ipAddress = monitorInstance.getIpOfVisor();
 
                 AgentCommunicator ac =
                     AgentCommunicatorRegistry.getAgentCommunicator("http", ipAddress, agentPort);
@@ -341,7 +341,9 @@ import java.util.UUID;
                 String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
 
                 MonitorInstance instance =
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                        fc.saveMonitorInstance(
+                                monitor.getId(),
+                                apiEndpoint,
                                 vm.getId(),
                                 (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
 
@@ -362,7 +364,9 @@ import java.util.UUID;
                 String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
 
                 MonitorInstance instance =
-                        fc.saveMonitorInstance(monitor.getId(), apiEndpoint, fc.getIdPublicAddressOfVM(vm),
+                        fc.saveMonitorInstance(
+                                monitor.getId(),
+                                apiEndpoint,
                                 vm.getId(),
                                 (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
 
@@ -417,7 +421,7 @@ import java.util.UUID;
     @Override public void updateMonitor(RawMonitor monitor) {
         for (MonitorInstance mi : fc.getMonitorInstances(monitor.getId())) {
             AgentCommunicator ac = AgentCommunicatorRegistry
-                .getAgentCommunicator("http", mi.getIpAddress().getIp(), agentPort);
+                .getAgentCommunicator("http", mi.getIpOfVisor(), agentPort);
 
             ac.updateMonitor(mi);
         }

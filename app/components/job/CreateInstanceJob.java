@@ -104,17 +104,23 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 synchronized (CreateInstanceJob.class) {
 
 
-
                     client = LifecycleClient.getClient();
+                    LOGGER.debug(String.format("Got lifecycle agent %s.", client));
                     final ApplicationInstanceId applicationInstanceId = ApplicationInstanceId
                         .fromString(instance.getApplicationInstance().getUuid());
+                    LOGGER.debug(String.format("Using application instance ID %s to deploy %s",
+                        applicationInstanceId, instance));
 
                     final ApplicationId applicationId = ApplicationId
                         .fromString(instance.getApplicationInstance().getApplication().getUuid());
+                    LOGGER.debug("Using application ID %s to deploy %s.", applicationId, instance);
 
                     //register application instance
                     final boolean couldRegister;
                     try {
+                        LOGGER.debug(String
+                            .format("Trying to register application ID %s at lifecycle agent.",
+                                applicationId));
                         couldRegister = client
                             .registerApplicationInstance(applicationInstanceId, applicationId);
                     } catch (RegistrationException e) {
@@ -126,11 +132,24 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                         } catch (RegistrationException e) {
                             throw new JobException(e);
                         }
+                        LOGGER.debug(String
+                            .format("Successfully registered application ID %s.", applicationId));
+                    } else {
+                        LOGGER.debug(String.format(
+                            "Could not register application ID %s, assuming it was already registered.",
+                            applicationId));
                     }
                     deploymentContext = buildDeploymentContext(instance,
                         client.initDeploymentContext(applicationId, applicationInstanceId));
-                    checkState(instance.getVirtualMachine().publicIpAddress().isPresent());
+                    LOGGER.debug(String
+                        .format("Build deployment context %s for instance %s.", deploymentContext,
+                            instance));
+
+                    checkState(instance.getVirtualMachine().publicIpAddress().isPresent(),
+                        "No IP address present on VM.");
                     deployableComponent = buildDeployableComponent(instance);
+                    LOGGER.debug(String.format("Build deployable component %s for instance %s.",
+                        deployableComponent, instance));
 
                 }
                 try {
@@ -141,7 +160,13 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                     } else {
                         containerType = instance.getApplicationComponent().containerType();
                     }
+                    LOGGER.debug(String
+                        .format("Using container type %s for instance %s", containerType,
+                            instance));
 
+                    LOGGER.debug(String.format(
+                        "Calling client %s to deploy instance %s using: deploymentContext %s, deployableComponent %s, containerType %s.",
+                        client, instance, deploymentContext, deployableComponent, containerType));
                     return client
                         .deploy(instance.getVirtualMachine().publicIpAddress().get().getIp(),
                             deploymentContext, deployableComponent,
@@ -154,11 +179,17 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
+        LOGGER.debug(String.format(
+            "Client deployed the instance successfully and returned component instance ID %s",
+            componentInstanceId));
 
         jpaApi().withTransaction(() -> {
             Instance instance = getT();
             instance.bindRemoteId(componentInstanceId.toString());
             modelService.save(instance);
+            LOGGER.debug(String
+                .format("Updated instance %s in database. Set remote ID to %s.", instance,
+                    componentInstanceId));
         });
 
     }
@@ -169,9 +200,13 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
         for (ApplicationComponent applicationComponent : instance.getApplicationInstance()
             .getApplication().getApplicationComponents()) {
-            client.registerComponentForApplicationInstance(applicationInstanceId,
-                ComponentId.fromString(applicationComponent.getUuid()),
+
+            ComponentId componentId = ComponentId.fromString(applicationComponent.getUuid());
+
+            client.registerComponentForApplicationInstance(applicationInstanceId, componentId,
                 applicationComponent.getComponent().getName());
+            LOGGER.debug(String.format("Registered application component %s as component ID %s.",
+                applicationComponent, componentId));
         }
     }
 

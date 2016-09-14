@@ -84,7 +84,6 @@ public class ImportImageToDatabase implements Solution {
             }
         }
 
-        //todo: what to do with images that do not have an operating system?
         OperatingSystem operatingSystem =
             new OperatingSystem(imageNotInDatabase.getImageInLocation().operatingSystem());
         operatingSystemService.save(operatingSystem);
@@ -94,6 +93,7 @@ public class ImportImageToDatabase implements Solution {
             imageNotInDatabase.getImageInLocation().providerId(),
             imageNotInDatabase.getImageInLocation().swordId(), cloud, location,
             imageNotInDatabase.getImageInLocation().name(), operatingSystem, null, null);
+        image.addCloudCredential(imageNotInDatabase.getImageInLocation().credential());
         imageModelService.save(image);
     }
 }

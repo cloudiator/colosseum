@@ -19,19 +19,18 @@
 package models.generic;
 
 import com.google.common.collect.ImmutableList;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import models.Cloud;
+import models.CloudCredential;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-
-import models.Cloud;
-import models.CloudCredential;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -78,6 +77,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public void addCloudCredential(CloudCredential cloudCredential) {
+        if (this.cloudCredentials == null) {
+            this.cloudCredentials = new ArrayList<>();
+        }
         this.cloudCredentials.add(cloudCredential);
     }
 

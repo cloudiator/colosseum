@@ -60,8 +60,8 @@ public class ComputeServiceCache {
 
         private static CacheKey of(CloudCredential cloudCredential) {
             return new CacheKey(cloudCredential.getUser(), cloudCredential.getSecret(),
-                cloudCredential.getCloud().getEndpoint().orElse(null),
-                cloudCredential.getCloud().api().getInternalProviderName());
+                cloudCredential.getCloud().api().getInternalProviderName(),
+                cloudCredential.getCloud().getEndpoint().orElse(null));
         }
 
         @Override public boolean equals(Object o) {

@@ -25,6 +25,8 @@ import javax.persistence.ManyToOne;
 
 import models.generic.ModelWithExternalReference;
 
+import java.util.Optional;
+
 /**
  * Created by Frank on 20.05.2015.
  */
@@ -32,7 +34,6 @@ import models.generic.ModelWithExternalReference;
 
     @ManyToOne(optional = false) private Monitor monitor;
     private String apiEndpoint;
-    @ManyToOne(optional = true) @Nullable private IpAddress ipAddress;
     @ManyToOne(optional = true) @Nullable private VirtualMachine virtualMachine;
     @ManyToOne(optional = true) @Nullable private Component component;
     @Column() private Integer port;
@@ -43,11 +44,10 @@ import models.generic.ModelWithExternalReference;
     protected MonitorInstance() {
     }
 
-    public MonitorInstance(Monitor monitor, String apiEndpoint, @Nullable IpAddress ipAddress,
+    public MonitorInstance(Monitor monitor, String apiEndpoint,
         @Nullable VirtualMachine virtualMachine, @Nullable Component component, @Nullable Integer port) {
         this.apiEndpoint = apiEndpoint;
         this.monitor = monitor;
-        this.ipAddress = ipAddress;
         this.virtualMachine = virtualMachine;
         this.component = component;
         this.port = port;
@@ -55,10 +55,6 @@ import models.generic.ModelWithExternalReference;
 
     @Nullable public Monitor getMonitor() {
         return monitor;
-    }
-
-    @Nullable public IpAddress getIpAddress() {
-        return ipAddress;
     }
 
     @Nullable public VirtualMachine getVirtualMachine() {
@@ -80,5 +76,26 @@ import models.generic.ModelWithExternalReference;
 
     public String getApiEndpoint() {
         return apiEndpoint;
+    }
+
+    public String getIpOfVisor(){
+        // TODO: implement according to Visor distribution strategy
+        if(this.getVirtualMachine() != null){
+            Optional<IpAddress> ip = this.getVirtualMachine().publicIpAddress();
+            if(ip.isPresent()) return ip.get().getIp();
+        }
+
+        // TODO: We do not use isEmpty() as an empty string is aloud for home domain
+        if(getApiEndpoint() != null){
+            return getApiEndpoint();
+        }
+
+        throw new IllegalStateException("No Visor API found!");
+    }
+
+    public String getIpOfTsdb(){
+        // TODO: implement according to TSBD distribution strategy
+        // TODO: currently we assume Visor and TSBD are installed equivalent
+        return getIpOfVisor();
     }
 }

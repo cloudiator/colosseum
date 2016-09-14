@@ -38,7 +38,7 @@ public class RawMonitorTsdbLocator implements TsdbLocator {
     @Override public Map<String, List<MonitorInstance>> getTsdbIp() {
         Map<String, List<MonitorInstance>> map = new HashMap<>();
         for(MonitorInstance instance : monitor.getMonitorInstances()){
-            TsdbHelper.addMonitorInstanceToIP(map, instance.getIpAddress().getIp(), instance);
+            TsdbHelper.addMonitorInstanceToIP(map, instance.getIpOfTsdb(), instance);
         }
         return map;
     }

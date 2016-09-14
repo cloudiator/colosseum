@@ -43,17 +43,14 @@ import models.service.ModelService;
     extends AbstractConverter<MonitorInstance, MonitorInstanceDto> {
 
     private final ModelService<Monitor> monitorModelService;
-    private final ModelService<IpAddress> ipAddressModelService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
     private final ModelService<Component> componentModelService;
 
     @Inject protected MonitorInstanceConverter(ModelService<Monitor> monitorModelService,
-        ModelService<IpAddress> ipAddressModelService,
         ModelService<VirtualMachine> virtualMachineModelService,
         ModelService<Component> componentModelService) {
         super(MonitorInstance.class, MonitorInstanceDto.class);
         this.monitorModelService = monitorModelService;
-        this.ipAddressModelService = ipAddressModelService;
         this.virtualMachineModelService = virtualMachineModelService;
         this.componentModelService = componentModelService;
     }
@@ -64,8 +61,6 @@ import models.service.ModelService;
         binding(Long.class, Monitor.class).fromField("monitor").toField("monitor")
             .withTransformation(new IdToModelTransformer<>(monitorModelService));
         binding().fromField("apiEndpoint").toField("apiEndpoint");
-        binding(Long.class, IpAddress.class).fromField("ipAddress").toField("ipAddress")
-            .withTransformation(new IdToModelTransformer<>(ipAddressModelService));
         binding(Long.class, VirtualMachine.class).fromField("virtualMachine").toField("virtualMachine")
             .withTransformation(new IdToModelTransformer<>(virtualMachineModelService));
         binding(new TypeLiteral<List<KeyValue>>() {

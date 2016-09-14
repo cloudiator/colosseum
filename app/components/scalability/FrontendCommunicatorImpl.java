@@ -351,11 +351,10 @@ public class FrontendCommunicatorImpl implements FrontendCommunicator {
     }
 
     @Override
-    public MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long ipAddressId, Long vmId,
+    public MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long vmId,
         Long componentId) {
         MonitorInstance result = new MonitorInstance(monitorModelService.getById(idMonitor),
             apiEndpoint,
-            (ipAddressId == null ? null : ipAddressModelService.getById(ipAddressId)),
             (vmId == null ? null : virtualMachineModelService.getById(vmId)),
             (componentId == null ? null : componentModelService.getById(componentId)),
             null);

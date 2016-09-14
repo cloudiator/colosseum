@@ -28,9 +28,7 @@ import cloud.strategies.KeyPairStrategy;
 import cloud.strategies.RemoteConnectionStrategy;
 import components.execution.SimpleBlockingQueue;
 import components.model.ModelValidationService;
-import models.Instance;
-import models.Tenant;
-import models.VirtualMachine;
+import models.*;
 import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;
@@ -52,6 +50,8 @@ import play.db.jpa.JPAApi;
         remoteConnectionStrategyFactory;
     private final PortProvidedService portProvidedService;
     private final ModelValidationService modelValidationService;
+    private final ModelService<MonitorInstance> monitorInstanceModelService;
+    private final ModelService<RawMonitor> rawMonitorModelService;
     private final Configuration configuration;
     private final JPAApi jpaApi;
 
@@ -60,7 +60,8 @@ import play.db.jpa.JPAApi;
         ModelService<Tenant> tenantModelService, RemoteModelService<Instance> instanceModelService,
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory,
-        PortProvidedService portProvidedService, ModelValidationService modelValidationService) {
+        PortProvidedService portProvidedService, ModelValidationService modelValidationService,
+        ModelService<MonitorInstance> monitorInstanceModelService, ModelService<RawMonitor> rawMonitorModelService) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
         this.instanceModelService = instanceModelService;
@@ -72,6 +73,8 @@ import play.db.jpa.JPAApi;
         this.jobQueue = jobQueue;
         this.configuration = configuration;
         this.jpaApi = jpaApi;
+        this.monitorInstanceModelService = monitorInstanceModelService;
+        this.rawMonitorModelService = rawMonitorModelService;
     }
 
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
@@ -90,7 +93,8 @@ import play.db.jpa.JPAApi;
     @Override public void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
         this.jobQueue.add(
             new DeleteVirtualMachineJob(jpaApi, virtualMachine, virtualMachineModelService,
-                tenantModelService, colosseumComputeService, tenant));
+                tenantModelService, colosseumComputeService, tenant, monitorInstanceModelService,
+                rawMonitorModelService));
     }
 
     @Override public void newDeleteInstanceJob(Instance instance, Tenant tenant) {

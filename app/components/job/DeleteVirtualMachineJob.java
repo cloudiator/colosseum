@@ -106,7 +106,9 @@ public class DeleteVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 boolean monitorInstanceAffected =
                         (mi.getVirtualMachine() != null && mi.getVirtualMachine().getId().equals(t.getId()));
                 monitorInstanceAffected = monitorInstanceAffected ||
-                        (t.publicIpAddress().isPresent() && (mi.getApiEndpoint().equals(t.publicIpAddress().get().getIp())));
+                        (t.publicIpAddress().isPresent() &&
+                                (mi.getApiEndpoint() != null) &&
+                                (mi.getApiEndpoint().equals(t.publicIpAddress().get().getIp())));
 
                 if(monitorInstanceAffected){
                     // Delete monitor instance reference in raw monitor:

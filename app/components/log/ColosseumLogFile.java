@@ -18,19 +18,29 @@
 
 package components.log;
 
+import com.google.inject.Inject;
+import play.Configuration;
+
 import java.io.File;
 
-import play.Play;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 /**
  * Created by daniel on 16.06.16.
  */
 public class ColosseumLogFile extends LocalLogFile {
 
-    private static final String COLOSSEUM_LOG_PATH =
-        Play.application().configuration().getString("colosseum.log.colosseumLogPath");
+    private static final String COLOSSEUM_LOG_PATH_CONFIG = "colosseum.log.colosseumLogPath";
+    private final String colosseumLogPath;
+
+    @Inject public ColosseumLogFile(Configuration configuration) {
+        checkNotNull(configuration, "configuration is null");
+        colosseumLogPath = configuration.getString(COLOSSEUM_LOG_PATH_CONFIG);
+        checkState(colosseumLogPath != null, COLOSSEUM_LOG_PATH_CONFIG + " is not configured.");
+    }
 
     @Override protected File file() {
-        return new File(COLOSSEUM_LOG_PATH);
+        return new File(colosseumLogPath);
     }
 }

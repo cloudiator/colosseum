@@ -21,8 +21,9 @@ package components.log;
 import cloud.strategies.RemoteConnectionStrategy;
 import com.google.inject.Inject;
 import models.VirtualMachine;
-import play.Play;
+import play.Configuration;
 
+import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
@@ -30,18 +31,20 @@ import static com.google.common.base.Preconditions.checkState;
  */
 public class LanceLogFile extends VMLogFile {
 
-    private static final String LANCE_FILE_NAME =
-        Play.application().configuration().getString("colosseum.log.lanceFileName");
+    private final String lanceFileName;
 
-    @Inject LanceLogFile(
+    @Inject LanceLogFile(Configuration configuration,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory) {
         super(remoteConnectionStrategyFactory);
+        checkNotNull(configuration, "configuration is null");
+        lanceFileName = configuration.getString("colosseum.log.lanceFileName");
+        checkState(lanceFileName != null, "colosseum.log.lanceFileName not configured");
     }
 
     @Override protected String location(VirtualMachine virtualMachine) {
         String homeDir =
             virtualMachine.operatingSystem().operatingSystemFamily().operatingSystemType()
                 .homeDirFunction().apply(virtualMachine.loginName());
-        return homeDir + "/" + LANCE_FILE_NAME;
+        return homeDir + "/" + lanceFileName;
     }
 }

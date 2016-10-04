@@ -31,5 +31,7 @@ public class LogCollectorModule extends AbstractModule {
         Multibinder<LogFile> logFileMultibinder = Multibinder.newSetBinder(binder(), LogFile.class);
         logFileMultibinder.addBinding().to(ColosseumLogFile.class);
         logFileMultibinder.addBinding().to(LanceLogFile.class);
+        logFileMultibinder.addBinding().to(VisorLogFile.class);
+        logFileMultibinder.addBinding().to(AggregatorLog.class);
     }
 }

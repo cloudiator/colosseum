@@ -2,28 +2,34 @@ package components.auth;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import models.FrontendUser;
 
 import java.util.Optional;
-
-import models.FrontendUser;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Created by daniel on 24.05.16.
+ * Basic {@link TokenService} implementation, using a {@link TokenStore} for storing the generated
+ * tokens.
  */
-@Singleton public class TokenServiceImpl implements TokenService {
+@Singleton class TokenServiceImpl implements TokenService {
 
     private final TokenStore tokenStore;
+    private final TokenValidity tokenValidity;
 
-    @Inject TokenServiceImpl(TokenStore tokenStore) {
+    @Inject TokenServiceImpl(TokenStore tokenStore, TokenValidity tokenValidity) {
+        checkNotNull(tokenValidity);
+        this.tokenValidity = tokenValidity;
         checkNotNull(tokenStore);
         this.tokenStore = tokenStore;
     }
 
-    private static Token newForUser(FrontendUser frontendUser) {
-        return Token.builder().validFromNow().randomToken().userId(frontendUser.getId()).build();
+    private Token newForUser(FrontendUser frontendUser) {
+        long now = System.currentTimeMillis();
+        long validUntil = tokenValidity.deadline();
+        return Token.builder().createdOn(now).expiresAt(validUntil).randomToken()
+            .userId(frontendUser.getId()).build();
     }
 
     @Override public Token newToken(FrontendUser frontendUser) {
@@ -45,7 +51,8 @@ import static com.google.common.base.Preconditions.checkState;
             return false;
         }
         checkState(optional.get().token().equals(token));
-        return optional.get().userId() == frontendUser.getId() && !optional.get().isExpired();
+        return optional.get().userId() == frontendUser.getId() && !tokenValidity
+            .isExpired(optional.get());
 
     }
 }

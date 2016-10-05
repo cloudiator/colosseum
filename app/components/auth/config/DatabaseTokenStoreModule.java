@@ -5,7 +5,8 @@ import components.auth.DatabaseTokenStore;
 import components.auth.TokenStore;
 
 /**
- * Created by daniel on 29.09.16.
+ * {@link AbstractTokenStoreModule} loading {@link DatabaseTokenStore} as {@link TokenStore}
+ * implementation.
  */
 public class DatabaseTokenStoreModule extends AbstractTokenStoreModule {
 

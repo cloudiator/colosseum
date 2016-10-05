@@ -8,12 +8,24 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by daniel on 24.05.16.
+ * A {@link TokenStore} implementation relying on Guava's Cache for
+ * storing tokens ({@link Cache}).
+ * <p>
+ * Stores tokens in memory, and automatically cleans already expired tokens from
+ * the storage.
  */
 @Singleton public class CacheBasedTokenStore implements TokenStore {
 
-    private static Cache<String, Token> cache = CacheBuilder.newBuilder()
-        .expireAfterWrite(Token.VALIDITY, TimeUnit.MILLISECONDS).build();
+    private final Cache<String, Token> cache;
+
+    public CacheBasedTokenStore(TokenValidity tokenValidity) {
+
+        final CacheBuilder<Object, Object> cacheBuilder = CacheBuilder.newBuilder();
+        if (tokenValidity.validity() != TokenValidity.INFINITE_VALIDITY) {
+            cacheBuilder.expireAfterWrite(tokenValidity.validity(), TimeUnit.MILLISECONDS);
+        }
+        cache = cacheBuilder.build();
+    }
 
     @Override public void store(Token token) {
         cache.put(token.token(), token);

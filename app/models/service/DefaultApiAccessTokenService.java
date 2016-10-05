@@ -19,10 +19,9 @@
 package models.service;
 
 import com.google.inject.Inject;
+import models.ApiAccessToken;
 
 import javax.annotation.Nullable;
-
-import models.ApiAccessToken;
 
 /**
  * Created by daniel on 19.12.14.
@@ -36,7 +35,10 @@ public class DefaultApiAccessTokenService extends BaseModelService<ApiAccessToke
     }
 
     @Override @Nullable public ApiAccessToken findByToken(String token) {
-        ((ApiAccessTokenRepository) modelRepository).deleteExpiredTokens();
         return ((ApiAccessTokenRepository) modelRepository).findByToken(token);
+    }
+
+    @Override public void deleteExpiredTokens(Long deadline) {
+        ((ApiAccessTokenRepository) modelRepository).deleteExpiredTokens(deadline);
     }
 }

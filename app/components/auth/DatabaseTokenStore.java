@@ -1,28 +1,29 @@
 package components.auth;
 
 import com.google.inject.Inject;
-
-import java.util.Optional;
-
 import models.ApiAccessToken;
 import models.FrontendUser;
 import models.service.ApiAccessTokenService;
 import models.service.FrontendUserService;
 
+import java.util.Optional;
+
 import static com.google.common.base.Preconditions.checkState;
 
 /**
- * Created by daniel on 24.05.16.
+ * A {@link TokenStore} implementation using the attached database for persisting tokens.
  */
 public class DatabaseTokenStore implements TokenStore {
 
     private final FrontendUserService frontendUserService;
     private final ApiAccessTokenService apiAccessTokenService;
+    private final TokenValidity tokenValidity;
 
     @Inject DatabaseTokenStore(FrontendUserService frontendUserService,
-        ApiAccessTokenService apiAccessTokenService) {
+        ApiAccessTokenService apiAccessTokenService, TokenValidity tokenValidity) {
         this.frontendUserService = frontendUserService;
         this.apiAccessTokenService = apiAccessTokenService;
+        this.tokenValidity = tokenValidity;
     }
 
     @Override public void store(Token token) {
@@ -33,7 +34,10 @@ public class DatabaseTokenStore implements TokenStore {
     }
 
     @Override public Optional<Token> retrieve(String token) {
-        final ApiAccessToken apiAccessToken = this.apiAccessTokenService.findByToken(token);
+        if(tokenValidity.validity() != TokenValidity.INFINITE_VALIDITY) {
+            apiAccessTokenService.deleteExpiredTokens(tokenValidity.deadline());
+        }
+        final ApiAccessToken apiAccessToken = apiAccessTokenService.findByToken(token);
         if (apiAccessToken == null) {
             return Optional.empty();
         }

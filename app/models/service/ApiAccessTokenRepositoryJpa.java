@@ -37,14 +37,13 @@ class ApiAccessTokenRepositoryJpa extends BaseModelRepositoryJpa<ApiAccessToken>
 
     @Override public ApiAccessToken findByToken(String token) {
         checkNotNull(token);
-        deleteExpiredTokens();
         //noinspection unchecked
         return (ApiAccessToken) em().createQuery("from ApiAccessToken where token = :token")
             .setParameter("token", token).getResultList().stream().findFirst().orElse(null);
     }
 
-    @Override public void deleteExpiredTokens() {
-        em().createQuery("delete from ApiAccessToken where expiresAt < :timestamp")
-            .setParameter("timestamp", System.currentTimeMillis()).executeUpdate();
+    @Override public void deleteExpiredTokens(Long deadline) {
+        em().createQuery("delete from ApiAccessToken where expiresAt < :deadline")
+            .setParameter("deadline", deadline).executeUpdate();
     }
 }

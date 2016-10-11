@@ -113,7 +113,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
                     final ApplicationId applicationId = ApplicationId
                         .fromString(instance.getApplicationInstance().getApplication().getUuid());
-                    LOGGER.debug("Using application ID %s to deploy %s.", applicationId, instance);
+                    LOGGER.debug(String
+                        .format("Using application ID %s to deploy %s.", applicationId, instance));
 
                     //register application instance
                     final boolean couldRegister;

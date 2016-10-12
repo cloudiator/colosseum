@@ -18,14 +18,16 @@
 
 package components.execution;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 import com.google.inject.multibindings.Multibinder;
-
 import play.Configuration;
 import play.Environment;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
+
+import java.util.concurrent.ThreadFactory;
 
 /**
  * Created by daniel on 24.07.15.
@@ -47,9 +49,12 @@ public class ExecutionModule extends AbstractModule {
             Matchers.annotatedWith(Transactional.class),
             new TransactionalRunnableInterceptor(getProvider(JPAApi.class)));
 
+        final ThreadFactory threadFactory =
+            new ThreadFactoryBuilder().setNameFormat("ExecutionService-%d").build();
+
         bind(ExecutionService.class).toInstance(new StableScheduledThreadExecutor(
             new ScheduledThreadPoolExecutorExecutionService(new LoggingScheduledThreadPoolExecutor(
-                configuration.getInt("colosseum.execution.thread", 10)))));
+                configuration.getInt("colosseum.execution.thread", 10), threadFactory))));
         bind(ExecutionSystemInitialization.class).asEagerSingleton();
 
         Multibinder.newSetBinder(binder(), Runnable.class);

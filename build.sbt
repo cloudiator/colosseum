@@ -1,7 +1,7 @@
 
 import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayJava, DebianPlugin)
 
 scalaVersion := "2.11.8"
 
@@ -137,3 +137,10 @@ ApiDocSettings.apiDocTask
 
 PlayKeys.externalizeResources := false
 
+//Debian configuration
+
+maintainer in Linux := "Daniel Baur <daniel.baur@uni-ulm.de>"
+
+packageSummary in Linux := "Colosseum component of the Cloudiator toolset."
+
+packageDescription := "Colosseum is a cloud orchestration tool. It belongs to the Cloudiator toolset. More information on https://cloudiator.github.io."

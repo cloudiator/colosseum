@@ -21,9 +21,13 @@ package components.scalability.aggregation;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.JsonHttpThresholdObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.JsonHttpThresholdObserverParameterImpl;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameterImpl;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameterImpl;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameterImpl;
 
 import java.rmi.RemoteException;
 
@@ -64,7 +68,7 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
             if(this.subscription.getType() == SubscriptionType.CDO) {
                 service.addObserver(
                     monitor.getId(),
-                    new TelnetMetricObserverParameter(
+                    new TelnetMetricObserverParameterImpl(
                         subscription.getFilterValue(),
                         AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
@@ -74,7 +78,7 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
             } else if(this.subscription.getType() == SubscriptionType.CDO_EVENT) {
                 service.addObserver(
                     monitor.getId(),
-                    new TelnetEventObserverParameter(
+                    new TelnetEventObserverParameterImpl(
                         subscription.getFilterValue(),
                         AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                         subscription.getEndpoint(),
@@ -84,7 +88,7 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
             } else if(this.subscription.getType() == SubscriptionType.JSON_CS) {
                 service.addObserver(
                         monitor.getId(),
-                        new JsonHttpThresholdObserverParameter(
+                        new JsonHttpThresholdObserverParameterImpl(
                                 subscription.getFilterValue(),
                                 AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                                 null,
@@ -93,7 +97,7 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
                                 subscription.getEndpoint())
                 );
             } else if(this.subscription.getType() == SubscriptionType.SCALING) {
-                ColosseumDetails cd =new ColosseumDetails(
+                ColosseumDetails cd = new ColosseumDetails(
                         Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.protocol"),
                         Play.application().configuration().getString("colosseum.scalability.aggregator.scalingaction.ip"),
                         Play.application().configuration().getInt("colosseum.scalability.aggregator.scalingaction.port"),
@@ -104,10 +108,14 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
 
                 service.addObserver(
                     monitor.getId(),
-                    new ScalingObserverParameter(
+                    new ScalingObserverParameterImpl(
                         subscription.getFilterValue(),
                         AggregatorEntitiesConverter.convert(subscription.getFilterType()),
-                        cd)
+                        null,
+                        null,
+                        subscription.getId().toString(),
+                        cd
+                    )
                 );
             }
         } catch (RemoteException e) {

@@ -20,6 +20,7 @@ package models.service;
 
 import com.google.inject.AbstractModule;
 
+import components.scalability.aggregation.RemoveAggregation;
 import controllers.security.SecuredSessionOrToken;
 import controllers.security.SecuredToken;
 import dtos.ApplicationComponentDto;

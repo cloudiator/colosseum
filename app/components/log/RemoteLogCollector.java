@@ -62,7 +62,7 @@ public class RemoteLogCollector implements LogCollector {
         String fileName = new File(remotePath).getName();
         checkState(virtualMachine.publicIpAddress().isPresent());
         String Ip = virtualMachine.publicIpAddress().get().getIp();
-        return fileName + "-" + Ip;
+        return fileName + "-" + Ip + ".log";
     }
 
     @Override public String toString() {

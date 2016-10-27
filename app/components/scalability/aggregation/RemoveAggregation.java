@@ -18,8 +18,6 @@
 
 package components.scalability.aggregation;
 
-import com.google.inject.Inject;
-
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 
 import java.rmi.RemoteException;
@@ -27,35 +25,43 @@ import java.rmi.RemoteException;
 import models.ComposedMonitor;
 import models.Monitor;
 import models.service.ModelService;
+import play.db.jpa.JPAApi;
 
 /**
  * Created by Frank on 30.07.2015.
  */
 public class RemoveAggregation extends MonitorAggregation {
+    private final ModelService<ComposedMonitor> composedMonitorModelService;
+    private final JPAApi jpaApi;
 
-    public RemoveAggregation(Monitor monitor) {
+    public RemoveAggregation(Monitor monitor, ModelService<ComposedMonitor> composedMonitorModelService, JPAApi jpaApi) {
         super(monitor);
+        this.composedMonitorModelService = composedMonitorModelService;
+        this.jpaApi = jpaApi;
     }
 
-    @Override public void execute(AggregatorServiceAccess service) {
+    @Override
+    public void execute(AggregatorServiceAccess service) {
         try {
             service.stopAggregation(getObject().getId());
 
-            ComposedMonitor entity = References.modelService.getById(getObject().getId());
+            try {
+                jpaApi.withTransaction(() -> {
+                    ComposedMonitor entity = composedMonitorModelService.getById(getObject().getId());
 
-            if (entity == null) {
-                LOGGER.info("Could not remove stopped ComposedMonitor from DB, since it was not available.");
-                return;
+                    if (entity == null) {
+                        LOGGER.info("Could not remove stopped ComposedMonitor from DB, since it was not available.");
+                        return;
+                    }
+
+                    composedMonitorModelService.delete(entity);
+                });
+            } catch (Throwable throwable) {
+                throw new RuntimeException(throwable);
             }
-
-            References.modelService.delete(entity);
 
         } catch (RemoteException e) {
             LOGGER.error("Error when calling remote object to stop aggregation.");
         }
-    }
-
-    public static class References {
-        @Inject private static ModelService<ComposedMonitor> modelService;
     }
 }

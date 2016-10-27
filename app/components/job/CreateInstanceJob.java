@@ -27,7 +27,6 @@ import de.uniulm.omi.cloudiator.lance.application.component.ComponentId;
 import de.uniulm.omi.cloudiator.lance.application.component.DeployableComponent;
 import de.uniulm.omi.cloudiator.lance.client.LifecycleClient;
 import de.uniulm.omi.cloudiator.lance.container.spec.os.OperatingSystem;
-import de.uniulm.omi.cloudiator.lance.lca.DeploymentException;
 import de.uniulm.omi.cloudiator.lance.lca.container.ComponentInstanceId;
 import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
 import de.uniulm.omi.cloudiator.lance.lca.registry.RegistrationException;
@@ -232,7 +231,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         try {
             componentInstanceId = lifecycleClient
                 .deploy(serverIp, deploymentContext, deployableComponent, lanceOs, containerType);
-        } catch (DeploymentException e) {
+            lifecycleClient.waitForDeployment(componentInstanceId, serverIp);
+        } catch (Exception e) {
             throw new JobException("Error during deployment.", e);
         }
 

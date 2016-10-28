@@ -18,13 +18,9 @@
 
 package components.execution;
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-
 import play.Logger;
+
+import java.util.concurrent.*;
 
 /**
  * An extension of the ScheduledThreadPoolExecutor, that logs any errors occurring during
@@ -63,7 +59,8 @@ public class LoggingScheduledThreadPoolExecutor extends ScheduledThreadPoolExecu
             }
         }
         if (tToLog != null) {
-            Logger.error("Uncaught exception occurred during the execution of task.", tToLog);
+            Logger.error("Uncaught exception occurred during the execution of task " + r + ".",
+                tToLog);
         }
     }
 }

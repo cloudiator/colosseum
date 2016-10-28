@@ -213,11 +213,9 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
         OperatingSystem lanceOs;
         try {
-            lanceOs = jpaApi().withTransaction(new F.Function0<OperatingSystem>() {
-                @Override public OperatingSystem apply() throws Throwable {
-                    final Instance instance = getT();
-                    return osConverter.apply(instance.getVirtualMachine().operatingSystem());
-                }
+            lanceOs = jpaApi().withTransaction(() -> {
+                final Instance instance = getT();
+                return osConverter.apply(instance.getVirtualMachine().operatingSystem());
             });
         } catch (Throwable throwable) {
             throw new JobException("Error while resolving operating system.", throwable);

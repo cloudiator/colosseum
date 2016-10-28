@@ -19,15 +19,15 @@
 package components.model;
 
 import com.google.inject.Inject;
+import models.Application;
+import models.ApplicationInstance;
+import play.Logger;
+import util.logging.Loggers;
 
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import models.Application;
-import play.Logger;
-import util.logging.Loggers;
 
 /**
  * Created by daniel on 14.07.16.
@@ -36,21 +36,33 @@ public class ModelValidationServiceImpl implements ModelValidationService {
 
     private final static Logger.ALogger LOGGER = Loggers.of(Loggers.MODEL);
 
-    private final Set<ModelValidator<Application>> modelValidators;
+    private final Set<ModelValidator<Application>> applicationValidators;
+    private final Set<ModelValidator<ApplicationInstance>> applicationInstanceValidators;
 
-    @Inject public ModelValidationServiceImpl(Set<ModelValidator<Application>> modelValidators) {
-        this.modelValidators = modelValidators;
+    @Inject
+    public ModelValidationServiceImpl(Set<ModelValidator<Application>> applicationValidators, Set<ModelValidator<ApplicationInstance>> applicationInstanceValidators) {
+        this.applicationValidators = applicationValidators;
+        this.applicationInstanceValidators = applicationInstanceValidators;
     }
 
-    @Override public void validate(Application application) throws ModelValidationException {
-        final Set<ValidationMessage> collect = modelValidators.stream().flatMap(
-            applicationModelValidator -> applicationModelValidator.validate(application).stream())
-            .collect(Collectors.toSet());
+    @Override
+    public void validate(Application application) throws ModelValidationException {
+        final Set<ValidationMessage> collect = applicationValidators.stream().flatMap(
+                applicationModelValidator -> applicationModelValidator.validate(application).stream())
+                .collect(Collectors.toSet());
+        logWarningsAndThrowErrors(collect);
+    }
+
+    @Override
+    public void validate(ApplicationInstance applicationInstance) throws ModelValidationException {
+        final Set<ValidationMessage> collect = applicationInstanceValidators.stream().flatMap(
+                applicationModelValidator -> applicationModelValidator.validate(applicationInstance).stream())
+                .collect(Collectors.toSet());
         logWarningsAndThrowErrors(collect);
     }
 
     private void logWarningsAndThrowErrors(Set<ValidationMessage> validationMessages)
-        throws ModelValidationException {
+            throws ModelValidationException {
         Set<ValidationMessage> errors = new HashSet<>(validationMessages.size());
         Set<ValidationMessage> warnings = new HashSet<>(validationMessages.size());
         validationMessages.forEach(validationMessage -> {
@@ -71,6 +83,6 @@ public class ModelValidationServiceImpl implements ModelValidationService {
 
     private String buildErrorMessage(Set<ValidationMessage> validationMessages) {
         return String.format("%s error(s) have been found while validating the application: %s",
-            validationMessages.size(), Arrays.toString(validationMessages.toArray()));
+                validationMessages.size(), Arrays.toString(validationMessages.toArray()));
     }
 }

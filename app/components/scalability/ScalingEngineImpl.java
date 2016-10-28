@@ -40,13 +40,15 @@ import java.util.UUID;
     private final FrontendCommunicator fc;
     private final int agentPort;
     private final static Logger.ALogger LOGGER = play.Logger.of("colosseum.scalability");
+    private final AggregationFactory aggregationFactory;
 
     @Inject public ScalingEngineImpl(FrontendCommunicator fc,
-        @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue,
-        int agentPort) {
+                                     @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue,
+                                     int agentPort, AggregationFactory aggregationFactory) {
         this.fc = fc;
         this.aggregationQueue = aggregationQueue;
         this.agentPort = agentPort;
+        this.aggregationFactory = aggregationFactory;
     }
 
 
@@ -197,7 +199,8 @@ import java.util.UUID;
             if (composedMonitor != null) {
                 Logger.debug("Delete ComposedMonitor: " + composedMonitor.getId());
 
-                aggregationQueue.add(new RemoveAggregation(composedMonitor));
+
+                aggregationQueue.add(aggregationFactory.createRemoveAggregation(composedMonitor));
             }
 
             List<MonitorInstance> monitorInstances = fc.getMonitorInstances(monitorId);

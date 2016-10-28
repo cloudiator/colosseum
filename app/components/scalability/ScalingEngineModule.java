@@ -22,13 +22,15 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.name.Named;
+
+import javax.inject.Singleton;
+
 import components.execution.SimpleBlockingQueue;
 import components.scalability.aggregation.Aggregation;
+import components.scalability.aggregation.AggregationFactory;
 import models.Monitor;
 import play.Configuration;
 import play.Environment;
-
-import javax.inject.Singleton;
 
 /**
  * Created by Frank on 20.07.2015.
@@ -38,19 +40,22 @@ public class ScalingEngineModule extends AbstractModule {
     private final Configuration configuration;
 
     public ScalingEngineModule(@SuppressWarnings("UnusedParameters") Environment environment,
-        Configuration configuration) {
+                               Configuration configuration) {
         this.configuration = configuration;
     }
 
-    @Override protected void configure() {
+    @Override
+    protected void configure() {
         bind(FrontendCommunicator.class).to(FrontendCommunicatorImpl.class);
+        bind(AggregationFactory.class);
         //bind(ScalingEngine.class).to(ScalingEngineImpl.class);
     }
 
     @Singleton @Provides final ScalingEngine provideScalingEngine(FrontendCommunicator fc,
         @Named("aggregationQueue") SimpleBlockingQueue<Aggregation<Monitor>> aggregationQueue,
-        Injector injector) {
+        Injector injector, AggregationFactory aggregationFactory) {
         return new ScalingEngineImpl(fc, aggregationQueue,
-            configuration.getInt("colosseum.scalability.visor.port"));
+            configuration.getInt("colosseum.scalability.visor.port"), aggregationFactory);
+        // return injector.getInstance(ScalingEngine.class);
     }
 }

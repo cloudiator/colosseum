@@ -21,29 +21,28 @@ package components.model.config;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
-
-import components.model.AtLeastOnePublicPortProvidedWarning;
-import components.model.EveryPortRequiredFullfilledValidator;
-import components.model.ModelValidationService;
-import components.model.ModelValidationServiceImpl;
-import components.model.ModelValidator;
-import components.model.NoCycleInMandatoryCommunicationValidator;
-import components.model.PortClashValidator;
+import components.model.*;
 import models.Application;
+import models.ApplicationInstance;
 
 /**
  * Created by daniel on 14.07.16.
  */
 public class ModelValidationModule extends AbstractModule {
 
-    @Override protected void configure() {
+    @Override
+    protected void configure() {
         bind(ModelValidationService.class).to(ModelValidationServiceImpl.class);
-        final Multibinder<ModelValidator<Application>> multibinder =
-            Multibinder.newSetBinder(binder(), new TypeLiteral<ModelValidator<Application>>() {
-            });
-        multibinder.addBinding().to(NoCycleInMandatoryCommunicationValidator.class);
-        multibinder.addBinding().to(EveryPortRequiredFullfilledValidator.class);
-        multibinder.addBinding().to(AtLeastOnePublicPortProvidedWarning.class);
-        multibinder.addBinding().to(PortClashValidator.class);
+        final Multibinder<ModelValidator<Application>> typeModelValidatorBinder =
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ModelValidator<Application>>() {
+                });
+        typeModelValidatorBinder.addBinding().to(NoCycleInMandatoryCommunicationValidator.class);
+        typeModelValidatorBinder.addBinding().to(EveryPortRequiredFullfilledValidator.class);
+        typeModelValidatorBinder.addBinding().to(AtLeastOnePublicPortProvidedWarning.class);
+        typeModelValidatorBinder.addBinding().to(PortClashValidator.class);
+
+        final Multibinder<ModelValidator<ApplicationInstance>> instanceModelValidatorBinder =
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ModelValidator<ApplicationInstance>>() {
+                });
     }
 }

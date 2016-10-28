@@ -5,7 +5,8 @@ import components.auth.CacheBasedTokenStore;
 import components.auth.TokenStore;
 
 /**
- * Created by daniel on 29.09.16.
+ * {@link AbstractTokenStoreModule} loading {@link CacheBasedTokenStore} as {@link TokenStore}
+ * implementation.
  */
 public class CacheTokenStoreModule extends AbstractTokenStoreModule {
 

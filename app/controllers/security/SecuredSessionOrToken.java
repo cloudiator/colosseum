@@ -19,6 +19,8 @@
 package controllers.security;
 
 import com.google.inject.Inject;
+import components.auth.TokenService;
+import models.service.FrontendUserService;
 import play.db.jpa.JPAApi;
 import play.mvc.Http;
 import play.mvc.Result;
@@ -31,10 +33,11 @@ public class SecuredSessionOrToken extends SecuredToken {
     private final SecuredSession securedSession;
     private final SecuredToken securedToken;
 
-    @Inject public SecuredSessionOrToken(JPAApi jpaApi) {
-        super(jpaApi);
+    @Inject public SecuredSessionOrToken(JPAApi jpaApi, TokenService tokenService,
+        FrontendUserService frontendUserService) {
+        super(jpaApi, tokenService, frontendUserService);
         securedSession = new SecuredSession();
-        securedToken = new SecuredToken(jpaApi);
+        securedToken = new SecuredToken(jpaApi, tokenService, frontendUserService);
     }
 
     protected String authorizedSession(Http.Context context) {

@@ -29,5 +29,5 @@ interface ApiAccessTokenRepository extends ModelRepository<ApiAccessToken> {
 
     @Nullable ApiAccessToken findByToken(String token);
 
-    void deleteExpiredTokens();
+    void deleteExpiredTokens(Long deadline);
 }

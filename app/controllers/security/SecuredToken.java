@@ -19,22 +19,18 @@
 package controllers.security;
 
 import com.google.inject.Inject;
-import com.google.inject.Provider;
-
-import org.hibernate.Hibernate;
-
-import javax.annotation.Nullable;
-import javax.persistence.EntityManager;
-
 import components.auth.TokenService;
 import models.FrontendUser;
 import models.Tenant;
 import models.service.FrontendUserService;
+import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;
-import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Result;
+
+import javax.annotation.Nullable;
+import javax.persistence.EntityManager;
 
 /**
  * Created by daniel on 19.12.14.
@@ -43,9 +39,14 @@ import play.mvc.Result;
 public class SecuredToken extends TenantAwareAuthenticator {
 
     private final JPAApi jpaApi;
+    private final TokenService tokenService;
+    private final FrontendUserService frontendUserService;
 
-    public SecuredToken(JPAApi jpaApi) {
+    @Inject public SecuredToken(JPAApi jpaApi, TokenService tokenService,
+        FrontendUserService frontendUserService) {
         this.jpaApi = jpaApi;
+        this.tokenService = tokenService;
+        this.frontendUserService = frontendUserService;
     }
 
     @Nullable private FrontendUser getFrontendUser(Http.Context context) {
@@ -70,8 +71,7 @@ public class SecuredToken extends TenantAwareAuthenticator {
         final EntityManager em = JPA.em();
         FrontendUser frontendUser;
         try {
-            frontendUser = jpaApi.withTransaction(
-                () -> References.frontendUserServiceInterfaceProvider.get().getById(userId));
+            frontendUser = jpaApi.withTransaction(() -> frontendUserService.getById(userId));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -84,8 +84,8 @@ public class SecuredToken extends TenantAwareAuthenticator {
         final FrontendUser finalUser = frontendUser;
         boolean valid;
         try {
-            valid = jpaApi.withTransaction(
-                () -> References.tokenService.isTokenValidForUser(token, finalUser));
+            valid =
+                jpaApi.withTransaction(() -> tokenService.isTokenValidForUser(token, finalUser));
         } catch (Throwable t) {
             throw new RuntimeException(t);
         }
@@ -120,21 +120,17 @@ public class SecuredToken extends TenantAwareAuthenticator {
         final EntityManager em = JPA.em();
 
         try {
-            Tenant foundTenant = jpaApi.withTransaction(new F.Function0<Tenant>() {
-                @Override public Tenant apply() throws Throwable {
-                    FrontendUser frontendUser1 =
-                        References.frontendUserServiceInterfaceProvider.get()
-                            .getById(frontendUser.getId());
-                    if (frontendUser1 == null) {
-                        return null;
-                    }
-                    for (Tenant searchTenant : frontendUser1.getTenants()) {
-                        if (searchTenant.getName().equals(tenant)) {
-                            return searchTenant;
-                        }
-                    }
+            Tenant foundTenant = jpaApi.withTransaction(() -> {
+                FrontendUser frontendUser1 = frontendUserService.getById(frontendUser.getId());
+                if (frontendUser1 == null) {
                     return null;
                 }
+                for (Tenant searchTenant : frontendUser1.getTenants()) {
+                    if (searchTenant.getName().equals(tenant)) {
+                        return searchTenant;
+                    }
+                }
+                return null;
             });
             if (foundTenant != null) {
                 return foundTenant.getName();
@@ -153,11 +149,5 @@ public class SecuredToken extends TenantAwareAuthenticator {
 
     @Override public Result onUnauthorized(Http.Context context) {
         return unauthorized();
-    }
-
-
-    public static class References {
-        @Inject private static TokenService tokenService;
-        @Inject private static Provider<FrontendUserService> frontendUserServiceInterfaceProvider;
     }
 }

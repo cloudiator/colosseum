@@ -3,6 +3,8 @@ import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava, DebianPlugin)
 
+updateOptions := updateOptions.value.withCachedResolution(true)
+
 scalaVersion := "2.11.8"
 
 name := "colosseum"
@@ -61,7 +63,6 @@ libraryDependencies ++= Seq(
   "org.jgrapht" % "jgrapht-ext" % "0.9.2",
   "org.apache.commons" % "commons-lang3" % "3.4"
 )
-
 
 TwirlKeys.templateImports += "dtos._"
 

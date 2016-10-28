@@ -20,7 +20,11 @@ package components.execution;
 
 import play.Logger;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+
 
 /**
  * An extension of the ScheduledThreadPoolExecutor, that logs any errors occurring during
@@ -33,15 +37,6 @@ public class LoggingScheduledThreadPoolExecutor extends ScheduledThreadPoolExecu
 
     public LoggingScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory) {
         super(corePoolSize, threadFactory);
-    }
-
-    public LoggingScheduledThreadPoolExecutor(int corePoolSize, RejectedExecutionHandler handler) {
-        super(corePoolSize, handler);
-    }
-
-    public LoggingScheduledThreadPoolExecutor(int corePoolSize, ThreadFactory threadFactory,
-        RejectedExecutionHandler handler) {
-        super(corePoolSize, threadFactory, handler);
     }
 
     @Override protected void afterExecute(final Runnable r, final Throwable t) {

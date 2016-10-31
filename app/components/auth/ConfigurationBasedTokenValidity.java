@@ -29,36 +29,42 @@ import static com.google.common.base.Preconditions.checkState;
 /**
  * Created by daniel on 05.10.16.
  */
-@Singleton class ConfigurationBasedTokenValidity implements TokenValidity {
+@Singleton
+class ConfigurationBasedTokenValidity implements TokenValidity {
 
-    private final Logger.ALogger LOGGER = Loggers.of(Loggers.API);
+    private final Logger.ALogger LOGGER = Loggers.of(Loggers.AUTH);
 
     private final long validity;
     private final static String VALIDITY_CONFIG = "colosseum.auth.token.validity";
 
-    @Inject ConfigurationBasedTokenValidity(Configuration configuration) {
+    @Inject
+    ConfigurationBasedTokenValidity(Configuration configuration) {
         final Long configuredValidity = configuration.getLong(VALIDITY_CONFIG);
         if (configuredValidity == null) {
             LOGGER.warn(String
-                .format("Configuration option %s not configured, assuming infinite token validity.",
-                    VALIDITY_CONFIG));
+                    .format("Configuration option %s not configured, assuming infinite token validity.",
+                            VALIDITY_CONFIG));
             validity = INFINITE_VALIDITY;
         } else {
             validity = configuredValidity;
         }
         checkState(validity > 0 || validity == INFINITE_VALIDITY,
-            "illegal value configured for " + VALIDITY_CONFIG);
+                "illegal value configured for " + VALIDITY_CONFIG);
+        LOGGER.info(String.format("%s initialized with validity %s.", this, validity));
     }
 
-    @Override public boolean isExpired(Token token) {
+    @Override
+    public boolean isExpired(Token token) {
         return token.expiresAt() < deadline();
     }
 
-    @Override public long validity() {
+    @Override
+    public long validity() {
         return validity;
     }
 
-    @Override public long deadline() {
+    @Override
+    public long deadline() {
         if (validity == INFINITE_VALIDITY) {
             return MAX_VALIDITY;
         }

@@ -30,15 +30,18 @@ import play.mvc.Result;
  */
 public class SecuredSession extends TenantAwareAuthenticator {
 
-    @Override public String getUser(Context context) {
+    @Override
+    public String getUser(Context context) {
         return context.session().get("email");
     }
 
-    @Override public String getTenant(Context context) {
+    @Override
+    public String getTenant(Context context) {
         return context.session().get("tenant");
     }
 
-    @Override public Result onUnauthorized(Context context) {
+    @Override
+    public Result onUnauthorized(Context context) {
         return unauthorized();
     }
 }

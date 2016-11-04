@@ -32,7 +32,7 @@ public class DatabaseTokenStore implements TokenStore {
 
     @Override
     public void store(Token token) {
-        LOGGER.debug(String.format("%s is storing new token %s.", this, token));
+        LOGGER.trace(String.format("%s is storing new token %s.", this, token));
         FrontendUser frontendUser = frontendUserService.getById(token.userId());
         checkState(frontendUser != null, "user in token not in db");
         ApiAccessToken apiAccessToken = new ApiAccessToken(frontendUser, token.token());
@@ -41,10 +41,10 @@ public class DatabaseTokenStore implements TokenStore {
 
     @Override
     public Optional<Token> retrieve(String token) {
-        LOGGER.debug(String.format("%s is retrieving token %s", this, token));
+        LOGGER.trace(String.format("%s is retrieving token %s", this, token));
         if (tokenValidity.validity() != TokenValidity.INFINITE_VALIDITY) {
             long deadline = tokenValidity.deadline();
-            LOGGER.debug(String.format("%s is deleting expired tokens after deadline %s.", this, deadline));
+            LOGGER.trace(String.format("%s is deleting expired tokens after deadline %s.", this, deadline));
             apiAccessTokenService.deleteExpiredTokens(deadline);
         }
         final ApiAccessToken apiAccessToken = apiAccessTokenService.findByToken(token);
@@ -55,7 +55,7 @@ public class DatabaseTokenStore implements TokenStore {
         Optional<Token> tokenOptional = Optional.of(Token.builder().createdOn(apiAccessToken.getCreatedOn())
                 .expiresAt(apiAccessToken.getExpiresAt()).token(apiAccessToken.getToken())
                 .userId(apiAccessToken.getFrontendUser().getId()).build());
-        LOGGER.debug(String.format("%s retrieved token %s.", this, tokenOptional));
+        LOGGER.trace(String.format("%s retrieved token %s.", this, tokenOptional));
         return tokenOptional;
     }
 }

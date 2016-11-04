@@ -41,8 +41,10 @@ import models.service.RemoteModelService;
 import play.Configuration;
 import play.Logger;
 import play.db.jpa.JPAApi;
-import play.libs.F;
 import util.logging.Loggers;
+
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
@@ -57,18 +59,17 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
     private final ModelValidationService modelValidationService;
     private final ApplicationToApplicationId applicationToApplicationId;
     private final ApplicationInstanceToApplicationInstanceId
-        applicationInstanceToApplicationInstanceId;
+            applicationInstanceToApplicationInstanceId;
     private final ApplicationComponentToComponentId applicationComponentToComponentId;
-    private final LifecycleClient lifecycleClient = LifecycleClient.getClient();
     private final ApplicationComponentToDeployableComponent
-        applicationComponentToDeployableComponent;
+            applicationComponentToDeployableComponent;
     private final ApplicationComponentToContainerType applicationComponentToContainerType;
     private final OsConverter osConverter;
 
     public CreateInstanceJob(Configuration configuration, JPAApi jpaApi, Instance instance,
-        RemoteModelService<Instance> modelService, ModelService<Tenant> tenantModelService,
-        ColosseumComputeService colosseumComputeService, Tenant tenant,
-        ModelValidationService modelValidationService) {
+                             RemoteModelService<Instance> modelService, ModelService<Tenant> tenantModelService,
+                             ColosseumComputeService colosseumComputeService, Tenant tenant,
+                             ModelValidationService modelValidationService) {
         super(jpaApi, instance, modelService, tenantModelService, colosseumComputeService, tenant);
 
         checkNotNull(modelValidationService);
@@ -77,23 +78,44 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         this.modelValidationService = modelValidationService;
         applicationToApplicationId = new ApplicationToApplicationId();
         applicationInstanceToApplicationInstanceId =
-            new ApplicationInstanceToApplicationInstanceId();
+                new ApplicationInstanceToApplicationInstanceId();
         applicationComponentToComponentId = new ApplicationComponentToComponentId();
         applicationComponentToDeployableComponent = new ApplicationComponentToDeployableComponent();
         applicationComponentToContainerType =
-            new ApplicationComponentToContainerType(configuration);
+                new ApplicationComponentToContainerType(configuration);
         osConverter = new OsConverter();
     }
 
-    @Override protected void doWork(ModelService<Instance> modelService,
-        ColosseumComputeService computeService) throws JobException {
+    @Override
+    protected void doWork(ModelService<Instance> modelService,
+                          ColosseumComputeService computeService) throws JobException {
 
+        String serverIp;
+        try {
+            serverIp = jpaApi().withTransaction(() -> {
+                final Instance instance = getT();
+                final VirtualMachine virtualMachine = instance.getVirtualMachine();
+                checkState(virtualMachine.publicIpAddress().isPresent(),
+                        "virtual machine has no public ip.");
+                return virtualMachine.publicIpAddress().get().getIp();
+            });
+        } catch (Throwable throwable) {
+            throw new JobException("Error while retrieving public ip of virtual machine.",
+                    throwable);
+        }
+
+        final LifecycleClient lifecycleClient;
+        try {
+            lifecycleClient = LifecycleClient.getClient(serverIp);
+        } catch (RemoteException | NotBoundException e) {
+            throw new JobException("Error creating lifecycle client", e);
+        }
 
         //todo: should normally be validated in an application instance method.
         LOGGER.info("Starting validation of model.");
         try {
             jpaApi().withTransaction(() -> modelValidationService
-                .validate(getT().getApplicationComponent().getApplication()));
+                    .validate(getT().getApplicationComponent().getApplication()));
         } catch (Throwable t) {
             throw new JobException("Error while validation of model", t);
         }
@@ -105,7 +127,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             applicationId = jpaApi().withTransaction(() -> {
                 final Instance instance = getT();
                 return applicationToApplicationId
-                    .apply(instance.getApplicationInstance().getApplication());
+                        .apply(instance.getApplicationInstance().getApplication());
             });
         } catch (Throwable throwable) {
             throw new JobException("Unable to build applicationId", throwable);
@@ -117,7 +139,7 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             applicationInstanceId = jpaApi().withTransaction(() -> {
                 final Instance instance = getT();
                 return applicationInstanceToApplicationInstanceId
-                    .apply(instance.getApplicationInstance());
+                        .apply(instance.getApplicationInstance());
             });
         } catch (Throwable throwable) {
             throw new JobException("Unable to build applicationInstanceId", throwable);
@@ -125,48 +147,48 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
         //register applicationInstance at lifecycle client
         LOGGER.debug(String.format(
-            "Registering new applicationInstance %s for application %s at lance using client %s",
-            applicationInstanceId, applicationId, lifecycleClient));
+                "Registering new applicationInstance %s for application %s at lance using client %s",
+                applicationInstanceId, applicationId, lifecycleClient));
         boolean couldRegisterApplicationInstance;
         try {
             couldRegisterApplicationInstance =
-                lifecycleClient.registerApplicationInstance(applicationInstanceId, applicationId);
+                    lifecycleClient.registerApplicationInstance(applicationInstanceId, applicationId);
         } catch (RegistrationException e) {
             throw new JobException(
-                String.format("Could not register applicationInstance %s.", applicationInstanceId),
-                e);
+                    String.format("Could not register applicationInstance %s.", applicationInstanceId),
+                    e);
         }
 
         if (couldRegisterApplicationInstance) {
-            registerApplicationComponentsForApplicationInstance(applicationInstanceId);
+            registerApplicationComponentsForApplicationInstance(lifecycleClient, applicationInstanceId);
         } else {
             LOGGER.debug(String.format(
-                "Could not register applicationInstance %s, assuming it was already registered.",
-                applicationInstanceId));
+                    "Could not register applicationInstance %s, assuming it was already registered.",
+                    applicationInstanceId));
         }
 
         //create the deployment context
         final DeploymentContext deploymentContext =
-            lifecycleClient.initDeploymentContext(applicationId, applicationInstanceId);
+                lifecycleClient.initDeploymentContext(applicationId, applicationInstanceId);
         LOGGER.debug(String.format("Initialized deployment context %s.", deploymentContext));
         //register the application component at the deployment context
         LOGGER.debug(String.format("Registering application component at deployment context %s.",
-            deploymentContext));
+                deploymentContext));
 
         try {
             jpaApi().withTransaction(() -> {
                 Instance instance = getT();
                 ApplicationComponentDeploymentContextVisitor
-                    applicationComponentDeploymentContextVisitor =
-                    new ApplicationComponentDeploymentContextVisitor(
-                        instance.getApplicationComponent());
+                        applicationComponentDeploymentContextVisitor =
+                        new ApplicationComponentDeploymentContextVisitor(
+                                instance.getApplicationComponent());
                 applicationComponentDeploymentContextVisitor
-                    .registerAtDeploymentContext(deploymentContext);
+                        .registerAtDeploymentContext(deploymentContext);
             });
         } catch (Throwable t) {
             throw new JobException(String
-                .format("Error while registering application component at deployment context %s",
-                    deploymentContext), t);
+                    .format("Error while registering application component at deployment context %s",
+                            deploymentContext), t);
         }
 
         DeployableComponent deployableComponent;
@@ -175,40 +197,26 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
 
                 Instance instance = getT();
                 LOGGER.debug(String
-                    .format("Creating deployable component for application component %s.",
-                        instance.getApplicationComponent()));
+                        .format("Creating deployable component for application component %s.",
+                                instance.getApplicationComponent()));
                 return applicationComponentToDeployableComponent
-                    .apply(instance.getApplicationComponent());
+                        .apply(instance.getApplicationComponent());
             });
         } catch (Throwable throwable) {
             throw new JobException("Error while building deployable component.", throwable);
         }
         LOGGER.debug(
-            String.format("Successfully build deployable component %s", deployableComponent));
+                String.format("Successfully build deployable component %s", deployableComponent));
 
         ContainerType containerType;
         try {
             containerType = jpaApi().withTransaction(() -> {
                 Instance instance = getT();
                 return applicationComponentToContainerType
-                    .apply(instance.getApplicationComponent());
+                        .apply(instance.getApplicationComponent());
             });
         } catch (Throwable throwable) {
             throw new JobException("Error while trying to resolve containerType", throwable);
-        }
-
-        String serverIp;
-        try {
-            serverIp = jpaApi().withTransaction(() -> {
-                final Instance instance = getT();
-                final VirtualMachine virtualMachine = instance.getVirtualMachine();
-                checkState(virtualMachine.publicIpAddress().isPresent(),
-                    "virtual machine has no public ip.");
-                return virtualMachine.publicIpAddress().get().getIp();
-            });
-        } catch (Throwable throwable) {
-            throw new JobException("Error while retrieving public ip of virtual machine.",
-                throwable);
         }
 
         OperatingSystem lanceOs;
@@ -222,21 +230,21 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         }
 
         LOGGER.debug(String.format(
-            "Calling client %s to deploy instance using: deploymentContext %s, deployableComponent %s, containerType %s.",
-            lifecycleClient, deploymentContext, deployableComponent, containerType));
+                "Calling client %s to deploy instance using: deploymentContext %s, deployableComponent %s, containerType %s.",
+                lifecycleClient, deploymentContext, deployableComponent, containerType));
 
         ComponentInstanceId componentInstanceId;
         try {
             componentInstanceId = lifecycleClient
-                .deploy(serverIp, deploymentContext, deployableComponent, lanceOs, containerType);
-            lifecycleClient.waitForDeployment(componentInstanceId, serverIp);
+                    .deploy(deploymentContext, deployableComponent, lanceOs, containerType);
+            lifecycleClient.waitForDeployment(componentInstanceId);
         } catch (Exception e) {
             throw new JobException("Error during deployment.", e);
         }
 
         LOGGER.debug(String.format(
-            "Client deployed the instance successfully and returned component instance ID %s",
-            componentInstanceId));
+                "Client deployed the instance successfully and returned component instance ID %s",
+                componentInstanceId));
 
         try {
             jpaApi().withTransaction(() -> {
@@ -244,8 +252,8 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
                 instance.bindRemoteId(componentInstanceId.toString());
                 modelService.save(instance);
                 LOGGER.debug(String
-                    .format("Updated instance %s in database. Set remote ID to %s.", instance,
-                        componentInstanceId));
+                        .format("Updated instance %s in database. Set remote ID to %s.", instance,
+                                componentInstanceId));
             });
         } catch (Exception e) {
             throw new JobException("Error while updating status of instance.", e);
@@ -254,45 +262,46 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
     }
 
     private void registerApplicationComponentsForApplicationInstance(
-        ApplicationInstanceId applicationInstanceId) throws JobException {
+            LifecycleClient lifecycleClient, ApplicationInstanceId applicationInstanceId) throws JobException {
 
         LOGGER.debug(String
-            .format("Starting registration of application components for applicationInstance %s.",
-                applicationInstanceId));
+                .format("Starting registration of application components for applicationInstance %s.",
+                        applicationInstanceId));
         try {
             jpaApi().withTransaction(() -> {
 
                 final Instance instance = getT();
                 for (ApplicationComponent applicationComponent : instance.getApplicationInstance()
-                    .getApplication().getApplicationComponents()) {
+                        .getApplication().getApplicationComponents()) {
 
                     final ComponentId componentId =
-                        applicationComponentToComponentId.apply(applicationComponent);
+                            applicationComponentToComponentId.apply(applicationComponent);
 
                     lifecycleClient
-                        .registerComponentForApplicationInstance(applicationInstanceId, componentId,
-                            applicationComponent.getComponent().getName());
+                            .registerComponentForApplicationInstance(applicationInstanceId, componentId,
+                                    applicationComponent.getComponent().getName());
                     LOGGER.debug(String.format(
-                        "Registered application component %s as component ID %s for applicationInstance %s.",
-                        applicationComponent, componentId, applicationInstanceId));
+                            "Registered application component %s as component ID %s for applicationInstance %s.",
+                            applicationComponent, componentId, applicationInstanceId));
                 }
             });
         } catch (Throwable t) {
             throw new JobException(String.format(
-                "Exception occurred while registering application components of applicationInstance %s.",
-                applicationInstanceId), t);
+                    "Exception occurred while registering application components of applicationInstance %s.",
+                    applicationInstanceId), t);
         }
     }
 
-    @Override public boolean canStart() throws JobException {
+    @Override
+    public boolean canStart() throws JobException {
         try {
             return jpaApi().withTransaction(() -> {
                 Instance instance = getT();
 
                 if (RemoteState.ERROR.equals(instance.getVirtualMachine().getRemoteState())) {
                     throw new JobException(String
-                        .format("Job %s can never start as virtual machine %s is in error state.",
-                            this, instance.getVirtualMachine()));
+                            .format("Job %s can never start as virtual machine %s is in error state.",
+                                    this, instance.getVirtualMachine()));
                 }
 
                 return RemoteState.OK.equals(getT().getVirtualMachine().getRemoteState());
@@ -301,7 +310,6 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
             throw new JobException(throwable);
         }
     }
-
 
 
 }

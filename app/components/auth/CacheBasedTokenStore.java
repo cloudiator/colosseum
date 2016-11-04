@@ -30,19 +30,19 @@ public class CacheBasedTokenStore implements TokenStore {
             cacheBuilder.expireAfterWrite(tokenValidity.validity(), TimeUnit.MILLISECONDS);
         }
         cache = cacheBuilder.build();
-        LOGGER.debug(String.format("%s initialized cache %s.", this, cache));
+        LOGGER.trace(String.format("%s initialized cache %s.", this, cache));
     }
 
     @Override
     public void store(Token token) {
-        LOGGER.debug(String.format("%s is storing token %s.", this, token));
+        LOGGER.trace(String.format("%s is storing token %s.", this, token));
         cache.put(token.token(), token);
     }
 
     @Override
     public Optional<Token> retrieve(String token) {
         Optional<Token> tokenOptional = Optional.ofNullable(cache.getIfPresent(token));
-        LOGGER.debug(String.format("%s retrieved token %s", this, tokenOptional));
+        LOGGER.trace(String.format("%s retrieved token %s", this, tokenOptional));
         return tokenOptional;
     }
 

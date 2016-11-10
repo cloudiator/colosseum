@@ -66,7 +66,7 @@ public class ApplicationInstanceGraph {
         this.instanceGraph.vertexSet().forEach(instance -> {
             final ObjectNode vertex = nodes.addObject();
             vertex.with("data").put("id", instance.getUuid())
-                    .put("type","INSTANCE")
+                    .put("type", "INSTANCE")
                     .put("name", instance.getApplicationComponent().getComponent().getName())
                     .put("state", instance.getRemoteState().toString())
                     .put("parent", instance.getVirtualMachine().getUuid());
@@ -76,10 +76,10 @@ public class ApplicationInstanceGraph {
                 .forEach(virtualMachine -> {
                     final ObjectNode compound = nodes.addObject();
                     compound.with("data").put("id", virtualMachine.getUuid())
-                            .put("type","VM")
+                            .put("type", "VM")
                             .put("name", virtualMachine.name())
                             .put("state", virtualMachine.getRemoteState().toString())
-                            .put("publicIp", virtualMachine.publicIpAddress().map(IpAddress::getIp).get());
+                            .put("publicIp", virtualMachine.publicIpAddress().map(IpAddress::getIp).orElse(null));
                 });
         final ArrayNode edges = objectNode.putArray("edges");
         this.instanceGraph.edgeSet().forEach(communicationEdge -> {

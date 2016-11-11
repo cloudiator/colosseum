@@ -18,12 +18,10 @@
 
 package cloud.colosseum;
 
+import cloud.resources.VirtualMachineInLocation;
 import com.google.common.base.Optional;
-
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
 import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-
-import cloud.resources.VirtualMachineInLocation;
 import models.CloudCredential;
 import models.VirtualMachine;
 
@@ -36,6 +34,8 @@ public interface ColosseumComputeService {
         ColosseumVirtualMachineTemplate virtualMachineTemplate);
 
     void deleteVirtualMachine(VirtualMachine virtualMachine);
+
+    void deleteVirtualMachine(VirtualMachineInLocation virtualMachine);
 
     Optional<KeyPairService> getKeyPairService(CloudCredential cloudCredential);
 

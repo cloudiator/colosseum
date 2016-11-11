@@ -16,9 +16,20 @@
  * under the License.
  */
 
-package util;
+package models.service;
+
+import com.google.inject.Inject;
+import com.google.inject.TypeLiteral;
+import models.VirtualMachine;
+import play.db.jpa.JPAApi;
 
 /**
- * Created by daniel on 09.05.16.
+ * Created by daniel on 31.10.14.
  */
+class VirtualMachineRepositoryJpa extends BaseRemoteResourceRepositoryJpa<VirtualMachine>
+    implements VirtualMachineRepository {
 
+    @Inject public VirtualMachineRepositoryJpa(JPAApi jpaApi, TypeLiteral<VirtualMachine> type) {
+        super(jpaApi, type);
+    }
+}

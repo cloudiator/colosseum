@@ -18,35 +18,49 @@
 
 package cloud.sync.config;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.TypeLiteral;
-import com.google.inject.multibindings.Multibinder;
-import com.google.inject.name.Names;
-
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
-import cloud.sync.Problem;
-import cloud.sync.ProblemDetector;
-import cloud.sync.ProblemQueueImpl;
-import cloud.sync.ProblemSolver;
-import cloud.sync.Solution;
+import cloud.resources.VirtualMachineInLocation;
+import cloud.sync.*;
 import cloud.sync.detectors.HardwareNotInDatabaseDetector;
 import cloud.sync.detectors.ImageNotInDatabaseDetector;
 import cloud.sync.detectors.LocationNotInDatabaseDetector;
+import cloud.sync.detectors.VirtualMachineNotInDatabaseDetector;
+import cloud.sync.solutions.DeleteSpareVirtualMachine;
 import cloud.sync.solutions.ImportHardwareToDatabase;
 import cloud.sync.solutions.ImportImageToDatabase;
 import cloud.sync.solutions.ImportLocationInDatabase;
 import cloud.sync.watchdogs.HardwareCloudWatchdog;
 import cloud.sync.watchdogs.ImageWatchdog;
 import cloud.sync.watchdogs.LocationWatchdog;
+import cloud.sync.watchdogs.VirtualMachineWatchdog;
+import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
+import com.google.inject.multibindings.Multibinder;
+import com.google.inject.name.Names;
 import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
+import play.Configuration;
+import play.Environment;
+import util.ConfigurationConstants;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 05.05.15.
  */
 public class SolutionModule extends AbstractModule {
+
+    private final Environment environment;
+    private final Configuration configuration;
+
+    public SolutionModule(Environment environment, Configuration configuration) {
+        checkNotNull(environment, "environment is null.");
+        checkNotNull(configuration, "configuration is null");
+        this.environment = environment;
+        this.configuration = configuration;
+    }
 
     @Override protected void configure() {
         this.bindSolutions();
@@ -59,6 +73,7 @@ public class SolutionModule extends AbstractModule {
         schedulableMultibinder.addBinding().to(HardwareCloudWatchdog.class);
         schedulableMultibinder.addBinding().to(ImageWatchdog.class);
         schedulableMultibinder.addBinding().to(LocationWatchdog.class);
+        schedulableMultibinder.addBinding().to(VirtualMachineWatchdog.class);
 
         Multibinder<ProblemDetector<HardwareInLocation>> hardwareProblemDetectorBinder = Multibinder
             .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
@@ -75,6 +90,17 @@ public class SolutionModule extends AbstractModule {
             });
         locationProblemDetectorBinder.addBinding().to(LocationNotInDatabaseDetector.class);
 
+        Multibinder<ProblemDetector<VirtualMachineInLocation>> virtualMachineProblemDetectorBinder =
+            Multibinder.newSetBinder(binder(),
+                new TypeLiteral<ProblemDetector<VirtualMachineInLocation>>() {
+                });
+        if (configuration.getBoolean(
+            ConfigurationConstants.CONFIGURATION_ENABLE_VIRTUALMACHINENOTINDATABASE_DETECTOR,
+            false)) {
+            virtualMachineProblemDetectorBinder.addBinding()
+                .to(VirtualMachineNotInDatabaseDetector.class);
+        }
+
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);
         runnableMultibinder.addBinding().to(ProblemSolver.class);
@@ -86,6 +112,7 @@ public class SolutionModule extends AbstractModule {
         solutionBinder.addBinding().to(ImportLocationInDatabase.class);
         solutionBinder.addBinding().to(ImportHardwareToDatabase.class);
         solutionBinder.addBinding().to(ImportImageToDatabase.class);
+        solutionBinder.addBinding().to(DeleteSpareVirtualMachine.class);
 
     }
 

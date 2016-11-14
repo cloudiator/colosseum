@@ -13,12 +13,12 @@ import java.util.Optional;
  */
 public class VirtualMachineInErrorStateDetector implements ProblemDetector<VirtualMachine> {
 
-    @Override
-    public Optional<Problem<VirtualMachine>> apply(VirtualMachine virtualMachine) {
+    @Override public Optional<Problem<VirtualMachine>> apply(VirtualMachine virtualMachine) {
 
 
         if (RemoteState.ERROR.equals(virtualMachine.getRemoteState())) {
-            return new Optional.of(new VirtualMachineProblems.VirtualMachineInErrorState(virtualMachine));
+            return Optional
+                .of(new VirtualMachineProblems.VirtualMachineInErrorState(virtualMachine));
         }
 
         return Optional.empty();

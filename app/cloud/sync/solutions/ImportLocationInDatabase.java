@@ -18,14 +18,13 @@
 
 package cloud.sync.solutions;
 
-import com.google.common.base.Optional;
-import com.google.inject.Inject;
-
 import cloud.SlashEncodedId;
 import cloud.sync.Problem;
 import cloud.sync.Solution;
 import cloud.sync.SolutionException;
 import cloud.sync.problems.LocationProblems;
+import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import models.Cloud;
 import models.Location;
 import models.service.LocationModelService;
@@ -39,49 +38,52 @@ public class ImportLocationInDatabase implements Solution {
 
     private final LocationModelService locationModelService;
 
-    @Inject public ImportLocationInDatabase(LocationModelService locationModelService) {
+    @Inject
+    public ImportLocationInDatabase(LocationModelService locationModelService) {
         this.locationModelService = locationModelService;
     }
 
-    @Override public boolean isSolutionFor(Problem problem) {
+    @Override
+    public boolean isSolutionFor(Problem problem) {
         return problem instanceof LocationProblems.LocationNotInDatabase;
     }
 
-    @Override public void applyTo(Problem problem) throws SolutionException {
+    @Override
+    public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
         LocationProblems.LocationNotInDatabase locationNotInDatabase =
-            (LocationProblems.LocationNotInDatabase) problem;
+                (LocationProblems.LocationNotInDatabase) problem;
 
         Location existingLocation = locationModelService.getByRemoteId(
-            SlashEncodedId.of(locationNotInDatabase.getLocationInCloud().id()).cloudId());
+                SlashEncodedId.of(locationNotInDatabase.getResource().id()).cloudId());
         if (existingLocation != null) {
             existingLocation
-                .addCloudCredential(locationNotInDatabase.getLocationInCloud().credential());
+                    .addCloudCredential(locationNotInDatabase.getResource().credential());
             return;
         }
 
-        Cloud cloud = locationNotInDatabase.getLocationInCloud().cloud();
+        Cloud cloud = locationNotInDatabase.getResource().cloud();
         Optional<Location> parent;
-        if (locationNotInDatabase.getLocationInCloud().parent().isPresent()) {
+        if (locationNotInDatabase.getResource().parent().isPresent()) {
             parent = Optional.fromNullable(locationModelService.getByRemoteId(
-                SlashEncodedId.of(locationNotInDatabase.getLocationInCloud().parent().get().id())
-                    .cloudId()));
+                    SlashEncodedId.of(locationNotInDatabase.getResource().parent().get().id())
+                            .cloudId()));
             if (!parent.isPresent()) {
                 throw new SolutionException(String
-                    .format("Could not import %s as parent %s was not found.",
-                        locationNotInDatabase.getLocationInCloud(),
-                        locationNotInDatabase.getLocationInCloud().parent().get()));
+                        .format("Could not import %s as parent %s was not found.",
+                                locationNotInDatabase.getResource(),
+                                locationNotInDatabase.getResource().parent().get()));
             }
         } else {
             parent = Optional.absent();
         }
 
-        Location location = new Location(locationNotInDatabase.getLocationInCloud().cloudId(),
-            locationNotInDatabase.getLocationInCloud().providerId(),
-            locationNotInDatabase.getLocationInCloud().swordId(), cloud,
-            locationNotInDatabase.getLocationInCloud().name(), null, parent.orNull(),
-            locationNotInDatabase.getLocationInCloud().locationScope(),
-            locationNotInDatabase.getLocationInCloud().isAssignable());
+        Location location = new Location(locationNotInDatabase.getResource().cloudId(),
+                locationNotInDatabase.getResource().providerId(),
+                locationNotInDatabase.getResource().swordId(), cloud,
+                locationNotInDatabase.getResource().name(), null, parent.orNull(),
+                locationNotInDatabase.getResource().locationScope(),
+                locationNotInDatabase.getResource().isAssignable());
 
         this.locationModelService.save(location);
     }

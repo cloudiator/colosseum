@@ -18,16 +18,15 @@
 
 package cloud.sync.detectors;
 
-import com.google.inject.Inject;
-
-import java.util.Optional;
-
 import cloud.resources.ImageInLocation;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.ImageProblems;
+import com.google.inject.Inject;
 import models.Image;
 import models.service.ImageModelService;
+
+import java.util.Optional;
 
 /**
  * Created by daniel on 04.11.15.
@@ -36,11 +35,13 @@ public class ImageNotInDatabaseDetector implements ProblemDetector<ImageInLocati
 
     private final ImageModelService imageModelService;
 
-    @Inject public ImageNotInDatabaseDetector(ImageModelService imageModelService) {
+    @Inject
+    public ImageNotInDatabaseDetector(ImageModelService imageModelService) {
         this.imageModelService = imageModelService;
     }
 
-    @Override public Optional<Problem> apply(ImageInLocation imageInLocation) {
+    @Override
+    public Optional<Problem<ImageInLocation>> apply(ImageInLocation imageInLocation) {
 
         Image image = imageModelService.getByRemoteId(imageInLocation.cloudId());
         if (image == null || !image.cloudCredentials().contains(imageInLocation.credential())) {

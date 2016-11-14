@@ -19,7 +19,6 @@
 package cloud.sync;
 
 import com.google.inject.Singleton;
-
 import components.execution.SimpleBlockingQueue;
 import components.execution.SimpleFifoPriorityBlockingQueue;
 import components.execution.UniqueBlockingQueue;
@@ -27,21 +26,24 @@ import components.execution.UniqueBlockingQueue;
 /**
  * Created by daniel on 08.05.15.
  */
-@Singleton public class ProblemQueueImpl implements SimpleBlockingQueue<Problem> {
+@Singleton
+public class ProblemQueueImpl implements SimpleBlockingQueue<Problem> {
 
-    private final SimpleBlockingQueue<Problem> problemsToSolve;
+    private final SimpleBlockingQueue<Problem<?>> problemsToSolve;
 
     public ProblemQueueImpl() {
         // using <> as expected leads to wrong inferred type and thus a compile error.
         this.problemsToSolve =
-            new UniqueBlockingQueue<Problem>(new SimpleFifoPriorityBlockingQueue<Problem>());
+                new UniqueBlockingQueue<Problem<?>>(new SimpleFifoPriorityBlockingQueue<Problem<?>>());
     }
 
-    @Override public void add(Problem t) {
+    @Override
+    public void add(Problem t) {
         this.problemsToSolve.add(t);
     }
 
-    @Override public Problem take() throws InterruptedException {
+    @Override
+    public Problem take() throws InterruptedException {
         return this.problemsToSolve.take();
     }
 }

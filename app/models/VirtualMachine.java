@@ -30,27 +30,44 @@ import java.util.*;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity public class VirtualMachine extends RemoteResourceInLocation implements LoginNameSupplier {
+@Entity
+public class VirtualMachine extends RemoteResourceInLocation implements LoginNameSupplier {
 
-    @Column(unique = true, nullable = false) private String name;
+    @Column(unique = true, nullable = false)
+    private String name;
 
-    @Nullable @Column(nullable = true) private String generatedLoginUsername;
-    @Nullable @Column(nullable = true) private String generatedLoginPassword;
-    @Nullable @Lob @Column(nullable = true) private String generatedPrivateKey;
+    @Nullable
+    @Column(nullable = true)
+    private String generatedLoginUsername;
+    @Nullable
+    @Column(nullable = true)
+    private String generatedLoginPassword;
+    @Nullable
+    @Lob
+    @Column(nullable = true)
+    private String generatedPrivateKey;
 
-    @Nullable @ManyToOne(optional = true) private Image image;
-    @Nullable @ManyToOne(optional = true) private Hardware hardware;
+    @Nullable
+    @ManyToOne(optional = true)
+    private Image image;
+    @Nullable
+    @ManyToOne(optional = true)
+    private Hardware hardware;
 
-    @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
+    @Nullable
+    @ManyToOne(optional = true)
+    private TemplateOptions templateOptions;
 
-    @OneToMany(mappedBy = "virtualMachine") private List<Instance> instances;
+    @OneToMany(mappedBy = "virtualMachine")
+    private List<Instance> instances;
 
     /**
      * Use set to avoid duplicate entries due to hibernate bug
      * https://hibernate.atlassian.net/browse/HHH-7404
      */
-    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private Set<IpAddress>
-        ipAddresses;
+    @OneToMany(mappedBy = "virtualMachine", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private Set<IpAddress>
+            ipAddresses;
 
     /**
      * Empty constructor for hibernate.
@@ -59,11 +76,11 @@ import java.util.*;
     }
 
     public VirtualMachine(@Nullable String remoteId, @Nullable String providerId,
-        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
-        String name, @Nullable String generatedLoginUsername,
-        @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
-        @Nullable Image image, @Nullable Hardware hardware,
-        @Nullable TemplateOptions templateOptions) {
+                          @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
+                          String name, @Nullable String generatedLoginUsername,
+                          @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
+                          @Nullable Image image, @Nullable Hardware hardware,
+                          @Nullable TemplateOptions templateOptions) {
         super(remoteId, providerId, swordId, cloud, owner, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
@@ -89,16 +106,27 @@ import java.util.*;
         this.ipAddresses.add(ipAddress);
     }
 
+    public void removeIpAddress(IpAddress ipAddress) {
+        if (ipAddresses == null) {
+            return;
+        }
+        ipAddresses.remove(ipAddress);
+    }
+
+    public void remoteIpAddresses() {
+        ipAddresses = Collections.emptySet();
+    }
+
     public Optional<IpAddress> publicIpAddress() {
         return ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PUBLIC))
-            .findAny();
+                .findAny();
     }
 
     public Optional<IpAddress> privateIpAddress(boolean fallbackToPublic) {
 
         final Optional<IpAddress> any =
-            ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
-                .findAny();
+                ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
+                        .findAny();
 
         if (!any.isPresent() && fallbackToPublic) {
             return publicIpAddress();
@@ -118,7 +146,7 @@ import java.util.*;
     public int remotePort() {
         if (image == null) {
             throw new RemotePortProvider.UnknownRemotePortException(
-                "Remote port is unknown as image is no longer known.");
+                    "Remote port is unknown as image is no longer known.");
         }
         return image.operatingSystem().operatingSystemFamily().remotePort();
     }
@@ -154,7 +182,7 @@ import java.util.*;
         }
         if (image == null) {
             throw new UnknownLoginNameException(
-                "Login name is unknown as image is not longer known.");
+                    "Login name is unknown as image is not longer known.");
         }
         return image.loginName();
     }
@@ -182,5 +210,9 @@ import java.util.*;
             throw new IllegalStateException("Image is not longer known.");
         }
         return image.operatingSystem();
+    }
+
+    public VirtualMachine unbind() {
+
     }
 }

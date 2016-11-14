@@ -18,23 +18,25 @@
 
 package models.generic;
 
-import java.util.Optional;
-
 import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 12.05.15.
  */
-@Entity @Inheritance(strategy = javax.persistence.InheritanceType.TABLE_PER_CLASS)
+@Entity
+@Inheritance(strategy = javax.persistence.InheritanceType.TABLE_PER_CLASS)
 public abstract class RemoteResource extends Model {
 
     private RemoteState remoteState = RemoteState.INPROGRESS;
-    @Nullable @Column(unique = true, nullable = true) private String remoteId;
+    @Nullable
+    @Column(unique = true, nullable = true)
+    private String remoteId;
 
 
     public RemoteState getRemoteState() {
@@ -53,11 +55,15 @@ public abstract class RemoteResource extends Model {
     }
 
     public void bindRemoteId(String remoteId) {
-        checkNotNull(remoteId, "Binding null remoteId is not allowed.");
+        checkNotNull(remoteId, "Binding null remoteId is not allowed. Use unbind.");
         if (this.remoteId != null) {
-            throw new IllegalStateException("RemoteId was already bound.");
+            throw new IllegalStateException("RemoteId was already bound, unbind first.");
         }
         this.remoteId = remoteId;
+    }
+
+    public void unbindRemoteId() {
+        this.remoteId = null;
     }
 
     public RemoteResource() {

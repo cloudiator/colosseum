@@ -37,13 +37,21 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by daniel on 22.09.15.
  */
-@Entity public abstract class RemoteResourceInCloud extends RemoteResource {
+@Entity
+public abstract class RemoteResourceInCloud extends RemoteResource {
 
-    @ManyToOne(optional = false) private Cloud cloud;
-    @Nullable @Column(nullable = true) private String providerId;
-    @Nullable @Column(nullable = true) private String swordId;
-    @ManyToMany private List<CloudCredential> cloudCredentials;
-    @ManyToOne private CloudCredential owner;
+    @ManyToOne(optional = false)
+    private Cloud cloud;
+    @Nullable
+    @Column(nullable = true)
+    private String providerId;
+    @Nullable
+    @Column(nullable = true)
+    private String swordId;
+    @ManyToMany
+    private List<CloudCredential> cloudCredentials;
+    @ManyToOne
+    private CloudCredential owner;
 
     /**
      * No-args constructor for hibernate.
@@ -57,7 +65,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public RemoteResourceInCloud(@Nullable String remoteId, @Nullable String providerId,
-        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner) {
+                                 @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner) {
         super(remoteId);
         this.providerId = providerId;
         this.swordId = swordId;
@@ -104,15 +112,20 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public void bindProviderIds(String swordId, String providerId) {
-        checkNotNull(swordId, "Binding null swordId is not allowed");
-        checkNotNull(providerId, "Binding null providerId is not allowed");
+        checkNotNull(swordId, "Binding null swordId is not allowed, use unbind.");
+        checkNotNull(providerId, "Binding null providerId is not allowed, use unbind.");
         if (this.providerId != null) {
-            throw new IllegalStateException("Changing the providerId is not allowed.");
+            throw new IllegalStateException("Changing the providerId is not allowed. Unbind first.");
         }
         if (this.swordId != null) {
-            throw new IllegalStateException("Changing the swordId is not allowed.");
+            throw new IllegalStateException("Changing the swordId is not allowed. Unbind first.");
         }
         this.providerId = providerId;
         this.swordId = swordId;
+    }
+
+    public void unbindProviderIds() {
+        this.providerId = null;
+        this.swordId = null;
     }
 }

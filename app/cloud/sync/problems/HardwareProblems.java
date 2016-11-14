@@ -19,9 +19,6 @@
 package cloud.sync.problems;
 
 import cloud.resources.HardwareInLocation;
-import cloud.sync.Problem;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 05.05.15.
@@ -32,49 +29,16 @@ public class HardwareProblems {
 
     }
 
-    private abstract static class BaseHardwareProblem implements Problem {
 
-        private final HardwareInLocation hardwareInLocation;
+    public static class HardwareNotInDatabase extends AbstractProblem<HardwareInLocation> {
 
-        public BaseHardwareProblem(HardwareInLocation hardwareInLocation) {
-            checkNotNull(hardwareInLocation);
-            this.hardwareInLocation = hardwareInLocation;
+        public HardwareNotInDatabase(HardwareInLocation resource) {
+            super(resource);
         }
 
-        @Override public int getPriority() {
+        @Override
+        public int getPriority() {
             return Priority.MEDIUM;
-        }
-
-        public HardwareInLocation getHardwareInLocation() {
-            return hardwareInLocation;
-        }
-
-        @Override public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof BaseHardwareProblem))
-                return false;
-
-            BaseHardwareProblem that = (BaseHardwareProblem) o;
-
-            return hardwareInLocation.equals(that.hardwareInLocation);
-
-        }
-
-        @Override public int hashCode() {
-            return hardwareInLocation.hashCode();
-        }
-    }
-
-
-    public static class HardwareNotInDatabase extends BaseHardwareProblem {
-
-        public HardwareNotInDatabase(HardwareInLocation hardwareInLocation) {
-            super(hardwareInLocation);
-        }
-
-        @Override public String toString() {
-            return "HardwareNotInDatabase";
         }
     }
 

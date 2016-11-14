@@ -43,57 +43,60 @@ public class ImportImageToDatabase implements Solution {
     private final OperatingSystemService operatingSystemService;
     private final LocationModelService locationModelService;
 
-    @Inject public ImportImageToDatabase(ImageModelService imageModelService,
-        OperatingSystemService operatingSystemService, LocationModelService locationModelService) {
+    @Inject
+    public ImportImageToDatabase(ImageModelService imageModelService,
+                                 OperatingSystemService operatingSystemService, LocationModelService locationModelService) {
         this.imageModelService = imageModelService;
         this.operatingSystemService = operatingSystemService;
         this.locationModelService = locationModelService;
     }
 
-    @Override public boolean isSolutionFor(Problem problem) {
+    @Override
+    public boolean isSolutionFor(Problem problem) {
         return problem instanceof ImageProblems.ImageNotInDatabase;
     }
 
-    @Override public void applyTo(Problem problem) throws SolutionException {
+    @Override
+    public void applyTo(Problem problem) throws SolutionException {
         checkArgument(isSolutionFor(problem));
 
         ImageProblems.ImageNotInDatabase imageNotInDatabase =
-            (ImageProblems.ImageNotInDatabase) problem;
+                (ImageProblems.ImageNotInDatabase) problem;
 
         Image existingImage = imageModelService.getByRemoteId(
-            SlashEncodedId.of(imageNotInDatabase.getImageInLocation().id()).cloudId());
+                SlashEncodedId.of(imageNotInDatabase.getResource().id()).cloudId());
         if (existingImage != null) {
-            existingImage.addCloudCredential(imageNotInDatabase.getImageInLocation().credential());
+            existingImage.addCloudCredential(imageNotInDatabase.getResource().credential());
             return;
         }
 
-        Cloud cloud = imageNotInDatabase.getImageInLocation().cloud();
+        Cloud cloud = imageNotInDatabase.getResource().cloud();
         if (cloud == null) {
             throw new SolutionException();
         }
         Location location = null;
-        if (imageNotInDatabase.getImageInLocation().location().isPresent()) {
+        if (imageNotInDatabase.getResource().location().isPresent()) {
             location = locationModelService.getByRemoteId(
-                SlashEncodedId.of(imageNotInDatabase.getImageInLocation().location().get().id())
-                    .cloudId());
+                    SlashEncodedId.of(imageNotInDatabase.getResource().location().get().id())
+                            .cloudId());
             if (location == null) {
                 throw new SolutionException(String
-                    .format("Could not import image %s as location %s is not (yet) imported.",
-                        imageNotInDatabase.getImageInLocation(),
-                        imageNotInDatabase.getImageInLocation().location().get()));
+                        .format("Could not import image %s as location %s is not (yet) imported.",
+                                imageNotInDatabase.getResource(),
+                                imageNotInDatabase.getResource().location().get()));
             }
         }
 
         OperatingSystem operatingSystem =
-            new OperatingSystem(imageNotInDatabase.getImageInLocation().operatingSystem());
+                new OperatingSystem(imageNotInDatabase.getResource().operatingSystem());
         operatingSystemService.save(operatingSystem);
 
         //todo check this
-        Image image = new Image(imageNotInDatabase.getImageInLocation().cloudId(),
-            imageNotInDatabase.getImageInLocation().providerId(),
-            imageNotInDatabase.getImageInLocation().swordId(), cloud, location,
-            imageNotInDatabase.getImageInLocation().name(), operatingSystem, null, null);
-        image.addCloudCredential(imageNotInDatabase.getImageInLocation().credential());
+        Image image = new Image(imageNotInDatabase.getResource().cloudId(),
+                imageNotInDatabase.getResource().providerId(),
+                imageNotInDatabase.getResource().swordId(), cloud, location,
+                imageNotInDatabase.getResource().name(), operatingSystem, null, null);
+        image.addCloudCredential(imageNotInDatabase.getResource().credential());
         imageModelService.save(image);
     }
 }

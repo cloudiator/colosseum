@@ -1,6 +1,5 @@
 package cloud.sync.watchdogs;
 
-import cloud.sync.AbstractWatchDog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import com.google.inject.Inject;
@@ -20,8 +19,9 @@ public abstract class AbstractDatabaseWatchdog<T extends Model> extends Abstract
 
     private final ModelService<T> modelService;
 
-    @Inject
-    protected AbstractDatabaseWatchdog(@Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue, Set<ProblemDetector<T>> problemDetectors, ModelService<T> modelService) {
+    @Inject protected AbstractDatabaseWatchdog(
+        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
+        Set<ProblemDetector<T>> problemDetectors, ModelService<T> modelService) {
         super(problemQueue, problemDetectors);
 
         checkNotNull(modelService, "modelService is null.");

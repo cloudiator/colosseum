@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -18,37 +18,29 @@
 
 package cloud.sync.watchdogs;
 
+import cloud.CloudService;
+import cloud.resources.VirtualMachineInLocation;
+import cloud.sync.Problem;
+import cloud.sync.ProblemDetector;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
+import components.execution.Stable;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import cloud.CloudService;
-import cloud.resources.HardwareInLocation;
-import cloud.sync.Problem;
-import cloud.sync.ProblemDetector;
-import components.execution.SimpleBlockingQueue;
-import components.execution.Stable;
-
 /**
- * Created by daniel on 07.05.15.
+ * Created by daniel on 11.11.16.
  */
-@Stable public class HardwareCloudWatchdog
-    extends AbstractCloudServiceWatchdog<HardwareInLocation> {
+@Stable public class VirtualMachineInLocationWatchdog
+    extends AbstractCloudServiceWatchdog<VirtualMachineInLocation> {
 
-    @Inject protected HardwareCloudWatchdog(
+    @Inject protected VirtualMachineInLocationWatchdog(
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
-        Set<ProblemDetector<HardwareInLocation>> problemDetectors, CloudService cloudService) {
+        Set<ProblemDetector<VirtualMachineInLocation>> problemDetectors,
+        CloudService cloudService) {
         super(problemQueue, problemDetectors, cloudService);
-    }
-
-    @Override public String toString() {
-        return "HardwareWatchdog";
-    }
-
-    @Override protected Iterable<HardwareInLocation> toWatch() {
-        return cloudService().discoveryService().listHardwareFlavors();
     }
 
     @Override public long period() {
@@ -61,5 +53,9 @@ import components.execution.Stable;
 
     @Override public TimeUnit timeUnit() {
         return TimeUnit.SECONDS;
+    }
+
+    @Override protected Iterable<VirtualMachineInLocation> toWatch() {
+        return cloudService().discoveryService().listVirtualMachines();
     }
 }

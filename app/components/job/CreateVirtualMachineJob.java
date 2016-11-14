@@ -72,6 +72,10 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         return true;
     }
 
+    @Override public void onSuccess() throws JobException {
+        super.onSuccess();
+    }
+
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService) throws JobException {
 

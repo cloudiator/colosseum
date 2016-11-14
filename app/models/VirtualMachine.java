@@ -22,6 +22,7 @@ package models;
 import de.uniulm.omi.cloudiator.common.os.LoginNameSupplier;
 import de.uniulm.omi.cloudiator.common.os.RemotePortProvider;
 import models.generic.RemoteResourceInLocation;
+import models.generic.RemoteState;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -30,44 +31,27 @@ import java.util.*;
 /**
  * Created by daniel on 31.10.14.
  */
-@Entity
-public class VirtualMachine extends RemoteResourceInLocation implements LoginNameSupplier {
+@Entity public class VirtualMachine extends RemoteResourceInLocation implements LoginNameSupplier {
 
-    @Column(unique = true, nullable = false)
-    private String name;
+    @Column(unique = true, nullable = false) private String name;
 
-    @Nullable
-    @Column(nullable = true)
-    private String generatedLoginUsername;
-    @Nullable
-    @Column(nullable = true)
-    private String generatedLoginPassword;
-    @Nullable
-    @Lob
-    @Column(nullable = true)
-    private String generatedPrivateKey;
+    @Nullable @Column(nullable = true) private String generatedLoginUsername;
+    @Nullable @Column(nullable = true) private String generatedLoginPassword;
+    @Nullable @Lob @Column(nullable = true) private String generatedPrivateKey;
 
-    @Nullable
-    @ManyToOne(optional = true)
-    private Image image;
-    @Nullable
-    @ManyToOne(optional = true)
-    private Hardware hardware;
+    @Nullable @ManyToOne(optional = true) private Image image;
+    @Nullable @ManyToOne(optional = true) private Hardware hardware;
 
-    @Nullable
-    @ManyToOne(optional = true)
-    private TemplateOptions templateOptions;
+    @Nullable @ManyToOne(optional = true) private TemplateOptions templateOptions;
 
-    @OneToMany(mappedBy = "virtualMachine")
-    private List<Instance> instances;
+    @OneToMany(mappedBy = "virtualMachine") private List<Instance> instances;
 
     /**
      * Use set to avoid duplicate entries due to hibernate bug
      * https://hibernate.atlassian.net/browse/HHH-7404
      */
     @OneToMany(mappedBy = "virtualMachine", cascade = {CascadeType.ALL}, orphanRemoval = true)
-    private Set<IpAddress>
-            ipAddresses;
+    private Set<IpAddress> ipAddresses;
 
     /**
      * Empty constructor for hibernate.
@@ -76,11 +60,11 @@ public class VirtualMachine extends RemoteResourceInLocation implements LoginNam
     }
 
     public VirtualMachine(@Nullable String remoteId, @Nullable String providerId,
-                          @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
-                          String name, @Nullable String generatedLoginUsername,
-                          @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
-                          @Nullable Image image, @Nullable Hardware hardware,
-                          @Nullable TemplateOptions templateOptions) {
+        @Nullable String swordId, Cloud cloud, @Nullable CloudCredential owner, Location location,
+        String name, @Nullable String generatedLoginUsername,
+        @Nullable String generatedLoginPassword, @Nullable String generatedPrivateKey,
+        @Nullable Image image, @Nullable Hardware hardware,
+        @Nullable TemplateOptions templateOptions) {
         super(remoteId, providerId, swordId, cloud, owner, location);
         this.name = name;
         this.generatedLoginUsername = generatedLoginUsername;
@@ -113,20 +97,23 @@ public class VirtualMachine extends RemoteResourceInLocation implements LoginNam
         ipAddresses.remove(ipAddress);
     }
 
-    public void remoteIpAddresses() {
-        ipAddresses = Collections.emptySet();
+    public void removeIpAddresses() {
+        if (ipAddresses == null) {
+            return;
+        }
+        ipAddresses.clear();
     }
 
     public Optional<IpAddress> publicIpAddress() {
         return ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PUBLIC))
-                .findAny();
+            .findAny();
     }
 
     public Optional<IpAddress> privateIpAddress(boolean fallbackToPublic) {
 
         final Optional<IpAddress> any =
-                ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
-                        .findAny();
+            ipAddresses.stream().filter(ipAddress -> ipAddress.getIpType().equals(IpType.PRIVATE))
+                .findAny();
 
         if (!any.isPresent() && fallbackToPublic) {
             return publicIpAddress();
@@ -146,7 +133,7 @@ public class VirtualMachine extends RemoteResourceInLocation implements LoginNam
     public int remotePort() {
         if (image == null) {
             throw new RemotePortProvider.UnknownRemotePortException(
-                    "Remote port is unknown as image is no longer known.");
+                "Remote port is unknown as image is no longer known.");
         }
         return image.operatingSystem().operatingSystemFamily().remotePort();
     }
@@ -182,7 +169,7 @@ public class VirtualMachine extends RemoteResourceInLocation implements LoginNam
         }
         if (image == null) {
             throw new UnknownLoginNameException(
-                    "Login name is unknown as image is not longer known.");
+                "Login name is unknown as image is not longer known.");
         }
         return image.loginName();
     }
@@ -212,7 +199,13 @@ public class VirtualMachine extends RemoteResourceInLocation implements LoginNam
         return image.operatingSystem();
     }
 
-    public VirtualMachine unbind() {
-
+    public void unbind() {
+        unbindProviderIds();
+        unbindRemoteId();
+        removeIpAddresses();
+        setRemoteState(RemoteState.INPROGRESS);
+        generatedLoginUsername = null;
+        generatedLoginPassword = null;
+        generatedPrivateKey = null;
     }
 }

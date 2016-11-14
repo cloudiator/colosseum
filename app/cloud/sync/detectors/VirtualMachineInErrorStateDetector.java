@@ -15,13 +15,11 @@ public class VirtualMachineInErrorStateDetector implements ProblemDetector<Virtu
 
     @Override public Optional<Problem<VirtualMachine>> apply(VirtualMachine virtualMachine) {
 
-
         if (RemoteState.ERROR.equals(virtualMachine.getRemoteState())) {
             return Optional
                 .of(new VirtualMachineProblems.VirtualMachineInErrorState(virtualMachine));
         }
 
         return Optional.empty();
-
     }
 }

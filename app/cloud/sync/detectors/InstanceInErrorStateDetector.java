@@ -16,20 +16,27 @@
  * under the License.
  */
 
-package util;
+package cloud.sync.detectors;
+
+import cloud.sync.Problem;
+import cloud.sync.ProblemDetector;
+import cloud.sync.problems.InstanceProblems;
+import models.Instance;
+import models.generic.RemoteState;
+
+import java.util.Optional;
 
 /**
- * Created by daniel on 11.11.16.
+ * Created by daniel on 12.11.16.
  */
-public class ConfigurationConstants {
+public class InstanceInErrorStateDetector implements ProblemDetector<Instance> {
 
-    private ConfigurationConstants() {
-        throw new AssertionError("Do not instantiate.");
+    @Override public Optional<Problem<Instance>> apply(Instance instance) {
+
+        if (RemoteState.ERROR.equals(instance.getRemoteState())) {
+            return Optional.of(new InstanceProblems.InstanceInErrorState(instance));
+        }
+
+        return Optional.empty();
     }
-
-    public final static String CONFIGURATION_NODE_GROUP = "colosseum.nodegroup";
-    public final static String CONFIGURATION_ENABLE_VIRTUALMACHINENOTINDATABASE_DETECTOR =
-        "colosseum.sync.virtualMachineNotInDatabase.detector";
-    public final static String RMI_TIMEOUT = "colosseum.rmi.timeout";
-
 }

@@ -16,20 +16,28 @@
  * under the License.
  */
 
-package util;
+package cloud.sync.problems;
+
+import models.Instance;
 
 /**
  * Created by daniel on 11.11.16.
  */
-public class ConfigurationConstants {
+public class InstanceProblems {
 
-    private ConfigurationConstants() {
-        throw new AssertionError("Do not instantiate.");
+    private InstanceProblems() {
+
     }
 
-    public final static String CONFIGURATION_NODE_GROUP = "colosseum.nodegroup";
-    public final static String CONFIGURATION_ENABLE_VIRTUALMACHINENOTINDATABASE_DETECTOR =
-        "colosseum.sync.virtualMachineNotInDatabase.detector";
-    public final static String RMI_TIMEOUT = "colosseum.rmi.timeout";
+    public static class InstanceInErrorState extends AbstractProblem<Instance> {
+
+        public InstanceInErrorState(Instance resource) {
+            super(resource);
+        }
+
+        @Override public int getPriority() {
+            return Priority.HIGH;
+        }
+    }
 
 }

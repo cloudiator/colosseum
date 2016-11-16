@@ -32,6 +32,7 @@ import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
 import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
+import models.Instance;
 import models.VirtualMachine;
 import play.Configuration;
 import play.Environment;
@@ -67,6 +68,7 @@ public class SolutionModule extends AbstractModule {
         schedulableMultibinder.addBinding().to(LocationWatchdog.class);
         schedulableMultibinder.addBinding().to(VirtualMachineInLocationWatchdog.class);
         schedulableMultibinder.addBinding().to(VirtualMachineWatchdog.class);
+        schedulableMultibinder.addBinding().to(InstanceWatchdog.class);
 
         Multibinder<ProblemDetector<HardwareInLocation>> hardwareProblemDetectorBinder = Multibinder
             .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
@@ -100,6 +102,11 @@ public class SolutionModule extends AbstractModule {
         virtualMachineProblemDetectorBinder.addBinding()
             .to(VirtualMachineInErrorStateDetector.class);
 
+        Multibinder<ProblemDetector<Instance>> instanceProblemDetectorBinder =
+            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<Instance>>() {
+            });
+        instanceProblemDetectorBinder.addBinding().to(InstanceInErrorStateDetector.class);
+
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);
         runnableMultibinder.addBinding().to(ProblemSolver.class);
@@ -113,7 +120,7 @@ public class SolutionModule extends AbstractModule {
         solutionBinder.addBinding().to(ImportImageToDatabase.class);
         solutionBinder.addBinding().to(DeleteSpareVirtualMachine.class);
         solutionBinder.addBinding().to(RetryVirtualMachine.class);
-
+        solutionBinder.addBinding().to(RetryInstance.class);
     }
 
 

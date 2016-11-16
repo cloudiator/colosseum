@@ -3,7 +3,9 @@ import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava, DebianPlugin)
 
-updateOptions := updateOptions.value.withCachedResolution(true)
+//updateOptions := updateOptions.value.withCachedResolution(true)
+
+//updateOptions := updateOptions.value.withLatestSnapshots(true)
 
 scalaVersion := "2.11.8"
 

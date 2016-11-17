@@ -60,10 +60,10 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
 
     private String getNodeGroup() {
         final String nodeGroup =
-            configuration.getString(ConfigurationConstants.CONFIGURATION_NODE_GROUP);
+            configuration.getString(ConfigurationConstants.NODE_GROUP);
         checkState(nodeGroup != null, String
             .format("No nodeGroup configured! Make sure property %s is set.",
-                ConfigurationConstants.CONFIGURATION_NODE_GROUP));
+                ConfigurationConstants.NODE_GROUP));
         return nodeGroup;
     }
 

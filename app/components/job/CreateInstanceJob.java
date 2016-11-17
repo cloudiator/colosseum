@@ -330,26 +330,28 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         final String serverIp = getIp();
         final LifecycleClient lifecycleClient = getLifecycleClient(serverIp);
         final ContainerType containerType = getContainerType();
-        jpaApi().withTransaction(() -> {
-            Instance instance = getT();
+        if (configuration.getBoolean(ConfigurationConstants.DELETE_FAILED_INSTANCES, false)) {
+            jpaApi().withTransaction(() -> {
+                Instance instance = getT();
 
-            if (!instance.remoteId().isPresent()) {
-                throw new JobException("no remote id present on instance");
-            }
-
-            try {
-                final boolean undeploy = lifecycleClient
-                    .undeploy(ComponentInstanceId.fromString(instance.remoteId().get()),
-                        containerType);
-
-                if (!undeploy) {
-                    throw new JobException("Undeployment did not work.");
+                if (!instance.remoteId().isPresent()) {
+                    throw new JobException("no remote id present on instance");
                 }
 
-            } catch (DeploymentException e) {
-                throw new JobException(e);
-            }
-        });
+                try {
+                    final boolean undeploy = lifecycleClient
+                        .undeploy(ComponentInstanceId.fromString(instance.remoteId().get()),
+                            containerType);
+
+                    if (!undeploy) {
+                        throw new JobException("Undeployment did not work.");
+                    }
+
+                } catch (DeploymentException e) {
+                    throw new JobException(e);
+                }
+            });
+        }
         super.onError();
     }
 }

@@ -89,9 +89,9 @@ public class SolutionModule extends AbstractModule {
             virtualMachineInLocationProblemDetectorBinder = Multibinder
             .newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachineInLocation>>() {
             });
-        if (configuration.getBoolean(
-            ConfigurationConstants.CONFIGURATION_ENABLE_VIRTUALMACHINENOTINDATABASE_DETECTOR,
-            false)) {
+        if (configuration
+            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_NOT_IN_DATABASE_DETECTOR,
+                false)) {
             virtualMachineInLocationProblemDetectorBinder.addBinding()
                 .to(VirtualMachineNotInDatabaseDetector.class);
         }
@@ -99,13 +99,18 @@ public class SolutionModule extends AbstractModule {
         Multibinder<ProblemDetector<VirtualMachine>> virtualMachineProblemDetectorBinder =
             Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachine>>() {
             });
-        virtualMachineProblemDetectorBinder.addBinding()
-            .to(VirtualMachineInErrorStateDetector.class);
+        if (configuration
+            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR, false) {
+            virtualMachineProblemDetectorBinder.addBinding()
+                .to(VirtualMachineInErrorStateDetector.class);
+        }
 
         Multibinder<ProblemDetector<Instance>> instanceProblemDetectorBinder =
             Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<Instance>>() {
             });
-        instanceProblemDetectorBinder.addBinding().to(InstanceInErrorStateDetector.class);
+        if (configuration.getBoolean(ConfigurationConstants.SYNC_INSTANCE_ERROR_DETECTOR, false)) {
+            instanceProblemDetectorBinder.addBinding().to(InstanceInErrorStateDetector.class);
+        }
 
         Multibinder<Runnable> runnableMultibinder =
             Multibinder.newSetBinder(binder(), Runnable.class);

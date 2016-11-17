@@ -100,7 +100,7 @@ public class SolutionModule extends AbstractModule {
             Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachine>>() {
             });
         if (configuration
-            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR, false) {
+            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR, false)) {
             virtualMachineProblemDetectorBinder.addBinding()
                 .to(VirtualMachineInErrorStateDetector.class);
         }

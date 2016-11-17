@@ -18,15 +18,17 @@
 
 package models;
 
+import models.generic.RemoteResource;
+
+import javax.annotation.Nullable;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-
-import models.generic.RemoteResource;
-
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 
 /**
@@ -38,17 +40,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = false) private ApplicationInstance applicationInstance;
 
     @ManyToOne private VirtualMachine virtualMachine;
+    @Nullable @ManyToOne private Tenant tenant;
 
     /**
      * Empty constructor for hibernate.
      */
     protected Instance() {
-    }
-
-    public Instance(ApplicationComponent applicationComponent,
-        ApplicationInstance applicationInstance) {
-        this.applicationComponent = applicationComponent;
-        this.applicationInstance = applicationInstance;
     }
 
     public ApplicationComponent getApplicationComponent() {
@@ -84,5 +81,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
             .flatMap(applicationComponent -> applicationComponent.getInstances().stream())
             .filter(instance -> instance.applicationInstance.equals(applicationInstance))
             .collect(Collectors.toSet());
+    }
+
+    public Optional<Tenant> tenant() {
+        return Optional.ofNullable(this.tenant);
+    }
+
+    public void bindTenant(Tenant tenant) {
+        checkState(this.tenant == null, "Changing tenant is not permitted.");
+        checkNotNull(tenant, "Setting null tenant is not allowed.");
+        this.tenant = tenant;
+    }
+
+    public void unbind() {
+        unbindRemoteId();
     }
 }

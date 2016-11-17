@@ -50,7 +50,7 @@ public class DeleteSpareVirtualMachine implements Solution {
     @Override public void applyTo(Problem problem) throws SolutionException {
         checkState(isSolutionFor(problem));
         VirtualMachineInLocation virtualMachineInLocation =
-            ((VirtualMachineProblems.VirtualMachineNotInDatabase) problem).getVirtualMachine();
+            ((VirtualMachineProblems.VirtualMachineNotInDatabase) problem).getResource();
 
         final boolean present = StreamSupport
             .stream(cloudService.discoveryService().listVirtualMachines().spliterator(), false)

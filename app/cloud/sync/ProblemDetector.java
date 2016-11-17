@@ -24,5 +24,5 @@ import java.util.function.Function;
 /**
  * Created by daniel on 04.11.15.
  */
-public interface ProblemDetector<T> extends Function<T, Optional<Problem>> {
+public interface ProblemDetector<T> extends Function<T, Optional<Problem<T>>> {
 }

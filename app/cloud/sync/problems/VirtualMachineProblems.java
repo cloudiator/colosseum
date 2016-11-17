@@ -19,10 +19,7 @@
 package cloud.sync.problems;
 
 import cloud.resources.VirtualMachineInLocation;
-import cloud.sync.Problem;
-import com.google.common.base.MoreObjects;
-
-import static com.google.common.base.Preconditions.checkNotNull;
+import models.VirtualMachine;
 
 /**
  * Created by daniel on 11.11.16.
@@ -33,51 +30,27 @@ public class VirtualMachineProblems {
 
     }
 
-    private abstract static class BaseVirtualMachineProblem implements Problem {
+    public static class VirtualMachineNotInDatabase extends AbstractProblem<VirtualMachineInLocation> {
 
-        private final VirtualMachineInLocation virtualMachine;
-
-        public BaseVirtualMachineProblem(VirtualMachineInLocation virtualMachine) {
-            checkNotNull(virtualMachine, "virtual machine is null.");
-            this.virtualMachine = virtualMachine;
+        public VirtualMachineNotInDatabase(VirtualMachineInLocation resource) {
+            super(resource);
         }
 
-        @Override public int getPriority() {
-            return Priority.MEDIUM;
+        @Override
+        public int getPriority() {
+            return Priority.LOW;
         }
-
-        public VirtualMachineInLocation getVirtualMachine() {
-            return virtualMachine;
-        }
-
-        @Override public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof BaseVirtualMachineProblem))
-                return false;
-
-            BaseVirtualMachineProblem that = (BaseVirtualMachineProblem) o;
-
-            return virtualMachine.equals(that.virtualMachine);
-
-        }
-
-        @Override public int hashCode() {
-            return virtualMachine.hashCode();
-        }
-
     }
 
+    public static class VirtualMachineInErrorState extends AbstractProblem<VirtualMachine> {
 
-    public static class VirtualMachineNotInDatabase extends BaseVirtualMachineProblem {
-
-        public VirtualMachineNotInDatabase(VirtualMachineInLocation virtualMachine) {
-            super(virtualMachine);
+        public VirtualMachineInErrorState(VirtualMachine resource) {
+            super(resource);
         }
 
-        @Override public String toString() {
-            return MoreObjects.toStringHelper(this).add("virtualMachine", getVirtualMachine())
-                .toString();
+        @Override
+        public int getPriority() {
+            return Priority.HIGH;
         }
     }
 

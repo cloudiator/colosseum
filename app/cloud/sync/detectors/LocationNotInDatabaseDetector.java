@@ -18,16 +18,15 @@
 
 package cloud.sync.detectors;
 
-import com.google.inject.Inject;
-
-import java.util.Optional;
-
 import cloud.resources.LocationInCloud;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.LocationProblems;
+import com.google.inject.Inject;
 import models.Location;
 import models.service.LocationModelService;
+
+import java.util.Optional;
 
 /**
  * Created by daniel on 04.11.15.
@@ -36,14 +35,16 @@ public class LocationNotInDatabaseDetector implements ProblemDetector<LocationIn
 
     private final LocationModelService locationModelService;
 
-    @Inject public LocationNotInDatabaseDetector(LocationModelService locationModelService) {
+    @Inject
+    public LocationNotInDatabaseDetector(LocationModelService locationModelService) {
         this.locationModelService = locationModelService;
     }
 
-    @Override public Optional<Problem> apply(LocationInCloud locationInCloud) {
+    @Override
+    public Optional<Problem<LocationInCloud>> apply(LocationInCloud locationInCloud) {
         Location location = locationModelService.getByRemoteId(locationInCloud.cloudId());
         if (location == null || !location.cloudCredentials()
-            .contains(locationInCloud.credential())) {
+                .contains(locationInCloud.credential())) {
             return Optional.of(new LocationProblems.LocationNotInDatabase(locationInCloud));
         }
         return Optional.empty();

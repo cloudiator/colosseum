@@ -18,30 +18,27 @@
 
 package cloud.sync.watchdogs;
 
-import cloud.CloudService;
-import cloud.resources.VirtualMachineInLocation;
-import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import components.execution.SimpleBlockingQueue;
-import components.execution.Stable;
+import models.VirtualMachine;
+import models.service.ModelService;
 
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by daniel on 11.11.16.
+ * Created by daniel on 14.11.16.
  */
-@Stable public class VirtualMachineWatchdog
-    extends AbstractCloudServiceWatchdog<VirtualMachineInLocation> {
+public class VirtualMachineWatchdog extends AbstractDatabaseWatchdog<VirtualMachine> {
 
     @Inject protected VirtualMachineWatchdog(
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
-        Set<ProblemDetector<VirtualMachineInLocation>> problemDetectors,
-        CloudService cloudService) {
-        super(problemQueue, problemDetectors, cloudService);
+        Set<ProblemDetector<VirtualMachine>> problemDetectors,
+        ModelService<VirtualMachine> modelService) {
+        super(problemQueue, problemDetectors, modelService);
     }
 
     @Override public long period() {
@@ -56,7 +53,7 @@ import java.util.concurrent.TimeUnit;
         return TimeUnit.SECONDS;
     }
 
-    @Override protected Iterable<VirtualMachineInLocation> toWatch() {
-        return cloudService().discoveryService().listVirtualMachines();
+    @Override protected Iterable<VirtualMachine> toWatch() {
+        return modelService().getAll();
     }
 }

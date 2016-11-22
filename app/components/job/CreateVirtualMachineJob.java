@@ -26,7 +26,7 @@ import cloud.strategies.KeyPairStrategy;
 import cloud.strategies.RemoteConnectionStrategy;
 import com.google.common.base.Optional;
 import components.installer.Installers;
-import components.installer.ToolPorts;
+import components.installer.SecurityGroupPorts;
 import components.installer.api.InstallApi;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.PublicIpException;
@@ -72,6 +72,10 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
         return true;
     }
 
+    @Override public void onSuccess() throws JobException {
+        super.onSuccess();
+    }
+
     @Override protected void doWork(ModelService<VirtualMachine> modelService,
         ColosseumComputeService computeService) throws JobException {
 
@@ -98,7 +102,7 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 if (keyPairOptional.isPresent()) {
                     templateOptionsBuilder.keyPairName(keyPairOptional.get().name());
                 }
-                templateOptionsBuilder.inboundPorts(ToolPorts.inBoundPorts());
+                templateOptionsBuilder.inboundPorts(SecurityGroupPorts.inBoundPorts());
                 templateOptionsBuilder.inboundPorts(portProvidedService.allProvidedPorts());
                 if (virtualMachine.templateOptions().isPresent()) {
                     templateOptionsBuilder.tags(virtualMachine.templateOptions().get().tags());

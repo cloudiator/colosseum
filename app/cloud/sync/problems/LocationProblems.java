@@ -19,7 +19,6 @@
 package cloud.sync.problems;
 
 import cloud.resources.LocationInCloud;
-import cloud.sync.Problem;
 
 /**
  * Created by daniel on 05.05.15.
@@ -30,46 +29,15 @@ public class LocationProblems {
 
     }
 
-    private abstract static class BaseLocationProblem implements Problem {
-        private final LocationInCloud locationInCloud;
+    public static class LocationNotInDatabase extends AbstractProblem<LocationInCloud> {
 
-        public BaseLocationProblem(LocationInCloud locationInCloud) {
-            this.locationInCloud = locationInCloud;
+        public LocationNotInDatabase(LocationInCloud resource) {
+            super(resource);
         }
 
-        @Override public int getPriority() {
+        @Override
+        public int getPriority() {
             return Priority.HIGH;
-        }
-
-        public LocationInCloud getLocationInCloud() {
-            return locationInCloud;
-        }
-
-        @Override public boolean equals(Object o) {
-            if (this == o)
-                return true;
-            if (!(o instanceof BaseLocationProblem))
-                return false;
-
-            BaseLocationProblem that = (BaseLocationProblem) o;
-
-            return locationInCloud.equals(that.locationInCloud);
-
-        }
-
-        @Override public int hashCode() {
-            return locationInCloud.hashCode();
-        }
-    }
-
-
-    public static class LocationNotInDatabase extends BaseLocationProblem {
-        public LocationNotInDatabase(LocationInCloud locationInCloud) {
-            super(locationInCloud);
-        }
-
-        @Override public String toString() {
-            return "LocationNotInDatabase";
         }
     }
 

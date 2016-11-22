@@ -16,9 +16,28 @@
  * under the License.
  */
 
-package util;
+package cloud.sync.problems;
+
+import models.Instance;
 
 /**
- * Created by daniel on 09.05.16.
+ * Created by daniel on 11.11.16.
  */
+public class InstanceProblems {
 
+    private InstanceProblems() {
+
+    }
+
+    public static class InstanceInErrorState extends AbstractProblem<Instance> {
+
+        public InstanceInErrorState(Instance resource) {
+            super(resource);
+        }
+
+        @Override public int getPriority() {
+            return Priority.HIGH;
+        }
+    }
+
+}

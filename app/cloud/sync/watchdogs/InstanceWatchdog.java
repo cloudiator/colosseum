@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,36 +16,43 @@
  * under the License.
  */
 
-package cloud.sync;
+package cloud.sync.watchdogs;
 
+import cloud.sync.Problem;
+import cloud.sync.ProblemDetector;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
+import components.execution.SimpleBlockingQueue;
+import models.Instance;
+import models.service.ModelService;
 
 import java.util.Set;
-
-import cloud.CloudService;
-import components.execution.SimpleBlockingQueue;
-
-
+import java.util.concurrent.TimeUnit;
 
 /**
- * Created by daniel on 27.04.15.
+ * Created by daniel on 14.11.16.
  */
-public abstract class AbstractCloudServiceWatchdog<T> extends AbstractWatchDog<T> {
+public class InstanceWatchdog extends AbstractDatabaseWatchdog<Instance> {
 
-    private final CloudService cloudService;
-
-    @Inject protected AbstractCloudServiceWatchdog(
+    @Inject protected InstanceWatchdog(
         @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
-        Set<ProblemDetector<T>> problemDetectors, CloudService cloudService) {
-        super(problemQueue, problemDetectors);
-        this.cloudService = cloudService;
+        Set<ProblemDetector<Instance>> problemDetectors, ModelService<Instance> modelService) {
+        super(problemQueue, problemDetectors, modelService);
     }
 
-    protected final CloudService cloudService() {
-        return cloudService;
+    @Override public long period() {
+        return 20;
     }
 
+    @Override public long delay() {
+        return 10;
+    }
+
+    @Override public TimeUnit timeUnit() {
+        return TimeUnit.SECONDS;
+    }
+
+    @Override protected Iterable<Instance> toWatch() {
+        return modelService().getAll();
+    }
 }
-
-

@@ -22,6 +22,7 @@ package models;
 import de.uniulm.omi.cloudiator.common.os.LoginNameSupplier;
 import de.uniulm.omi.cloudiator.common.os.RemotePortProvider;
 import models.generic.RemoteResourceInLocation;
+import models.generic.RemoteState;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
@@ -49,8 +50,8 @@ import java.util.*;
      * Use set to avoid duplicate entries due to hibernate bug
      * https://hibernate.atlassian.net/browse/HHH-7404
      */
-    @OneToMany(mappedBy = "virtualMachine", cascade = CascadeType.ALL) private Set<IpAddress>
-        ipAddresses;
+    @OneToMany(mappedBy = "virtualMachine", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private Set<IpAddress> ipAddresses;
 
     /**
      * Empty constructor for hibernate.
@@ -87,6 +88,20 @@ import java.util.*;
             this.ipAddresses = new HashSet<>();
         }
         this.ipAddresses.add(ipAddress);
+    }
+
+    public void removeIpAddress(IpAddress ipAddress) {
+        if (ipAddresses == null) {
+            return;
+        }
+        ipAddresses.remove(ipAddress);
+    }
+
+    public void removeIpAddresses() {
+        if (ipAddresses == null) {
+            return;
+        }
+        ipAddresses.clear();
     }
 
     public Optional<IpAddress> publicIpAddress() {
@@ -182,5 +197,15 @@ import java.util.*;
             throw new IllegalStateException("Image is not longer known.");
         }
         return image.operatingSystem();
+    }
+
+    public void unbind() {
+        unbindProviderIds();
+        unbindRemoteId();
+        removeIpAddresses();
+        setRemoteState(RemoteState.INPROGRESS);
+        generatedLoginUsername = null;
+        generatedLoginPassword = null;
+        generatedPrivateKey = null;
     }
 }

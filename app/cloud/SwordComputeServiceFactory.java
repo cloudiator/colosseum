@@ -18,22 +18,22 @@
 
 package cloud;
 
-import com.google.inject.Inject;
-
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
-import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
-
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
+import com.google.inject.Inject;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.core.properties.PropertiesBuilder;
+import de.uniulm.omi.cloudiator.sword.service.ServiceBuilder;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
 import play.Configuration;
+import util.ConfigurationConstants;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 
 /**
@@ -43,20 +43,28 @@ public class SwordComputeServiceFactory implements ComputeServiceFactory {
 
     private final ModelService<Cloud> cloudModelService;
     private final ModelService<CloudCredential> cloudCredentialModelService;
+    private final Configuration configuration;
+
 
     @Inject SwordComputeServiceFactory(ModelService<Cloud> cloudModelService,
-        ModelService<CloudCredential> cloudCredentialModelService) {
+        ModelService<CloudCredential> cloudCredentialModelService, Configuration configuration) {
 
-        checkNotNull(cloudModelService);
-        checkNotNull(cloudCredentialModelService);
+        checkNotNull(cloudModelService, "cloudModelService is null.");
+        checkNotNull(cloudCredentialModelService, "cloudCredentialModelService is null.");
+        checkNotNull(configuration, "configuration is null.");
 
         this.cloudModelService = cloudModelService;
         this.cloudCredentialModelService = cloudCredentialModelService;
+        this.configuration = configuration;
     }
 
     private String getNodeGroup() {
-        //TODO: wrong place? config should probably checked during init of app
-        return Configuration.root().getString("colosseum.nodegroup");
+        final String nodeGroup =
+            configuration.getString(ConfigurationConstants.NODE_GROUP);
+        checkState(nodeGroup != null, String
+            .format("No nodeGroup configured! Make sure property %s is set.",
+                ConfigurationConstants.NODE_GROUP));
+        return nodeGroup;
     }
 
     @Override

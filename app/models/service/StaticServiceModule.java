@@ -19,33 +19,7 @@
 package models.service;
 
 import com.google.inject.AbstractModule;
-
-import controllers.security.SecuredSessionOrToken;
-import controllers.security.SecuredToken;
-import dtos.ApplicationComponentDto;
-import dtos.ApplicationInstanceDto;
-import dtos.CloudCredentialDto;
-import dtos.CloudDto;
-import dtos.CloudPropertyDto;
-import dtos.CommunicationDto;
-import dtos.ComponentHorizontalInScalingActionDto;
-import dtos.ComponentHorizontalOutScalingActionDto;
-import dtos.ComposedMonitorDto;
-import dtos.HardwareDto;
-import dtos.ImageDto;
-import dtos.InstanceDto;
-import dtos.IpAddressDto;
-import dtos.KeyPairDto;
-import dtos.LocationDto;
-import dtos.LoginDto;
-import dtos.MonitorInstanceDto;
-import dtos.MonitorSubscriptionDto;
-import dtos.OperatingSystemDto;
-import dtos.PortDto;
-import dtos.RawMonitorDto;
-import dtos.TenantDto;
-import dtos.VirtualMachineDto;
-import dtos.VirtualMachineTemplateDto;
+import dtos.*;
 
 /**
  * Created by daniel on 28.04.15.
@@ -78,10 +52,5 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(PortDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(VirtualMachineTemplateDto.References.class);
-
-        //static injection in security tokens
-        requestStaticInjection(SecuredToken.References.class);
-        requestStaticInjection(SecuredSessionOrToken.References.class);
-
     }
 }

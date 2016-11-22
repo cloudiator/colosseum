@@ -18,16 +18,15 @@
 
 package cloud.sync.detectors;
 
-import com.google.inject.Inject;
-
-import java.util.Optional;
-
 import cloud.resources.HardwareInLocation;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import cloud.sync.problems.HardwareProblems;
+import com.google.inject.Inject;
 import models.Hardware;
 import models.service.HardwareModelService;
+
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,17 +37,19 @@ public class HardwareNotInDatabaseDetector implements ProblemDetector<HardwareIn
 
     private final HardwareModelService hardwareModelService;
 
-    @Inject public HardwareNotInDatabaseDetector(HardwareModelService hardwareModelService) {
+    @Inject
+    public HardwareNotInDatabaseDetector(HardwareModelService hardwareModelService) {
         checkNotNull(hardwareModelService);
         this.hardwareModelService = hardwareModelService;
     }
 
-    @Override public Optional<Problem> apply(HardwareInLocation hardwareInLocation) {
+    @Override
+    public Optional<Problem<HardwareInLocation>> apply(HardwareInLocation hardwareInLocation) {
 
         final Hardware hardware = hardwareModelService.getByRemoteId(hardwareInLocation.cloudId());
 
         if (hardware == null || !hardware.cloudCredentials()
-            .contains(hardwareInLocation.credential())) {
+                .contains(hardwareInLocation.credential())) {
             return Optional.of(new HardwareProblems.HardwareNotInDatabase(hardwareInLocation));
         }
         return Optional.empty();

@@ -18,18 +18,16 @@
 
 package models;
 
+import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.common.Password;
-
+import models.generic.Model;
 import org.apache.commons.codec.binary.Base64;
-
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
-
-import models.generic.Model;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -38,21 +36,29 @@ import static com.google.common.base.Preconditions.checkNotNull;
  *
  * @author Daniel Baur
  */
-@Entity public class FrontendUser extends Model {
+@Entity
+public class FrontendUser extends Model {
 
-    @Column(nullable = false) private String firstName;
+    @Column(nullable = false)
+    private String firstName;
 
-    @Column(nullable = false) private String lastName;
+    @Column(nullable = false)
+    private String lastName;
 
-    @Column(nullable = false) private String salt;
+    @Column(nullable = false)
+    private String salt;
 
-    @Column(unique = true) private String mail;
+    @Column(unique = true)
+    private String mail;
 
-    @Column(nullable = false) private String password;
+    @Column(nullable = false)
+    private String password;
 
-    @OneToMany(mappedBy = "frontendUser") private List<ApiAccessToken> tokens;
+    @OneToMany(mappedBy = "frontendUser")
+    private List<ApiAccessToken> tokens;
 
-    @ManyToMany(mappedBy = "frontendUsers") private List<Tenant> tenants;
+    @ManyToMany(mappedBy = "frontendUsers")
+    private List<Tenant> tenants;
 
     /**
      * Empty constructor for hibernate.
@@ -70,7 +76,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
      * @param password  Hashed and salted password of the user.
      */
     public FrontendUser(String firstName, String lastName, String salt, String mail,
-        String password) {
+                        String password) {
         super();
         this.firstName = firstName;
         this.lastName = lastName;
@@ -102,7 +108,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.salt = Base64.encodeBase64String(generatedSalt);
 
         this.password =
-            new String(Password.getInstance().hash(password.toCharArray(), generatedSalt));
+                new String(Password.getInstance().hash(password.toCharArray(), generatedSalt));
     }
 
     public String getFirstName() {
@@ -168,5 +174,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public String getName() {
         return String.format("%s %s", firstName, lastName);
+    }
+
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", getId()).add("mail", getMail()).toString();
     }
 }

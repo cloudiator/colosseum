@@ -21,7 +21,7 @@ package components.model;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import components.installer.ToolPorts;
+import components.installer.SecurityGroupPorts;
 import models.Application;
 import models.PortProvided;
 
@@ -34,7 +34,7 @@ public class PortClashValidator implements ModelValidator<Application> {
         return application.getApplicationComponents().stream()
             .flatMap(applicationComponent -> applicationComponent.getProvidedPorts().stream())
             .mapToInt(PortProvided::getPort)
-            .filter(value -> ToolPorts.inBoundPorts().contains(value)).mapToObj(
+            .filter(value -> SecurityGroupPorts.inBoundPorts().contains(value)).mapToObj(
                 value -> ValidationMessage.of(String
                     .format("Port %s required by application %s clashes with reserved port.", value,
                         application), ValidationMessage.Type.ERROR)).collect(Collectors.toSet());

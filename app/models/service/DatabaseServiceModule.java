@@ -20,49 +20,7 @@ package models.service;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
-
-import models.Api;
-import models.Application;
-import models.ApplicationComponent;
-import models.ApplicationInstance;
-import models.Cloud;
-import models.CloudCredential;
-import models.CloudProperty;
-import models.Communication;
-import models.Component;
-import models.ComponentHorizontalInScalingAction;
-import models.ComponentHorizontalOutScalingAction;
-import models.ComposedMonitor;
-import models.ConstantMonitor;
-import models.FormulaQuantifier;
-import models.FrontendUser;
-import models.GeoLocation;
-import models.Hardware;
-import models.HardwareOffer;
-import models.Image;
-import models.Instance;
-import models.IpAddress;
-import models.KeyPair;
-import models.LifecycleComponent;
-import models.Location;
-import models.MeasurementWindow;
-import models.Monitor;
-import models.MonitorInstance;
-import models.MonitorSubscription;
-import models.OperatingSystem;
-import models.PortProvided;
-import models.PortRequired;
-import models.RawMonitor;
-import models.ScalingAction;
-import models.Schedule;
-import models.SensorConfigurations;
-import models.SensorDescription;
-import models.TemplateOptions;
-import models.Tenant;
-import models.TimeWindow;
-import models.VirtualMachine;
-import models.VirtualMachineTemplate;
-import models.Window;
+import models.*;
 
 /**
  * Created by daniel on 18.03.15.
@@ -249,6 +207,7 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<RemoteModelService<VirtualMachine>>() {
         }).to(new TypeLiteral<BaseRemoteModelService<VirtualMachine>>() {
         });
+        bind(VirtualMachineModelService.class).to(DefaultVirtualMachineModelService.class);
         //VirtualMachineTemplate
         bind(new TypeLiteral<ModelService<VirtualMachineTemplate>>() {
         }).to(new TypeLiteral<BaseModelService<VirtualMachineTemplate>>() {

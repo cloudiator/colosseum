@@ -1,7 +1,11 @@
 
 import de.johoop.jacoco4sbt.JacocoPlugin.jacoco
 
-lazy val root = (project in file(".")).enablePlugins(PlayJava)
+lazy val root = (project in file(".")).enablePlugins(PlayJava, DebianPlugin)
+
+//updateOptions := updateOptions.value.withCachedResolution(true)
+
+//updateOptions := updateOptions.value.withLatestSnapshots(true)
 
 scalaVersion := "2.11.8"
 
@@ -32,10 +36,6 @@ resolvers += Resolver.mavenLocal
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
-resolvers += {
-  "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
-}
-
 libraryDependencies ++= Seq(
   javaJdbc,
   javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),
@@ -61,7 +61,6 @@ libraryDependencies ++= Seq(
   "org.jgrapht" % "jgrapht-ext" % "0.9.2",
   "org.apache.commons" % "commons-lang3" % "3.4"
 )
-
 
 TwirlKeys.templateImports += "dtos._"
 
@@ -137,3 +136,10 @@ ApiDocSettings.apiDocTask
 
 PlayKeys.externalizeResources := false
 
+//Debian configuration
+
+maintainer in Linux := "Daniel Baur <daniel.baur@uni-ulm.de>"
+
+packageSummary in Linux := "Colosseum component of the Cloudiator toolset."
+
+packageDescription := "Colosseum is a cloud orchestration tool. It belongs to the Cloudiator toolset. More information on https://cloudiator.github.io."

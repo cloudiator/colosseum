@@ -16,33 +16,20 @@
  * under the License.
  */
 
-package components.installer;
+package deployment;
 
-import java.util.HashSet;
-import java.util.Set;
+import de.uniulm.omi.cloudiator.lance.application.component.ComponentId;
+import models.ApplicationComponent;
+
+import java.util.function.Function;
 
 /**
- * @todo installers need to be able to register those ports
+ * Created by daniel on 11.10.16.
  */
-public class ToolPorts {
+public class ApplicationComponentToComponentId
+    implements Function<ApplicationComponent, ComponentId> {
 
-    private ToolPorts() {
-        throw new AssertionError("static only");
+    @Override public ComponentId apply(ApplicationComponent applicationComponent) {
+        return ComponentId.fromString(applicationComponent.getUuid());
     }
-
-    static String ports = "22," + //ssh
-        "8080," + //kairos
-        "31415," +  //visor
-        "1099," +  //lance rmi registry
-        "33033"; // lance rmi
-
-    public static Set<Integer> inBoundPorts() {
-        Set<Integer> intPorts = new HashSet<>();
-        for (String port : ports.split(",")) {
-            intPorts.add(Integer.valueOf(port));
-        }
-        return intPorts;
-    }
-
 }
-

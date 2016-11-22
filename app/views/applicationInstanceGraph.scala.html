@@ -8,7 +8,11 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, minimal-ui">
 
         <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
+        <script src="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/2.7.0/cytoscape.js"></script>
+        <script src="@routes.Assets.at("javascripts/cytoscape-qtip.js")"></script>
+
+        <link rel="stylesheet" href="http://cdn.jsdelivr.net/qtip2/3.0.3/jquery.qtip.min.css">
 
 
         <style>
@@ -35,11 +39,13 @@
         <script>
                 $(function(){ // on dom ready
 
-                    $('#cy').cytoscape({
+                    var cy = cytoscape({
                         layout: {
                             name: 'cose',
                             padding: 10
                         },
+
+                        container: document.getElementById('cy'),
 
                         style: cytoscape.stylesheet()
                                 .selector('node')
@@ -72,6 +78,12 @@
 
                         ready: function(){
                             window.cy = this;
+
+                            cy.elements().filter('[type = "VM"]').qtip
+                            ({
+                                content: function(){ return 'IP: ' + this.data("publicIp") },
+                                style: {classes: 'qtip-bootstrap',tip: {width: 16,height: 8}}
+                            });
 
                             // giddy up
                         }

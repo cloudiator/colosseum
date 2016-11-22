@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 import cloud.CloudService;
 import cloud.resources.LocationInCloud;
-import cloud.sync.AbstractCloudServiceWatchdog;
 import cloud.sync.Problem;
 import cloud.sync.ProblemDetector;
 import components.execution.SimpleBlockingQueue;

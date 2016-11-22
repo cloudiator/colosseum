@@ -21,17 +21,16 @@ package components.model;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-
+import models.ApplicationInstance;
+import models.Instance;
+import models.IpAddress;
 import org.jgrapht.EdgeFactory;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedPseudograph;
+import play.libs.Json;
 
 import java.util.Random;
 import java.util.function.Consumer;
-
-import models.ApplicationInstance;
-import models.Instance;
-import play.libs.Json;
 
 /**
  * Created by daniel on 15.07.16.
@@ -54,7 +53,7 @@ public class ApplicationInstanceGraph {
 
 
     private static class CommunicationInstanceEdgeFactory
-        implements EdgeFactory<Instance, CommunicationInstanceEdge> {
+            implements EdgeFactory<Instance, CommunicationInstanceEdge> {
         @Override
         public CommunicationInstanceEdge createEdge(Instance sourceVertex, Instance targetVertex) {
             return new CommunicationInstanceEdge();
@@ -67,24 +66,27 @@ public class ApplicationInstanceGraph {
         this.instanceGraph.vertexSet().forEach(instance -> {
             final ObjectNode vertex = nodes.addObject();
             vertex.with("data").put("id", instance.getUuid())
-                .put("name", instance.getApplicationComponent().getComponent().getName())
-                .put("state", instance.getRemoteState().toString())
-                .put("parent", instance.getVirtualMachine().getUuid());
+                    .put("type", "INSTANCE")
+                    .put("name", instance.getApplicationComponent().getComponent().getName())
+                    .put("state", instance.getRemoteState().toString())
+                    .put("parent", instance.getVirtualMachine().getUuid());
         });
         //add virtual machines as compound nodes
         this.instanceGraph.vertexSet().stream().map(Instance::getVirtualMachine).distinct()
-            .forEach(virtualMachine -> {
-                final ObjectNode compound = nodes.addObject();
-                compound.with("data").put("id", virtualMachine.getUuid())
-                    .put("name", virtualMachine.name())
-                    .put("state", virtualMachine.getRemoteState().toString());
-            });
+                .forEach(virtualMachine -> {
+                    final ObjectNode compound = nodes.addObject();
+                    compound.with("data").put("id", virtualMachine.getUuid())
+                            .put("type", "VM")
+                            .put("name", virtualMachine.name())
+                            .put("state", virtualMachine.getRemoteState().toString())
+                            .put("publicIp", virtualMachine.publicIpAddress().map(IpAddress::getIp).orElse(null));
+                });
         final ArrayNode edges = objectNode.putArray("edges");
         this.instanceGraph.edgeSet().forEach(communicationEdge -> {
             final ObjectNode edge = edges.addObject();
             edge.with("data").put("id", new Random().nextInt())
-                .put("source", instanceGraph.getEdgeSource(communicationEdge).getUuid())
-                .put("target", instanceGraph.getEdgeTarget(communicationEdge).getUuid());
+                    .put("source", instanceGraph.getEdgeSource(communicationEdge).getUuid())
+                    .put("target", instanceGraph.getEdgeTarget(communicationEdge).getUuid());
         });
 
         return objectNode;
@@ -94,14 +96,15 @@ public class ApplicationInstanceGraph {
     private static class GraphFactory {
 
         public static DirectedPseudograph<Instance, CommunicationInstanceEdge> of(
-            ApplicationInstance applicationInstance) {
+                ApplicationInstance applicationInstance) {
 
             DirectedPseudograph<Instance, CommunicationInstanceEdge> instanceGraph =
-                new DirectedPseudograph<>(new CommunicationInstanceEdgeFactory());
+                    new DirectedPseudograph<>(new CommunicationInstanceEdgeFactory());
 
             applicationInstance.getInstances().forEach(instanceGraph::addVertex);
             applicationInstance.getInstances().forEach(new Consumer<Instance>() {
-                @Override public void accept(Instance instance) {
+                @Override
+                public void accept(Instance instance) {
                     for (Instance targetInstance : instance.getTargetCommunicationInstances()) {
                         instanceGraph.addEdge(instance, targetInstance);
                     }

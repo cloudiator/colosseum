@@ -21,6 +21,8 @@ package controllers.security;
 import play.mvc.Http;
 import play.mvc.Security;
 
+import javax.annotation.Nullable;
+
 /**
  * Created by daniel on 03.07.15.
  */
@@ -28,11 +30,15 @@ public abstract class TenantAwareAuthenticator extends Security.Authenticator {
 
     public static final String SEPARATOR = ":";
 
+    @Nullable
     public abstract String getUser(Http.Context context);
 
+    @Nullable
     public abstract String getTenant(Http.Context context);
 
-    @Override public String getUsername(Http.Context context) {
+    @Override
+    @Nullable
+    public String getUsername(Http.Context context) {
         final String user = getUser(context);
         final String tenant = getTenant(context);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2016 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,20 +16,23 @@
  * under the License.
  */
 
-package cloud.sync;
+package cloud.sync.watchdogs;
 
+import cloud.sync.Problem;
+import cloud.sync.ProblemDetector;
 import com.google.common.collect.Iterables;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-
-import java.util.Optional;
-import java.util.Set;
-
 import components.execution.Schedulable;
 import components.execution.SimpleBlockingQueue;
 import play.Logger;
 import play.db.jpa.Transactional;
 import util.logging.Loggers;
+
+import java.util.Optional;
+import java.util.Set;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 04.11.15.
@@ -40,14 +43,21 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
     private final SimpleBlockingQueue<Problem> problemQueue;
     private final Set<ProblemDetector<T>> detectors;
 
-    @Inject protected AbstractWatchDog(
-        @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
-        Set<ProblemDetector<T>> detectors) {
+    @Inject
+    protected AbstractWatchDog(
+            @Named(value = "problemQueue") SimpleBlockingQueue<Problem> problemQueue,
+            Set<ProblemDetector<T>> detectors) {
+
+        checkNotNull(problemQueue, "problemQueue is null.");
+        checkNotNull(detectors, "detectors is null.");
+
         this.problemQueue = problemQueue;
         this.detectors = detectors;
     }
 
-    @Transactional(readOnly = true) @Override public void run() {
+    @Transactional(readOnly = true)
+    @Override
+    public void run() {
 
         LOGGER.info(String.format("%s is starting watching.", this));
 
@@ -55,17 +65,17 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
 
         if (Iterables.size(toWatch) > 0) {
             LOGGER
-                .debug(String.format("%s is watching %s entities.", this, Iterables.size(toWatch)));
+                    .debug(String.format("%s is watching %s entities.", this, Iterables.size(toWatch)));
             for (T t : toWatch()) {
                 LOGGER.trace(String.format("%s is starting to watch %s", this, t));
                 for (ProblemDetector<T> problemDetector : detectors) {
                     LOGGER.trace(String
-                        .format("%s is applying problem detector %s on %s", this, problemDetector,
-                            t));
-                    final Optional<Problem> problem = problemDetector.apply(t);
+                            .format("%s is applying problem detector %s on %s", this, problemDetector,
+                                    t));
+                    final Optional<Problem<T>> problem = problemDetector.apply(t);
                     if (problem.isPresent()) {
                         LOGGER.debug(String.format("%s found problem %s, reporting to queue.", this,
-                            problem.get()));
+                                problem.get()));
                         problemQueue.add(problem.get());
                     }
                 }
@@ -81,7 +91,6 @@ public abstract class AbstractWatchDog<T> implements Schedulable {
      * @return a iterable of objects to watch.
      */
     protected abstract Iterable<T> toWatch();
-
 
 
 }

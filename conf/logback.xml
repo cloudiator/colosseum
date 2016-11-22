@@ -89,6 +89,7 @@
     <logger name="colosseum.api" level="DEBUG"/>
     <logger name="colosseum.model" level="DEBUG"/>
     <logger name="colosseum.system" level="DEBUG"/>
+    <logger name="colosseum.auth" level="DEBUG"/>
 
     <logger name="jclouds.wire" level="TRACE" additivity="false">
         <appender-ref ref="JCLOUDS"/>

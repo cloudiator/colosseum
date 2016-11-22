@@ -36,10 +36,6 @@ resolvers += Resolver.mavenLocal
 
 resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
 
-resolvers += {
-  "jclouds-snapshots" at "https://repository.apache.org/content/repositories/snapshots"
-}
-
 libraryDependencies ++= Seq(
   javaJdbc,
   javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),

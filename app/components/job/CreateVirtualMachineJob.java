@@ -91,13 +91,14 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                     LOGGER.debug(String
                         .format("%s is creating keyPair for virtual machine %s.", this,
                             virtualMachine));
-                    return keyPairStrategy.create(virtualMachine);
+                    java.util.Optional<KeyPair> keyPair = keyPairStrategy.create(virtualMachine);
+                    LOGGER.debug(String.format("%s created keyPair %s", this, keyPair));
+                    return keyPair;
                 });
             } catch (Throwable throwable) {
                 throw new JobException(throwable);
             }
         }
-        LOGGER.debug(String.format("%s created keyPair %s", this, keyPairOptional));
 
         VirtualMachineInLocation cloudVirtualMachine;
         try {
@@ -123,15 +124,16 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 // with multiple created security groups)
                 synchronized (CreateVirtualMachineJob.class) {
                     LOGGER.debug(String.format("%s is starting a virtual machine.", this));
-                    return computeService
+                    VirtualMachineInLocation startedVM = computeService
                         .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+                    LOGGER.debug(
+                        String.format("%s created the virtual machine %s.", this, startedVM));
+                    return startedVM;
                 }
             });
         } catch (Throwable throwable) {
             throw new JobException(throwable);
         }
-        LOGGER
-            .debug(String.format("%s created the virtual machine %s.", this, cloudVirtualMachine));
 
 
         jpaApi().withTransaction(() -> {

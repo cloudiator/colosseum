@@ -43,7 +43,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
      */
     @ManyToOne(optional = false) private Application application;
     @ManyToOne(optional = false) private Component component;
-    @ManyToOne(optional = false) private VirtualMachineTemplate virtualMachineTemplate;
+    @ManyToOne(optional = true) private VirtualMachineTemplate virtualMachineTemplate;
 
     /**
      * Foreign relations
@@ -58,12 +58,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
     }
 
     public ApplicationComponent(Application application, Component component,
-        VirtualMachineTemplate virtualMachineTemplate, @Nullable ContainerType containerType) {
+                                @Nullable VirtualMachineTemplate virtualMachineTemplate, @Nullable ContainerType containerType) {
         checkNotNull(application);
         this.application = application;
         checkNotNull(component);
         this.component = component;
-        checkNotNull(virtualMachineTemplate);
+        //checkNotNull(virtualMachineTemplate);
         this.virtualMachineTemplate = virtualMachineTemplate;
         this.containerType = containerType;
     }

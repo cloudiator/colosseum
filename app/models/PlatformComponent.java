@@ -10,7 +10,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by Daniel Seybold on 23.11.2016.
  */
-@Entity public class PlatformComponent extends Component {
+@Entity
+public class PlatformComponent extends Component {
 
     @Nullable
     @Lob
@@ -27,7 +28,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     }
 
-    public PlatformComponent(@Nullable String gitUrl, @Nullable String artifactPath ){
+    public PlatformComponent(String name, @Nullable String gitUrl, @Nullable String artifactPath ){
+
+        checkNotNull(name);
 
         if(gitUrl == null){
             checkNotNull(artifactPath);
@@ -43,4 +46,6 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.artifactPath = artifactPath;
 
     }
+
+
 }

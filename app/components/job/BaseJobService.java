@@ -103,4 +103,9 @@ import play.db.jpa.JPAApi;
                 tenantModelService, colosseumComputeService, tenant));
     }
 
+    @Override
+    public void newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant) {
+
+    }
+
 }

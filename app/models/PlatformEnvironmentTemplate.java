@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = false) private Platform platform;
     @ManyToOne(optional = false) private PlatformRuntime platformRuntime;
     @ManyToOne(optional = false) private PlatformHardware platformHardware;
-    @ManyToOne(optional = false) private PlatformService platformService;
+    @ManyToOne(optional = true) private PlatformService platformService;
 
     /**
      * Empty constructor for hibernate.
@@ -26,17 +26,17 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected PlatformEnvironmentTemplate() {
     }
 
-    public PlatformEnvironmentTemplate(Platform platform, PlatformRuntime platformRuntime, PlatformHardware platformHardware, PlatformService platformService) {
+    public PlatformEnvironmentTemplate(Platform platform, PlatformRuntime platformRuntime, PlatformHardware platformHardware) {
 
         checkNotNull(platform);
         checkNotNull(platformRuntime);
         checkNotNull(platformHardware);
-        checkNotNull(platformService);
+
 
         this.platform = platform;
         this.platformRuntime = platformRuntime;
         this.platformHardware = platformHardware;
-        this.platformService = platformService;
+        //this.platformService = platformService;
     }
 
     public Platform getPlatform() {
@@ -63,6 +63,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.platformHardware = platformHardware;
     }
 
+    /*
     public PlatformService getPlatformService() {
         return platformService;
     }
@@ -70,4 +71,5 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setPlatformService(PlatformService platformService) {
         this.platformService = platformService;
     }
+    */
 }

@@ -59,7 +59,8 @@ libraryDependencies ++= Seq(
   "org.reflections" % "reflections" % "0.9.10",
   "org.jgrapht" % "jgrapht-core" % "0.9.2",
   "org.jgrapht" % "jgrapht-ext" % "0.9.2",
-  "org.apache.commons" % "commons-lang3" % "3.4"
+  "org.apache.commons" % "commons-lang3" % "3.4",
+  "eu.atos.paas" % "unified-paas-client" % "0.0.1-SNAPSHOT"
 )
 
 TwirlKeys.templateImports += "dtos._"

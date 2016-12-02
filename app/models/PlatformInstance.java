@@ -1,9 +1,9 @@
 package models;
 
-import models.generic.Model;
-import models.generic.RemoteState;
+import models.generic.RemoteResource;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -12,9 +12,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * Created by Daniel Seybold on 24.11.2016.
  */
-@Entity public class PlatformInstance extends Model {
+@Entity public class PlatformInstance extends RemoteResource {
 
-    private RemoteState remoteState = RemoteState.INPROGRESS;
 
     @ManyToOne(optional = false) private ApplicationComponent applicationComponent;
     @ManyToOne(optional = false) private ApplicationInstance applicationInstance;
@@ -23,6 +22,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @Nullable
     @ManyToOne private Tenant tenant;
 
+    @Column private String endpoint;
+
     /**
      * Empty constructor for hibernate.
      */
@@ -30,7 +31,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     }
 
-    public PlatformInstance(ApplicationComponent applicationComponent, ApplicationInstance applicationInstance, PlatformEnvironment platformEnvironment, Tenant tenant) {
+    public PlatformInstance(ApplicationComponent applicationComponent, ApplicationInstance applicationInstance, PlatformEnvironment platformEnvironment, Tenant tenant, String endpoint) {
 
         checkNotNull(applicationComponent);
         checkNotNull(applicationInstance);
@@ -41,18 +42,9 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.applicationInstance = applicationInstance;
         this.platformEnvironment = platformEnvironment;
         this.tenant = tenant;
+        this.endpoint = endpoint;
     }
 
-    public RemoteState getRemoteState() {
-        if (remoteState == null) {
-            return RemoteState.INPROGRESS;
-        }
-        return remoteState;
-    }
-
-    public void setRemoteState(RemoteState remoteState) {
-        this.remoteState = remoteState;
-    }
 
     public ApplicationComponent getApplicationComponent() {
         return applicationComponent;
@@ -85,5 +77,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public void setTenant(@Nullable Tenant tenant) {
         this.tenant = tenant;
+    }
+
+    public String getEndpoint() {
+        return endpoint;
+    }
+
+    public void setEndpoint(String endpoint) {
+        this.endpoint = endpoint;
     }
 }

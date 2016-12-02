@@ -292,5 +292,63 @@ POST          /api/vmt                                            @controllers.V
 PUT           /api/vmt/:id                                        @controllers.VirtualMachineTemplateController.put(id: Long)
 DELETE        /api/vmt/:id                                        @controllers.VirtualMachineTemplateController.delete(id: Long)
 
+#PaaS Extension
+#PlatformApi
+GET           /api/platformApi                                     @controllers.PlatformApiController.list()
+GET           /api/platformApi/:id                                 @controllers.PlatformApiController.get(id: Long)
+POST          /api/platformApi                                     @controllers.PlatformApiController.post()
+PUT           /api/platformApi/:id                                 @controllers.PlatformApiController.put(id: Long)
+DELETE        /api/platformApi/:id                                 @controllers.PlatformApiController.delete(id: Long)
+
+#Platform
+GET           /api/platform                                        @controllers.PlatformController.list()
+GET           /api/platform/:id                                    @controllers.PlatformController.get(id: Long)
+POST          /api/platform                                        @controllers.PlatformController.post()
+PUT           /api/platform/:id                                    @controllers.PlatformController.put(id: Long)
+DELETE        /api/platform/:id                                    @controllers.PlatformController.delete(id: Long)
+
+#PlatformHardware
+GET           /api/platformHardware                                @controllers.PlatformHardwareController.list()
+GET           /api/platformHardware/:id                            @controllers.PlatformHardwareController.get(id: Long)
+POST          /api/platformHardware                                @controllers.PlatformHardwareController.post()
+PUT           /api/platformHardware/:id                            @controllers.PlatformHardwareController.put(id: Long)
+DELETE        /api/platformHardware/:id                            @controllers.PlatformHardwareController.delete(id: Long)
+
+#PlatformCredential
+GET           /api/platformCredential                              @controllers.PlatformCredentialController.list()
+GET           /api/platformCredential/:id                          @controllers.PlatformCredentialController.get(id: Long)
+POST          /api/platformCredential                              @controllers.PlatformCredentialController.post()
+PUT           /api/platformCredential/:id                          @controllers.PlatformCredentialController.put(id: Long)
+DELETE        /api/platformCredential/:id                          @controllers.PlatformCredentialController.delete(id: Long)
+
+#PlatformRuntime
+GET           /api/platformRuntime                                 @controllers.PlatformRuntimeController.list()
+GET           /api/platformRuntime/:id                             @controllers.PlatformRuntimeController.get(id: Long)
+POST          /api/platformRuntime                                 @controllers.PlatformRuntimeController.post()
+PUT           /api/platformRuntime/:id                             @controllers.PlatformRuntimeController.put(id: Long)
+DELETE        /api/platformRuntime/:id                             @controllers.PlatformRuntimeController.delete(id: Long)
+
+#PlatformEnvironment
+GET           /api/platformEnvironmentTemplate                     @controllers.PlatformEnvironmentTemplateController.list()
+GET           /api/platformEnvironmentTemplate/:id                 @controllers.PlatformEnvironmentTemplateController.get(id: Long)
+POST          /api/platformEnvironmentTemplate                     @controllers.PlatformEnvironmentTemplateController.post()
+PUT           /api/platformEnvironmentTemplate/:id                 @controllers.PlatformEnvironmentTemplateController.put(id: Long)
+DELETE        /api/platformEnvironmentTemplate/:id                 @controllers.PlatformEnvironmentTemplateController.delete(id: Long)
+
+#PlatformEnvironmentTemplate
+GET           /api/platformEnvironment                             @controllers.PlatformEnvironmentController.list()
+GET           /api/platformEnvironment/:id                         @controllers.PlatformEnvironmentController.get(id: Long)
+POST          /api/platformEnvironment                             @controllers.PlatformEnvironmentController.post()
+PUT           /api/platformEnvironment/:id                         @controllers.PlatformEnvironmentController.put(id: Long)
+DELETE        /api/platformEnvironment/:id                         @controllers.PlatformEnvironmentController.delete(id: Long)
+
+#PlatformInstance
+GET           /api/platformInstance                                @controllers.PlatformInstanceController.list()
+GET           /api/platformInstance/:id                            @controllers.PlatformInstanceController.get(id: Long)
+POST          /api/platformInstance                                @controllers.PlatformInstanceController.post()
+PUT           /api/platformInstance/:id                            @controllers.PlatformInstanceController.put(id: Long)
+DELETE        /api/platformInstance/:id                            @controllers.PlatformInstanceController.delete(id: Long)
+
+
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                       controllers.Assets.at(path="/public", file)

@@ -18,9 +18,7 @@
 
 package components.job;
 
-import models.Instance;
-import models.Tenant;
-import models.VirtualMachine;
+import models.*;
 
 /**
  * Created by daniel on 03.07.15.
@@ -34,4 +32,6 @@ public interface JobService {
     void newDeleteVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant);
 
     void newDeleteInstanceJob(Instance instance, Tenant tenant);
+
+    void newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant);
 }

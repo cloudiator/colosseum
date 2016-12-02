@@ -21,48 +21,7 @@ package models.service;
 import com.google.inject.AbstractModule;
 import com.google.inject.TypeLiteral;
 
-import models.Api;
-import models.Application;
-import models.ApplicationComponent;
-import models.ApplicationInstance;
-import models.Cloud;
-import models.CloudCredential;
-import models.CloudProperty;
-import models.Communication;
-import models.Component;
-import models.ComponentHorizontalInScalingAction;
-import models.ComponentHorizontalOutScalingAction;
-import models.ComposedMonitor;
-import models.ConstantMonitor;
-import models.FormulaQuantifier;
-import models.FrontendUser;
-import models.GeoLocation;
-import models.Hardware;
-import models.HardwareOffer;
-import models.Image;
-import models.Instance;
-import models.IpAddress;
-import models.KeyPair;
-import models.LifecycleComponent;
-import models.Location;
-import models.MeasurementWindow;
-import models.Monitor;
-import models.MonitorInstance;
-import models.MonitorSubscription;
-import models.OperatingSystem;
-import models.PortProvided;
-import models.PortRequired;
-import models.RawMonitor;
-import models.ScalingAction;
-import models.Schedule;
-import models.SensorConfigurations;
-import models.SensorDescription;
-import models.TemplateOptions;
-import models.Tenant;
-import models.TimeWindow;
-import models.VirtualMachine;
-import models.VirtualMachineTemplate;
-import models.Window;
+import models.*;
 
 /**
  * Created by daniel on 18.03.15.
@@ -253,6 +212,31 @@ public class JPAModule extends AbstractModule {
         //Window
         bind(new TypeLiteral<ModelRepository<Window>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Window>>() {
+        });
+        //PaaS Extension
+        bind(new TypeLiteral<ModelRepository<PlatformApi>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformApi>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<Platform>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Platform>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformHardware>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformHardware>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformCredential>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformCredential>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformRuntime>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformRuntime>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformEnvironment>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformEnvironment>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformEnvironmentTemplate>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformEnvironmentTemplate>>() {
+        });
+        bind(new TypeLiteral<ModelRepository<PlatformInstance>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformInstance>>() {
         });
     }
 }

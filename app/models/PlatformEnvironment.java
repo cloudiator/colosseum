@@ -20,7 +20,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = false) private Platform platform;
     @ManyToOne(optional = false) private PlatformRuntime platformRuntime;
     @ManyToOne(optional = false) private PlatformHardware platformHardware;
-    @ManyToOne(optional = false) private PlatformService platformService;
+    //@ManyToOne(optional = true) private PlatformService platformService;
 
 
     /**
@@ -29,19 +29,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
     protected PlatformEnvironment() {
     }
 
-    public PlatformEnvironment(String name, Platform platform, PlatformRuntime platformRuntime, PlatformHardware platformHardware, PlatformService platformService) {
+    public PlatformEnvironment(String name, Platform platform, PlatformRuntime platformRuntime, PlatformHardware platformHardware) {
 
         checkNotNull(name);
         checkNotNull(platform);
         checkNotNull(platformRuntime);
         checkNotNull(platformHardware);
-        checkNotNull(platformService);
+
 
         this.name = name;
         this.platform = platform;
         this.platformRuntime = platformRuntime;
         this.platformHardware = platformHardware;
-        this.platformService = platformService;
+        //this.platformService = platformService;
     }
 
     public String getName() {
@@ -76,6 +76,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         this.platformHardware = platformHardware;
     }
 
+    /*
     public PlatformService getPlatformService() {
         return platformService;
     }
@@ -83,4 +84,5 @@ import static com.google.common.base.Preconditions.checkNotNull;
     public void setPlatformService(PlatformService platformService) {
         this.platformService = platformService;
     }
+    */
 }

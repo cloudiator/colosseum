@@ -216,5 +216,32 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<Window>>() {
         }).to(new TypeLiteral<BaseModelService<Window>>() {
         });
+
+        //PaaS Extension
+        bind(new TypeLiteral<ModelService<PlatformApi>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformApi>>() {
+        });
+        bind(new TypeLiteral<ModelService<Platform>>() {
+        }).to(new TypeLiteral<BaseModelService<Platform>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformHardware>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformHardware>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformCredential>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformCredential>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformRuntime>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformRuntime>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformEnvironment>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformEnvironment>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformEnvironmentTemplate>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformEnvironmentTemplate>>() {
+        });
+        bind(new TypeLiteral<ModelService<PlatformInstance>>() {
+        }).to(new TypeLiteral<BaseModelService<PlatformInstance>>() {
+        });
+
     }
 }

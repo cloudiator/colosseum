@@ -18,7 +18,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = false) private Platform platform;
     @ManyToOne(optional = false) private PlatformRuntime platformRuntime;
     @ManyToOne(optional = false) private PlatformHardware platformHardware;
-    @ManyToOne(optional = true) private PlatformService platformService;
+    //@ManyToOne(optional = true) private PlatformService platformService;
 
     /**
      * Empty constructor for hibernate.

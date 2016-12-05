@@ -349,6 +349,14 @@ POST          /api/platformInstance                                @controllers.
 PUT           /api/platformInstance/:id                            @controllers.PlatformInstanceController.put(id: Long)
 DELETE        /api/platformInstance/:id                            @controllers.PlatformInstanceController.delete(id: Long)
 
+#PlatformComponent
+GET           /api/platformComponent                               @controllers.PlatformComponentController.list()
+GET           /api/platformComponent/:id                           @controllers.PlatformComponentController.get(id: Long)
+POST          /api/platformComponent                               @controllers.PlatformComponentController.post()
+PUT           /api/platformComponent/:id                           @controllers.PlatformComponentController.put(id: Long)
+DELETE        /api/platformComponent/:id                           @controllers.PlatformComponentController.delete(id: Long)
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET           /assets/*file                                       controllers.Assets.at(path="/public", file)

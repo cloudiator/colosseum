@@ -220,6 +220,9 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<Platform>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<Platform>>() {
         });
+        bind(new TypeLiteral<ModelRepository<PlatformComponent>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformComponent>>() {
+        });
         bind(new TypeLiteral<ModelRepository<PlatformHardware>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<PlatformHardware>>() {
         });

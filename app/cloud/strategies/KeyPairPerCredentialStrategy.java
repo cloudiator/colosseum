@@ -18,17 +18,15 @@
 
 package cloud.strategies;
 
+import cloud.CloudService;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-
-import java.util.Optional;
-
-import cloud.CloudService;
 import models.KeyPair;
 import models.VirtualMachine;
 import models.service.KeyPairModelService;
+
+import java.util.Optional;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -55,9 +53,11 @@ import static com.google.common.base.Preconditions.checkState;
         synchronized (KeyPairPerCredentialStrategy.class) {
 
             checkState(virtualMachine.owner().isPresent());
+            checkState(virtualMachine.location().isPresent());
 
-            de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair =
-                keyPairService.create(virtualMachine.owner().get().getUuid());
+            de.uniulm.omi.cloudiator.sword.api.domain.KeyPair remoteKeyPair = keyPairService
+                .create(virtualMachine.owner().get().getUuid(),
+                    virtualMachine.location().get().swordId().get());
 
             checkState(remoteKeyPair.privateKey().isPresent(),
                 "Expected remote keypair to have a private key, but it has none.");

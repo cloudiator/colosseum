@@ -18,15 +18,14 @@
 
 package cloud;
 
+import cloud.resources.KeyPairInCloud;
 import de.uniulm.omi.cloudiator.sword.api.exceptions.KeyPairException;
 import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-
-import javax.annotation.Nullable;
-
-import cloud.resources.KeyPairInCloud;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
+
+import javax.annotation.Nullable;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -62,25 +61,27 @@ public class DecoratingKeyPairService implements KeyPairService {
 
     }
 
-    @Override public KeyPairInCloud create(String name) throws KeyPairException {
-        return new KeyPairInCloud(this.delegate.create(name), cloud, credential, cloudModelService,
-            cloudCredentialModelService);
+    @Override public KeyPairInCloud create(String name, String location) throws KeyPairException {
+        return new KeyPairInCloud(this.delegate.create(name, location), cloud, credential,
+            cloudModelService, cloudCredentialModelService);
     }
 
-    @Override public KeyPairInCloud create(String name, String publicKey) throws KeyPairException {
+    @Override public KeyPairInCloud create(String name, String publicKey, String location)
+        throws KeyPairException {
         return new KeyPairInCloud(this.delegate.create(name, publicKey), cloud, credential,
             cloudModelService, cloudCredentialModelService);
     }
 
-    @Override public boolean delete(String name) throws KeyPairException {
+    @Override public boolean delete(String name, String location) throws KeyPairException {
         //todo implement
         throw new UnsupportedOperationException("Not yet implemented.");
     }
 
-    @Nullable @Override public KeyPairInCloud get(String name) throws KeyPairException {
-        if (delegate.get(name) != null) {
-            return new KeyPairInCloud(this.delegate.get(name), cloud, credential, cloudModelService,
-                cloudCredentialModelService);
+    @Nullable @Override public KeyPairInCloud get(String name, String location)
+        throws KeyPairException {
+        if (delegate.get(name, location) != null) {
+            return new KeyPairInCloud(this.delegate.get(name, location), cloud, credential,
+                cloudModelService, cloudCredentialModelService);
         }
         return null;
     }

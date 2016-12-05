@@ -51,7 +51,6 @@ public class ApplicationComponentDto extends ValidatableDto {
         validator(Long.class).validate(this.component).withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.componentService.get()));
         validator(Long.class).validate(this.virtualMachineTemplate)
-            .withValidator(new NotNullValidator())
             .withValidator(new ModelIdValidator<>(References.virtualMachineTemplateService.get()));
     }
 

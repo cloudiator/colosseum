@@ -30,9 +30,14 @@ public class ConfigurationConstants {
     public final static String NODE_GROUP = "colosseum.nodegroup";
     public final static String SYNC_VIRTUAL_MACHINE_NOT_IN_DATABASE_DETECTOR =
         "colosseum.sync.virtualMachineNotInDatabase.detector";
-    public final static String SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR = "colosseum.sync.virtualMachineError.detector";
-    public final static String SYNC_INSTANCE_ERROR_DETECTOR = "colosseum.sync.instanceError.detector";
+    public final static String SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR =
+        "colosseum.sync.virtualMachineError.detector";
+    public final static String SYNC_INSTANCE_ERROR_DETECTOR =
+        "colosseum.sync.instanceError.detector";
     public final static String DELETE_FAILED_INSTANCES = "colosseum.deleteFailedInstances";
+    public final static String SYNC_VIRTUALMACHINE_IS_EMPTY =
+        "colosseum.sync.virtualMachineIsEmpty.detector";
+    public final static String MODEL_VALIDATION = "colosseum.model.validation";
 
     public final static String RMI_TIMEOUT = "colosseum.rmi.timeout";
 

@@ -55,14 +55,15 @@ public class SolutionModule extends AbstractModule {
         this.configuration = configuration;
     }
 
-    @Override protected void configure() {
+    @Override
+    protected void configure() {
         this.bindSolutions();
 
         bind(new TypeLiteral<SimpleBlockingQueue<Problem>>() {
         }).annotatedWith(Names.named("problemQueue")).to(ProblemQueueImpl.class);
 
         Multibinder<Schedulable> schedulableMultibinder =
-            Multibinder.newSetBinder(binder(), Schedulable.class);
+                Multibinder.newSetBinder(binder(), Schedulable.class);
         schedulableMultibinder.addBinding().to(HardwareCloudWatchdog.class);
         schedulableMultibinder.addBinding().to(ImageWatchdog.class);
         schedulableMultibinder.addBinding().to(LocationWatchdog.class);
@@ -71,49 +72,54 @@ public class SolutionModule extends AbstractModule {
         schedulableMultibinder.addBinding().to(InstanceWatchdog.class);
 
         Multibinder<ProblemDetector<HardwareInLocation>> hardwareProblemDetectorBinder = Multibinder
-            .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
-            });
+                .newSetBinder(binder(), new TypeLiteral<ProblemDetector<HardwareInLocation>>() {
+                });
         hardwareProblemDetectorBinder.addBinding().to(HardwareNotInDatabaseDetector.class);
 
         Multibinder<ProblemDetector<ImageInLocation>> imageProblemDetectorBinder =
-            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<ImageInLocation>>() {
-            });
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<ImageInLocation>>() {
+                });
         imageProblemDetectorBinder.addBinding().to(ImageNotInDatabaseDetector.class);
 
         Multibinder<ProblemDetector<LocationInCloud>> locationProblemDetectorBinder =
-            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<LocationInCloud>>() {
-            });
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<LocationInCloud>>() {
+                });
         locationProblemDetectorBinder.addBinding().to(LocationNotInDatabaseDetector.class);
 
         Multibinder<ProblemDetector<VirtualMachineInLocation>>
-            virtualMachineInLocationProblemDetectorBinder = Multibinder
-            .newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachineInLocation>>() {
-            });
+                virtualMachineInLocationProblemDetectorBinder = Multibinder
+                .newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachineInLocation>>() {
+                });
         if (configuration
-            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_NOT_IN_DATABASE_DETECTOR,
-                false)) {
+                .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_NOT_IN_DATABASE_DETECTOR,
+                        false)) {
             virtualMachineInLocationProblemDetectorBinder.addBinding()
-                .to(VirtualMachineNotInDatabaseDetector.class);
+                    .to(VirtualMachineNotInDatabaseDetector.class);
         }
 
         Multibinder<ProblemDetector<VirtualMachine>> virtualMachineProblemDetectorBinder =
-            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachine>>() {
-            });
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<VirtualMachine>>() {
+                });
         if (configuration
-            .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR, false)) {
+                .getBoolean(ConfigurationConstants.SYNC_VIRTUAL_MACHINE_ERROR_DETECTOR, false)) {
             virtualMachineProblemDetectorBinder.addBinding()
-                .to(VirtualMachineInErrorStateDetector.class);
+                    .to(VirtualMachineInErrorStateDetector.class);
+        }
+        if (configuration
+                .getBoolean(ConfigurationConstants.SYNC_VIRTUALMACHINE_IS_EMPTY, false)) {
+            virtualMachineProblemDetectorBinder.addBinding()
+                    .to(EmptyMachineDetector.class);
         }
 
         Multibinder<ProblemDetector<Instance>> instanceProblemDetectorBinder =
-            Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<Instance>>() {
-            });
+                Multibinder.newSetBinder(binder(), new TypeLiteral<ProblemDetector<Instance>>() {
+                });
         if (configuration.getBoolean(ConfigurationConstants.SYNC_INSTANCE_ERROR_DETECTOR, false)) {
             instanceProblemDetectorBinder.addBinding().to(InstanceInErrorStateDetector.class);
         }
 
         Multibinder<Runnable> runnableMultibinder =
-            Multibinder.newSetBinder(binder(), Runnable.class);
+                Multibinder.newSetBinder(binder(), Runnable.class);
         runnableMultibinder.addBinding().to(ProblemSolver.class);
 
     }
@@ -126,6 +132,7 @@ public class SolutionModule extends AbstractModule {
         solutionBinder.addBinding().to(DeleteSpareVirtualMachine.class);
         solutionBinder.addBinding().to(RetryVirtualMachine.class);
         solutionBinder.addBinding().to(RetryInstance.class);
+        solutionBinder.addBinding().to(RemoveEmptyVirtualMachine.class);
     }
 
 

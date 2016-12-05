@@ -54,4 +54,16 @@ public class VirtualMachineProblems {
         }
     }
 
+    public static class VirtualMachineIsSpare extends AbstractProblem<VirtualMachine> {
+
+        public VirtualMachineIsSpare(VirtualMachine resource) {
+            super(resource);
+        }
+
+        @Override
+        public int getPriority() {
+            return Priority.LOW;
+        }
+    }
+
 }

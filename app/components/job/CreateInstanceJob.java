@@ -138,16 +138,17 @@ public class CreateInstanceJob extends AbstractRemoteResourceJob<Instance> {
         final String serverIp = getIp();
         final LifecycleClient lifecycleClient = getLifecycleClient(serverIp);
 
-
-        //todo: should normally be validated in an application instance method.
-        LOGGER.info("Starting validation of model.");
-        try {
-            jpaApi().withTransaction(() -> modelValidationService
-                .validate(getT().getApplicationComponent().getApplication()));
-        } catch (Throwable t) {
-            throw new JobException("Error while validation of model", t);
+        if (configuration.getBoolean(ConfigurationConstants.MODEL_VALIDATION, true)) {
+            //todo: should normally be validated in an application instance method.
+            LOGGER.info("Starting validation of model.");
+            try {
+                jpaApi().withTransaction(() -> modelValidationService
+                    .validate(getT().getApplicationComponent().getApplication()));
+            } catch (Throwable t) {
+                throw new JobException("Error while validation of model", t);
+            }
+            LOGGER.info("Finished validation of model.");
         }
-        LOGGER.info("Finished validation of model.");
 
         //build ApplicationId
         ApplicationId applicationId;

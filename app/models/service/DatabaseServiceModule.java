@@ -242,6 +242,9 @@ public class DatabaseServiceModule extends AbstractModule {
         bind(new TypeLiteral<ModelService<PlatformInstance>>() {
         }).to(new TypeLiteral<BaseModelService<PlatformInstance>>() {
         });
+        bind(new TypeLiteral<RemoteModelService<PlatformInstance>>() {
+        }).to(new TypeLiteral<BaseRemoteModelService<PlatformInstance>>() {
+        });
 
     }
 }

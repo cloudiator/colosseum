@@ -1,12 +1,22 @@
 package components.job;
 
+import eu.atos.paas.client.RestClient;
+import eu.atos.paas.data.Application;
+import eu.atos.paas.data.ApplicationToCreate;
+import eu.atos.paas.data.CredentialsMap;
+
 import cloud.colosseum.ColosseumComputeService;
+import models.PlatformComponent;
+import models.PlatformCredential;
+import models.PlatformEnvironment;
 import models.PlatformInstance;
+import models.PlatformRuntime;
 import models.Tenant;
 import models.service.ModelService;
 import models.service.RemoteModelService;
 import play.Logger;
 import play.Play;
+import play.db.jpa.JPAApi;
 import util.logging.Loggers;
 
 import java.net.URL;
@@ -39,25 +49,24 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
         LOGGER.debug("Getting PUL client from endpoint: " + pulEndpoint);
 
 
-        //TODO: get Platform Instance froom modelService
+        PlatformInstance platformInstance = this.getT();
 
-        //TODO get Platform Environment from via Instance
+        PlatformEnvironment platformEnvironment = platformInstance.getPlatformEnvironment();
 
-        //TODO get platformRuntime
+        PlatformRuntime platformRuntime = platformEnvironment.getPlatformRuntime();
 
-        //TODO: get language ( should be Java)
-        String platformLanguage = ""
+        String platformLanguage = platformRuntime.getLanguage();
 
-        //TODO get platform from platformInstance to get apiEndpoint
-        String platformEndpoint = "";
-        String platformName = "";
+        String platformEndpoint = platformInstance.getPlatformEnvironment().getPlatform().getEndpoint().get(); //TODO check for empty
+        String platformName = platformInstance.getPlatformEnvironment().getPlatform().getName();
 
-        //TODO get Platform credentials
-        String user = "";
-        String secret = "";
+        PlatformCredential platformCredential = platformInstance.getPlatformEnvironment().getPlatform().getPlatformCredentials().get(0);//TODO which one to choose and check for null
+        String user = platformCredential.getUser();
+        String secret = platformCredential.getSecret();
 
-        //TODO get gitURL from component
-        String gitURL = "";
+        PlatformComponent component = (PlatformComponent) platformInstance.getApplicationComponent().getComponent();  //TODO dangerous cast
+        String gitURL = component.getGitUrl(); //TODO what if artifact is set?
+        String applicationName = component.getName();
 
 
 
@@ -66,22 +75,24 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
 
             LOGGER.debug("Connecting to platform provider: " + platformEndpoint);
 
-            ProviderClient provider;
+            RestClient.ProviderClient provider;
             CredentialsMap credentials = CredentialsMap.builder()
-                    .item(USER, user)
-                    .item(PASSWORD, secret)
+                    .item("USER", user)
+                    .item("PASSWORD", secret)
                     .build();
             provider = client.getProvider(platformName, credentials);
 
             LOGGER.debug("Deploying application to platform...");
 
             ApplicationToCreate appToCreate = new ApplicationToCreate(
-                    APP_NAME,
+                    applicationName, // TODO name from component?
                     new URL(gitURL),
                     platformLanguage); //TODO check if ROMAN has implemented that in the PUL, otherwise use IStandaloneCartridge.NAME_JBOSSEWS but this requires a dependecy to Openshift Client
             Application createdApp = provider.createApplication(appToCreate);
 
-            //TODO: fetch endpoint of deployed app and store the platformInstance entity, add the endpoint to the platformInstance which has an endpoint column
+            platformInstance.setEndpoint(createdApp.getUrl().toString()); // TODO is this all after the application is deployed?
+
+            modelService.save(platformInstance);
 
         } catch (Throwable throwable) {
             LOGGER.error("Error while creating PUL client!");

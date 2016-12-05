@@ -47,5 +47,21 @@ public class PlatformComponent extends Component {
 
     }
 
+    @Nullable
+    public String getGitUrl() {
+        return gitUrl;
+    }
 
+    public void setGitUrl(@Nullable String gitUrl) {
+        this.gitUrl = gitUrl;
+    }
+
+    @Nullable
+    public String getArtifactPath() {
+        return artifactPath;
+    }
+
+    public void setArtifactPath(@Nullable String artifactPath) {
+        this.artifactPath = artifactPath;
+    }
 }

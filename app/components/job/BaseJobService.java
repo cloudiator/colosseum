@@ -52,6 +52,7 @@ import play.db.jpa.JPAApi;
     private final ModelValidationService modelValidationService;
     private final ModelService<MonitorInstance> monitorInstanceModelService;
     private final ModelService<RawMonitor> rawMonitorModelService;
+    private final RemoteModelService<PlatformInstance> platformInstanceModelService;
     private final Configuration configuration;
     private final JPAApi jpaApi;
 
@@ -61,7 +62,8 @@ import play.db.jpa.JPAApi;
         @Named("jobQueue") SimpleBlockingQueue<Job> jobQueue, KeyPairStrategy keyPairStrategy,
         RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionStrategyFactory,
         PortProvidedService portProvidedService, ModelValidationService modelValidationService,
-        ModelService<MonitorInstance> monitorInstanceModelService, ModelService<RawMonitor> rawMonitorModelService) {
+        ModelService<MonitorInstance> monitorInstanceModelService, ModelService<RawMonitor> rawMonitorModelService,
+        RemoteModelService<PlatformInstance> platformInstanceModelService) {
         this.virtualMachineModelService = virtualMachineModelService;
         this.tenantModelService = tenantModelService;
         this.instanceModelService = instanceModelService;
@@ -75,6 +77,7 @@ import play.db.jpa.JPAApi;
         this.jpaApi = jpaApi;
         this.monitorInstanceModelService = monitorInstanceModelService;
         this.rawMonitorModelService = rawMonitorModelService;
+        this.platformInstanceModelService = platformInstanceModelService;
     }
 
     @Override public void newVirtualMachineJob(VirtualMachine virtualMachine, Tenant tenant) {
@@ -104,8 +107,8 @@ import play.db.jpa.JPAApi;
     }
 
     @Override
-    public void newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant) {
-
+    public CreatePlatformInstanceJob newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant) {
+        return new CreatePlatformInstanceJob(jpaApi, platformInstance, platformInstanceModelService, tenantModelService, colosseumComputeService, tenant);
     }
 
 }

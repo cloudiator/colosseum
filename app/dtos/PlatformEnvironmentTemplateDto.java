@@ -21,7 +21,7 @@ public class PlatformEnvironmentTemplateDto extends ValidatableDto {
 
 
     public PlatformEnvironmentTemplateDto(){
-        //TODO: check why empy constructor
+        super();
     }
 
     @Override

@@ -52,5 +52,11 @@ public class StaticServiceModule extends AbstractModule {
         requestStaticInjection(PortDto.References.class);
         requestStaticInjection(VirtualMachineDto.References.class);
         requestStaticInjection(VirtualMachineTemplateDto.References.class);
+
+        requestStaticInjection(PlatformCredentialDto.References.class);
+        requestStaticInjection(PlatformEnvironmentDto.References.class);
+        requestStaticInjection(PlatformDto.References.class);
+        requestStaticInjection(PlatformEnvironmentTemplateDto.References.class);
+        requestStaticInjection(PlatformInstanceDto.References.class);
     }
 }

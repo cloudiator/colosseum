@@ -20,6 +20,9 @@ public class PlatformCredentialDto extends ValidatableDto {
     private Long platform;
     private Long tenant;
 
+    public PlatformCredentialDto() {
+        super();
+    }
 
     public String getUser() {
         return user;

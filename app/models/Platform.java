@@ -58,7 +58,7 @@ public class Platform extends Model {
         return Optional.ofNullable(endpoint);
     }
 
-    public PlatformApi api() {
+    public PlatformApi getPlatformApi() {
         return platformApi;
     }
 

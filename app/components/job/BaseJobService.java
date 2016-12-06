@@ -107,8 +107,10 @@ import play.db.jpa.JPAApi;
     }
 
     @Override
-    public CreatePlatformInstanceJob newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant) {
-        return new CreatePlatformInstanceJob(jpaApi, platformInstance, platformInstanceModelService, tenantModelService, colosseumComputeService, tenant);
+    public void newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant) {
+        this.jobQueue.add(
+            new CreatePlatformInstanceJob(jpaApi, platformInstance, platformInstanceModelService,
+                    tenantModelService, colosseumComputeService, tenant));
     }
 
 }

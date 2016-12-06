@@ -20,6 +20,9 @@ public class PlatformHardwareDto extends ValidatableDto {
         this.localDiskSpace = localDiskSpace;
     }
 
+    public PlatformHardwareDto() {
+        super();
+    }
 
     @Override
     public void validation() {

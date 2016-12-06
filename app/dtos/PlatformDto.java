@@ -7,6 +7,7 @@ import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
 import models.PlatformApi;
+import models.service.BaseModelService;
 import models.service.ModelService;
 
 /**
@@ -18,7 +19,7 @@ public class PlatformDto extends ValidatableDto {
     private String endpoint;
     private Long platformApi;
 
-    private PlatformDto(){
+    public PlatformDto(){
         super();
     }
 
@@ -62,7 +63,7 @@ public class PlatformDto extends ValidatableDto {
     public static class References {
 
         @Inject
-        private static Provider<ModelService<PlatformApi>> platformApiService;
+        private static Provider<BaseModelService<PlatformApi>> platformApiService;
 
         private References() {
         }

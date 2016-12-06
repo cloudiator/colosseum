@@ -60,7 +60,8 @@ libraryDependencies ++= Seq(
   "org.jgrapht" % "jgrapht-core" % "0.9.2",
   "org.jgrapht" % "jgrapht-ext" % "0.9.2",
   "org.apache.commons" % "commons-lang3" % "3.4",
-  "eu.atos.paas" % "unified-paas-client" % "0.0.1-SNAPSHOT"
+  "eu.atos.paas" % "unified-paas-client" % "0.0.1-SNAPSHOT",
+  "com.openshift" % "openshift-java-client" % "2.7.0.Final"
 )
 
 TwirlKeys.templateImports += "dtos._"

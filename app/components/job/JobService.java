@@ -34,5 +34,5 @@ public interface JobService {
     void newDeleteInstanceJob(Instance instance, Tenant tenant);
 
     // Return value for the moment, until we integrate it in asynchronous queue;
-    CreatePlatformInstanceJob newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant);
+    void newPlatformInstanceJob(PlatformInstance platformInstance, Tenant tenant);
 }

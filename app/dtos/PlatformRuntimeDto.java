@@ -19,6 +19,10 @@ public class PlatformRuntimeDto extends ValidatableDto {
         this.version = version;
     }
 
+    public PlatformRuntimeDto() {
+        super();
+    }
+
     public String getLanguage() {
         return language;
     }

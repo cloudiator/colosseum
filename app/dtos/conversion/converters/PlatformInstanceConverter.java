@@ -10,7 +10,7 @@ import models.service.ModelService;
 /**
  * Created by Daniel Seybold on 28.11.2016.
  */
-public class PlatformInstanceConverter extends AbstractConverter<PlatformInstance, PlatformInstanceDto> {
+public class PlatformInstanceConverter extends RemoteConverter<PlatformInstance, PlatformInstanceDto> {
 
     private final ModelService<PlatformEnvironment> platformEnvironmentModelService;
     private final ModelService<ApplicationComponent> applicationComponentModelService;
@@ -29,6 +29,14 @@ public class PlatformInstanceConverter extends AbstractConverter<PlatformInstanc
 
     @Override
     public void configure() {
+        //todo fix inheritance hierachy
+        //super.configure();
+
+        // todo workaround for incorrect inheritance
+        // those two are copied from parent converter
+        binding().fromField("remoteId").toField("remoteId");
+        binding().fromField("remoteState").toField("remoteState");
+
         binding(Long.class, ApplicationComponent.class).fromField("applicationComponent")
                 .toField("applicationComponent")
                 .withTransformation(new IdToModelTransformer<>(applicationComponentModelService));

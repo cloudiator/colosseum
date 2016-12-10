@@ -356,6 +356,20 @@ POST          /api/platformComponent                               @controllers.
 PUT           /api/platformComponent/:id                           @controllers.PlatformComponentController.put(id: Long)
 DELETE        /api/platformComponent/:id                           @controllers.PlatformComponentController.delete(id: Long)
 
+#PlatformMonitor
+GET           /api/platformMonitor                                 @controllers.PlatformMonitorController.list()
+GET           /api/platformMonitor/:id                             @controllers.PlatformMonitorController.get(id: Long)
+POST          /api/platformMonitor                                 @controllers.PlatformMonitorController.post()
+PUT           /api/platformMonitor/:id                             @controllers.PlatformMonitorController.put(id: Long)
+DELETE        /api/platformMonitor/:id                             @controllers.PlatformMonitorController.delete(id: Long)
+
+#ActionInstance
+GET           /api/actionInstance                                  @controllers.ActionInstanceController.list()
+GET           /api/actionInstance/:id                              @controllers.ActionInstanceController.get(id: Long)
+POST          /api/actionInstance                                  @controllers.ActionInstanceController.post()
+PUT           /api/actionInstance/:id                              @controllers.ActionInstanceController.put(id: Long)
+DELETE        /api/actionInstance/:id                              @controllers.ActionInstanceController.delete(id: Long)
+
 
 
 # Map static resources from the /public folder to the /assets URL path

@@ -25,5 +25,5 @@ import models.generic.ModelWithExternalReference;
 /**
  * Created by Frank on 20.05.2015.
  */
-@Entity public abstract class ScalingAction extends ModelWithExternalReference {
+@Entity public abstract class ScalingAction extends Action {
 }

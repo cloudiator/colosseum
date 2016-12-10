@@ -1,6 +1,7 @@
 package dtos.conversion.converters;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import dtos.PlatformInstanceDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
@@ -10,6 +11,7 @@ import models.service.ModelService;
 /**
  * Created by Daniel Seybold on 28.11.2016.
  */
+@Singleton
 public class PlatformInstanceConverter extends RemoteConverter<PlatformInstance, PlatformInstanceDto> {
 
     private final ModelService<PlatformEnvironment> platformEnvironmentModelService;

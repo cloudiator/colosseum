@@ -38,7 +38,9 @@ import models.*;
 import models.service.ModelService;
 import models.service.PortProvidedService;
 import models.service.RemoteModelService;
+import play.Logger;
 import play.db.jpa.JPAApi;
+import util.logging.Loggers;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -46,6 +48,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by daniel on 08.05.15.
  */
 public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMachine> {
+
+    private Logger.ALogger LOGGER = Loggers.of(Loggers.CLOUD_JOB);
 
     private final KeyPairStrategy keyPairStrategy;
     private final RemoteConnectionStrategy.RemoteConnectionStrategyFactory remoteConnectionFactory;
@@ -84,7 +88,12 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
             try {
                 keyPairOptional = jpaApi().withTransaction(() -> {
                     VirtualMachine virtualMachine = getT();
-                    return keyPairStrategy.create(virtualMachine);
+                    LOGGER.debug(String
+                        .format("%s is creating keyPair for virtual machine %s.", this,
+                            virtualMachine));
+                    java.util.Optional<KeyPair> keyPair = keyPairStrategy.create(virtualMachine);
+                    LOGGER.debug(String.format("%s created keyPair %s", this, keyPair));
+                    return keyPair;
                 });
             } catch (Throwable throwable) {
                 throw new JobException(throwable);
@@ -114,8 +123,12 @@ public class CreateVirtualMachineJob extends AbstractRemoteResourceJob<VirtualMa
                 // create the virtual machine (we use synchronized to avoid problems
                 // with multiple created security groups)
                 synchronized (CreateVirtualMachineJob.class) {
-                    return computeService
+                    LOGGER.debug(String.format("%s is starting a virtual machine.", this));
+                    VirtualMachineInLocation startedVM = computeService
                         .createVirtualMachine(builder.virtualMachineModel(virtualMachine).build());
+                    LOGGER.debug(
+                        String.format("%s created the virtual machine %s.", this, startedVM));
+                    return startedVM;
                 }
             });
         } catch (Throwable throwable) {

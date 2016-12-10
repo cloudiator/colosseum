@@ -18,26 +18,25 @@
 
 package cloud.resources;
 
-import com.google.common.base.Optional;
-
-import de.uniulm.omi.cloudiator.sword.api.domain.KeyPair;
-
 import cloud.SlashEncodedId;
+import de.uniulm.omi.cloudiator.sword.api.domain.KeyPair;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
 
+import java.util.Optional;
+
 /**
  * Created by daniel on 10.09.15.
  */
-public class KeyPairInCloud extends BaseCredentialScoped implements KeyPair {
+public class KeyPairInCloud extends BaseLocationScoped implements KeyPair {
 
     private final KeyPair keyPair;
 
     public KeyPairInCloud(KeyPair keyPair, String cloud, String credential,
         ModelService<Cloud> cloudModelService,
         ModelService<CloudCredential> cloudCredentialModelService) {
-        super(cloud, credential, cloudModelService, cloudCredentialModelService);
+        super(keyPair, cloud, credential, cloudModelService, cloudCredentialModelService);
         this.keyPair = keyPair;
     }
 

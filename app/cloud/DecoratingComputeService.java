@@ -18,28 +18,23 @@
 
 package cloud;
 
-import com.google.common.base.Optional;
-
-import de.uniulm.omi.cloudiator.sword.api.domain.HardwareFlavor;
-import de.uniulm.omi.cloudiator.sword.api.domain.Image;
-import de.uniulm.omi.cloudiator.sword.api.domain.Location;
-import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
-import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachineTemplate;
-import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
-import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
-import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
-import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
-import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
-
-import java.util.function.Function;
-
 import cloud.resources.HardwareInLocation;
 import cloud.resources.ImageInLocation;
 import cloud.resources.LocationInCloud;
 import cloud.resources.VirtualMachineInLocation;
+import com.google.common.base.Optional;
+import de.uniulm.omi.cloudiator.sword.api.domain.*;
+import de.uniulm.omi.cloudiator.sword.api.extensions.KeyPairService;
+import de.uniulm.omi.cloudiator.sword.api.extensions.PublicIpService;
+import de.uniulm.omi.cloudiator.sword.api.extensions.SecurityGroupService;
+import de.uniulm.omi.cloudiator.sword.api.service.ComputeService;
+import de.uniulm.omi.cloudiator.sword.api.service.ConnectionService;
+import de.uniulm.omi.cloudiator.sword.api.service.DiscoveryService;
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
+
+import java.util.function.Function;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -111,6 +106,11 @@ public class DecoratingComputeService implements
         }
         return Optional.of(new DecoratingKeyPairService(delegate.keyPairService().get(), cloudId,
             cloudCredential, cloudModelService, cloudCredentialModelService));
+    }
+
+    @Override public Optional<SecurityGroupService> securityGroupService() {
+        //todo implement security group server
+        return Optional.absent();
     }
 
     static class VirtualMachineDecorator

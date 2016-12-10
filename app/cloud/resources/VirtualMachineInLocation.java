@@ -18,14 +18,14 @@
 
 package cloud.resources;
 
+import com.google.common.base.MoreObjects;
 import de.uniulm.omi.cloudiator.sword.api.domain.LoginCredential;
 import de.uniulm.omi.cloudiator.sword.api.domain.VirtualMachine;
-
-import java.util.Set;
-
 import models.Cloud;
 import models.CloudCredential;
 import models.service.ModelService;
+
+import java.util.Set;
 
 /**
  * Created by daniel on 28.05.15.
@@ -51,5 +51,10 @@ public class VirtualMachineInLocation extends ResourceWithCredential implements 
 
     @Override public java.util.Optional<LoginCredential> loginCredential() {
         return virtualMachine.loginCredential();
+    }
+
+    @Override public String toString() {
+        return MoreObjects.toStringHelper(this).add("id", id()).add("name", name())
+            .add("virtualMachine", virtualMachine).toString();
     }
 }

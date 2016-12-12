@@ -67,6 +67,7 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
 
                 String platformEndpoint = platform.getEndpoint().get(); //TODO check for empty
                 String platformName = platform.getName();
+                String platformApiVersion = ""; // TODO add version to platfrom API entity.
 
                 PlatformCredential platformCredential = platform.getPlatformCredentials().get(0); //TODO which one to choose and check for null
 
@@ -87,8 +88,9 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     CredentialsMap credentials = CredentialsMap.builder()
                             .item("user", user)
                             .item("password", secret)
+                            .item("api", platformEndpoint)
                             .build();
-                    provider = client.getProvider(platformName, credentials);
+                    provider = client.getProvider(platformName, platformApiVersion, credentials);
 
                     LOGGER.debug("Deploying application to platform...");
 
@@ -102,6 +104,9 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     Application actualApp = provider.getApplication(applicationName);
 
                     platformInstance.setEndpoint(actualApp.getUrl().toString()); // TODO is this all after the application is deployed?
+
+                    // TODO get real unique remote id
+                    platformInstance.bindRemoteId(actualApp.getName());
 
                     modelService.save(platformInstance);
 

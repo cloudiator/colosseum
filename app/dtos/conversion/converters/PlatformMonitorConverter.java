@@ -35,15 +35,14 @@ public class PlatformMonitorConverter extends AbstractConverter<PlatformMonitor,
 
 
     @Inject
-    protected PlatformMonitorConverter(Class<PlatformMonitor> t, Class<PlatformMonitorDto> s,
-                                       ModelService<ApplicationComponent> applicationComponentModelService,
+    protected PlatformMonitorConverter(ModelService<ApplicationComponent> applicationComponentModelService,
                                        ModelService<PlatformComponent> platformComponentService,
                                        ModelService<PlatformInstance> platformInstanceModelService,
                                        ModelService<SensorDescription> sensorDescriptionModelService,
                                        ModelService<Schedule> scheduleModelService,
                                        ModelService<MonitorInstance> monitorInstanceModelService,
                                        ModelService<SensorConfigurations> sensorConfigurationsModelService) {
-        super(t, s);
+        super(PlatformMonitor.class, PlatformMonitorDto.class);
         this.applicationComponentModelService = applicationComponentModelService;
         this.platformComponentService = platformComponentService;
         this.platformInstanceModelService = platformInstanceModelService;

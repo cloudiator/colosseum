@@ -250,5 +250,8 @@ public class JPAModule extends AbstractModule {
         bind(new TypeLiteral<ModelRepository<ActionInstance>>() {
         }).to(new TypeLiteral<BaseModelRepositoryJpa<ActionInstance>>() {
         });
+        bind(new TypeLiteral<ModelRepository<Action>>() {
+        }).to(new TypeLiteral<BaseModelRepositoryJpa<Action>>() {
+        });
     }
 }

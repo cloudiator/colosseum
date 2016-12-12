@@ -21,8 +21,8 @@ public class ActionInstanceConverter extends AbstractConverter<ActionInstance, A
     private final ModelService<Action> actionModelService;
 
     @Inject
-    public ActionInstanceConverter(Class<ActionInstance> t, Class<ActionInstanceDto> s, ModelService<Action> actionModelService) {
-        super(t, s);
+    public ActionInstanceConverter(ModelService<Action> actionModelService) {
+        super(ActionInstance.class, ActionInstanceDto.class);
         this.actionModelService = actionModelService;
     }
 

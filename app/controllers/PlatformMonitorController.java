@@ -46,16 +46,17 @@ public class PlatformMonitorController extends GenericApiController<PlatformMoni
         // After the entity was created successfully, enact the actual instantiation of the
         // action instance:
         //TODO bind to tenant...
-        //jobService.newExecuteActionInstanceJob(entity, getActiveTenant());
+        //jobService.newPlatformMonitorJob(entity, getActiveTenant());
 
         /** Intermediate implementation of scale out of component : **/
+
         // Add a new monitor instance for each platform instance found on this filter
         // to the local visor as Push Monitor, i.e. a telnet sensor
         final String protocol = "http";
         final String ip = "127.0.0.1";
         final int port = 31415;
         final ClientController<Monitor> controller;
-        //get the controller for the cloud entity
+
 
         //TODO: create monitor instance here:
         String idMonitorInstance = "";

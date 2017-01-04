@@ -38,6 +38,7 @@ public class PlatformInstanceConverter extends RemoteConverter<PlatformInstance,
         // those two are copied from parent converter
         binding().fromField("remoteId").toField("remoteId");
         binding().fromField("remoteState").toField("remoteState");
+        binding().fromField("endpoint").toField("endpoint");
 
         binding(Long.class, ApplicationComponent.class).fromField("applicationComponent")
                 .toField("applicationComponent")

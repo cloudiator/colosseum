@@ -76,8 +76,11 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
 
                 PlatformComponent component = (PlatformComponent) platformInstance.getApplicationComponent().getComponent();  //TODO dangerous cast
                 String gitURL = component.getGitUrl(); //TODO what if artifact is set?
-                String applicationName = component.getName();
-
+                String applicationName = "i" + platformInstance.getId() + "n" + component.getName();
+                // TODO how to hadle too large names?
+                if(applicationName.length() > 32) {
+                    applicationName = applicationName.substring(0, 31);
+                }
 
                 try {
                     RestClient client = new RestClient(new URL(pulEndpoint));
@@ -97,7 +100,7 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     ApplicationToCreate appToCreate = new ApplicationToCreate(
                             applicationName, // TODO name from component?
                             new URL(gitURL),
-                            IStandaloneCartridge.NAME_JBOSSEWS);  // TODO transform the platformLanguage) field here
+                            platformLanguage);  // TODO transform the platformLanguage) field here
                             // TODO check if ROMAN has implemented that in the PUL, otherwise use IStandaloneCartridge.NAME_JBOSSEWS but this requires a dependecy to Openshift Client
                     Application createdApp = provider.createApplication(appToCreate);
 

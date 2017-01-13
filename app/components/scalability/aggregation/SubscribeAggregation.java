@@ -20,14 +20,11 @@ package components.scalability.aggregation;
 
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.AggregatorServiceAccess;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.ColosseumDetails;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.JsonHttpThresholdObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.JsonHttpThresholdObserverParameterImpl;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ScalingObserverParameterImpl;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetEventObserverParameterImpl;
-import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameter;
 import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.TelnetMetricObserverParameterImpl;
+import de.uniulm.omi.cloudiator.axe.aggregator.communication.rmi.observer.ActivationObserverParameterImpl;
 
 import java.rmi.RemoteException;
 
@@ -89,6 +86,17 @@ public class SubscribeAggregation implements Aggregation<Monitor> {
                 service.addObserver(
                         monitor.getId(),
                         new JsonHttpThresholdObserverParameterImpl(
+                                subscription.getFilterValue(),
+                                AggregatorEntitiesConverter.convert(subscription.getFilterType()),
+                                null,
+                                null,
+                                subscription.getId().toString(),
+                                subscription.getEndpoint())
+                );
+            } else if(this.subscription.getType() == SubscriptionType.ADAPTATION_ACTIVATION) {
+                service.addObserver(
+                        monitor.getId(),
+                        new ActivationObserverParameterImpl(
                                 subscription.getFilterValue(),
                                 AggregatorEntitiesConverter.convert(subscription.getFilterType()),
                                 null,

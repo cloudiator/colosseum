@@ -91,7 +91,7 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     CredentialsMap credentials = CredentialsMap.builder()
                             .item("user", user)
                             .item("password", secret)
-                            .item("api", platformEndpoint)
+                            //.item("api", platformEndpoint)
                             .build();
                     provider = client.getProvider(platformName, platformApiVersion, credentials);
 

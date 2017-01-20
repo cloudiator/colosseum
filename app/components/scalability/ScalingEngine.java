@@ -21,6 +21,7 @@ package components.scalability;
 import models.ComposedMonitor;
 import models.Monitor;
 import models.MonitorSubscription;
+import models.PlatformMonitor;
 import models.RawMonitor;
 
 /**
@@ -66,6 +67,8 @@ public interface ScalingEngine {
                        Long componentId);
 
     Monitor doMonitor(RawMonitor monitor);
+
+    Monitor doMonitor(PlatformMonitor monitor);
 
     Monitor doMonitorComponents(RawMonitor monitor);
 

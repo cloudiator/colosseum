@@ -277,6 +277,42 @@ import java.util.UUID;
         }
     }
 
+    @Override
+    public Monitor doMonitor(PlatformMonitor monitor) {
+        //TODO currently only implement for PlatformInstance
+
+        // step 1: add monitor to local visor for platform instance
+        //
+        // also add paasEndpoint as default sensor configuration
+        AgentCommunicator ac = AgentCommunicatorRegistry
+                .getAgentCommunicator("http", "127.0.0.1", agentPort);
+
+        MonitorInstance instance =
+                fc.saveMonitorInstance(
+                        monitor.getId(),
+                        "", // stands for localhost
+                        null,
+                        null);
+
+        String sMonitorInstanceId = String.valueOf(instance.getId());
+
+        Map<String, String> configs = null;
+        if (monitor.getSensorConfigurations().isPresent()) {
+            final SensorConfigurations sensorConfigurations =
+                    monitor.getSensorConfigurations().get();
+            configs = sensorConfigurations.configs();
+        }
+
+        configs.put("paasEndpoint", monitor.getPlatformInstance().getEndpoint());
+        // TODO what if endpoint is not there yet or changes?
+
+        ac.addSensorMonitor(sMonitorInstanceId, monitor.getSensorDescription().getClassName(),
+                monitor.getSensorDescription().getMetricName(), monitor.getSchedule().getInterval(),
+                monitor.getSchedule().getTimeUnit(), configs);
+
+        return monitor;
+    }
+
     @Override public Monitor doMonitorComponents(RawMonitor monitor) {
 
         /*TODO There arent just lifecycle components */

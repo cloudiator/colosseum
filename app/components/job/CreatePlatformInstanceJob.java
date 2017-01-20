@@ -78,9 +78,11 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                 String gitURL = component.getGitUrl(); //TODO what if artifact is set?
                 String applicationName = "i" + platformInstance.getId() + "n" + component.getName();
                 // TODO how to hadle too large names?
-                if(applicationName.length() > 32) {
-                    applicationName = applicationName.substring(0, 31);
+                if(applicationName.length() > 30) {
+                    applicationName = applicationName.substring(0, 29);
                 }
+
+                applicationName = applicationName.toLowerCase();
 
                 try {
                     RestClient client = new RestClient(new URL(pulEndpoint));

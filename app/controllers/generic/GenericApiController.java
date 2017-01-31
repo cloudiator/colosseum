@@ -150,6 +150,9 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     @Nullable final protected T loadEntity(final Long id) {
         checkNotNull(id);
         T t = modelService.getById(id);
+        if(t == null) {
+            return null;
+        }
         if (filter().isPresent()) {
             if (filter().get().test(t)) {
                 return t;

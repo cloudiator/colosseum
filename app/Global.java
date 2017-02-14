@@ -36,50 +36,16 @@ import java.util.Locale;
  *
  * @author Daniel Baur
  */
-public class Global extends GlobalSettings {
+@Deprecated public class Global extends GlobalSettings {
 
     /**
      * On start hook.
      */
     public void onStart(final Application app) {
         super.onStart(app);
-
-        // register formatters
-        this.registerFormatters();
     }
 
     @Override public void onStop(Application application) {
         super.onStop(application);
-    }
-
-    /**
-     * Registers commonly used formatters.
-     */
-    private void registerFormatters() {
-
-        /**
-         * A formatter for the string class.
-         *
-         * If a string is left empty, this formatter makes it null.
-         * It also automatically trims the string
-         */
-        Formatters.register(String.class, new Formatters.SimpleFormatter<String>() {
-
-            @Override public String parse(final String text, final Locale locale)
-                throws ParseException {
-                String trim = text.trim();
-                if (trim.isEmpty()) {
-                    return null;
-                }
-                return trim;
-            }
-
-            @Override public String print(final String string, final Locale locale) {
-                if (string == null) {
-                    return "";
-                }
-                return string;
-            }
-        });
     }
 }

@@ -24,10 +24,10 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.ComponentHorizontalInScalingActionDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ComponentHorizontalInScalingAction;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalInScalingAction;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 10.08.2015.

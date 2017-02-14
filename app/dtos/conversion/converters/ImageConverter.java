@@ -26,12 +26,12 @@ import java.util.List;
 import dtos.ImageDto;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.Cloud;
-import models.CloudCredential;
-import models.Image;
-import models.Location;
-import models.OperatingSystem;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.Image;
+import de.uniulm.omi.cloudiator.persistance.entities.Location;
+import de.uniulm.omi.cloudiator.persistance.entities.OperatingSystem;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

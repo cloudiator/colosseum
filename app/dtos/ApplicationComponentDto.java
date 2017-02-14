@@ -20,23 +20,19 @@ package dtos;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-
-import de.uniulm.omi.cloudiator.lance.lca.container.ContainerType;
-
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.Component;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachineTemplate;
+import de.uniulm.omi.cloudiator.persistance.repositories.BaseModelService;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Application;
-import models.Component;
-import models.VirtualMachineTemplate;
-import models.service.BaseModelService;
 
 /**
  * Created by daniel seybold on 16.12.2014.
  */
 public class ApplicationComponentDto extends ValidatableDto {
 
-    protected ContainerType containerType;
     protected Long application;
     protected Long component;
     protected Long virtualMachineTemplate;
@@ -77,14 +73,6 @@ public class ApplicationComponentDto extends ValidatableDto {
 
     public void setVirtualMachineTemplate(Long virtualMachineTemplate) {
         this.virtualMachineTemplate = virtualMachineTemplate;
-    }
-
-    public ContainerType getContainerType() {
-        return containerType;
-    }
-
-    public void setContainerType(ContainerType containerType) {
-        this.containerType = containerType;
     }
 
     public static class References {

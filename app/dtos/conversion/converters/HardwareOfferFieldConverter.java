@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.HardwareOfferDto;
 import dtos.conversion.DefaultFieldConverter;
-import models.HardwareOffer;
+import de.uniulm.omi.cloudiator.persistance.entities.HardwareOffer;
 
 /**
  * Created by daniel on 14.04.15.

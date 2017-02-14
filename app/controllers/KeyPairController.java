@@ -29,10 +29,10 @@ import java.nio.charset.Charset;
 import controllers.generic.GenericApiController;
 import dtos.KeyPairDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.KeyPair;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.KeyPair;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 

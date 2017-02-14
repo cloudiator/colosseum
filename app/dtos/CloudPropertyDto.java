@@ -25,8 +25,8 @@ import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 08.09.15.

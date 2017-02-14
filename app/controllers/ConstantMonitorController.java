@@ -24,10 +24,10 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.ConstantMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ConstantMonitor;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ConstantMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Implementation of the GenericApiController for the ConstantMonitor model class.

@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.FrontendUserGetDto;
 import dtos.conversion.DefaultFieldConverter;
-import models.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
 
 /**
  * Created by daniel on 13.04.15.

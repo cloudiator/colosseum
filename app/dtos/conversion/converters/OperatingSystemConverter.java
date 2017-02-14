@@ -21,7 +21,7 @@ package dtos.conversion.converters;
 
 import dtos.OperatingSystemDto;
 import dtos.conversion.DefaultFieldConverter;
-import models.OperatingSystem;
+import de.uniulm.omi.cloudiator.persistance.entities.OperatingSystem;
 
 /**
  * Created by daniel on 15.04.15.

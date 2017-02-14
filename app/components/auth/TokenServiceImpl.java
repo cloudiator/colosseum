@@ -2,7 +2,7 @@ package components.auth;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import models.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
 import play.Logger;
 import util.logging.Loggers;
 

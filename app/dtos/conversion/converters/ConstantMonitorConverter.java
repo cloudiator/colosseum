@@ -30,7 +30,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.ConstantMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.ConstantMonitor;
 
 
 @Singleton public class ConstantMonitorConverter

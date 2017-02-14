@@ -19,7 +19,7 @@
 package dtos.conversion;
 
 import dtos.api.Dto;
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
 
 /**
  * @param <T>

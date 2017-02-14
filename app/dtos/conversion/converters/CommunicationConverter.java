@@ -23,10 +23,10 @@ import com.google.inject.Inject;
 import dtos.CommunicationDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Communication;
-import models.PortProvided;
-import models.PortRequired;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Communication;
+import de.uniulm.omi.cloudiator.persistance.entities.PortProvided;
+import de.uniulm.omi.cloudiator.persistance.entities.PortRequired;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

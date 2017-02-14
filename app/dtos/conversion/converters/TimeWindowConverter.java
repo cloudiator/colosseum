@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 
 import dtos.TimeWindowDto;
 import dtos.conversion.AbstractConverter;
-import models.TimeWindow;
+import de.uniulm.omi.cloudiator.persistance.entities.TimeWindow;
 
 
 @Singleton public class TimeWindowConverter extends AbstractConverter<TimeWindow, TimeWindowDto> {

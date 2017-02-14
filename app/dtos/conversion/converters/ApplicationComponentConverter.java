@@ -23,11 +23,11 @@ import com.google.inject.Inject;
 import dtos.ApplicationComponentDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Application;
-import models.ApplicationComponent;
-import models.Component;
-import models.VirtualMachineTemplate;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.Component;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachineTemplate;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 10.04.15.
@@ -37,12 +37,12 @@ public class ApplicationComponentConverter
 
     private final ModelService<Application> applicationModelService;
     private final ModelService<Component> componentModelService;
-    private final ModelService<models.VirtualMachineTemplate> virtualMachineTemplateModelService;
+    private final ModelService<VirtualMachineTemplate> virtualMachineTemplateModelService;
 
     @Inject
     protected ApplicationComponentConverter(ModelService<Application> applicationModelService,
         ModelService<Component> componentModelService,
-        ModelService<models.VirtualMachineTemplate> virtualMachineTemplateModelService) {
+        ModelService<VirtualMachineTemplate> virtualMachineTemplateModelService) {
         super(ApplicationComponent.class, ApplicationComponentDto.class);
         this.applicationModelService = applicationModelService;
 

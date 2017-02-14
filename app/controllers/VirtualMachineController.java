@@ -20,15 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.job.JobService;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.VirtualMachineDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Tenant;
-import models.VirtualMachine;
-import models.service.FrontendUserService;
-import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
@@ -36,17 +34,14 @@ import models.service.ModelService;
 public class VirtualMachineController extends
     GenericApiController<VirtualMachine, VirtualMachineDto, VirtualMachineDto, VirtualMachineDto> {
 
-    private final JobService jobService;
     private final ModelService<VirtualMachine> virtualMachineModelService;
 
     @Inject public VirtualMachineController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<VirtualMachine> modelService,
-        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService,
-        JobService jobService) {
+        TypeLiteral<VirtualMachine> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
         this.virtualMachineModelService = modelService;
-        this.jobService = jobService;
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -57,11 +52,9 @@ public class VirtualMachineController extends
         virtualMachine.addCloudCredential(getCloudCredential(virtualMachine.cloud()));
         virtualMachine.bindOwner(getCloudCredential(virtualMachine.cloud()));
         this.virtualMachineModelService.save(virtualMachine);
-        this.jobService.newVirtualMachineJob(virtualMachine, getActiveTenant());
     }
 
     @Override protected boolean preDelete(VirtualMachine entity) {
-        this.jobService.newDeleteVirtualMachineJob(entity, getActiveTenant());
         return false;
     }
 }

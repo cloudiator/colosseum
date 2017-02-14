@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 
 import dtos.ScheduleDto;
 import dtos.conversion.AbstractConverter;
-import models.Schedule;
+import de.uniulm.omi.cloudiator.persistance.entities.Schedule;
 
 
 @Singleton public class ScheduleConverter extends AbstractConverter<Schedule, ScheduleDto> {

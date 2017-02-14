@@ -22,8 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import dtos.validation.validators.ModelIdValidator;
-import models.ApplicationComponent;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 10.08.2015.

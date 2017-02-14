@@ -20,26 +20,14 @@ package controllers.generic;
 
 import com.google.common.reflect.TypeToken;
 import com.google.inject.TypeLiteral;
-
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import javax.annotation.Nullable;
-
 import controllers.security.SecuredSessionOrToken;
 import dtos.api.Dto;
 import dtos.conversion.ModelDtoConversionService;
 import dtos.generic.LinkDecoratorDto;
-import models.Tenant;
-import models.generic.Model;
-import models.service.FrontendUserService;
-import models.service.IllegalSearchException;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import play.Logger;
 import play.data.Form;
 import play.db.jpa.Transactional;
@@ -48,6 +36,15 @@ import play.mvc.BodyParser;
 import play.mvc.Result;
 import play.mvc.Security;
 import util.logging.Loggers;
+
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -128,16 +125,6 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
     }
 
-    private List<T> searchEntity(String attribute, String value) throws IllegalSearchException {
-        checkNotNull(attribute);
-        checkNotNull(value);
-        List<T> ts = modelService.getByAttributeValue(attribute, value);
-        if (filter().isPresent()) {
-            return ts.stream().filter(filter().get()).collect(Collectors.toList());
-        }
-        return ts;
-    }
-
     /**
      * Loads the model identified by the given id from the
      * database.
@@ -150,7 +137,7 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
     @Nullable final protected T loadEntity(final Long id) {
         checkNotNull(id);
         T t = modelService.getById(id);
-        if(t == null) {
+        if (t == null) {
             return null;
         }
         if (filter().isPresent()) {
@@ -252,31 +239,6 @@ public abstract class GenericApiController<T extends Model, U extends Dto, V ext
         }
 
         return ok(Json.toJson(this.convertToDto(entity)));
-    }
-
-    /**
-     * Returns a list of entities matching the search criteria.
-     * <p>
-     * Retrieves all entities where the attribute defined matches
-     * the value defined.
-     *
-     * @param attribute the attribute
-     * @param value     the value for the attribute
-     * @return A JSON representation if the matching entities.N
-     */
-    @Transactional(readOnly = true) @BodyParser.Of(BodyParser.Empty.class) public Result search(
-        final String attribute, final String value) {
-
-        final List<T> entities;
-        try {
-            entities = this.searchEntity(attribute, value);
-        } catch (IllegalSearchException e) {
-            return badRequest(e.getMessage());
-        }
-        List<Dto> dtos = new ArrayList<>(entities.size());
-        dtos.addAll(entities.stream().map(this::convertToDto).collect(Collectors.toList()));
-        return ok(Json.toJson(dtos));
-
     }
 
     /**

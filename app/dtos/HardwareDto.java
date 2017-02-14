@@ -24,17 +24,17 @@ import com.google.inject.TypeLiteral;
 
 import java.util.List;
 
+import de.uniulm.omi.cloudiator.persistance.repositories.BaseModelService;
 import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.CloudCredential;
-import models.HardwareOffer;
-import models.Location;
-import models.service.BaseModelService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.HardwareOffer;
+import de.uniulm.omi.cloudiator.persistance.entities.Location;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 public class HardwareDto extends RemoteDto {
 

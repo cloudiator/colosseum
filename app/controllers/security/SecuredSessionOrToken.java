@@ -20,7 +20,7 @@ package controllers.security;
 
 import com.google.inject.Inject;
 import components.auth.TokenService;
-import models.service.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
 import play.db.jpa.JPAApi;
 import play.mvc.Http;
 import play.mvc.Result;

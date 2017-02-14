@@ -24,10 +24,10 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.TemplateOptionsDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.TemplateOptions;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.TemplateOptions;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 06.10.15.

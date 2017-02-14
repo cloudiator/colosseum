@@ -23,9 +23,9 @@ import com.google.inject.Inject;
 import dtos.PortDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.ApplicationComponent;
-import models.Port;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.Port;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 03.08.15.

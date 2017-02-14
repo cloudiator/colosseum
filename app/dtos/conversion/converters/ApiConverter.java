@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.ApiDto;
 import dtos.conversion.AbstractConverter;
-import models.Api;
+import de.uniulm.omi.cloudiator.persistance.entities.Api;
 
 /**
  * Created by daniel on 10.04.15.

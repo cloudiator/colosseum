@@ -25,14 +25,14 @@ import java.util.List;
 
 import dtos.generic.MonitorDto;
 import dtos.validation.validators.ModelIdValidator;
-import models.FormulaQuantifier;
-import models.Monitor;
-import models.ScalingAction;
-import models.Schedule;
-import models.Window;
-import models.scalability.FlowOperator;
-import models.scalability.FormulaOperator;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.FormulaQuantifier;
+import de.uniulm.omi.cloudiator.persistance.entities.Monitor;
+import de.uniulm.omi.cloudiator.persistance.entities.ScalingAction;
+import de.uniulm.omi.cloudiator.persistance.entities.Schedule;
+import de.uniulm.omi.cloudiator.persistance.entities.Window;
+import de.uniulm.omi.cloudiator.persistance.entities.FlowOperator;
+import de.uniulm.omi.cloudiator.persistance.entities.FormulaOperator;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 public class ComposedMonitorDto extends MonitorDto {
 

@@ -23,13 +23,13 @@ import com.google.inject.Inject;
 import dtos.VirtualMachineTemplateDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Cloud;
-import models.Hardware;
-import models.Image;
-import models.Location;
-import models.TemplateOptions;
-import models.VirtualMachineTemplate;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.Hardware;
+import de.uniulm.omi.cloudiator.persistance.entities.Image;
+import de.uniulm.omi.cloudiator.persistance.entities.Location;
+import de.uniulm.omi.cloudiator.persistance.entities.TemplateOptions;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachineTemplate;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 15.04.15.

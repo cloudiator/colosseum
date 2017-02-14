@@ -38,28 +38,20 @@ resolvers += ("ossrh Snapshots" at "https://oss.sonatype.org/content/repositorie
 
 libraryDependencies ++= Seq(
   javaJdbc,
-  javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),
-  "org.hibernate" % "hibernate-entitymanager" % "4.3.5.Final",
+  //javaJpa.exclude("org.hibernate.javax.persistence", "hibernate-jpa-2.0-api"),
+  javaJpa,
+  "org.hibernate" % "hibernate-entitymanager" % "5.2.7.Final",
+  //see http://stackoverflow.com/questions/38278199/play-framework-inject-error
+  "dom4j" % "dom4j" % "1.6.1" intransitive(),
   cache,
   "org.mariadb.jdbc" % "mariadb-java-client" % "1.1.7",
-  "org.hamcrest" % "hamcrest-all" % "1.3",
   "com.google.inject" % "guice" % "4.1.0",
   "com.google.inject.extensions" % "guice-multibindings" % "4.1.0",
   "com.google.inject.extensions" % "guice-assistedinject" % "4.1.0",
   "com.google.guava" % "guava" % "18.0",
-  "commons-codec" % "commons-codec" % "1.10",
   "com.google.code.findbugs" % "jsr305" % "1.3.9",
-  "com.github.drapostolos" % "type-parser" % "0.5.0",
-  "io.github.cloudiator" % "colosseum-client" % "0.2.0-SNAPSHOT", // sub-dependency of axe-aggr.
-  "io.github.cloudiator.sword" % "service" % "0.2.0-SNAPSHOT" exclude("javax.ws.rs", "jsr311-api"),
-  "io.github.cloudiator.lance" % "client" % "0.2.0-SNAPSHOT",
   "io.github.cloudiator" % "common" % "0.2.0-SNAPSHOT",
-  "io.github.cloudiator" % "visor-rest-client" % "0.2.0-SNAPSHOT",
-  "io.github.cloudiator.axe" % "axe-aggregator-common" % "0.2.0-SNAPSHOT",
-  "org.reflections" % "reflections" % "0.9.10",
-  "org.jgrapht" % "jgrapht-core" % "0.9.2",
-  "org.jgrapht" % "jgrapht-ext" % "0.9.2",
-  "org.apache.commons" % "commons-lang3" % "3.4"
+  "org.reflections" % "reflections" % "0.9.10"
 )
 
 TwirlKeys.templateImports += "dtos._"

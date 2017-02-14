@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.LifecycleComponentDto;
 import dtos.conversion.DefaultFieldConverter;
-import models.LifecycleComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.LifecycleComponent;
 
 /**
  * Created by daniel on 14.04.15.

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015 University of Ulm
+ * Copyright (c) 2014-2017 University of Ulm
  *
  * See the NOTICE file distributed with this work for additional information
  * regarding copyright ownership.  Licensed under the Apache License, Version 2.0 (the
@@ -16,7 +16,7 @@
  * under the License.
  */
 
-package models.service;
+package models;
 
 import com.google.inject.AbstractModule;
 import dtos.*;

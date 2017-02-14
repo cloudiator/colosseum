@@ -18,8 +18,8 @@
 
 package dtos;
 
-import de.uniulm.omi.cloudiator.common.os.OperatingSystemArchitecture;
-import de.uniulm.omi.cloudiator.common.os.OperatingSystemFamily;
+import de.uniulm.omi.cloudiator.domain.OperatingSystemArchitecture;
+import de.uniulm.omi.cloudiator.domain.OperatingSystemFamily;
 import dtos.generic.ValidatableDto;
 
 /**

@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 
 import dtos.SensorDescriptionDto;
 import dtos.conversion.AbstractConverter;
-import models.SensorDescription;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorDescription;
 
 
 @Singleton public class SensorDescriptionConverter

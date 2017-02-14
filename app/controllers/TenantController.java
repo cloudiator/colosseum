@@ -24,9 +24,9 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.TenantDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 19.03.15.

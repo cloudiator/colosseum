@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.ApplicationDto;
 import dtos.conversion.AbstractConverter;
-import models.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
 
 /**
  * Created by daniel on 10.04.15.

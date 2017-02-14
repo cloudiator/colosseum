@@ -23,10 +23,10 @@ import com.google.inject.Provider;
 
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
-import models.Monitor;
-import models.scalability.FilterType;
-import models.scalability.SubscriptionType;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Monitor;
+import de.uniulm.omi.cloudiator.persistance.entities.FilterType;
+import de.uniulm.omi.cloudiator.persistance.entities.SubscriptionType;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 02.08.2015.

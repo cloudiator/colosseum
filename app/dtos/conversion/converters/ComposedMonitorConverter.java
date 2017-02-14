@@ -32,14 +32,14 @@ import dtos.conversion.transformers.ModelToListIdTransformer;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.ComposedMonitor;
-import models.FormulaQuantifier;
-import models.Monitor;
-import models.MonitorInstance;
-import models.ScalingAction;
-import models.Schedule;
-import models.Window;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ComposedMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.FormulaQuantifier;
+import de.uniulm.omi.cloudiator.persistance.entities.Monitor;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.ScalingAction;
+import de.uniulm.omi.cloudiator.persistance.entities.Schedule;
+import de.uniulm.omi.cloudiator.persistance.entities.Window;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 
 @Singleton public class ComposedMonitorConverter

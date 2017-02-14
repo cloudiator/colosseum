@@ -21,13 +21,13 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import de.uniulm.omi.cloudiator.persistance.repositories.BaseModelService;
 import dtos.generic.RemoteDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.ApplicationComponent;
-import models.ApplicationInstance;
-import models.VirtualMachine;
-import models.service.BaseModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine;
 
 /**
  * Created by daniel seybold on 17.12.2014.

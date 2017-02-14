@@ -23,10 +23,10 @@ import com.google.inject.Inject;
 import dtos.CloudCredentialDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Cloud;
-import models.CloudCredential;
-import models.Tenant;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

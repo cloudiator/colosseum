@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.GeoLocationDto;
 import dtos.conversion.DefaultFieldConverter;
-import models.GeoLocation;
+import de.uniulm.omi.cloudiator.persistance.entities.GeoLocation;
 
 /**
  * Created by daniel on 14.04.15.

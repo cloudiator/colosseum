@@ -21,7 +21,7 @@ package dtos;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import models.service.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
 import play.Logger;
 
 /**

@@ -17,10 +17,10 @@
  */
 
 import com.google.inject.Inject;
-import models.FrontendUser;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import play.Logger;
 import play.db.jpa.JPAApi;
 import util.logging.Loggers;

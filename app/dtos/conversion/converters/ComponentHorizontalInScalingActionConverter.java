@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import dtos.ComponentHorizontalInScalingActionDto;
-import models.ApplicationComponent;
-import models.ComponentHorizontalInScalingAction;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalInScalingAction;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 10.08.2015.

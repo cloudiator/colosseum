@@ -20,20 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.log.LogCollectionService;
-import components.model.ApplicationInstanceGraph;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.ApplicationInstanceDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ApplicationInstance;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
-import play.db.jpa.Transactional;
-import play.mvc.Result;
-
-import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
  * Created by daniel on 11.05.15.
@@ -41,23 +34,18 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class ApplicationInstanceController extends
     GenericApiController<ApplicationInstance, ApplicationInstanceDto, ApplicationInstanceDto, ApplicationInstanceDto> {
 
-    private final LogCollectionService logCollectionService;
-
     @Inject public ApplicationInstanceController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<ApplicationInstance> modelService,
-        TypeLiteral<ApplicationInstance> typeLiteral, ModelDtoConversionService conversionService,
-        LogCollectionService logCollectionService) {
+        TypeLiteral<ApplicationInstance> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-        checkNotNull(logCollectionService);
-        this.logCollectionService = logCollectionService;
     }
 
     @Override protected String getSelfRoute(Long id) {
         return controllers.routes.ApplicationInstanceController.get(id).absoluteURL(request());
     }
 
-    @Transactional(readOnly = true) public Result log(Long id) {
+    /*@Transactional(readOnly = true) public Result log(Long id) {
 
         ApplicationInstance applicationInstance = loadEntity(id);
 
@@ -89,5 +77,5 @@ public class ApplicationInstanceController extends
         }
 
         return ok(views.html.applicationInstanceGraph.render(applicationInstance));
-    }
+    }*/
 }

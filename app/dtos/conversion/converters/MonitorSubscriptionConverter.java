@@ -24,9 +24,9 @@ import com.google.inject.Singleton;
 import dtos.MonitorSubscriptionDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Monitor;
-import models.MonitorSubscription;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Monitor;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorSubscription;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 02.08.2015.

@@ -22,9 +22,9 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 import dtos.ComponentHorizontalOutScalingActionDto;
-import models.ApplicationComponent;
-import models.ComponentHorizontalOutScalingAction;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalOutScalingAction;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 
 @Singleton public class ComponentHorizontalOutScalingActionConverter extends

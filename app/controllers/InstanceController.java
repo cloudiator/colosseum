@@ -20,14 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-import components.job.JobService;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.Instance;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.InstanceDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Instance;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
 
 /**
  * Created by daniel on 09.04.15.
@@ -35,16 +34,14 @@ import models.service.ModelService;
 public class InstanceController
     extends GenericApiController<Instance, InstanceDto, InstanceDto, InstanceDto> {
 
-    private final JobService jobService;
     private final ModelService<Instance> instanceModelService;
 
     @Inject public InstanceController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<Instance> modelService,
-        TypeLiteral<Instance> typeLiteral, ModelDtoConversionService conversionService,
-        JobService jobService) {
+        TypeLiteral<Instance> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-        this.jobService = jobService;
+
         this.instanceModelService = modelService;
     }
 
@@ -56,11 +53,9 @@ public class InstanceController
         super.postPost(instance);
         instance.bindTenant(getActiveTenant());
         instanceModelService.save(instance);
-        this.jobService.newInstanceJob(instance, getActiveTenant());
     }
 
     @Override protected boolean preDelete(Instance instance) {
-        this.jobService.newDeleteInstanceJob(instance, getActiveTenant());
         return false;
     }
 }

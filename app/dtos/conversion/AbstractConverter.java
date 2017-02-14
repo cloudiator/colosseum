@@ -21,7 +21,7 @@ package dtos.conversion;
 import com.google.inject.TypeLiteral;
 
 import dtos.api.Dto;
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
 
 /**
  * Created by daniel on 16.03.15.

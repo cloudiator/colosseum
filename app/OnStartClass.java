@@ -17,10 +17,7 @@
  */
 
 import com.google.inject.Inject;
-import components.execution.ExecutionSystemInitialization;
 import play.Logger;
-import play.inject.ApplicationLifecycle;
-import play.libs.F;
 import util.logging.Loggers;
 
 /**
@@ -30,19 +27,9 @@ class OnStartClass {
 
     private static Logger.ALogger LOGGER = Loggers.of(Loggers.SYSTEM);
 
-    @Inject public OnStartClass(ExecutionSystemInitialization executionSystemInitialization,
-        InitialData initialData, ApplicationLifecycle applicationLifecycle) {
-
-        LOGGER.info("Initialization of system, executing on start actions.");
+    @Inject public OnStartClass(InitialData initialData) {
 
         initialData.load();
-        executionSystemInitialization.init();
-
-        LOGGER.info("Registering shutdown hook for execution system.");
-        applicationLifecycle.addStopHook(() -> F.Promise.promise(() -> {
-            executionSystemInitialization.shutdown();
-            return null;
-        }));
 
         LOGGER.info("Finished execution onStart actions.");
     }

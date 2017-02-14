@@ -28,7 +28,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.SensorConfigurations;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorConfigurations;
 
 /**
  * Created by Frank on 17.03.2016.

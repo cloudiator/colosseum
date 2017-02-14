@@ -25,7 +25,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import dtos.api.Dto;
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
 
 /**
  * Created by daniel on 14.04.15.

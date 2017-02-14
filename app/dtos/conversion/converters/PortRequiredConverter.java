@@ -21,9 +21,9 @@ package dtos.conversion.converters;
 import com.google.inject.Inject;
 
 import dtos.PortRequiredDto;
-import models.ApplicationComponent;
-import models.PortRequired;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent;
+import de.uniulm.omi.cloudiator.persistance.entities.PortRequired;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 03.08.15.

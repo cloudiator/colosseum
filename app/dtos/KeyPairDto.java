@@ -22,8 +22,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import dtos.generic.RemoteDto;
-import models.Cloud;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 19.05.15.

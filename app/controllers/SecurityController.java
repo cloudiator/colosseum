@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import components.auth.Token;
 import components.auth.TokenService;
 import dtos.LoginDto;
-import models.service.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
 import play.data.Form;
 import play.db.jpa.Transactional;
 import play.libs.Json;

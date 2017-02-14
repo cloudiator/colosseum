@@ -27,9 +27,9 @@ import dtos.TenantDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.ModelToListIdTransformer;
-import models.FrontendUser;
-import models.Tenant;
-import models.service.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

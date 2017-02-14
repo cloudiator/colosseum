@@ -20,16 +20,14 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.scalability.ScalingEngine;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.RawMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.RawMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.MonitorInstance;
-import models.RawMonitor;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -40,8 +38,8 @@ import play.mvc.Result;
  */
 public class RawMonitorController
     extends GenericApiController<RawMonitor, RawMonitorDto, RawMonitorDto, RawMonitorDto> {
-    ScalingEngine se;
-    ModelService<MonitorInstance> monitorInstanceModelService;
+
+    private final ModelService<MonitorInstance> monitorInstanceModelService;
 
     /**
      * Constructs a GenericApiController.
@@ -54,12 +52,11 @@ public class RawMonitorController
     @Inject public RawMonitorController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<RawMonitor> modelService,
         TypeLiteral<RawMonitor> typeLiteral, ModelDtoConversionService conversionService,
-        ScalingEngine se, ModelService<MonitorInstance> monitorInstanceModelService) {
+        ModelService<MonitorInstance> monitorInstanceModelService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
 
         this.monitorInstanceModelService = monitorInstanceModelService;
-        this.se = se;
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -68,18 +65,13 @@ public class RawMonitorController
 
     @Override @Transactional protected void postPost(RawMonitor entity) {
         super.postPost(entity);
-
-        se.doMonitor(entity);
     }
 
     @Override @Transactional protected void postPut(RawMonitor entity) {
         super.postPut(entity);
-
-        se.updateMonitor(entity);
     }
 
     @Override @Transactional public Result delete(final Long id) {
-        se.removeMonitor(id); // moved here because access to monitor is still needed
 
         //TODO implement postDelete with true/false if delete worked
         Result parent = super.delete(id);

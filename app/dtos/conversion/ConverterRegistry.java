@@ -21,7 +21,7 @@ package dtos.conversion;
 import com.google.inject.ImplementedBy;
 
 import dtos.api.Dto;
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
 
 /**
  * Interface for the Converter Registry.

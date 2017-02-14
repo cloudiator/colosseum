@@ -28,11 +28,11 @@ import dtos.generic.RemoteDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.CloudCredential;
-import models.Location;
-import models.OperatingSystem;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.Location;
+import de.uniulm.omi.cloudiator.persistance.entities.OperatingSystem;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 public class ImageDto extends RemoteDto {
 

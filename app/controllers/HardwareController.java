@@ -27,11 +27,11 @@ import java.util.function.Predicate;
 import controllers.generic.GenericApiController;
 import dtos.HardwareDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.CloudCredential;
-import models.Hardware;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.Hardware;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 09.04.15.

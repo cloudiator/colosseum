@@ -24,10 +24,10 @@ import com.google.inject.TypeLiteral;
 import controllers.generic.GenericApiController;
 import dtos.MonitorInstanceDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.MonitorInstance;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Implementation of the GenericApiController for the MonitorInstance model class.

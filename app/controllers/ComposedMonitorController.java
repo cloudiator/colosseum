@@ -20,15 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.scalability.ScalingEngine;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.ComposedMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.ComposedMonitorDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.ComposedMonitor;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -39,9 +37,6 @@ import play.mvc.Result;
  */
 public class ComposedMonitorController extends
     GenericApiController<ComposedMonitor, ComposedMonitorDto, ComposedMonitorDto, ComposedMonitorDto> {
-
-    private ScalingEngine se;
-
     /**
      * Constructs a GenericApiController.
      *
@@ -52,11 +47,9 @@ public class ComposedMonitorController extends
      */
     @Inject public ComposedMonitorController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<ComposedMonitor> modelService,
-        TypeLiteral<ComposedMonitor> typeLiteral, ModelDtoConversionService conversionService,
-        ScalingEngine se) {
-        super(frontendUserService, tenantModelService, modelService, typeLiteral, conversionService);
-
-        this.se = se;
+        TypeLiteral<ComposedMonitor> typeLiteral, ModelDtoConversionService conversionService) {
+        super(frontendUserService, tenantModelService, modelService, typeLiteral,
+            conversionService);
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -65,23 +58,15 @@ public class ComposedMonitorController extends
 
     @Override @Transactional protected void postPost(ComposedMonitor entity) {
         super.postPost(entity);
-
-        se.aggregateMonitors(entity, true);
     }
 
     @Override @Transactional protected void postPut(ComposedMonitor entity) {
         super.postPut(entity);
-
-        //TODO better update than remove and add?
-        se.removeMonitor(entity.getId());
-        // TODO not cool since new monitorinstance ids will be created
-        se.aggregateMonitors(entity, true);
     }
 
-    @Override @Transactional public Result delete(final Long id){
+    @Override @Transactional public Result delete(final Long id) {
         Result result = this.get(id);
-        if(!result.equals(this.notFound(id))) {
-            se.removeMonitor(id); // moved here because access to monitor is still needed
+        if (!result.equals(this.notFound(id))) {
             return ok();
         } else {
             return this.notFound(id);

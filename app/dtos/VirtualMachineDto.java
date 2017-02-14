@@ -25,12 +25,12 @@ import dtos.generic.RemoteDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.Cloud;
-import models.Hardware;
-import models.Image;
-import models.Location;
-import models.TemplateOptions;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.Hardware;
+import de.uniulm.omi.cloudiator.persistance.entities.Image;
+import de.uniulm.omi.cloudiator.persistance.entities.Location;
+import de.uniulm.omi.cloudiator.persistance.entities.TemplateOptions;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by bwpc on 09.12.2014.

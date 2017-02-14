@@ -18,10 +18,11 @@
 
 package dtos.conversion.transformers;
 
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import models.generic.Model;
 
 /**
  * Created by daniel on 19.03.15.
@@ -35,7 +36,7 @@ public class ModelToListIdTransformer<T extends Model> implements Transformer<Li
     }
 
     @Override public List<T> transform(List<Long> longs) {
-        if(longs == null){
+        if (longs == null) {
             return new ArrayList<>();
         }
 
@@ -47,7 +48,7 @@ public class ModelToListIdTransformer<T extends Model> implements Transformer<Li
     }
 
     @Override public List<Long> transformReverse(List<T> ts) {
-        if(ts == null){
+        if (ts == null) {
             return new ArrayList<>();
         }
 

@@ -24,12 +24,12 @@ import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 import controllers.security.TenantAwareAuthenticator;
-import models.Cloud;
-import models.CloudCredential;
-import models.FrontendUser;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudCredential;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import play.mvc.Controller;
 
 import static com.google.common.base.Preconditions.checkNotNull;

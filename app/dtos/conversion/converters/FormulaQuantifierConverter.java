@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 
 import dtos.FormulaQuantifierDto;
 import dtos.conversion.AbstractConverter;
-import models.FormulaQuantifier;
+import de.uniulm.omi.cloudiator.persistance.entities.FormulaQuantifier;
 
 
 @Singleton public class FormulaQuantifierConverter

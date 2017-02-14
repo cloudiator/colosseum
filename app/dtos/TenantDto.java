@@ -28,8 +28,8 @@ import dtos.generic.ValidatableDto;
 import dtos.validation.validators.IterableValidator;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullOrEmptyValidator;
-import models.FrontendUser;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 19.03.15.

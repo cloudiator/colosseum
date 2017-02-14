@@ -24,7 +24,7 @@ import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.TemplateOptions;
+import de.uniulm.omi.cloudiator.persistance.entities.TemplateOptions;
 
 import java.util.List;
 import java.util.Map;

@@ -31,12 +31,11 @@ import dtos.conversion.transformers.IdToModelTransformer;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.Component;
-import models.IpAddress;
-import models.Monitor;
-import models.MonitorInstance;
-import models.VirtualMachine;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Component;
+import de.uniulm.omi.cloudiator.persistance.entities.Monitor;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 
 @Singleton public class MonitorInstanceConverter

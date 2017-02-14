@@ -20,17 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.model.ApplicationTypeGraph;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.ApplicationDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.Application;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
-import play.db.jpa.Transactional;
-import play.mvc.Result;
 
 /**
  * Created by daniel on 29.03.15.
@@ -49,7 +45,7 @@ public class ApplicationController
         return controllers.routes.ApplicationController.get(id).absoluteURL(request());
     }
 
-    @Transactional(readOnly = true) public Result graph(Long id) {
+    /*@Transactional(readOnly = true) public Result graph(Long id) {
         Application application = loadEntity(id);
 
         if (application == null) {
@@ -69,6 +65,6 @@ public class ApplicationController
         }
 
         return ok(views.html.applicationGraph.render(application));
-    }
+    }*/
 
 }

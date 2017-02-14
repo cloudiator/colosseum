@@ -22,10 +22,10 @@ import com.google.inject.Inject;
 
 import dtos.KeyPairDto;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Cloud;
-import models.KeyPair;
-import models.VirtualMachine;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.KeyPair;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 19.05.15.

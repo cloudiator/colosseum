@@ -20,7 +20,7 @@ package dtos.conversion.converters;
 
 import dtos.conversion.AbstractConverter;
 import dtos.generic.RemoteDto;
-import models.generic.RemoteResource;
+import de.uniulm.omi.cloudiator.persistance.entities.RemoteResource;
 
 /**
  * Created by daniel on 10.08.15.

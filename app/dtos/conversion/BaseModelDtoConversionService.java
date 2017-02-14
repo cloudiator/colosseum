@@ -26,7 +26,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 import dtos.api.Dto;
-import models.generic.Model;
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

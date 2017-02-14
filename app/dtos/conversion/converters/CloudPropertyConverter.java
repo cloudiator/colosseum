@@ -23,9 +23,9 @@ import com.google.inject.Inject;
 import dtos.CloudPropertyDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Cloud;
-import models.CloudProperty;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.CloudProperty;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 

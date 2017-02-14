@@ -20,9 +20,9 @@ package controllers.security;
 
 import com.google.inject.Inject;
 import components.auth.TokenService;
-import models.FrontendUser;
-import models.Tenant;
-import models.service.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
 import org.hibernate.Hibernate;
 import play.db.jpa.JPA;
 import play.db.jpa.JPAApi;

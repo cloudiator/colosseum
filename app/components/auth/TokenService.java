@@ -1,6 +1,6 @@
 package components.auth;
 
-import models.FrontendUser;
+import de.uniulm.omi.cloudiator.persistance.entities.FrontendUser;
 
 /**
  * Token Service creates and validates Authentication Tokens (@link {@link Token}) for

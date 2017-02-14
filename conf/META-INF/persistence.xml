@@ -24,6 +24,68 @@
     <persistence-unit name="defaultPersistenceUnit" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <non-jta-data-source>DefaultDS</non-jta-data-source>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ApiAccessToken</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Api</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ApplicationComponent</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ApplicationInstance</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Application</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.CloudCredential</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Cloud</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.CloudProperty</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Communication</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalInScalingAction
+        </class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalOutScalingAction
+        </class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ComponentHorizontalScalingAction
+        </class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Component</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ComposedMonitor</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ConstantMonitor</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.FilterType</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.FlowOperator</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.FormulaOperator</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.FormulaQuantifier</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.FrontendUser</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.GeoLocation</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Hardware</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.HardwareOffer</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.HorizontalScalingAction</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Image</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Instance</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.IpAddress</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.IpType</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.KeyPair</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.LifecycleComponent</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Location</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.MeasurementWindow</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.MetricMonitor</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Model</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ModelWithExternalReference</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Monitor</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.MonitorSubscription</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.OperatingSystem</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Port</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.PortProvided</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.PortRequired</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.RawMonitor</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.RemoteResourceInCloud</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.RemoteResourceInLocation</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.RemoteResource</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.RemoteState</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.ScalingAction</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Schedule</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.SensorConfigurations</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.SensorDescription</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.SubscriptionType</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.TemplateOptions</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Tenant</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.TimeWindow</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Unique</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.VirtualMachineTemplate</class>
+        <class>de.uniulm.omi.cloudiator.persistance.entities.Window</class>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>

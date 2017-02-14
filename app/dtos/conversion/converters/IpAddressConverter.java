@@ -23,9 +23,9 @@ import com.google.inject.Inject;
 import dtos.IpAddressDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.IpAddress;
-import models.VirtualMachine;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.IpAddress;
+import de.uniulm.omi.cloudiator.persistance.entities.VirtualMachine;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 14.04.15.

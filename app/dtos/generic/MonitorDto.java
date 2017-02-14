@@ -24,8 +24,8 @@ import com.google.inject.Provider;
 import java.util.List;
 
 import dtos.ModelWithExternalReferenceDto;
-import models.MonitorInstance;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by Frank on 25.08.2015.

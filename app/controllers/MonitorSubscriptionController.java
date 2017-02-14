@@ -20,15 +20,13 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.TypeLiteral;
-
-import components.scalability.ScalingEngine;
 import controllers.generic.GenericApiController;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorSubscription;
+import de.uniulm.omi.cloudiator.persistance.entities.Tenant;
+import de.uniulm.omi.cloudiator.persistance.repositories.FrontendUserService;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 import dtos.MonitorSubscriptionDto;
 import dtos.conversion.ModelDtoConversionService;
-import models.MonitorSubscription;
-import models.Tenant;
-import models.service.FrontendUserService;
-import models.service.ModelService;
 import play.db.jpa.Transactional;
 import play.mvc.Result;
 
@@ -37,8 +35,6 @@ import play.mvc.Result;
  */
 public class MonitorSubscriptionController extends
     GenericApiController<MonitorSubscription, MonitorSubscriptionDto, MonitorSubscriptionDto, MonitorSubscriptionDto> {
-
-    private ScalingEngine se;
 
     /**
      * Constructs a GenericApiController.
@@ -50,12 +46,9 @@ public class MonitorSubscriptionController extends
      */
     @Inject public MonitorSubscriptionController(FrontendUserService frontendUserService,
         ModelService<Tenant> tenantModelService, ModelService<MonitorSubscription> modelService,
-        TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService,
-        ScalingEngine se) {
+        TypeLiteral<MonitorSubscription> typeLiteral, ModelDtoConversionService conversionService) {
         super(frontendUserService, tenantModelService, modelService, typeLiteral,
             conversionService);
-
-        this.se = se;
     }
 
     @Override protected String getSelfRoute(Long id) {
@@ -64,22 +57,14 @@ public class MonitorSubscriptionController extends
 
     @Override @Transactional protected void postPost(MonitorSubscription entity) {
         super.postPost(entity);
-
-        se.subscribe(entity.getMonitor(), entity);
     }
 
     @Override @Transactional protected void postPut(MonitorSubscription entity) {
         super.postPut(entity);
-
-        se.unsubscribe(entity.getId());
-        se.subscribe(entity.getMonitor(), entity);
     }
 
     @Override @Transactional public Result delete(final Long id) {
         // for each mi : se.unsubscribe(id); // moved here because access to monitor is still needed
-        se.unsubscribe(
-            id); //TODO currently misused monitor id here, since we dont know it anymore - preDelete?
-
         Result parent = super.delete(id);
 
         return parent;

@@ -23,7 +23,7 @@ import com.google.inject.Singleton;
 
 import dtos.MeasurementWindowDto;
 import dtos.conversion.AbstractConverter;
-import models.MeasurementWindow;
+import de.uniulm.omi.cloudiator.persistance.entities.MeasurementWindow;
 
 /**
  * Created by Frank on 10.08.2015.

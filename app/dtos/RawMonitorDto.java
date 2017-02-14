@@ -23,14 +23,14 @@ import com.google.inject.Provider;
 
 import dtos.generic.MonitorDto;
 import dtos.validation.validators.ModelIdValidator;
-import models.Application;
-import models.Cloud;
-import models.Component;
-import models.Instance;
-import models.Schedule;
-import models.SensorConfigurations;
-import models.SensorDescription;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.Component;
+import de.uniulm.omi.cloudiator.persistance.entities.Instance;
+import de.uniulm.omi.cloudiator.persistance.entities.Schedule;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorConfigurations;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorDescription;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 public class RawMonitorDto extends MonitorDto {
 

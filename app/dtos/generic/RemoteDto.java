@@ -18,7 +18,7 @@
 
 package dtos.generic;
 
-import models.generic.RemoteState;
+import de.uniulm.omi.cloudiator.persistance.entities.RemoteState;
 
 /**
  * Created by daniel on 10.08.15.

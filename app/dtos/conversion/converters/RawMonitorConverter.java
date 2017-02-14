@@ -32,16 +32,16 @@ import dtos.conversion.transformers.ModelToListIdTransformer;
 import dtos.conversion.transformers.Transformer;
 import dtos.generic.KeyValue;
 import dtos.generic.KeyValues;
-import models.Application;
-import models.Cloud;
-import models.Component;
-import models.Instance;
-import models.MonitorInstance;
-import models.RawMonitor;
-import models.Schedule;
-import models.SensorConfigurations;
-import models.SensorDescription;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Application;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.entities.Component;
+import de.uniulm.omi.cloudiator.persistance.entities.Instance;
+import de.uniulm.omi.cloudiator.persistance.entities.MonitorInstance;
+import de.uniulm.omi.cloudiator.persistance.entities.RawMonitor;
+import de.uniulm.omi.cloudiator.persistance.entities.Schedule;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorConfigurations;
+import de.uniulm.omi.cloudiator.persistance.entities.SensorDescription;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 
 @Singleton public class RawMonitorConverter extends AbstractConverter<RawMonitor, RawMonitorDto> {

@@ -18,10 +18,11 @@
 
 package dtos.conversion.transformers;
 
+import de.uniulm.omi.cloudiator.persistance.entities.Model;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
+
 import javax.annotation.Nullable;
 
-import models.generic.Model;
-import models.service.ModelService;
 
 /**
  * Created by daniel on 16.03.15.

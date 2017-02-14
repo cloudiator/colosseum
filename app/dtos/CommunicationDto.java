@@ -24,9 +24,9 @@ import com.google.inject.Provider;
 import dtos.generic.ValidatableDto;
 import dtos.validation.validators.ModelIdValidator;
 import dtos.validation.validators.NotNullValidator;
-import models.PortProvided;
-import models.PortRequired;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.PortProvided;
+import de.uniulm.omi.cloudiator.persistance.entities.PortRequired;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 /**
  * Created by daniel on 09.01.15.

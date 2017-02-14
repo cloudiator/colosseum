@@ -24,9 +24,9 @@ import com.google.inject.Singleton;
 import dtos.CloudDto;
 import dtos.conversion.AbstractConverter;
 import dtos.conversion.transformers.IdToModelTransformer;
-import models.Api;
-import models.Cloud;
-import models.service.ModelService;
+import de.uniulm.omi.cloudiator.persistance.entities.Api;
+import de.uniulm.omi.cloudiator.persistance.entities.Cloud;
+import de.uniulm.omi.cloudiator.persistance.repositories.ModelService;
 
 
 @Singleton public class CloudConverter extends AbstractConverter<Cloud, CloudDto> {

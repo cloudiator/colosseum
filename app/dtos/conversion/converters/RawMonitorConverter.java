@@ -90,6 +90,7 @@ import models.service.ModelService;
         binding(Long.class, SensorConfigurations.class).fromField("sensorConfigurations")
                 .toField("sensorConfigurations")
                 .withTransformation(new IdToModelTransformer<>(sensorConfigurationsModelService));
+        binding().fromField("isExternal").toField("isExternal");
 
 // TODO: a one-way convertion is needed here:
         binding(new TypeLiteral<List<Long>>() {

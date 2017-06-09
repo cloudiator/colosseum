@@ -26,6 +26,7 @@ import components.scalability.aggregation.*;
 import models.*;
 import models.scalability.FlowOperator;
 import play.Logger;
+import play.mvc.BodyParser;
 
 import java.util.List;
 import java.util.Map;
@@ -270,7 +271,9 @@ import java.util.UUID;
     }
 
     @Override public Monitor doMonitor(RawMonitor monitor) {
-        if (monitor.getSensorDescription().isVmSensor()) {
+        if(monitor.isExternal()){
+            return addMonitorForExternalService(monitor);
+        } else if (monitor.getSensorDescription().isVmSensor()) {
             return doMonitorVms(monitor);
         } else {
             return doMonitorComponents(monitor);
@@ -361,57 +364,57 @@ import java.util.UUID;
             LOGGER.info("Create VM-Monitor-Instance for: " + fc.getPublicAddressOfVM(vm) + " "
                 + " to this application " + monitor.getApplication());
 
+            addMonitorToMachine(monitor, fc.getPublicAddressOfVM(vm), vm.getId());
+        }
+    }
+
+    private Monitor addMonitorForExternalService(RawMonitor monitor){
+        addMonitorToMachine(monitor, "127.0.0.1" /* TODO home domain could also be distributed */, null);
+
+        return monitor;
+    }
+
+    private void addMonitorToMachine(RawMonitor monitor, String publicIpAddress, Long vmId){
             /* TODO not magical static values : monitoring agent config (at least port) has to be saved in db */
-            AgentCommunicator ac = AgentCommunicatorRegistry
-                .getAgentCommunicator("http", fc.getPublicAddressOfVM(vm), agentPort);
+        AgentCommunicator ac = AgentCommunicatorRegistry
+                .getAgentCommunicator("http", publicIpAddress, agentPort);
 
-            if(monitor.getSensorDescription().isPush()){
-                List<de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor> monitors =
-                        ac.getPushMonitorWithSameValues(
-                                monitor.getSensorDescription().getMetricName(), null);
+        if(monitor.getSensorDescription().isPush()){
+            List<de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor> monitors =
+                    ac.getPushMonitorWithSameValues(
+                            monitor.getSensorDescription().getMetricName(), null);
 
-                if (!monitors.isEmpty()) {
-                    for (de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor _monitor : monitors) {
-                        ac.removePushMonitor(_monitor);
-                    }
+            if (!monitors.isEmpty()) {
+                for (de.uniulm.omi.cloudiator.visor.client.entities.PushMonitor _monitor : monitors) {
+                    ac.removePushMonitor(_monitor);
                 }
+            }
 
-                /* TODO create monitor instance not by frontend communicator... */
-                String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
 
-                MonitorInstance instance =
-                        fc.saveMonitorInstance(
-                                monitor.getId(),
-                                apiEndpoint,
-                                vm.getId(),
-                                (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
+        } else {
+            List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors =
+                    ac.getSensorMonitorWithSameValues(monitor.getSensorDescription().getClassName(),
+                            monitor.getSensorDescription().getMetricName(), null);
 
-                addMonitorToAgent(ac, instance, monitor);
-            } else {
-                List<de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor> monitors =
-                        ac.getSensorMonitorWithSameValues(monitor.getSensorDescription().getClassName(),
-                                monitor.getSensorDescription().getMetricName(), null);
-
-                if (!monitors.isEmpty()) {
+            if (!monitors.isEmpty()) {
                     /*TODO: check for interval: if(hertz(monitor.getInterval())... */
-                    for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor _monitor : monitors) {
-                        ac.removeSensorMonitor(_monitor);
-                    }
+                for (de.uniulm.omi.cloudiator.visor.client.entities.SensorMonitor _monitor : monitors) {
+                    ac.removeSensorMonitor(_monitor);
                 }
-
-                /* TODO create monitor instance not by frontend communicator... */
-                String apiEndpoint = fc.getIpAddress(fc.getIdPublicAddressOfVM(vm));
-
-                MonitorInstance instance =
-                        fc.saveMonitorInstance(
-                                monitor.getId(),
-                                apiEndpoint,
-                                vm.getId(),
-                                (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
-
-                addMonitorToAgent(ac, instance, monitor);
             }
         }
+
+        /* TODO create monitor instance not by frontend communicator... */
+        String apiEndpoint = publicIpAddress;
+
+        MonitorInstance instance =
+                fc.saveMonitorInstance(
+                        monitor.getId(),
+                        apiEndpoint,
+                        vmId,
+                        (monitor.getComponent() == null ? null : monitor.getComponent().getId()));
+
+        addMonitorToAgent(ac, instance, monitor);
     }
 
     private void addMonitorToAgent(AgentCommunicator ac, MonitorInstance instance,

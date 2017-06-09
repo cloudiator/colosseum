@@ -41,6 +41,7 @@ public class RawMonitorDto extends MonitorDto {
     private Long sensorDescription;
     private Long schedule;
     private Long sensorConfigurations;
+    private Boolean isExternal;
 
 
     public RawMonitorDto() {
@@ -122,5 +123,13 @@ public class RawMonitorDto extends MonitorDto {
 
     public void setSensorConfigurations(Long sensorConfigurations) {
         this.sensorConfigurations = sensorConfigurations;
+    }
+
+    public Boolean getIsExternal() {
+        return isExternal;
+    }
+
+    public void setIsExternal(Boolean isExternal) {
+        isExternal = isExternal;
     }
 }

@@ -21,6 +21,7 @@ package models;
 import java.util.Optional;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -40,6 +41,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
     @ManyToOne(optional = true) private Instance componentInstance;
     @ManyToOne(optional = true) private Cloud cloud;
     @ManyToOne(optional = true) private SensorDescription sensorDescription;
+    @Column(nullable = false, updatable = false) private Boolean isExternal = false;
 
     @Nullable
     @ManyToOne(optional = true) private SensorConfigurations sensorConfigurations;
@@ -52,7 +54,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public RawMonitor(Schedule schedule, Application application, Component component,
         Instance componentInstance, Cloud cloud, SensorDescription sensorDescription,
-        SensorConfigurations sensorConfigurations) {
+        SensorConfigurations sensorConfigurations, Boolean isExternal) {
         super(schedule);
         this.application = application;
         this.component = component;
@@ -61,6 +63,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
         checkNotNull(sensorDescription);
         this.sensorDescription = sensorDescription;
         this.sensorConfigurations = sensorConfigurations;
+        this.isExternal = isExternal;
     }
 
     public Application getApplication() {
@@ -81,6 +84,14 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
     public SensorDescription getSensorDescription() {
         return sensorDescription;
+    }
+
+    public Boolean isExternal() {
+        return isExternal;
+    }
+
+    public void setExternal(Boolean external) {
+        isExternal = external;
     }
 
     @Override protected TsdbLocator getTsdbLocator() {

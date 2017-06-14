@@ -130,6 +130,6 @@ public class RawMonitorDto extends MonitorDto {
     }
 
     public void setIsExternal(Boolean isExternal) {
-        isExternal = isExternal;
+        this.isExternal = isExternal;
     }
 }

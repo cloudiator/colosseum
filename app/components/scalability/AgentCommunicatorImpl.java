@@ -174,7 +174,8 @@ public class AgentCommunicatorImpl implements AgentCommunicator {
             if(m instanceof PushMonitor) {
                 PushMonitor pm = (PushMonitor)m;
                 if (pm.getMetricName().equals(metricName) &&
-                        checkForComponentContext(componentName, pm.getMonitorContext())) {
+                        checkForComponentContext(componentName, pm.getMonitorContext()) &&
+                        (componentName == null || componentName.equals(pm.getComponentId()))) {
                     result.add(pm);
                 }
             }

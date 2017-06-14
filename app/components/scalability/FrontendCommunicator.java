@@ -43,7 +43,7 @@ public interface FrontendCommunicator {
     Long getIdPublicAddressOfVM(VirtualMachine vm);
     void removeMonitorInstance(MonitorInstance monitorInstance);
     List<MonitorInstance> getMonitorInstances(Long monitorId);
-    MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long vmId, Long componentId);
+    MonitorInstance saveMonitorInstance(Long idMonitor, String apiEndpoint, Long vmId, Long componentId, Integer sensorPort);
     MonitorInstance saveMonitorInstance(MonitorInstance monitorInstance);
     MonitorInstance getMonitorInstance(Long monitorInstanceId);
     RawMonitor getRawMonitor(Long monitorId);

@@ -76,7 +76,7 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
 
                 PlatformComponent component = (PlatformComponent) platformInstance.getApplicationComponent().getComponent();  //TODO dangerous cast
                 String gitURL = component.getGitUrl(); //TODO what if artifact is set?
-                String applicationName = "i" + platformInstance.getId() + "n" + component.getName();
+                String applicationName = "i" + platformInstance.getId() + "n" + component.getName().replaceAll("_", "");
                 // TODO how to hadle too large names?
                 if(applicationName.length() > 30) {
                     applicationName = applicationName.substring(0, 29);
@@ -93,7 +93,8 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     CredentialsMap credentials = CredentialsMap.builder()
                             .item("user", user)
                             .item("password", secret)
-                            //.item("api", platformEndpoint)
+                            // TODO only for OpenShift
+                            .item("api", platformEndpoint)
                             .build();
                     provider = client.getProvider(platformName, platformApiVersion, credentials);
 

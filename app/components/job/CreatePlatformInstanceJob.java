@@ -24,6 +24,8 @@ import play.libs.F;
 import util.logging.Loggers;
 
 import java.net.URL;
+import java.util.Collections;
+import java.util.Map;
 
 
 /**
@@ -96,10 +98,13 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     if(platform.getName().equals("heroku")){
                         credentialsBuilder.item("api-key", secret);
                         credentialsBuilder.item("api", platformEndpoint);
-                    } else {
+                    } else if(platform.getName().equals("openshift")) {
                         credentialsBuilder.item("user", user);
                         credentialsBuilder.item("password", secret);
                         credentialsBuilder.item("api", platformEndpoint);
+                    } else {
+                        credentialsBuilder.item("user", user);
+                        credentialsBuilder.item("password", secret);
                     }
 
                     credentials = credentialsBuilder.build();
@@ -108,10 +113,14 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
 
                     LOGGER.debug("Deploying application to platform...");
 
+                    final Map<String, String> EMPTY_PROPERTIES = Collections.<String, String>emptyMap();
+
                     ApplicationToCreate appToCreate = new ApplicationToCreate(
                             applicationName, // TODO name from component?
                             new URL(gitURL),
-                            platformLanguage);  // TODO transform the platformLanguage) field here
+                            platformLanguage,
+                            EMPTY_PROPERTIES);
+                            // TODO transform the platformLanguage field here
                             // TODO check if ROMAN has implemented that in the PUL, otherwise use IStandaloneCartridge.NAME_JBOSSEWS but this requires a dependecy to Openshift Client
                     Application createdApp = provider.createApplication(appToCreate);
 

@@ -90,12 +90,20 @@ public class CreatePlatformInstanceJob extends AbstractRemoteResourceJob<Platfor
                     LOGGER.debug("Connecting to platform provider: " + platformEndpoint);
 
                     RestClient.ProviderClient provider;
-                    CredentialsMap credentials = CredentialsMap.builder()
-                            .item("user", user)
-                            .item("password", secret)
-                            // TODO only for OpenShift
-                            .item("api", platformEndpoint)
-                            .build();
+                    CredentialsMap credentials;
+                    CredentialsMap.CredentialsBuilder credentialsBuilder = CredentialsMap.builder();
+
+                    if(platform.getName().equals("heroku")){
+                        credentialsBuilder.item("api-key", secret);
+                        credentialsBuilder.item("api", platformEndpoint);
+                    } else {
+                        credentialsBuilder.item("user", user);
+                        credentialsBuilder.item("password", secret);
+                        credentialsBuilder.item("api", platformEndpoint);
+                    }
+
+                    credentials = credentialsBuilder.build();
+
                     provider = client.getProvider(platformName, platformApiVersion, credentials);
 
                     LOGGER.debug("Deploying application to platform...");

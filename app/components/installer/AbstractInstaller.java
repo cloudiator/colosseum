@@ -18,8 +18,12 @@
 
 package components.installer;
 
-import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
+import components.installer.api.InstallApi;
+import de.uniulm.omi.cloudiator.sword.api.remote.RemoteConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -27,15 +31,9 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import components.installer.api.InstallApi;
 import models.VirtualMachine;
 import play.Logger;
 import play.Play;
-
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static com.google.common.base.Preconditions.checkState;
 
 /**
  * todo clean up class, do better logging
@@ -135,7 +133,6 @@ abstract class AbstractInstaller implements InstallApi {
 
         checkState(virtualMachine.providerId().isPresent());
 
-
         return "executionThreads = " + Play.application().configuration()
             .getString("colosseum.installer.abstract.visor.config.executionThreads") +
             "\n" + "reportingInterval = " + Play.application().configuration()
@@ -154,7 +151,9 @@ abstract class AbstractInstaller implements InstallApi {
             .getString("colosseum.installer.abstract.visor.config.reportingModule") +
             "\n" + "chukwaUrl = " + Play.application().configuration()
             .getString("colosseum.installer.abstract.visor.config.chukwaUrl") + "\n" +
-            "chukwaVmId = " + virtualMachine.providerId().get();
+            "chukwaVmId = " + virtualMachine.providerId().get() + "\n" +
+            "cloudId = " + virtualMachine.cloud().getId() + "\n" +
+            "vmId = " + virtualMachine.getId() + "\n";
 
     }
 

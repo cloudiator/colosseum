@@ -40,86 +40,90 @@ import play.Play;
  */
 abstract class AbstractInstaller implements InstallApi {
 
-    protected final RemoteConnection remoteConnection;
-    protected final VirtualMachine virtualMachine;
+  protected final RemoteConnection remoteConnection;
+  protected final VirtualMachine virtualMachine;
 
 
-    protected final List<String> sourcesList = new ArrayList<>();
+  protected final List<String> sourcesList = new ArrayList<>();
 
-    //parallel download threads
-    private static final int NUMBER_OF_DOWNLOAD_THREADS =
-        Play.application().configuration().getInt("colosseum.installer.download.threads");
+  //parallel download threads
+  private static final int NUMBER_OF_DOWNLOAD_THREADS =
+      Play.application().configuration().getInt("colosseum.installer.download.threads");
 
-    //KairosDB
-    protected static final String KAIROSDB_ARCHIVE = "kairosdb.tar.gz";
-    protected static final String KAIRROSDB_DIR = "kairosdb";
-    protected static final String KAIROSDB_DOWNLOAD = Play.application().configuration()
-        .getString("colosseum.installer.abstract.kairosdb.download");
+  //KairosDB
+  protected static final String KAIROSDB_ARCHIVE = "kairosdb.tar.gz";
+  protected static final String KAIRROSDB_DIR = "kairosdb";
+  protected static final String KAIROSDB_DOWNLOAD = Play.application().configuration()
+      .getString("colosseum.installer.abstract.kairosdb.download");
 
-    //Visor
-    protected static final String VISOR_JAR = "visor.jar";
-    protected static final String VISOR_DOWNLOAD =
-        Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
+  //Visor
+  protected static final String VISOR_JAR = "visor.jar";
+  protected static final String VISOR_DOWNLOAD =
+      Play.application().configuration().getString("colosseum.installer.abstract.visor.download");
 
-    //Lance
-    protected static final String LANCE_JAR = "lance.jar";
-    protected static final String LANCE_DOWNLOAD =
-        Play.application().configuration().getString("colosseum.installer.abstract.lance.download");
+  //Lance
+  protected static final String LANCE_JAR = "lance.jar";
+  protected static final String LANCE_DOWNLOAD =
+      Play.application().configuration().getString("colosseum.installer.abstract.lance.download");
 
-    //Java
-    protected static final String JAVA_DIR = "jre8";
+  //Java
+  protected static final String JAVA_DIR = "jre8";
 
 
-    protected static final String VISOR_PROPERTIES = "default.properties";
+  protected static final String VISOR_PROPERTIES = "default.properties";
+  protected static final String VISOR_INIT = "init.yaml";
+  protected static final String VISOR_INIT_DOWNLOAD = Play.application().configuration()
+      .getString("colosseum.installer.abstract.visor.init");
 
-    public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine) {
+  public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine) {
 
-        checkNotNull(remoteConnection);
-        checkNotNull(virtualMachine);
-        checkArgument(virtualMachine.publicIpAddress().isPresent(),
-            "VirtualMachine has no public ip.");
+    checkNotNull(remoteConnection);
+    checkNotNull(virtualMachine);
+    checkArgument(virtualMachine.publicIpAddress().isPresent(),
+        "VirtualMachine has no public ip.");
 
-        this.remoteConnection = remoteConnection;
-        this.virtualMachine = virtualMachine;
+    this.remoteConnection = remoteConnection;
+    this.virtualMachine = virtualMachine;
 
+  }
+
+  @Override
+  public void downloadSources() {
+
+    Logger.debug("Start downloading sources...");
+    ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_DOWNLOAD_THREADS);
+
+    List<Callable<Integer>> tasks = new ArrayList<>();
+
+    for (final String downloadCommand : this.sourcesList) {
+
+      Callable<Integer> downloadTask =
+          new DownloadTask(this.remoteConnection, downloadCommand);
+      tasks.add(downloadTask);
+    }
+    try {
+      List<Future<Integer>> results = executorService.invokeAll(tasks);
+
+      for (Future<Integer> exitCode : results) {
+        if (exitCode.get() != 0) {
+          throw new RuntimeException("Downloading of one or more sources failed!");
+        }
+      }
+      Logger.debug("All sources downloaded successfully!");
+      executorService.shutdown();
+    } catch (InterruptedException e) {
+      Logger.error("Installer: Interrupted Exception while downloading sources!", e);
+    } catch (ExecutionException e) {
+      Logger.error("Installer: Execution Exception while downloading sources!", e);
     }
 
-    @Override public void downloadSources() {
+  }
 
-        Logger.debug("Start downloading sources...");
-        ExecutorService executorService = Executors.newFixedThreadPool(NUMBER_OF_DOWNLOAD_THREADS);
+  protected String buildDefaultVisorConfig() {
 
-        List<Callable<Integer>> tasks = new ArrayList<>();
-
-        for (final String downloadCommand : this.sourcesList) {
-
-            Callable<Integer> downloadTask =
-                new DownloadTask(this.remoteConnection, downloadCommand);
-            tasks.add(downloadTask);
-        }
-        try {
-            List<Future<Integer>> results = executorService.invokeAll(tasks);
-
-            for (Future<Integer> exitCode : results) {
-                if (exitCode.get() != 0) {
-                    throw new RuntimeException("Downloading of one or more sources failed!");
-                }
-            }
-            Logger.debug("All sources downloaded successfully!");
-            executorService.shutdown();
-        } catch (InterruptedException e) {
-            Logger.error("Installer: Interrupted Exception while downloading sources!", e);
-        } catch (ExecutionException e) {
-            Logger.error("Installer: Execution Exception while downloading sources!", e);
-        }
-
-    }
-
-    protected String buildDefaultVisorConfig() {
-
-        //KairosServer depends if visor should connect to vm local kairos or to honme domain kairos
-        //get home domain ip
-        //TODO: get public ip if running Cloudiator on a VM in e.g. Openstack
+    //KairosServer depends if visor should connect to vm local kairos or to honme domain kairos
+    //get home domain ip
+    //TODO: get public ip if running Cloudiator on a VM in e.g. Openstack
         /*
         InetAddress inetAddress = null;
         try {
@@ -131,35 +135,36 @@ abstract class AbstractInstaller implements InstallApi {
         String homeDomainIp = inetAddress.getHostAddress();
         */
 
-        checkState(virtualMachine.providerId().isPresent());
+    checkState(virtualMachine.providerId().isPresent());
 
-        return "executionThreads = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.executionThreads") +
-            "\n" + "reportingInterval = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingInterval") +
-            "\n" + "telnetPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.telnetPort") + "\n" +
-            "restHost = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.restHost") + "\n" +
-            "restPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.restPort") + "\n" +
-            "kairosServer = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.kairosServer") + "\n" +
-            "kairosPort = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.kairosPort") + "\n" +
-            "reportingModule = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.reportingModule") +
-            "\n" + "chukwaUrl = " + Play.application().configuration()
-            .getString("colosseum.installer.abstract.visor.config.chukwaUrl") + "\n" +
-            "chukwaVmId = " + virtualMachine.providerId().get() + "\n" +
-            "cloudId = " + virtualMachine.cloud().getId() + "\n" +
-            "vmId = " + virtualMachine.getId() + "\n";
+    return "executionThreads = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.executionThreads") +
+        "\n" + "reportingInterval = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.reportingInterval") +
+        "\n" + "telnetPort = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.telnetPort") + "\n" +
+        "restHost = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.restHost") + "\n" +
+        "restPort = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.restPort") + "\n" +
+        "kairosServer = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.kairosServer") + "\n" +
+        "kairosPort = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.kairosPort") + "\n" +
+        "reportingModule = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.reportingModule") +
+        "\n" + "chukwaUrl = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.chukwaUrl") + "\n" +
+        "chukwaVmId = " + virtualMachine.providerId().get() + "\n" +
+        "cloudId = " + virtualMachine.cloud().getId() + "\n" +
+        "vmId = " + virtualMachine.getId() + "\n";
 
-    }
+  }
 
-    @Override public void close() {
-        Logger.info("Installation of all tools finished, closing remote connection!");
-        this.remoteConnection.close();
-    }
+  @Override
+  public void close() {
+    Logger.info("Installation of all tools finished, closing remote connection!");
+    this.remoteConnection.close();
+  }
 }
 

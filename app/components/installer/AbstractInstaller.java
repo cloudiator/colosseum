@@ -157,7 +157,9 @@ abstract class AbstractInstaller implements InstallApi {
         .getString("colosseum.installer.abstract.visor.config.chukwaUrl") + "\n" +
         "chukwaVmId = " + virtualMachine.providerId().get() + "\n" +
         "cloudId = " + virtualMachine.cloud().getId() + "\n" +
-        "vmId = " + virtualMachine.getId() + "\n";
+        "vmId = " + virtualMachine.getId() + "\n" +
+        "jmsBroker = " + Play.application().configuration()
+        .getString("colosseum.installer.abstract.visor.config.jmsBroker") + "\n";
 
   }
 

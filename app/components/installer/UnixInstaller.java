@@ -48,6 +48,9 @@ public class UnixInstaller extends AbstractInstaller {
       .getBoolean("colosseum.installer.linux.kairosdb.install.flag");
   private static final boolean DOCKER_REQUIRED = Play.application().configuration()
       .getBoolean("colosseum.installer.linux.lance.docker.install.flag");
+  private static final boolean VISOR_REQUIRED = Play.application().configuration()
+        .getBoolean("colosseum.installer.linux.visor.install.flag");
+
   private final Tenant tenant;
 
   public UnixInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine,
@@ -87,13 +90,16 @@ public class UnixInstaller extends AbstractInstaller {
               + UnixInstaller.KAIROSDB_ARCHIVE);
     }
     //visor
-    this.sourcesList
-        .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
+    if(VISOR_REQUIRED){
+        this.sourcesList
+            .add("wget " + UnixInstaller.VISOR_DOWNLOAD + "  -O " + UnixInstaller.VISOR_JAR);
 
-    if (VISOR_INIT_DOWNLOAD != null && !VISOR_INIT_DOWNLOAD.isEmpty()) {
-      this.sourcesList
-          .add("wget " + UnixInstaller.VISOR_INIT_DOWNLOAD + "  -O " + UnixInstaller.VISOR_INIT);
+        if (VISOR_INIT_DOWNLOAD != null && !VISOR_INIT_DOWNLOAD.isEmpty()) {
+            this.sourcesList
+                .add("wget " + UnixInstaller.VISOR_INIT_DOWNLOAD + "  -O " + UnixInstaller.VISOR_INIT);
+        }
     }
+
 
   }
 
@@ -116,25 +122,28 @@ public class UnixInstaller extends AbstractInstaller {
   @Override
   public void installVisor() throws RemoteException {
 
-    LOGGER.debug(String.format("Setting up Visor on vm %s", virtualMachine));
-    //create properties file
-    this.remoteConnection.writeFile(this.homeDir + "/" + UnixInstaller.VISOR_PROPERTIES,
-        this.buildDefaultVisorConfig(), false);
+    if(VISOR_REQUIRED) {
 
-    String visorStartCommand =
-        "sudo nohup bash -c '" + this.JAVA_BINARY + " -jar " + UnixInstaller.VISOR_JAR
-            + " -conf " + UnixInstaller.VISOR_PROPERTIES;
+        LOGGER.debug(String.format("Setting up Visor on vm %s", virtualMachine));
+        //create properties file
+        this.remoteConnection.writeFile(this.homeDir + "/" + UnixInstaller.VISOR_PROPERTIES,
+            this.buildDefaultVisorConfig(), false);
 
-    if (VISOR_INIT_DOWNLOAD != null && !VISOR_INIT_DOWNLOAD.isEmpty()) {
-      visorStartCommand += " -init " + VISOR_INIT;
+        String visorStartCommand =
+            "sudo nohup bash -c '" + this.JAVA_BINARY + " -jar " + UnixInstaller.VISOR_JAR
+                + " -conf " + UnixInstaller.VISOR_PROPERTIES;
+
+        if (VISOR_INIT_DOWNLOAD != null && !VISOR_INIT_DOWNLOAD.isEmpty()) {
+            visorStartCommand += " -init " + VISOR_INIT;
+        }
+
+        visorStartCommand += " &> /dev/null &'";
+
+        //start visor
+        this.remoteConnection.executeCommand(visorStartCommand
+        );
+        LOGGER.debug(String.format("Visor started successfully on vm %s", virtualMachine));
     }
-
-    visorStartCommand += " &> /dev/null &'";
-
-    //start visor
-    this.remoteConnection.executeCommand(visorStartCommand
-    );
-    LOGGER.debug(String.format("Visor started successfully on vm %s", virtualMachine));
   }
 
   @Override

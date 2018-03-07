@@ -80,8 +80,8 @@
 
     <logger name="root" level="WARN"/>
     <logger name="application" level="DEBUG"/>
-    <logger name="colosseum.execution" level="INFO"/>
-    <logger name="colosseum.cloud.sync" level="DEBUG"/>
+    <logger name="colosseum.execution" level="ERROR"/>
+    <logger name="colosseum.cloud.sync" level="ERROR"/>
     <logger name="colosseum.cloud.remote" level="DEBUG"/>
     <logger name="colosseum.cloud.job" level="DEBUG"/>
     <logger name="colosseum.cloud.installation" level="DEBUG"/>
@@ -89,7 +89,7 @@
     <logger name="colosseum.api" level="DEBUG"/>
     <logger name="colosseum.model" level="DEBUG"/>
     <logger name="colosseum.system" level="DEBUG"/>
-    <logger name="colosseum.auth" level="DEBUG"/>
+    <logger name="colosseum.auth" level="ERROR"/>
 
     <logger name="jclouds.wire" level="TRACE" additivity="false">
         <appender-ref ref="JCLOUDS"/>

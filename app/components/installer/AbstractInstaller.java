@@ -75,6 +75,7 @@ abstract class AbstractInstaller implements InstallApi {
   protected static final String VISOR_INIT_DOWNLOAD = Play.application().configuration()
       .getString("colosseum.installer.abstract.visor.init");
 
+
   public AbstractInstaller(RemoteConnection remoteConnection, VirtualMachine virtualMachine) {
 
     checkNotNull(remoteConnection);

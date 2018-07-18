@@ -13,6 +13,6 @@ if [ -f /etc/default/docker ]; then
     if [ -f /lib/systemd/system/docker.service ]; then
         sed -i '/ExecStart/s/$/ $DOCKER_OPTS/' /lib/systemd/system/docker.service
         perl -i -pe "BEGIN{undef $/;} s/^\[Service\]$/[Service]\nEnvironmentFile=-\/etc\/default\/docker/sgm" /lib/systemd/system/docker.service
-        systemctl daemon-reload
+        sudo service docker restart || true
     fi
 fi
